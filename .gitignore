@@ -1,0 +1,25 @@
+# VS Code and JetBrains
+.vscode/
+.idea/
+
+# Python virtual env (if used for tooling)
+.venv/
+
+# Lua LS metadata
+.luarc.json
+
+# WoW build output (if using tooling like WowPackager, wow-addon-tools, etc.)
+*.zip
+release/
+dist/
+pkg/
+
+# Ignore everything under Libs/
+Libs/**
+
+# But allow only Libs.xml at the top level
+!Libs/Libs.xml
+
+# Mac and Windows junk
+.DS_Store
+Thumbs.db
