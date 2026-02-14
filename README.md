@@ -7,13 +7,13 @@ Eavesdropper helps you stay immersed in busy RP environments by focusing on the 
 - **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.
 - **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls and emotes (e.g., `/point`).
 
-Available soon on [CurseForge](https://www.curseforge.com/wow/addons/), [Wago.io](https://addons.wago.io/addons/), and [WoWInterface](https://www.wowinterface.com/downloads/)!  
+Available soon on [CurseForge](https://www.curseforge.com/wow/addons/), [Wago.io](https://addons.wago.io/addons/), and [WoWInterface](https://www.wowinterface.com/downloads/)!
 
 ## History Window
 Keep track of the conversation with a customizable frame that displays the recent action history of your target or mouseover.
 
 **Customization Options:**
-- **History Size:** Change the number of stored actions (default: 50).
+- **History Size:** Change the number of stored actions displayed (default: 50).
 - **Visuals:** Full control over window styling (background colors, opacity) and typography (font, size, etc.).
 - **Name Formatting:** Choose how names appear: Full, First Name Only, or OOC.
 
@@ -24,7 +24,7 @@ Toggle visibility on the fly. You can filter the history window to show only spe
 
 | "Public" Filter On | "Public" Filter Off |
 | :-------------: | :-------------: |
-| ![Eavesdropper Filters All](Previews/Filters/All.png) | ![Eavesdropper Frame](Previews/Filters/Public%20Off.png) |
+| ![Eavesdropper Filters All](Previews/Filters/All.png) | ![Eavesdropper Filters Public Off](Previews/Filters/PublicOff.png) |
 
 ## Keywords
 Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
@@ -44,6 +44,6 @@ While Eavesdropper is designed to be broadly compatible, the following addons ar
 ## Advanced RP Name Formatting
 Eavesdropper can replace standard character names in system emotes (like `/point` or `/wave`) and `/roll` results with their respective RP names.
 
-> **Note:** This feature requires your client to have the player's RP data cached (via MSP) to function correctly.
+> **Note:** This feature requires your client to have the player's RP data cached (via MSP) before the replacement can occur.
 
-![Advanced Formatting](Previews/AdvancedFormatting/AdvancedFormatting.png)  
+![Advanced Formatting](Previews/AdvancedFormatting/AdvancedFormatting.png)
