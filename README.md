@@ -4,6 +4,7 @@ Eavesdropper helps you stay immersed in busy RP environments by focusing on the 
 **Key Features:**
 - **Dedicated History:** A focused window for your current target or mouseover.
 - **Keyword Highlights:** Custom keywords highlighted in chat with optional sound alerts.
+- **Notification Support:** Play a sound and flash the taskbar when your target performs an action, or when a Blizzard emote is directed at you.
 - **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.
 - **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls and emotes (e.g., `/point`).
 
@@ -30,6 +31,13 @@ Toggle visibility on the fly. You can filter the history window to show only spe
 Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
 
 ![Keywords](Previews/Keywords/Tooltip.png)
+
+## Notifications
+Eavesdropper can play a sound notification and flash the taskbar when:
+- Your current target takes an action (e.g., `/say`, emotes, etc.).
+- A Blizzard emote is directed at you (e.g., `/point` or `/wave`).
+
+![Notifications](Previews/Notifications/Notifications.png)
 
 ## Multi-Message Support
 Eavesdropper intelligently handles long-form RP by detecting split messages from various addons, ensuring your history window stays cohesive even when an emote spans multiple posts.
