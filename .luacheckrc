@@ -34,6 +34,9 @@ read_globals = {
 	"TRP3_API",
 	"TRP3_Addon",
 	"AddOn_TotalRP3",
+	"Chattery",
+	"EmoteSplitter",
+	"Yapper",
 
 	-- Common protocol globals
 	"CUSTOM_CLASS_COLORS",
@@ -126,8 +129,10 @@ stds.wow = {
 
 		ChatFrameUtil = {
 			fields = {
+				"ActivateChat",
 				"AddMessageEventFilter",
 				"AddSenderNameFilter",
+				"ChooseBoxForSend",
 				"FocusActiveWindow",
 				"GetActiveWindow",
 				"GetChatFrame",
