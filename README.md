@@ -8,7 +8,7 @@ Eavesdropper helps you stay immersed in busy RP environments by focusing on the 
 - **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.
 - **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls and emotes (e.g., `/point`).
 
-Available soon on [CurseForge](https://www.curseforge.com/wow/addons/), [Wago.io](https://addons.wago.io/addons/), and [WoWInterface](https://www.wowinterface.com/downloads/)!
+Available on [CurseForge](https://www.curseforge.com/wow/addons/eavesdropper), [Wago.io](https://addons.wago.io/addons/eavesdropper), and [WoWInterface](https://www.wowinterface.com/downloads/info27060-Eavesdropper.html)!  
 
 ## History Window
 Keep track of the conversation with a customizable frame that displays the recent action history of your target or mouseover.
