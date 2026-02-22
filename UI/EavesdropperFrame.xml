@@ -1,0 +1,203 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="Eavesdropper_FrameTemplate" mixin="Eavesdropper_FrameMixin" virtual="true" parent="UIParent"
+		   toplevel="true" movable="true" clampedToScreen="true" resizable="true" frameStrata="BACKGROUND">
+		<Size x="200" y="300"/>
+		<ResizeBounds>
+			<minResize>
+				<AbsDimension x="200" y="100"/>
+			</minResize>
+		</ResizeBounds>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnDragStart method="OnDragStart"/>
+			<OnDragStop method="OnDragStop"/>
+			<OnSizeChanged method="OnSizeChanged"/>
+			<OnMouseWheel method="OnMouseWheel"/>
+			<OnHyperlinkClick method="OnHyperlinkClick"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" setAllPoints="true">
+					<Color r="0" g="0" b="0" a="0.25"/>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<!-- Title Bar -->
+			<Frame parentKey="TitleBar" registerForDrag="LeftButton" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT"><Offset x="0" y="-15"/></Anchor>
+				</Anchors>
+
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture parentKey="Background" setAllPoints="true">
+							<Color r="0" g="0" b="0" a="0.25"/>
+						</Texture>
+					</Layer>
+				</Layers>
+
+				<Scripts>
+					<OnMouseDown>
+						self:GetParent():OnDragStart();
+					</OnMouseDown>
+					<OnMouseUp>
+						self:GetParent():OnDragStop();
+					</OnMouseUp>
+					<OnEnter>
+						self:GetParent():OnEnter();
+					</OnEnter>
+					<OnLeave>
+						self:GetParent():OnLeave();
+					</OnLeave>
+				</Scripts>
+
+				<Frames>
+					<!-- Close Button -->
+					<Button parentKey="CloseButton">
+						<Size x="12" y="12"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-2" y="-2"/>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								self:GetParent():GetParent():OnEnter();
+							</OnEnter>
+							<OnLeave>
+								self:GetParent():GetParent():OnLeave();
+							</OnLeave>
+						</Scripts>
+					</Button>
+
+					<!-- Title Button -->
+					<Button parentKey="TitleButton">
+						<Size x="110" y="15"/>
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+						</Anchors>
+
+						<Scripts>
+							<OnLoad>
+								self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+							</OnLoad>
+							<OnEnter>
+								self:GetParent():GetParent():OnEnter();
+							</OnEnter>
+							<OnLeave>
+								self:GetParent():GetParent():OnLeave();
+							</OnLeave>
+						</Scripts>
+
+						<Layers>
+							<!-- Hover highlight -->
+							<Layer level="HIGHLIGHT">
+								<Texture parentKey="Highlight" setallpoints="true" alphaMode="ADD">
+									<Color r="1" g="1" b="1" a="0.15"/>
+								</Texture>
+							</Layer>
+
+							<!-- Text -->
+							<Layer level="ARTWORK">
+								<FontString parentKey="Text" inherits="GameFontHighlight" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true" />
+							</Layer>
+						</Layers>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<!-- Resize Handle -->
+			<Button parentKey="ResizeHandle" hidden="true">
+				<Size x="16" y="16"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<NormalTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Up"/>
+				<HighlightTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Highlight"/>
+				<PushedTexture file="Interface\ChatFrame\UI-ChatIM-SizeGrabber-Down"/>
+				<Scripts>
+					<OnMouseDown>
+						self:GetParent():StartSizing("BOTTOMRIGHT");
+					</OnMouseDown>
+					<OnMouseUp>
+						self:GetParent():StopMovingOrSizing();
+						self:GetParent():OnResizeFinished();
+					</OnMouseUp>
+					<OnEnter>
+						self:GetParent():OnEnter();
+					</OnEnter>
+					<OnLeave>
+						self:GetParent():OnLeave();
+					</OnLeave>
+				</Scripts>
+			</Button>
+
+			<!-- Chat Box -->
+			<ScrollingMessageFrame parentKey="ChatBox" nonspacewrap="true">
+				<Anchors>
+					<Anchor point="LEFT" x="2" y="-6"/>
+					<Anchor point="RIGHT" x="-2" y="-6"/>
+					<Anchor point="TOP" x="0" y="-3"/>
+					<Anchor point="BOTTOM" x="0" y="3"/>
+				</Anchors>
+
+				<Frames>
+					<!-- Scroll Marker -->
+					<Frame parentKey="ScrollMarker" hidden="true">
+						<Size>
+							<AbsDimension x="0" y="16"/>
+						</Size>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativeTo="$parent" x="2" y="2"/>
+							<Anchor point="BOTTOMRIGHT" relativeTo="$parent" x="-2" y="2"/>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture parentKey="Highlight" setAllPoints="true">
+									<Color r="0" g="0" b="0" a="0.25"/>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Text" inherits="GameFontNormalSmall" setAllPoints="true" justifyH="CENTER" justifyV="CENTER">
+									<Color r="1" g="1" b="1" a="1"/>
+								</FontString>
+							</Layer>
+							<Layer level="HIGHLIGHT">
+								<Texture parentKey="Background" setAllPoints="true">
+									<Color r="1" g="1" b="1" a="0.15"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnMouseUp>
+								self:GetParent():GetParent():OnScrollMarkerMouseUp();
+							</OnMouseUp>
+						</Scripts>
+					</Frame>
+				</Frames>
+
+				<Scripts>
+					<OnHyperlinkClick>
+						self:GetParent():OnHyperlinkClick(link, text, button);
+					</OnHyperlinkClick>
+				</Scripts>
+			</ScrollingMessageFrame>
+		</Frames>
+	</Frame>
+	 
+</Ui>
