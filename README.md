@@ -23,9 +23,7 @@ Keep track of the conversation with a customizable frame that displays the recen
 ### Filters
 Toggle visibility on the fly. You can filter the history window to show only specific types of interactions at any time.
 
-| "Public" Filter On | "Public" Filter Off |
-| :-------------: | :-------------: |
-| ![Eavesdropper Filters All](Previews/Filters/All.png) | ![Eavesdropper Filters Public Off](Previews/Filters/PublicOff.png) |
+![Filters Versus](Previews/Filters/Versus.png)
 
 ## Keywords
 Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
