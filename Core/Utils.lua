@@ -77,8 +77,7 @@ end
 function Utils.StripColorCodes(text)
 	if type(text) ~= "string" then return text; end
 
-	text = text:gsub("|c%x%x%x%x%x%x%x%x", "")
-			   :gsub("|r", "");
+	text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
 
 	return text;
 end
