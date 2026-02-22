@@ -1,0 +1,85 @@
+## Interface: 120001
+## Title: |cnFRAMESTACK_REGION_COLOR:Eavesdropper|r
+## Notes: Shows a dedicated history window for your current target or mouseover, highlights keywords, helps focus on specific players in busy RP environments, and supports advanced RP name formatting in chat.
+## Author: Raenore (Argent Dawn EU)
+## Version: @project-version@
+## IconTexture: Interface\AddOns\Eavesdropper\Resources\SmallLogo32
+
+## Notes-frFR: Affiche une fenêtre d'historique dédiée pour votre cible sélectionnée ou survolée, met en surbrillance les mots-clefs, facilite le suivi de certains joueurs dans des zones RP denses, et gère le formatage avancé des noms RP dans le chat.
+## OptionalDeps: Chattery, ElvUI, EmoteSplitter, totalRP3, MyRolePlay, XRP, Yapper
+## SavedVariables: EavesdropperDB
+## SavedVariablesPerCharacter: EavesdropperCharDB
+## LoadSavedVariablesFirst: 1
+
+## Category-enUS: Roleplay
+## Category-deDE: Rollenspiel
+## Category-esES: Juego de rol
+## Category-esMX: Juego de rol
+## Category-frFR: Jeu de rôle
+## Category-itIT: Gioco di Ruolo
+## Category-koKR: 롤플레잉
+## Category-ptBR: Interpretação de Papel
+## Category-ruRU: Ролевая игра
+## Category-zhCN: 角色扮演
+## Category-zhTW: 角色扮演
+
+## X-Build: 120001
+## X-Category: Roleplay, Chat
+
+## X-Curse-Project-ID: CHANGEME
+## X-Wago-ID: CHANGEME
+## X-WoWI-ID: CHANGEME
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBCompartment\lib.xml
+Libs\LibDBIcon-1.0\lib.xml
+Libs\LibSharedMedia-3.0\lib.xml
+
+Init.lua
+
+## Locales
+Locales\Localization.lua
+Locales\enUS.lua
+
+## Core
+Core\Constants.lua
+Core\Enums.lua
+Core\Globals.lua
+Core\Debug.lua
+Core\Utils.lua
+Core\Database.lua
+Core\Events.lua
+
+Core\ChatHistory.lua
+Core\PlayerCache.lua
+
+Core\ChatFilters.lua
+Core\MSPHandler.lua
+Core\Notifications.lua
+
+Core\MainChat.lua
+Core\AdvancedFormatter.lua
+Core\Keywords.lua
+Core\ChatFormatter.lua
+Core\ChatHandler.lua
+
+Core\Config.lua
+Core\Magnifier.lua
+
+## Modules
+Modules\ElvUI\ElvUI.lua
+Modules\LinkDialog\LinkDialog.lua
+Modules\Minimap\Minimap.lua
+Modules\TRP\TRP.lua
+
+## UI
+UI\ChatBox.lua
+UI\EavesdropperFrame.lua
+UI\EavesdropperFrame.xml
+UI\SettingsElements.lua
+UI\SettingsFrame.lua
+UI\SettingsFrame.xml
+
+Eavesdropper.lua
