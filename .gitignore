@@ -26,3 +26,6 @@ Libs/**
 # Mac and Windows junk
 .DS_Store
 Thumbs.db
+
+# Code searches
+*.code-search

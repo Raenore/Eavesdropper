@@ -1,0 +1,25 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="Eavesdropper_SettingsMenuTemplate" mixin="Eavesdropper_SettingsMixin" virtual="true" enableMouse="true" hidden="true" registerForDrag="LeftButton" movable="true" clampedToScreen="true" topLevel="true" inherits="ButtonFrameTemplate">
+		<Size x="280" y="380"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnDragStart method="OnDragStart"/>
+			<OnDragStop method="OnDragStop"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+
+	<Button name="Eavesdropper_SettingsMenuTabTopTemplate" virtual="true" inherits="PanelTopTabButtonTemplate">
+	</Button>
+
+</Ui>
