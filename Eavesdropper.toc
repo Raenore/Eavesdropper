@@ -26,8 +26,8 @@
 ## X-Build: 120001
 ## X-Category: Roleplay, Chat
 
-## X-Curse-Project-ID: CHANGEME
-## X-Wago-ID: CHANGEME
+## X-Curse-Project-ID: 1468933
+## X-Wago-ID: O67DnoK3
 ## X-WoWI-ID: CHANGEME
 
 Libs\LibStub\LibStub.lua
