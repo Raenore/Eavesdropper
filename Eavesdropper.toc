@@ -28,7 +28,7 @@
 
 ## X-Curse-Project-ID: 1468933
 ## X-Wago-ID: O67DnoK3
-## X-WoWI-ID: CHANGEME
+## X-WoWI-ID: 27060
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
