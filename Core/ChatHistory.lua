@@ -302,9 +302,9 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 	local notifyTargetFlash = ED.Database:GetSetting("NotificationTargetFlashTaskbar");
 
 	if (notifyTargetSound or notifyTargetFlash)
-	   and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
-	   and targetName == sender
-	   and not entry.p then
+		and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
+		and targetName == sender
+		and not entry.p then
 		if notifyTargetSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.TARGET); end
 		if notifyTargetFlash then ED.Notifications:FlashTaskbar(); end
 	end
