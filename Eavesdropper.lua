@@ -18,7 +18,13 @@ function ED.Init()
 		SlashCmdList["EAVESDROPPER"] = function(msg)
 			msg = type(msg) == "string" and msg:lower() or "";
 
-			if msg == "show" then
+			if msg == "help" then
+				ED.Utils.Write(ED.Localization.SLASH_COMMAND_ED, "/ed");
+				ED.Utils.Write(ED.Localization.SLASH_COMMAND_ED_SHOW, "/ed show");
+				ED.Utils.Write(ED.Localization.SLASH_COMMAND_ED_HIDE, "/ed hide");
+				ED.Utils.Write(ED.Localization.SLASH_COMMAND_ED_TOGGLE, "/ed toggle");
+				return;
+			elseif msg == "show" then
 				ED.Frame:Show();
 				ED.Frame.closed = false;
 				return;
@@ -48,6 +54,11 @@ function ED.Init()
 			ED.Frame:RefreshChat();
 			ED.Magnifier:HandleUpdate(0);
 			ED.Minimap:SetupMinimapButtons();
+
+			if ED.Database:GetGlobalSetting("WelcomeMessage") then
+				ED.Utils.Write(ED.Localization.WELCOMEMSG_VERSION:format(ED.Database:GetProfileName(), ED.Globals.addon_version));
+				ED.Utils.Write(ED.Localization.WELCOMEMSG_OPTIONS);
+			end
 		end);
 	end);
 end

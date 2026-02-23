@@ -313,4 +313,24 @@ function Utils.OutputBuild(colorized)
 	return output;
 end
 
+local function Print(msg)
+	print(ED.Globals.addon_title .. ": " .. tostring(msg));
+end
+
+---@param output string|table The output to be printed, either a string or a table.
+---@param command? string The optional command prefix to display before the output.
+function Utils.Write(output, command)
+	if not output then
+		return;
+	end
+
+	if type(output) == "table" then
+		output = table.concat(output, "|n");
+	end
+
+	local formattedOutput = ("|cnGREEN_FONT_COLOR:%s|r|cnWHITE_FONT_COLOR:%s|r"):format(command and (command .. " ") or "", output);
+
+	Print(formattedOutput);
+end
+
 ED.Utils = Utils;

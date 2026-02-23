@@ -475,6 +475,15 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			end,
 		},
 		{
+			type = "checkbox",
+			label = L.WELCOME_MSG,
+			tooltip = L.WELCOME_MSG_HELP,
+			get = function() return ED.Database:GetGlobalSetting("WelcomeMessage") end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("WelcomeMessage", val);
+			end,
+		},
+		{
 			type = "subtitle",
 			label = L.FONT,
 		},

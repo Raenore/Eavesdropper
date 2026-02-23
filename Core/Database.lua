@@ -19,12 +19,15 @@ local Database = {};
 
 ---@class EavesdropperGlobal
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
+---@field SettingsWindowPosition EavesdropperWindowPosition?
+---@field WelcomeMessage boolean?
 local GLOBAL_DEFAULTS = {
 	MinimapButton = {
 		Hide = false,
 		ShowAddonCompartmentButton = true,
 	},
 	SettingsWindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION);
+	WelcomeMessage = true,
 };
 
 ---@class EavesdropperProfile
@@ -389,6 +392,7 @@ end
 ---@alias EavesdropperGlobalSettingKey
 ---| "MinimapButton"
 ---| "SettingsWindowPosition"
+---| "WelcomeMessage"
 
 ---Gets a value from the global database, falling back to defaults.
 ---@param key EavesdropperGlobalSettingKey
