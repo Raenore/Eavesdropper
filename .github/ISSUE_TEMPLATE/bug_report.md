@@ -33,4 +33,4 @@ Please attach any additional applicable files such as screenshots, [error logs].
 ---
 
 [error logs]: https://www.curseforge.com/wow/addons/bugsack
-[latest version]: https://www.curseforge.com/wow/addons/CHANGEME/files
+[latest version]: https://www.curseforge.com/wow/addons/eavesdropper/files
