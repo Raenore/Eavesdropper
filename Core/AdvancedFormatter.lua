@@ -38,7 +38,10 @@ local function CreateChatName(event, _, _, sender, _, _, _, _, _, _, _, _, _, gu
 		g = guid,
 	};
 
-	sender, _ = ED.ChatFormatter:GetFormattedName(entry);
+	local senderFormatted, _ = ED.ChatFormatter:GetFormattedName(entry);
+	if senderFormatted then
+		sender = senderFormatted;
+	end
 
 	return sender;
 end

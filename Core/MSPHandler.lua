@@ -164,6 +164,17 @@ local function GetTRPData(playerName, playerGUID)
 	return fullName, firstName, nameColor, lastName, className, raceName;
 end
 
+---@param value string?
+---@return string?
+local function NormalizeString(value)
+	if not value then return nil; end;
+
+	value = strtrim(value);
+	if value == "" then return nil; end;
+
+	return value;
+end
+
 ---Attempts to retrieve the MSP/TRP3 name and color of a player
 ---@param playerName string
 ---@param playerGUID string
@@ -187,7 +198,13 @@ function MSP.TryGetMSPData(playerName, playerGUID)
 		and HasValidMSPData(MSP.cache.data)
 	then
 		local cached = MSP.cache.data;
-		return strtrim(cached[1] or ""), strtrim(cached[2] or ""), cached[3], strtrim(cached[4] or ""), strtrim(cached[5] or ""), strtrim(cached[6] or "");
+		return
+			NormalizeString(cached[1]),
+			NormalizeString(cached[2]),
+			cached[3],
+			NormalizeString(cached[4]),
+			NormalizeString(cached[5]),
+			NormalizeString(cached[6]);
 	end
 
 	local fullName, firstName, nameColor, lastName, className, raceName;
@@ -200,11 +217,11 @@ function MSP.TryGetMSPData(playerName, playerGUID)
 			local hasNonDefaultProfile = profileID and TRP3_API and TRP3_API.profile.isDefaultProfile(profileID) == false;
 
 			if hasNonDefaultProfile then
-				fullName  = strtrim(player:GetFullName() or "");
-				firstName = strtrim(player:GetFirstName() or "");
-				lastName  = strtrim(player:GetLastName() or "");
-				className = strtrim(player:GetCustomClass() or "");
-				raceName  = strtrim(player:GetCustomRace() or "");
+				fullName  = NormalizeString(player:GetFullName());
+				firstName = NormalizeString(player:GetFirstName());
+				lastName  = NormalizeString(player:GetLastName());
+				className = NormalizeString(player:GetCustomClass());
+				raceName  = NormalizeString(player:GetCustomRace());
 				nameColor = player:GetCustomColorForDisplay() or GetClassColor(playerGUID);
 			end
 		end
@@ -218,12 +235,12 @@ function MSP.TryGetMSPData(playerName, playerGUID)
 			fullName, firstName, nameColor, lastName, className, raceName = GetMSPData(playerName, playerGUID);
 		end
 
-		-- Trim all returned strings immediately
-		fullName  = strtrim(fullName or "");
-		firstName = strtrim(firstName or "");
-		lastName  = strtrim(lastName or "");
-		className = strtrim(className or "");
-		raceName  = strtrim(raceName or "");
+		-- Normalize all returned strings immediately
+		fullName  = NormalizeString(fullName);
+		firstName = NormalizeString(firstName);
+		lastName  = NormalizeString(lastName);
+		className = NormalizeString(className);
+		raceName  = NormalizeString(raceName);
 	end
 
 	-- Normalize colors to ColorMixin
