@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [Unreleased]
+Second minor patch for Eavesdropper featuring bug fixes reported by the community via Discord and Bluesky.
+
+### Fixed
+- Fixed errors occurring within restricted environments, such as PvP, combat, and dungeons ([#6](https://github.com/Raenore/Eavesdropper/pull/6)).  
+
 ## [0.1.1] - 2026-02-23  
 First minor patch for Eavesdropper after its initial release; includes minor improvements and clean-ups.  
 
