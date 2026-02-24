@@ -341,15 +341,19 @@ function Eavesdropper_FrameMixin:HandleHoverState(show)
 	self:ShowTitleBar(show);
 end
 
-function Eavesdropper_FrameMixin:HandleHiding()
-	if ED.Database:GetSetting("HideWhenEmpty") then
+function Eavesdropper_FrameMixin:HandleVisibility()
+	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
+		self:Hide();
+	elseif ED.Database:GetSetting("HideWhenEmpty") then
 		local shouldShow = EAVESDROP_TARGET and self.ChatBox:GetNumMessages() > 0;
 
 		if shouldShow and not self:IsShown() then
 			self:Show();
-		elseif not shouldShow and self:IsShown() then
+		elseif not shouldShow and self:IsShown() and not ED.Frame.settingsOpened then
 			self:Hide();
 		end
+	elseif ED.Frame.closed then
+		self:Hide();
 	else
 		self:Show();
 	end
@@ -404,7 +408,7 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 
 		if shouldShow and not self:IsShown() then
 			self:Show();
-		elseif not shouldShow and self:IsShown() then
+		elseif not shouldShow and self:IsShown() and not ED.Frame.settingsOpened then
 			self:Hide();
 		end
 	end
@@ -463,7 +467,7 @@ end
 function FrameModule:Init()
 	local frame = CreateFrame("Frame", "Eavesdropper_Frame", UIParent, "Eavesdropper_FrameTemplate");
 	ED.Frame = frame;
-	frame:Show();
+	frame:HandleVisibility(); -- Takes HideWhenEmpty & HideInCombat in account
 
 	frame:ApplyProfileSettings();
 	ED.ChatFilters:Init(frame);
