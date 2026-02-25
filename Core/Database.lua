@@ -354,20 +354,34 @@ end
 ---@param key EavesdropperSettingKey
 ---@return any settingValue Value of the setting, or nil
 function Database:GetSetting(key)
-	local profile = self.currentProfile;
 	local defaults = self.defaults;
-
 	if not defaults then return nil; end
-	if not profile then return defaults[key]; end
 
-	if profile[key] == nil then
-		local def = defaults[key];
+	local def = defaults[key];
+	local profile = self.currentProfile;
+
+	-- profile override exists
+	if profile and profile[key] ~= nil then
 		if type(def) == "table" then
-			profile[key] = ED.Utils.ShallowCopy(def);
+			local merged = {};
+			for k, v in pairs(def) do
+				merged[k] = profile[key][k] ~= nil and profile[key][k] or v;
+			end
+			return merged;
 		end
+		return profile[key];
 	end
 
-	return profile[key] or defaults[key];
+	-- no override, return full table copy if table
+	if type(def) == "table" then
+		local copy = {};
+		for k, v in pairs(def) do
+			copy[k] = v;
+		end
+		return copy;
+	end
+
+	return def;
 end
 
 ---Sets a value in the current profile.
@@ -381,9 +395,20 @@ function Database:SetSetting(key, value)
 	local def = self.defaults[key];
 
 	if type(value) == "table" then
-		profile[key] = profile[key] or {};
+		local newTable = {};
+
+		-- store only keys that differ from defaults
 		for k, v in pairs(value) do
-			profile[key][k] = v;
+			if not def or def[k] ~= v then
+				newTable[k] = v;
+			end
+		end
+
+		-- store table only if there is at least one diff
+		if next(newTable) then
+			profile[key] = newTable;
+		else
+			profile[key] = nil;
 		end
 	elseif value == def then
 		profile[key] = nil;
