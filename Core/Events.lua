@@ -53,5 +53,4 @@ function Events:UPDATE_MOUSEOVER_UNIT()
 	ED.Magnifier:StartUpdateCheck();
 end
 
-
 ED.Events = Events;

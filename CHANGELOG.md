@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.1.5] - 2026-02-26  
+Fifth minor patch for Eavesdropper, likely the final update before Midnight launch, barring any major issues. This patch addresses a specific visual bug with mouseover and target switching ("prioritize mouseover" specific).  
+
+### Fixed
+- Resolved a split-second text flicker that occurred when mousing over a new unit while having a prior target and then selecting them ([#11](https://github.com/Raenore/Eavesdropper/pull/11)).  
+
 ## [0.1.4] - 2026-02-25  
 Fourth minor patch for Eavesdropper featuring a new way to identify global settings and resolving issues with specific options not toggling correctly.  
 
@@ -42,7 +48,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...HEAD
+[0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/Raenore/Eavesdropper/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/Raenore/Eavesdropper/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/Raenore/Eavesdropper/compare/0.1.1...0.1.2
