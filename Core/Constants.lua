@@ -210,7 +210,7 @@ Constants.KEYWORD_LINK_PLACEHOLDER = "\001\001";
 Constants.KEYWORDS_NOTIFICATION_CD = 0.15;
 
 ---@type number
-Constants.MAGNIFIER_CHANGE_THROTTLE = 0.2;
+Constants.MAGNIFIER_CHANGE_THROTTLE = 0.15;
 
 ---@type number
 Constants.MAGNIFIER_NIL_THROTTLE = 0.5;

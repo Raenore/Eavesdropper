@@ -12,7 +12,7 @@ local Magnifier = {};
 
 local magnifiedName = nil;
 local magnifiedGUID = nil;
-local clearTimerToken = 0;
+local clearTimerToken = nil;
 Magnifier.Frame = nil;
 
 local function tickerCallback()
@@ -59,26 +59,39 @@ function Magnifier:GetMagnified()
 end
 
 ---OnMagnifiedChanged Notifies UI of magnifier change.
+---@param reason EavesdropperMagnifierReason?
 ---@return nil
-function Magnifier:OnMagnifiedChanged()
+function Magnifier:OnMagnifiedChanged(reason) -- luacheck: no unused (reason)
 	-- Bail out when there's secrets involved (PvP or other situations we don't support).
 	if not canaccessvalue(magnifiedGUID) or not canaccessvalue(self.lastNotifiedGUID) then
 		return;
 	end
 
-	-- Always notify if magnifiedGUID is nil (target cleared), otherwise normal throttle
-	if magnifiedGUID ~= nil and self.lastNotifiedGUID == magnifiedGUID and self.lastNotifiedName == magnifiedName then
+	-- Skip if magnified target hasn't changed (except when cleared)
+	local isUnchanged = magnifiedGUID ~= nil
+		and magnifiedGUID == self.lastNotifiedGUID
+		and magnifiedName == self.lastNotifiedName;
+	if isUnchanged then
 		return;
 	end
 
-	ED.Debug:Print("Magnifier:OnMagnifiedChanged()");
+	if clearTimerToken then
+		clearTimerToken:Cancel();
+		clearTimerToken = nil;
+	end
+
+	-- Calculate delay (this avoids target flicks in certain situations)
+	local delay = magnifiedGUID and Constants.MAGNIFIER_CHANGE_THROTTLE or Constants.MAGNIFIER_NIL_THROTTLE;
 
 	self.lastNotifiedGUID = magnifiedGUID;
 	self.lastNotifiedName = magnifiedName;
-
-	if ED and ED.Frame then
-		ED.Frame:UpdateMagnifier();
-	end
+	clearTimerToken = C_Timer.NewTimer(delay, function()
+		clearTimerToken = nil;
+		ED.Debug:Print("Magnifier:OnMagnifiedChanged() - ", magnifiedName);
+		if ED and ED.Frame then
+			ED.Frame:UpdateMagnifier();
+		end
+	end);
 end
 
 ---HandleUpdate polls the current target/mouseover unit.
@@ -148,25 +161,6 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 		stopTicker(self, "EavesdropperUpdate");
 	end
 
-	-- Apply grace period if no unit found
-	if not unitGUID then
-		local token = clearTimerToken + 1;
-		clearTimerToken = token;
-
-		C_Timer.After(Constants.MAGNIFIER_NIL_THROTTLE, function()
-			if clearTimerToken ~= token then return; end;
-			if not magnifiedGUID then return; end;
-
-			magnifiedName = nil;
-			magnifiedGUID = nil;
-			self:OnMagnifiedChanged();
-		end);
-
-		return;
-	else
-		clearTimerToken = clearTimerToken + 1;
-	end
-
 	-- If same unit while polling, we're already matched.
 	if polling and magnifiedGUID == unitGUID then
 		return;
@@ -175,7 +169,7 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 	-- Update magnified state
 	magnifiedName = unitName;
 	magnifiedGUID = unitGUID;
-	self:OnMagnifiedChanged();
+	self:OnMagnifiedChanged(reason);
 end
 
 ---Setup creates the internal frame for polling
