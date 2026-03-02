@@ -113,6 +113,9 @@ function Eavesdropper_SettingsMixin:AddScrollableFrame()
 	scrollFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", paddingLeft, -paddingTop);
 	scrollFrame:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -paddingRight, paddingBottom);
 
+	-- Extend mouse interaction into the scrollbar area
+	scrollFrame:SetHitRectInsets(0, -paddingRight, 0, 0);
+
 	-- Create scroll child to hold content
 	local scrollChild = CreateFrame("Frame", nil, scrollFrame);
 	scrollChild:SetPoint("TOPLEFT");
