@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.2.0] - 2026-03-02  
+To start off the Midnight expansion, introducing Focus as a targeting option.  
+
+### Added
+- Settings now display your current priority in green within the Targeting category ([#12](https://github.com/Raenore/Eavesdropper/pull/12)).  
+- Added the ability to use your Focus target for Eavesdropper's history!  
+  - Focus can be set to: Override, Fallback, or Ignore.  
+  - Override: Focus targets will always take priority over other targets.  
+  - Fallback: Show focus only if there is no current target or mouseover.  
+  - Ignore: Disregard the focus target entirely.  
+- Added a new priority preset: Focus Only (ignores everything except your Focus target).  
+
+### Fixed
+- Resolved an issue where the scroll wheel failed to function when hovering near scrollbars on the Settings page ([#13](https://github.com/Raenore/Eavesdropper/pull/13)).  
+
 ## [0.1.5] - 2026-02-26  
 Fifth minor patch for Eavesdropper, likely the final update before Midnight launch, barring any major issues. This patch addresses a specific visual bug with mouseover and target switching ("prioritize mouseover" specific).  
 
@@ -48,7 +63,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
 [0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/Raenore/Eavesdropper/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/Raenore/Eavesdropper/compare/0.1.2...0.1.3
