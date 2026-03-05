@@ -369,7 +369,7 @@ function Eavesdropper_FrameMixin:HandleVisibility(settingsClosed)
 		end
 	end
 
-   -- Show or hide frame, never hiding if settings are open
+	-- Show or hide frame, never hiding if settings are open
 	if shouldShow or ED.Frame.settingsOpened then
 		self:Show();
 	else
