@@ -20,20 +20,22 @@ Events:RegisterEvent("PLAYER_FOCUS_CHANGED");
 Events:RegisterEvent("PLAYER_TARGET_CHANGED");
 Events:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
 
+-- Combat is entered when regen is disabled.
 function Events:PLAYER_REGEN_DISABLED()
-	-- Combat is entered when regen is disabled.
 	if not ED or not ED.Database or not ED.Frame then return; end
+	-- If HideInCombat is not in play, don't continue.
 	if not ED.Database:GetSetting("HideInCombat") then return; end
 
-	ED.Frame:Hide();
+	ED.Frame:HandleVisibility();
 end
 
+-- Combat is left when regen is enabled.
 function Events:PLAYER_REGEN_ENABLED()
-	-- Combat is left when regen is enabled.
 	if not ED or not ED.Database or not ED.Frame then return; end
+	-- If HideInCombat is not in play, don't continue.
 	if not ED.Database:GetSetting("HideInCombat") then return; end
 
-	ED.Frame:Show();
+	ED.Frame:HandleVisibility();
 end
 
 ---PLAYER_FOCUS_CHANGED Fired when player focus changes.

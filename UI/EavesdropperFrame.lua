@@ -21,7 +21,6 @@ function Eavesdropper_FrameMixin:OnLoad()
 	self:EnableMouseWheel(true);
 	self:UpdateMouseLock();
 	self.clickblock = 0;
-	self.closed = false;
 	self.isMouseOver = false;
 
 	self.ChatBox:SetJustifyH("LEFT");
@@ -301,13 +300,13 @@ function Eavesdropper_FrameMixin:RefreshChat()
 		local chatFull = ED.ChatHistory:GetPlayerHistory(player, maxMessages);
 		if chatFull and #chatFull > 0 then
 			for _, entry in ipairs(chatFull) do
-				self:AddMessage(entry, false, true);
+				self:AddMessage(entry, true);
 			end
 		else
 			local chatBare = ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), maxMessages);
 			if chatBare and #chatBare > 0 then
 				for _, entry in ipairs(chatBare) do
-					self:AddMessage(entry, false, true);
+					self:AddMessage(entry, true);
 				end
 			end
 		end
@@ -341,21 +340,40 @@ function Eavesdropper_FrameMixin:HandleHoverState(show)
 	self:ShowTitleBar(show);
 end
 
-function Eavesdropper_FrameMixin:HandleVisibility()
+---@param settingsClosed boolean
+function Eavesdropper_FrameMixin:HandleVisibility(settingsClosed)
+	-- Hide in combat if the setting is on
 	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
 		self:Hide();
-	elseif ED.Database:GetSetting("HideWhenEmpty") then
-		local shouldShow = EAVESDROP_TARGET and self.ChatBox:GetNumMessages() > 0;
+		return;
+	end
 
-		if shouldShow and not self:IsShown() then
-			self:Show();
-		elseif not shouldShow and self:IsShown() and not ED.Frame.settingsOpened then
-			self:Hide();
+	-- Determine if frame should be shown
+	local shouldShow = true;
+
+	if settingsClosed and ED.Frame.closed then
+		shouldShow = false;
+	end
+
+	-- Respect HideInCombat after combat ends
+	if ED.Database:GetSetting("HideInCombat") and not InCombatLockdown() then
+		shouldShow = true;
+	end
+
+	-- Respect HideWhenEmpty
+	if ED.Database:GetSetting("HideWhenEmpty") then
+		if not EAVESDROP_TARGET or self.ChatBox:GetNumMessages() == 0 then
+			shouldShow = false;
+		else
+			shouldShow = true;
 		end
-	elseif ED.Frame.closed then
-		self:Hide();
-	else
+	end
+
+   -- Show or hide frame, never hiding if settings are open
+	if shouldShow or ED.Frame.settingsOpened then
 		self:Show();
+	else
+		self:Hide();
 	end
 end
 
@@ -402,21 +420,13 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 		self.lastUpdate = now;
 	end
 
-	-- Handle auto-hide when empty
-	if ED.Database:GetSetting("HideWhenEmpty") then
-		local shouldShow = target and self.ChatBox:GetNumMessages() > 0;
-
-		if shouldShow and not self:IsShown() then
-			self:Show();
-		elseif not shouldShow and self:IsShown() and not ED.Frame.settingsOpened then
-			self:Hide();
-		end
-	end
+	self:HandleVisibility();
 end
 
 ---Add a chat entry to the frame
 ---@param entry EavesdropperChatEntry
-function Eavesdropper_FrameMixin:AddMessage(entry)
+---@param fromHistory boolean
+function Eavesdropper_FrameMixin:AddMessage(entry, fromHistory)
 	if not entry then
 		return;
 	end
@@ -432,7 +442,7 @@ function Eavesdropper_FrameMixin:AddMessage(entry)
 	-- local hidden = not self:EavesdroppingOn(entry.g); -- UNUSED for now.
 
 	if not self.ChatBox then return; end
-	if ED.Database:GetSetting("HideWhenEmpty") then
+	if not fromHistory and (ED.Database:GetSetting("HideWhenEmpty") or ED.Frame.settingsOpened) then
 		self:Show();
 	end
 	local r, g, b = ED.ChatFormatter:GetEntryColor(entry);
