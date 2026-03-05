@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.2.1] - 2026-03-05  
+First minor patch following the Midnight launch, resolving a user-submitted bug.  
+
+### Fixed
+- Resolved several issues regarding frame visibility in specific scenarios, such as "Hide In Combat" and "Hide When Empty" ([#16](https://github.com/Raenore/Eavesdropper/pull/16)).  
+
 ## [0.2.0] - 2026-03-02  
 To start off the Midnight expansion, introducing Focus as a targeting option.  
 
@@ -63,7 +69,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...HEAD
+[0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
 [0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
 [0.1.4]: https://github.com/Raenore/Eavesdropper/compare/0.1.3...0.1.4
