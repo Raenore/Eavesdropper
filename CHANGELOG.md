@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.2.2] - 2026-03-07  
+Second minor patch following the Midnight launch, resolving duplicate emotes when using the Prat chat addon.  
+
+### Fixed
+- Resolved an issue where duplicate emotes were being recorded in Eavesdropper history following a recent Prat update ([#19](https://github.com/Raenore/Eavesdropper/pull/19)).  
+
 ## [0.2.1] - 2026-03-05  
 First minor patch following the Midnight launch, resolving some user-submitted bugs.  
 
@@ -70,7 +76,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...HEAD
+[0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
 [0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
