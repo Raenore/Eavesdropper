@@ -457,6 +457,7 @@ end
 
 function Eavesdropper_FrameMixin:ApplyProfileSettings()
 	ED.ChatBox:ApplyFontOptions();
+	ED.ChatFilters:UpdateFilters(ED.Frame);
 	self:RestoreLayout();
 	self:ApplyThemeColors();
 	self:RefreshChat();
