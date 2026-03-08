@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.2.3] - 2026-03-xx  
+Third minor patch following the Midnight launch, resolving a few filter-related issues.  
+
+### Fixed
+- Resolved an issue where some users were unable to view or toggle all available filters ([#22](https://github.com/Raenore/Eavesdropper/pull/22)).  
+- Resolved an issue where filters failed to update immediately upon switching profiles, previously requiring a UI reload or changing filters ([#23](https://github.com/Raenore/Eavesdropper/pull/23)).  
+
 ## [0.2.2] - 2026-03-07  
 Second minor patch following the Midnight launch, resolving duplicate emotes when using the Prat chat addon.  
 
@@ -76,7 +83,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...HEAD
+[0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
