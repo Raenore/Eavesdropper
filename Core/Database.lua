@@ -75,9 +75,9 @@ local GLOBAL_DEFAULTS = {
 ---@field UseRPNameColor boolean?
 ---@field UseRPNameForTargets boolean?
 ---@field UseRPNameInRolls boolean?
----@field Filters table<string, boolean>?
 ---@field WindowPosition EavesdropperWindowPosition?
 ---@field WindowSize EavesdropperWindowSize?
+---@field Filters table<string, boolean>?
 local DEFAULT_PROFILE = {
 	ApplyOnMainChat = true,
 	ColorBackground = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
@@ -123,13 +123,20 @@ local DEFAULT_PROFILE = {
 	UseRPNameColor = true,
 	UseRPNameForTargets = true,
 	UseRPNameInRolls = true,
-	WindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION);
-	WindowSize = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_SIZE);
+	WindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION),
+	WindowSize = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_SIZE),
 	Filters = ED.Utils.ShallowCopy(Constants.DEFAULT_FILTERS),
+};
+
+---@class EavesdropperCharSettings
+---@field WindowVisible boolean?
+local CHAR_DEFAULTS = {
+	WindowVisible = true,
 };
 
 Database.currentProfile = nil;
 Database.defaults = ED.Utils.DeepCopy(DEFAULT_PROFILE);
+Database.charDefaults = ED.Utils.DeepCopy(CHAR_DEFAULTS);
 Database.globalDefaults = ED.Utils.DeepCopy(GLOBAL_DEFAULTS);
 
 ---Initializes the account-wide and character-specific databases.
@@ -153,6 +160,12 @@ function Database:Init()
 	self:InitCharacterDatabase();
 end
 
+---@class EavesdropperCharDB
+---@field version string
+---@field history table
+---@field playerCache table
+---@field settings EavesdropperCharSettings
+
 ---Initializes or migrates the character-specific chat database.
 ---@return nil
 function Database:InitCharacterDatabase()
@@ -160,9 +173,13 @@ function Database:InitCharacterDatabase()
 		version = ED.Globals.addon_version,
 		history = {},
 		playerCache = {},
+		settings = {},
 	};
 
 	local charDB = EavesdropperCharDB;
+
+	-- ensure settings table exists for older DB versions
+	charDB.settings = charDB.settings or {};
 
 	if charDB.version ~= ED.Globals.addon_version then
 		charDB.version = ED.Globals.addon_version;
@@ -432,6 +449,66 @@ function Database:SetSetting(key, value)
 
 	if ED.SettingsFrame then
 		ED.SettingsFrame:RefreshWidgets();
+	end
+end
+
+---@alias EavesdropperCharSettingKey
+---| "WindowVisible"
+
+---Gets a value from the character database, falling back to defaults.
+---@param key EavesdropperCharSettingKey
+---@return any
+function Database:GetCharSetting(key)
+	if not EavesdropperCharDB then return nil; end
+
+	local settings = EavesdropperCharDB.settings;
+	if not settings then return nil; end
+
+	local value = settings[key];
+	if value ~= nil then
+		return value;
+	end
+
+	local def = self.charDefaults[key];
+	if type(def) == "table" then
+		return ED.Utils.ShallowCopy(def);
+	end
+
+	return def;
+end
+
+---Sets a value in the character database.
+---@param key EavesdropperCharSettingKey
+---@param value any
+function Database:SetCharSetting(key, value)
+	if not EavesdropperCharDB then return; end
+
+	local settings = EavesdropperCharDB.settings;
+	if not settings then
+		settings = {};
+		EavesdropperCharDB.settings = settings;
+	end
+
+	local def = self.charDefaults[key];
+
+	if type(value) == "table" then
+		local newTable = {};
+
+		for k, v in pairs(value) do
+			if not def or def[k] ~= v then
+				newTable[k] = v;
+			end
+		end
+
+		if next(newTable) then
+			settings[key] = newTable;
+		else
+			settings[key] = nil;
+		end
+	elseif value == def then
+		settings[key] = nil;
+	else
+		settings[key] = value;
 	end
 end
 

@@ -26,15 +26,15 @@ function ED.Init()
 				return;
 			elseif msg == "show" then
 				ED.Frame:Show();
-				ED.Frame.closed = false;
+				ED.Database:SetCharSetting("WindowVisible", true);
 				return;
 			elseif msg == "hide" then
 				ED.Frame:Hide();
-				ED.Frame.closed = true;
+				ED.Database:SetCharSetting("WindowVisible", false);
 				return;
 			elseif msg == "toggle" then
 				ED.Frame:SetShown(not ED.Frame:IsShown());
-				ED.Frame.closed = not ED.Frame:IsShown();
+				ED.Database:SetCharSetting("WindowVisible", ED.Frame:IsShown());
 				return;
 			end
 

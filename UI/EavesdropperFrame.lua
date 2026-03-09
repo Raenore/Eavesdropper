@@ -44,7 +44,7 @@ function Eavesdropper_FrameMixin:OnLoad()
 	closeBtn:SetHighlightAtlas("uitools-icon-close");
 	closeBtn:SetScript("OnClick", function()
 		self:Hide();
-		ED.Frame.closed = true;
+		ED.Database:SetCharSetting("WindowVisible", false);
 	end);
 
 	if ED.Database and ED.Database:GetSetting("HideCloseButton") then
@@ -59,8 +59,8 @@ function Eavesdropper_FrameMixin:OnLoad()
 	end)
 end
 
+-- Unnecessary, for now.
 function Eavesdropper_FrameMixin:OnHide()
-	self.closed = true;
 end
 
 function Eavesdropper_FrameMixin:OnHyperlinkClick(link, text, button)
@@ -356,7 +356,7 @@ function Eavesdropper_FrameMixin:HandleVisibility()
 		if not EAVESDROP_TARGET or self.ChatBox:GetNumMessages() == 0 then
 			shouldShow = false;
 		end
-	elseif ED.Frame.closed then
+	elseif not ED.Database:GetCharSetting("WindowVisible") then
 		-- If HideWhenEmpty is off, fallback to last closed position
 		shouldShow = false;
 	end

@@ -481,7 +481,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				ED.Database:SetSetting("HideWhenEmpty", val);
 				-- If users turn this off, we can assume they want the frame to be visible.
 				if not val then
-					ED.Frame.closed = false;
+					ED.Database:SetCharSetting("WindowVisible", true);
 				end
 			end,
 		},
@@ -900,6 +900,7 @@ end
 
 function Eavesdropper_SettingsMixin:OnShow()
 	ED.Frame.settingsOpened = true;
+	ED.Frame:HandleVisibility();
 	ED.ElvUI.SkinRegisteredElements();
 	-- self:RefreshWidgets() unnecessary (?)
 	local tabToShow = lastSelectedTab or 1;
@@ -915,10 +916,6 @@ end
 function Settings:ShowSettings(view)
 	if not ED.SettingsFrame then
 		Settings:Init();
-	end
-
-	if ED.Frame.closed then
-		ED.Frame:Show();
 	end
 
 	ED.SettingsFrame:SetShown(not ED.SettingsFrame:IsShown());
