@@ -128,7 +128,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 			rootDescription:CreateTitle(Localization.DEDICATED_OPTIONS);
 
 			-- Hide Close Button
-			local hideCloseButton = rootDescription:CreateCheckbox(
+			rootDescription:CreateCheckbox(
 				Localization.HIDE_CLOSE_BUTTON,
 				function() return getSetting("HideCloseButton"); end,
 				function() toggleSetting("HideCloseButton", function() frame.TitleBar.CloseButton:SetShown(not frame.HideCloseButton); end); end
