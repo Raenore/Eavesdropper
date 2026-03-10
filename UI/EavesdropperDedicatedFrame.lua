@@ -41,6 +41,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnLoad()
 	-- Save these on the frame, not in DB.
 	self.LockWindow = false;
 	self.LockTitleBar = true;
+	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
 	self.HideCloseButton = false;
 	self.LockScroll = false;
 	self.EnableMouse = false;
