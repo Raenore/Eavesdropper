@@ -95,6 +95,11 @@ function Eavesdropper_Dedicated_FrameMixin:OnHide()
 		self.chatTicker = nil;
 	end
 
+	if self.NewIndicator then
+		if self.NewIndicator.NewIndicatorFadeIn then self.NewIndicator.NewIndicatorFadeIn:Stop(); end
+		if self.NewIndicator.NewIndicatorFadeOut then self.NewIndicator.NewIndicatorFadeOut:Stop(); end
+	end
+
 	if self.newIndicatorTimer then
 		self.newIndicatorTimer:Cancel();
 		self.newIndicatorTimer = nil;
@@ -182,13 +187,15 @@ function Eavesdropper_Dedicated_FrameMixin:OnEnter()
 	if self.isMouseOver then return; end
 	self.isMouseOver = true;
 
-	if self.NewIndicator then
-		self.NewIndicator:Hide();
-	end
+	if self.NewIndicator and self.NewIndicator.isFadedIn and not self.NewIndicator.isFadedOut then
+		-- Fade-out only if it’s still in the active (faded-in) state
+		if self.NewIndicator.NewIndicatorFadeOut then
+			self.NewIndicator.NewIndicatorFadeOut:Stop();
+			self.NewIndicator.NewIndicatorFadeOut:Play();
+		end
 
-	if self.newIndicatorTimer then
-		self.newIndicatorTimer:Cancel();
-		self.newIndicatorTimer = nil;
+		self.NewIndicator.isFadedOut = true;
+		self.NewIndicator.isFadedIn = false;
 	end
 
 	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
@@ -427,24 +434,38 @@ function Eavesdropper_Dedicated_FrameMixin:TryAddMessage(entry)
 		self.clickblock = GetTime();
 	end
 
-	if ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator") and self.NewIndicator and not self.isMouseOver then
-		self.NewIndicator:Show();
+	self:AddMessage(entry);
 
-		-- Reset existing timer
+	if ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator") and self.NewIndicator and not self.isMouseOver then
+		-- Fade-in only if not already faded in
+		if not self.NewIndicator.isFadedIn then
+			self.NewIndicator:SetAlpha(0);
+			self.NewIndicator:Show();
+
+			if self.NewIndicator.NewIndicatorFadeIn then
+				self.NewIndicator.NewIndicatorFadeIn:Stop();
+				self.NewIndicator.NewIndicatorFadeIn:Play();
+			end
+
+			self.NewIndicator.isFadedIn = true;
+			self.NewIndicator.isFadedOut = false;
+		end
+
 		if self.newIndicatorTimer then
 			self.newIndicatorTimer:Cancel();
 			self.newIndicatorTimer = nil;
 		end
 
 		self.newIndicatorTimer = C_Timer.NewTimer(ED.Constants.CHAT_NEW_INDICATOR_FADE_OUT, function()
-			if self.NewIndicator then
-				self.NewIndicator:Hide();
+			if self.NewIndicator and self.NewIndicator.NewIndicatorFadeOut and not self.NewIndicator.isFadedOut then
+				self.NewIndicator.NewIndicatorFadeOut:Stop();
+				self.NewIndicator.NewIndicatorFadeOut:Play();
+				self.NewIndicator.isFadedOut = true;
+				self.NewIndicator.isFadedIn = false;
 			end
 			self.newIndicatorTimer = nil;
 		end);
 	end
-
-	self:AddMessage(entry);
 end
 
 function Eavesdropper_Dedicated_FrameMixin:ApplyWindowSettings()
