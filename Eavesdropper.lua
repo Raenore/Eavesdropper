@@ -13,6 +13,7 @@ function ED.Init()
 		ED.ChatHandler:Init();
 		ED.Config:Init();
 		ED.Magnifier:Setup();
+		ED.UnitPopups:Init()
 
 		SLASH_EAVESDROPPER1, SLASH_EAVESDROPPER2 = "/ed", "/eavesdropper";
 		SlashCmdList["EAVESDROPPER"] = function(msg)

@@ -22,6 +22,8 @@ local Database = {};
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
 ---@field WelcomeMessage boolean?
 local GLOBAL_DEFAULTS = {
+	DedicatedWindows = true,
+	DedicatedWindowsUnitPopups = true,
 	MinimapButton = {
 		Hide = false,
 		ShowAddonCompartmentButton = true,
@@ -55,6 +57,9 @@ local GLOBAL_DEFAULTS = {
 ---@field LockWindow boolean?
 ---@field MaxHistory number?
 ---@field NameDisplayMode number?
+---@field NotificationDedicatedSound boolean?
+---@field NotificationDedicatedSoundFile string?
+---@field NotificationDedicatedFlashTaskbar boolean?
 ---@field NotificationEmotesSound boolean?
 ---@field NotificationEmotesSoundFile string?
 ---@field NotificationEmotesFlashTaskbar boolean?
@@ -103,6 +108,9 @@ local DEFAULT_PROFILE = {
 	LockWindow = false,
 	MaxHistory = 50,
 	NameDisplayMode = 1,
+	NotificationDedicatedSound = true,
+	NotificationDedicatedSoundFile = "UI_VoiceChat_ChannelInitiated",
+	NotificationDedicatedFlashTaskbar = true,
 	NotificationEmotesSound = true,
 	NotificationEmotesSoundFile = "UI_VoiceChat_ChatMessageIncomingActive",
 	NotificationEmotesFlashTaskbar = true,
@@ -348,6 +356,9 @@ end
 ---| "LockWindow"
 ---| "MaxHistory"
 ---| "NameDisplayMode"
+---| "NotificationDedicatedSound"
+---| "NotificationDedicatedSoundFile"
+---| "NotificationDedicatedFlashTaskbar"
 ---| "NotificationEmotesSound"
 ---| "NotificationEmotesSoundFile"
 ---| "NotificationEmotesFlashTaskbar"
@@ -513,6 +524,8 @@ function Database:SetCharSetting(key, value)
 end
 
 ---@alias EavesdropperGlobalSettingKey
+---| "DedicatedWindows"
+---| "DedicatedWindowsUnitPopups"
 ---| "MinimapButton"
 ---| "SettingsWindowPosition"
 ---| "WelcomeMessage"

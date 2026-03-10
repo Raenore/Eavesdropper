@@ -148,6 +148,7 @@ Constants.DEFAULT_SOUND_LIST = {
 	{ key = "fx_ship_bell_chime_02"; fid = 1129274 },
 	{ key = "fx_ship_bell_chime_03"; fid = 1129275 },
 	{ key = "raidwarning"; fid = 567397 },
+	{ key = "UI_VoiceChat_ChannelInitiated"; fid = 2113875 },
 	{ key = "UI_VoiceChat_ChatMessageIncoming"; fid = 2113871 },
 	{ key = "UI_VoiceChat_ChatMessageIncomingActive"; fid = 2113870 },
 	{ key = "UI_VoiceChat_ChatMessageOutgoing"; fid = 2113877 },
