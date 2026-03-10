@@ -74,7 +74,7 @@ L = {
 	MESSAGES_HELP = "These options only apply to the Eavesdropper history.",
 
 	HISTORY_SIZE = "History Size",
-	HISTORY_SIZE_HELP = "Set the maximum number of messages Eavesdropper stores for each unit.|n|n|cnWARNING_FONT_COLOR:Note: High values may cause temporary frame drops when refreshing the history window.|r",
+	HISTORY_SIZE_HELP = "Set the maximum number of history messages Eavesdropper displays for each unit.|n|n|cnWARNING_FONT_COLOR:Note: High values may cause temporary frame drops when refreshing the history window.|r",
 
 	NAME_DISPLAY_MODE = "Name Display",
 	NAME_DISPLAY_MODE_HELP = "Choose how character names are formatted within Eavesdropper.",
