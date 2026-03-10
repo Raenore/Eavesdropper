@@ -164,7 +164,7 @@ L = {
 	TARGET_HELP = "Messages received from your current target.",
 
 	DEDICATED = "Dedicated",
-	DEDICATED_HELP = "Messages received in Dedicated windows.",
+	DEDICATED_HELP = "Messages received in Dedicated Windows.",
 
 	NOTIFICATIONS_PLAY_SOUND = "Play Sound",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Toggles whether Eavesdropper plays an audible alert for this notification type.",
