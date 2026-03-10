@@ -188,7 +188,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnEnter()
 	self.isMouseOver = true;
 
 	if self.NewIndicator and self.NewIndicator.isFadedIn and not self.NewIndicator.isFadedOut then
-		-- Fade-out only if it’s still in the active (faded-in) state
+		-- Fade-out only if still faded in
 		if self.NewIndicator.NewIndicatorFadeOut then
 			self.NewIndicator.NewIndicatorFadeOut:Stop();
 			self.NewIndicator.NewIndicatorFadeOut:Play();
