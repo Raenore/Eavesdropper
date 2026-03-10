@@ -119,6 +119,12 @@ Constants.CHAT_HISTORY = {
 	},
 };
 
+Constants.CHAT_NEW_INDICATOR_FADE_OUT = 10;
+
+---Default chat refresh throttle interval in milliseconds.
+---@type number
+Constants.CHAT_UPDATE_THROTTLE_DEFAULT = 10;
+
 -- Credits: Listener by tmgpub.
 ---@type table<string, boolean>
 local commonTitles = {
@@ -231,10 +237,6 @@ Constants.DEFAULT_WINDOW_SIZE = {
 	width = 280,
 	height = 380,
 };
-
----Default chat refresh throttle interval in milliseconds.
----@type number
-Constants.CHAT_UPDATE_THROTTLE_DEFAULT = 10;
 
 ---Filter groups after which a divider is inserted in the menu.
 ---@type table<string, boolean>
