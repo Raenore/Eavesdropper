@@ -93,6 +93,24 @@ function Eavesdropper_Dedicated_FrameMixin:OnHide()
 		self.chatTicker:Cancel();
 		self.chatTicker = nil;
 	end
+
+	if self.newIndicatorTimer then
+		self.newIndicatorTimer:Cancel();
+		self.newIndicatorTimer = nil;
+	end
+
+	self:UnregisterAllEvents();
+	self:SetScript("OnEnter", nil);
+	self:SetScript("OnLeave", nil);
+
+	self:SetParent(nil);
+
+	DedicatedFrame.frames[self.eavesdropped_player] = nil;
+
+	local name = self:GetName();
+	if name and _G[name] == self then
+		_G[name] = nil;
+	end
 end
 
 function Eavesdropper_Dedicated_FrameMixin:OnHyperlinkClick(link, text, button)
