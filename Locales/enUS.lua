@@ -145,6 +145,9 @@ L = {
 	DEDICATED_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
 	DEDICATED_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a dedicated window for a specific character.|n|n* Global setting - persists across all profiles.",
 
+	DEDICATED_WINDOWS_NEW_INDICATOR = "New Message Indicator",
+	DEDICATED_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on any dedicated window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
+
 	MINIMAP_BUTTON = "Minimap Button",
 	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.|n|n* Global setting - persists across all profiles.",
 

@@ -23,6 +23,7 @@ local Database = {};
 ---@field WelcomeMessage boolean?
 local GLOBAL_DEFAULTS = {
 	DedicatedWindows = true,
+	DedicatedWindowsNewIndicator = true,
 	DedicatedWindowsUnitPopups = true,
 	MinimapButton = {
 		Hide = false,
@@ -525,6 +526,7 @@ end
 
 ---@alias EavesdropperGlobalSettingKey
 ---| "DedicatedWindows"
+---| "DedicatedWindowsNewIndicator"
 ---| "DedicatedWindowsUnitPopups"
 ---| "MinimapButton"
 ---| "SettingsWindowPosition"

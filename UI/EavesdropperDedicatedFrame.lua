@@ -162,6 +162,16 @@ end
 function Eavesdropper_Dedicated_FrameMixin:OnEnter()
 	if self.isMouseOver then return; end
 	self.isMouseOver = true;
+
+	if self.NewIndicator then
+		self.NewIndicator:Hide();
+	end
+
+	if self.newIndicatorTimer then
+		self.newIndicatorTimer:Cancel();
+		self.newIndicatorTimer = nil;
+	end
+
 	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
 end
 
@@ -396,6 +406,23 @@ end
 function Eavesdropper_Dedicated_FrameMixin:TryAddMessage(entry)
 	if self.ChatBox:GetScrollOffset() == 0 then
 		self.clickblock = GetTime();
+	end
+
+	if ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator") and self.NewIndicator and not self.isMouseOver then
+		self.NewIndicator:Show();
+
+		-- Reset existing timer
+		if self.newIndicatorTimer then
+			self.newIndicatorTimer:Cancel();
+			self.newIndicatorTimer = nil;
+		end
+
+		self.newIndicatorTimer = C_Timer.NewTimer(ED.Constants.CHAT_NEW_INDICATOR_FADE_OUT, function()
+			if self.NewIndicator then
+				self.NewIndicator:Hide();
+			end
+			self.newIndicatorTimer = nil;
+		end);
 	end
 
 	self:AddMessage(entry);

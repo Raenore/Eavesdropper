@@ -601,7 +601,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
-			label = L.DEDICATED,
+			label = L.DEDICATED_WINDOWS,
 		},
 		{
 			type = "checkbox",
@@ -610,6 +610,15 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows") end,
 			set = function(val)
 				ED.Database:SetGlobalSetting("DedicatedWindows", val);
+		},
+		{
+			type = "checkbox",
+			label = L.DEDICATED_WINDOWS_NEW_INDICATOR .. "*",
+			tooltip = L.DEDICATED_WINDOWS_NEW_INDICATOR_HELP,
+			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows")end,
+			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator") end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("DedicatedWindowsNewIndicator", val);
 			end,
 		},
 		{

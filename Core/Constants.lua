@@ -178,6 +178,8 @@ Constants.DEFAULT_WINDOW_SIZE = {
 	height = 380;
 };
 
+Constants.CHAT_NEW_INDICATOR_FADE_OUT = 10;
+
 Constants.CHAT_UPDATE_THROTTLE_DEFAULT = 10;
 
 Constants.FRAME = {
