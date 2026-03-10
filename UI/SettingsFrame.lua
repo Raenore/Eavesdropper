@@ -670,6 +670,12 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows") end,
 			set = function(val)
 				ED.Database:SetGlobalSetting("DedicatedWindows", val);
+				if not val then
+					ED.DedicatedFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
+				end
+			end,
 		},
 		{
 			type = "checkbox",

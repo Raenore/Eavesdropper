@@ -152,7 +152,7 @@ L = {
 	MINIMAP = "Minimap",
 
 	DEDICATED_WINDOWS = "Dedicated Windows",
-	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.",
+	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent windows.|r",
 
 	DEDICATED_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
 	DEDICATED_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a dedicated window for a specific character.|n|n* Global setting - persists across all profiles.",
