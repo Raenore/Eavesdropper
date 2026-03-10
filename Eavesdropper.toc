@@ -79,11 +79,14 @@ Modules\Minimap\Minimap.lua
 Modules\NPCDialogue\NPCDialogue.lua
 Modules\QuestText\QuestText.lua
 Modules\TRP\TRP.lua
+Modules\UnitPopups\UnitPopups.lua
 
 ## UI
 UI\ChatBox.lua
 UI\EavesdropperFrame.lua
 UI\EavesdropperFrame.xml
+UI\EavesdropperDedicatedFrame.lua
+UI\EavesdropperDedicatedFrame.xml
 UI\SettingsElements.lua
 UI\SettingsFrame.lua
 UI\SettingsFrame.xml

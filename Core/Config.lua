@@ -35,11 +35,35 @@ local function SetupSounds()
 end
 
 ---ShowConfigMenu Displays the configuration menu for the addon
+---@param frame table
+---@param dedicatedFrame boolean?
 ---@return nil
-local function ShowConfigMenu()
-	MenuUtil.CreateContextMenu(ED.Frame, function(_, rootDescription)
+function Config:ShowConfigMenu(frame, dedicatedFrame)
+	dedicatedFrame = dedicatedFrame or false;
+
+	local function getSetting(key)
+		if dedicatedFrame then
+			return frame[key];
+		else
+			return ED.Database:GetSetting(key);
+		end
+	end
+
+	local function toggleSetting(key, postUpdate)
+		if dedicatedFrame then
+			frame[key] = not frame[key];
+		else
+			local current = ED.Database:GetSetting(key);
+			ED.Database:SetSetting(key, not current);
+		end
+		if postUpdate then
+			postUpdate();
+		end
+	end
+
+	MenuUtil.CreateContextMenu(frame, function(_, rootDescription)
 		rootDescription:SetMinimumWidth(1);
-		rootDescription:AddMenuReleasedCallback(function() ED.Frame:OnLeave(); end);
+		rootDescription:AddMenuReleasedCallback(function() frame:OnLeave(); end);
 
 		-- Title
 		local title = rootDescription:CreateTitle(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title);
@@ -55,12 +79,14 @@ local function ShowConfigMenu()
 			GameTooltip_AddNormalLine(tooltip, Localization.FILTER_HELP);
 		end);
 		filter:CreateTitle(Localization.FILTER .. " " .. MAIN_MENU);
-		ED.ChatFilters:GenerateFilterListMenu(filter);
+		ED.ChatFilters:GenerateFilterListMenu(frame, filter);
 
-		-- Notification Settings
-		rootDescription:CreateButton(SETTINGS, function()
-			ED.Settings:ShowSettings();
-		end);
+		if not dedicatedFrame then
+			-- Notification Settings
+			rootDescription:CreateButton(SETTINGS, function()
+				ED.Settings:ShowSettings();
+			end);
+		end
 
 		rootDescription:CreateDivider();
 		rootDescription:CreateTitle(Localization.WINDOW_OPTIONS);
@@ -68,55 +94,54 @@ local function ShowConfigMenu()
 		-- Enable Mouse
 		local enableMouse = rootDescription:CreateCheckbox(
 			Localization.ENABLE_MOUSE,
-			function() return ED.Database:GetSetting("EnableMouse"); end,
-			function()
-				local current = ED.Database:GetSetting("EnableMouse");
-				ED.Database:SetSetting("EnableMouse", not current);
-				ED.Frame:UpdateMouseLock();
-			end
+			function() return getSetting("EnableMouse"); end,
+			function() toggleSetting("EnableMouse", function() frame:UpdateMouseLock(); end); end
 		);
 		SetTooltip(enableMouse, Localization.ENABLE_MOUSE_HELP);
 
 		-- Lock Scroll
 		local lockScroll = rootDescription:CreateCheckbox(
 			Localization.LOCK_SCROLL,
-			function() return ED.Database:GetSetting("LockScroll"); end,
-			function()
-				local current = ED.Database:GetSetting("LockScroll");
-				ED.Database:SetSetting("LockScroll", not current);
-				ED.Frame.ChatBox:ScrollToBottom();
-			end
+			function() return getSetting("LockScroll"); end,
+			function() toggleSetting("LockScroll", function() frame.ChatBox:ScrollToBottom(); end); end
 		);
 		SetTooltip(lockScroll, Localization.LOCK_SCROLL_HELP);
 
 		-- Lock Window
 		local lockWindow = rootDescription:CreateCheckbox(
 			Localization.LOCK_WINDOW,
-			function() return ED.Database:GetSetting("LockWindow"); end,
-			function()
-				local current = ED.Database:GetSetting("LockWindow");
-				ED.Database:SetSetting("LockWindow", not current);
-				ED.Frame.ResizeHandle:SetShown(current);
-			end
+			function() return getSetting("LockWindow"); end,
+			function() toggleSetting("LockWindow", function() frame.ResizeHandle:SetShown(frame.LockWindow); end); end
 		);
 		SetTooltip(lockWindow, Localization.LOCK_WINDOW_HELP);
 
 		-- Lock Title Bar
 		local lockTitleBar = rootDescription:CreateCheckbox(
 			Localization.LOCK_TITLEBAR,
-			function() return ED.Database:GetSetting("LockTitleBar"); end,
-			function()
-				local current = ED.Database:GetSetting("LockTitleBar");
-				ED.Database:SetSetting("LockTitleBar", not current);
-			end
+			function() return getSetting("LockTitleBar"); end,
+			function() toggleSetting("LockTitleBar"); end
 		);
 		SetTooltip(lockTitleBar, Localization.LOCK_TITLEBAR_HELP);
+
+		if dedicatedFrame then
+			rootDescription:CreateDivider();
+			rootDescription:CreateTitle(Localization.DEDICATED_OPTIONS);
+
+			-- Hide Close Button
+			local hideCloseButton = rootDescription:CreateCheckbox(
+				Localization.HIDE_CLOSE_BUTTON,
+				function() return getSetting("HideCloseButton"); end,
+				function() toggleSetting("HideCloseButton", function() frame.TitleBar.CloseButton:SetShown(not frame.HideCloseButton); end); end
+			);
+		end
 	end);
 end
 
 ---@return nil
 local function SetupMenu()
-	ED.Frame.TitleBar.TitleButton:SetScript("OnClick", ShowConfigMenu);
+	ED.Frame.TitleBar.TitleButton:SetScript("OnClick", function()
+		Config:ShowConfigMenu(ED.Frame);
+	end);
 end
 
 ---@return nil

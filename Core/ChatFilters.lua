@@ -38,8 +38,9 @@ local function ResolveEvent(chatType)
 end
 
 ---Generates the chat filter menu for UI
+---@param frame table
 ---@param menu table
-function ChatFilters:GenerateFilterListMenu(menu)
+function ChatFilters:GenerateFilterListMenu(frame, menu)
 	for i = 1, #ED.Constants.FILTER_ORDER do
 		local groupName = ED.Constants.FILTER_ORDER[i];
 
@@ -65,7 +66,7 @@ function ChatFilters:GenerateFilterListMenu(menu)
 				newFilters[groupName] = not value;
 
 				ED.Database:SetSetting("Filters", newFilters);
-				ChatFilters:UpdateFilters(ED.Frame);
+				ChatFilters:UpdateFilters(frame);
 			end
 		);
 
@@ -106,10 +107,9 @@ end
 
 ---Checks whether a specific event is currently active on the given frame.
 ---@param event string
----@param frame table?
+---@param frame table
 ---@return boolean
 function ChatFilters:HasEvent(event, frame)
-	frame = frame or ED.Frame;
 	event = NormalizeEvent(event);
 
 	frame.active_events = frame.active_events or {};

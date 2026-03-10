@@ -112,7 +112,11 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 		msgSender = ED.PlayerCache:GetSenderDataFromGUID(guid) or msgSender;
 	end
 
-	msgSender, guid = ED.PlayerCache:InsertAndRetrieve(msgSender, guid);
+	local newMsgSender, newGuid = ED.PlayerCache:InsertAndRetrieve(msgSender, guid);
+	if newMsgSender then
+		msgSender = newMsgSender;
+		guid = newGuid;
+	end
 
 	local entry = {
 		t = time(),
