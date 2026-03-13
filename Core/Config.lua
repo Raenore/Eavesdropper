@@ -24,9 +24,19 @@ end
 
 ---SetupSounds Registers default sounds and populates the config sound list
 ---@return nil
+local CUSTOM_SOUND_PATH = "Interface\\AddOns\\Eavesdropper\\Resources\\Sound\\"
+local CUSTOM_SOUNDS = {
+	"Listener Beep",
+	"Listener Poke",
+}
+
 local function SetupSounds()
 	for _, sound in ipairs(ED.Constants.DEFAULT_SOUND_LIST) do
 		SharedMedia:Register("sound", sound.key, sound.fid);
+	end
+---Register Custom Sounds
+	for _, name in ipairs(CUSTOM_SOUNDS) do
+    		SharedMedia:Register("sound", name, CUSTOM_SOUND_PATH .. name .. ".ogg")
 	end
 
 	for _, soundName in ipairs(SharedMedia:List("sound")) do
