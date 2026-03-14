@@ -34,9 +34,7 @@ function Eavesdropper_FrameMixin:OnLoad()
 		self.ResizeHandle:Show();
 	end
 
-	if ED.Database and ED.Database:GetSetting("LockTitleBar") then
-		self.TitleBar:Show();
-	end
+	self:ShowTitleBar();
 
 	local closeBtn = self.TitleBar.CloseButton;
 	closeBtn:SetNormalAtlas("uitools-icon-close");
@@ -319,10 +317,10 @@ function Eavesdropper_FrameMixin:ShowTitleBar(show)
 	if ED.Database:GetSetting("LockTitleBar") then
 		show = Enums.FRAME.MOUSE_HOVER_STATE.ON;
 	end
-	if show and not self.TitleBar:IsShown() then
+	if show then
 		self.TitleBar:Show();
 		self.ChatBox:SetPoint("TOP", self.TitleBar, "BOTTOM", 0, -1);
-	elseif not show and self.TitleBar:IsShown() then
+	elseif not show then
 		self.TitleBar:Hide();
 		self.ChatBox:SetPoint("TOP", self, 0, -2);
 	end
