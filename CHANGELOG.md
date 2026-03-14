@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.2.4] - 2026-03-14  
+Fourth minor patch, addressing a critical bug with TRP3's NPC Speech Emotes being invisible.  
+
+### Fixed
+- Resolved an issue where TRP3 NPC Speech Emotes (which typically begin with `| `) could appear invisible for certain users.  
+  - Note: As a side effect of this fix, NPC Speech Emotes will only support keyword notification sounds; color highlighting is currently unsupported for these specific emotes.  
+
 ## [0.2.3] - 2026-03-09  
 Third minor patch following the Midnight launch, resolving a few filter-related issues.  
 
@@ -83,7 +90,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...HEAD
+[0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1

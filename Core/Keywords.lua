@@ -79,7 +79,7 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	local trpNPCDetection = false;
 	if event == "CHAT_MSG_EMOTE" and TRP3_API and message == " " then
 		trpNPCDetection = true;
-		-- msg = TRP3_API.chat.getNPCMessageName(); Perhaps we can use this one day to check, and then setNPCMessageName?
+		msg = TRP3_API.chat.getNPCMessageName(); -- Still allow checking for notification sounds at least, and then setNPCMessageName one day?
 	end
 
 	local enablePartial = ED.Database:GetSetting("EnablePartialKeywords");
