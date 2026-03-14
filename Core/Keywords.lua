@@ -74,13 +74,21 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	if ED.Utils.IsOwnPlayer(sender, event) then return; end
 	if not self.List or not next(self.List) then return; end
 
+	-- Handle TRP NPC talk detection pattern
+	local msg = message;
+	local trpNPCDetection = false;
+	if event == "CHAT_MSG_EMOTE" and TRP3_API and message == " " then
+		trpNPCDetection = true;
+		-- msg = TRP3_API.chat.getNPCMessageName(); Perhaps we can use this one day to check, and then setNPCMessageName?
+	end
+
 	local enablePartial = ED.Database:GetSetting("EnablePartialKeywords");
-	local originalLower = message:lower();
+	local originalLower = msg:lower();
 	local found = false;
 
 	-- Protect links from modification
 	local replaced = {};
-	message = message:gsub("(|cff[0-9a-f]+|H[^|]+|h[^|]+|h|r)", function(link)
+	msg = msg:gsub("(|cff[0-9a-f]+|H[^|]+|h[^|]+|h|r)", function(link)
 		replaced[#replaced + 1] = link;
 		return Constants.KEYWORD_LINK_PLACEHOLDER .. #replaced .. Constants.KEYWORD_LINK_PLACEHOLDER;
 	end);
@@ -121,13 +129,13 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 					local realStart = startPos + offset;
 					local realEnd   = endPos   + offset;
 
-					local raw = message:sub(realStart, realEnd);
+					local raw = msg:sub(realStart, realEnd);
 					local wrapped = ED.Utils.WrapTextInColor(raw, color);
 
-					message =
-						message:sub(1, realStart - 1)
+					msg =
+						msg:sub(1, realStart - 1)
 						.. wrapped
-						.. message:sub(realEnd + 1);
+						.. msg:sub(realEnd + 1);
 
 					offset = offset + (#wrapped - #raw);
 				end
@@ -152,14 +160,15 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 		end
 
 		-- Restore links
-		message = message:gsub(
+		msg = msg:gsub(
 			Constants.KEYWORD_LINK_PLACEHOLDER .. "(%d+)" .. Constants.KEYWORD_LINK_PLACEHOLDER,
 			function(idx)
 				return replaced[tonumber(idx)];
 			end
 		);
 
-		return false, message, sender, ...;
+		-- on TRP NPC Detection, we don't make any keyword changes as it'll just break the formatting.
+		return false, trpNPCDetection and message or msg, sender, ...;
 	end
 end
 
