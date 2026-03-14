@@ -111,7 +111,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		local lockWindow = rootDescription:CreateCheckbox(
 			Localization.LOCK_WINDOW,
 			function() return getSetting("LockWindow"); end,
-			function() toggleSetting("LockWindow", function() frame.ResizeHandle:SetShown(frame.LockWindow); end); end
+			function() toggleSetting("LockWindow", function() frame.ResizeHandle:SetShown(not getSetting("LockWindow")); end); end
 		);
 		SetTooltip(lockWindow, Localization.LOCK_WINDOW_HELP);
 
