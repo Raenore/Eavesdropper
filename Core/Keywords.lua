@@ -7,6 +7,7 @@ local Constants = ED.Constants;
 ---@class EavesdropperKeywords
 local Keywords = {};
 Keywords.List = {};
+Keywords.SortedList = {};
 
 ---@type number
 local notificationNextTime = 0;
@@ -18,6 +19,7 @@ function Keywords:ParseList()
 
 	local highlightKeywords = ED.Database:GetSetting("HighlightKeywords");
 	self.List = {};
+	self.SortedList = {};
 
 	if type(highlightKeywords) ~= "string" or highlightKeywords == "" then
 		return;
@@ -56,6 +58,11 @@ function Keywords:ParseList()
 			self.List[word:lower()] = true;
 		end
 	end
+
+	for kw in pairs(self.List) do
+		self.SortedList[#self.SortedList + 1] = kw;
+	end
+	table.sort(self.SortedList, function(a, b) return #a > #b; end);
 end
 
 ---Highlights keywords in a chat message.
@@ -72,7 +79,7 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	if not message or not canaccessvalue(message) then return; end
 	if not ED.Database:GetSetting("EnableKeywords") then return; end
 	if ED.Utils.IsOwnPlayer(sender, event) then return; end
-	if not self.List or not next(self.List) then return; end
+	if not self.SortedList or #self.SortedList == 0 then return; end
 
 	-- Handle TRP NPC talk detection pattern
 	local msg = message;
@@ -107,17 +114,7 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	local allMatches = {};
 	local claimed = {}; -- To avoid double matches (e.g. art and party).
 
-	local keywords = {};
-	for kw in pairs(self.List) do
-		if kw ~= "" then
-			keywords[#keywords + 1] = kw;
-		end
-	end
-
-	-- Sort longest first so longer keywords claim their ranges before shorter ones
-	table.sort(keywords, function(a, b) return #a > #b; end);
-
-	for _, kw in ipairs(keywords) do
+	for _, kw in ipairs(self.SortedList) do
 		local searchPos = 1;
 		while searchPos <= #originalLower do
 			local startPos, endPos = originalLower:find(kw, searchPos, true);
@@ -186,7 +183,7 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 			end
 		);
 
-		-- On TRP NPC Detection, we don't make any keyword changes as it'll just break the formatting.
+		-- On TRP NPC Detection, we don't apply keyword highlighting as it'll just break the formatting.
 		return false, trpNPCDetection and message or msg, sender, ...;
 	end
 end
