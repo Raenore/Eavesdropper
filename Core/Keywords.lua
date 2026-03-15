@@ -19,6 +19,7 @@ function Keywords:ParseList()
 
 	local highlightKeywords = ED.Database:GetSetting("HighlightKeywords");
 	self.List = {};
+	self.SortedList = {};
 
 	if type(highlightKeywords) ~= "string" or highlightKeywords == "" then
 		return;
