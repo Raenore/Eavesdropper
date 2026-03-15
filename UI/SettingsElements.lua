@@ -135,14 +135,14 @@ local function AttachMultiLineEditBoxTooltip(backdrop, scrollFrame, editBox, tit
 	end
 
 	-- Keep tooltip visible while focused
-	editBox:SetScript("OnEditFocusGained", function()
+	editBox:HookScript("OnEditFocusGained", function()
 		GameTooltip:SetOwner(backdrop, "ANCHOR_TOP");
 		GameTooltip:SetText(title, WHITE_FONT_COLOR:GetRGB());
 		GameTooltip:AddLine(description, nil, nil, nil, true);
 		GameTooltip:Show();
 	end);
 
-	editBox:SetScript("OnEditFocusLost", function()
+	editBox:HookScript("OnEditFocusLost", function()
 		GameTooltip:Hide();
 	end);
 end
@@ -499,26 +499,6 @@ local function CreateDropDown(parent, data)
 	return widget;
 end
 
--- Rudimentary means to update if an editBox should have a scrollbar.
-local function UpdateScrollBarVisibility(scrollFrame, editBox)
-	local scrollBar = scrollFrame.ScrollBar;
-	if not scrollBar then return; end
-
-	-- Number of lines in the edit box
-	local numLines = editBox:GetNumLines() or 1;
-
-	-- Height per line from font
-	local fontObject = editBox:GetFontObject();
-	local _, lineHeight = fontObject:GetFont();
-
-	-- Calculate content height
-	local contentHeight = numLines * lineHeight;
-	local visibleHeight = scrollFrame:GetHeight() or 0;
-
-	-- Show scrollbar only if content exceeds visible height
-	scrollBar:SetShown(contentHeight > visibleHeight + 1);
-end
-
 local function CreateMultiLineEditBox(parent, data)
 	local height = data.height or (Constants.SETTINGS.WIDGET_HEIGHT * 4);
 
@@ -541,15 +521,15 @@ local function CreateMultiLineEditBox(parent, data)
 	local scrollFrame = CreateFrame("ScrollFrame", nil, backdrop, "ScrollFrameTemplate");
 	scrollFrame:SetPoint("TOPLEFT", backdrop, "TOPLEFT", paddingLeft, -paddingTop);
 	scrollFrame:SetPoint("BOTTOMRIGHT", backdrop, "BOTTOMRIGHT", -paddingRight, paddingBottom);
-	scrollFrame:SetHeight(height);
+	scrollFrame.ScrollBar:Hide();
+	scrollFrame:EnableMouseWheel(false);
 
 	local widget = CreateFrame("EditBox", nil, scrollFrame);
 	widget:SetMultiLine(true);
-	widget:SetMaxLetters(0);
 	widget:SetAutoFocus(false);
 	widget:SetFontObject("ChatFontNormal");
-	widget:EnableMouse(true);
-	widget:EnableKeyboard(true);
+	widget:SetWidth(scrollFrame:GetWidth());
+	widget:SetHeight(height);
 
 	scrollFrame:SetScrollChild(widget);
 
@@ -575,8 +555,6 @@ local function CreateMultiLineEditBox(parent, data)
 			self:SetText(data.get() or "");
 			self:HighlightText(0, 0);
 		end
-
-		UpdateScrollBarVisibility(scrollFrame, self);
 	end;
 
 	if type(data.set) == "function" then
@@ -589,34 +567,49 @@ local function CreateMultiLineEditBox(parent, data)
 			self:SetText(cleaned);
 		end
 
-		widget:SetScript("OnEditFocusLost", function(self)
-			SaveValue(self);
+		widget:SetScript("OnTextChanged", function(self)
+			self.savedThisEdit = false;
+			local max = scrollFrame:GetVerticalScrollRange();
+			if max > 0 then
+				scrollFrame.ScrollBar:Show();
+			else
+				scrollFrame.ScrollBar:Hide();
+			end
+			scrollFrame:SetVerticalScroll(max);
 		end);
 
-		widget:SetScript("OnEnterPressed", function(self)
-			SaveValue(self);
+		widget:SetScript("OnEscapePressed", function(self)
 			self:ClearFocus();
 		end);
 
-		widget:SetScript("OnTextChanged", function(self)
-			self.savedThisEdit = false;
-			UpdateScrollBarVisibility(scrollFrame, self);
+		widget:SetScript("OnEnterPressed", function(self)
+			self:ClearFocus();
+		end);
+
+		widget:SetScript("OnEditFocusGained", function(self)
+			scrollFrame:EnableMouseWheel(true);
+		end);
+
+		widget:SetScript("OnEditFocusLost", function(self)
+			scrollFrame:EnableMouseWheel(false);
+			SaveValue(self);
 		end);
 	end
 
-	scrollFrame:EnableMouse(true);
-	scrollFrame:SetScript("OnMouseDown", function(self)
-		if not widget:IsEnabled() then return; end
-		widget:SetFocus();
+	backdrop:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" then
+			widget:SetFocus();
+		end
+	end);
+
+	scrollFrame:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" then
+			widget:SetFocus();
+		end
 	end);
 
 	scrollFrame:SetScript("OnSizeChanged", function(self)
-		UpdateScrollBarVisibility(scrollFrame, widget);
 		widget:SetWidth(self:GetWidth());
-	end);
-
-	widget:SetScript("OnEscapePressed", function(self)
-		self:ClearFocus();
 	end);
 
 	widget:Refresh();
