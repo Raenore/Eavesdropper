@@ -145,7 +145,7 @@ function ChatHistory:GetPlayerHistory(player, maxEntries)
 	local limit = maxEntries or 50;
 
 	for i = #chat, 1, -1 do
-		if ED.ChatFilters:HasEvent(chat[i].e) then
+		if ED.ChatFilters:HasEvent(chat[i].e, ED.Frame) then
 			tinsert(entries, 1, chat[i]);
 			if #entries >= limit then
 				break;
@@ -322,9 +322,23 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 	-- Add message to eavesdrop frame if relevant
 	if ED.Frame then
 		local eavesdroppedPlayer = ED.Frame.eavesdropped_player;
+
 		if sender == eavesdroppedPlayer or ED.Utils.StripRealmSuffix(sender) == ED.Utils.StripRealmSuffix(eavesdroppedPlayer) then
 			ED.Frame:TryAddMessage(entry);
 		end
+	end
+
+	if entry.s and _G["Eavesdropper_Dedicated_Frame_" .. entry.s] then
+		local dedicatedFrame = _G["Eavesdropper_Dedicated_Frame_" .. entry.s];
+		local notifyDedicatedSound = ED.Database:GetSetting("NotificationDedicatedSound");
+		local notifyDedicatedFlash = ED.Database:GetSetting("NotificationDedicatedFlashTaskbar");
+
+		if (notifyDedicatedSound or notifyDedicatedFlash)
+			and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
+			if notifyDedicatedSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.DEDICATED); end
+			if notifyDedicatedFlash then ED.Notifications:FlashTaskbar(); end
+		end
+		dedicatedFrame:TryAddMessage(entry);
 	end
 
 	return entry;

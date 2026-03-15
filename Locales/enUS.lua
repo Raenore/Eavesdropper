@@ -44,6 +44,8 @@ L = {
 	LOCK_TITLEBAR = "Lock Title Bar",
 	LOCK_TITLEBAR_HELP = "Toggles the visibility of the window's title bar.|n|n- Enabled: The title bar remains visible at all times.|n- Disabled: The title bar is hidden and only appears when you hover over the window.|n|nNote: You can enable 'Title Bar Target Name' in the settings to replace the 'Eavesdropper' text with your current target's name.",
 
+	DEDICATED_OPTIONS = "Dedicated Options",
+
 	-- General Tab
 	GENERAL_TITLE = "General",
 	TARGETING = "Targeting",
@@ -72,7 +74,7 @@ L = {
 	MESSAGES_HELP = "These options only apply to the Eavesdropper history.",
 
 	HISTORY_SIZE = "History Size",
-	HISTORY_SIZE_HELP = "Set the maximum number of messages Eavesdropper stores for each unit.|n|n|cnWARNING_FONT_COLOR:Note: High values may cause temporary frame drops when refreshing the history window.|r",
+	HISTORY_SIZE_HELP = "Set the maximum number of history messages Eavesdropper displays for each unit.|n|n|cnWARNING_FONT_COLOR:Note: High values may cause temporary frame drops when refreshing the history window.|r",
 
 	NAME_DISPLAY_MODE = "Name Display",
 	NAME_DISPLAY_MODE_HELP = "Choose how character names are formatted within Eavesdropper.",
@@ -137,6 +139,15 @@ L = {
 
 	MINIMAP = "Minimap",
 
+	DEDICATED_WINDOWS = "Dedicated Windows",
+	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent windows.|r",
+
+	DEDICATED_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
+	DEDICATED_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a dedicated window for a specific character.|n|n* Global setting - persists across all profiles.",
+
+	DEDICATED_WINDOWS_NEW_INDICATOR = "New Message Indicator",
+	DEDICATED_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on any dedicated window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
+
 	MINIMAP_BUTTON = "Minimap Button",
 	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.|n|n* Global setting - persists across all profiles.",
 
@@ -151,6 +162,9 @@ L = {
 
 	TARGET = "Target",
 	TARGET_HELP = "Messages received from your current target.",
+
+	DEDICATED = "Dedicated",
+	DEDICATED_HELP = "Messages received in Dedicated Windows.",
 
 	NOTIFICATIONS_PLAY_SOUND = "Play Sound",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Toggles whether Eavesdropper plays an audible alert for this notification type.",
@@ -202,6 +216,9 @@ L = {
 	ADDONINFO_BUILD_OUTDATED = title .. " is not optimized for this game build.|n|n|cnWARNING_FONT_COLOR:This may cause unexpected behavior.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " is optimized for your current game build.|n|n|cnGREEN_FONT_COLOR:All features should work as expected.|r",
 	ADDONINFO_BLUESKY_SHILL_HELP = "Follow me on Bluesky!",
+
+	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options",
+	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On",
 };
 
 ---@class ED.L : ED.Locale.enUS, ED.Localization

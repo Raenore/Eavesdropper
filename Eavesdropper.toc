@@ -73,11 +73,14 @@ Modules\ElvUI\ElvUI.lua
 Modules\LinkDialog\LinkDialog.lua
 Modules\Minimap\Minimap.lua
 Modules\TRP\TRP.lua
+Modules\UnitPopups\UnitPopups.lua
 
 ## UI
 UI\ChatBox.lua
 UI\EavesdropperFrame.lua
 UI\EavesdropperFrame.xml
+UI\EavesdropperDedicatedFrame.lua
+UI\EavesdropperDedicatedFrame.xml
 UI\SettingsElements.lua
 UI\SettingsFrame.lua
 UI\SettingsFrame.xml

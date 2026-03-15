@@ -398,6 +398,13 @@ function Eavesdropper_SettingsMixin:OnLoad()
 
 				background:SetColorTexture(val.r, val.g, val.b, val.a);
 
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					local frameBg = frame.Background;
+					if not frameBg then return; end
+
+					frameBg:SetColorTexture(val.r, val.g, val.b, val.a);
+				end);
+
 				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.5 then
 					ED.Database:SetSetting("ColorBackground", nil);
 					return;
@@ -436,6 +443,13 @@ function Eavesdropper_SettingsMixin:OnLoad()
 
 				background:SetColorTexture(val.r, val.g, val.b, val.a);
 
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					local frameTitleBg = frame.TitleBar.Background;
+					if not frameTitleBg then return; end
+
+					frameTitleBg:SetColorTexture(val.r, val.g, val.b, val.a);
+				end);
+
 				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.25 then
 					ED.Database:SetSetting("ColorTitleBar", nil);
 					return;
@@ -469,6 +483,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				ED.Database:SetSetting("HideInCombat", val);
 				if InCombatLockdown() then
 					ED.Frame:Hide();
+
+					ED.DedicatedFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
 				end
 			end,
 		},
@@ -526,7 +544,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("FontFace") end,
 			set = function(val)
 				ED.Database:SetSetting("FontFace", val);
-				ED.ChatBox:ApplyFontOptions();
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
 			end,
 		},
 		{
@@ -539,7 +560,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("FontSize") end,
 			set = function(val)
 				ED.Database:SetSetting("FontSize", val);
-				ED.ChatBox:ApplyFontOptions();
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
 			end,
 		},
 		{
@@ -559,7 +580,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("FontOutline") end,
 			set = function(val)
 				ED.Database:SetSetting("FontOutline", val);
-				ED.ChatBox:ApplyFontOptions();
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
 			end,
 		},
 		{
@@ -569,7 +593,48 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("FontShadow") end,
 			set = function(val)
 				ED.Database:SetSetting("FontShadow", val);
-				ED.ChatBox:ApplyFontOptions();
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
+			end,
+		},
+		{
+			type = "subtitle",
+			label = L.DEDICATED_WINDOWS,
+		},
+		{
+			type = "checkbox",
+			label = L.DEDICATED_WINDOWS .. "*",
+			tooltip = L.DEDICATED_WINDOWS_HELP,
+			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows") end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("DedicatedWindows", val);
+				if not val then
+					ED.DedicatedFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.DEDICATED_WINDOWS_NEW_INDICATOR .. "*",
+			tooltip = L.DEDICATED_WINDOWS_NEW_INDICATOR_HELP,
+			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows")end,
+			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator") end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("DedicatedWindowsNewIndicator", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.DEDICATED_WINDOWS_UNIT_POPUPS .. "*",
+			tooltip = L.DEDICATED_WINDOWS_UNIT_POPUPS_HELP,
+			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows")end,
+			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups") end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("DedicatedWindowsUnitPopups", val);
 			end,
 		},
 		{
@@ -678,6 +743,44 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("NotificationTargetFlashTaskbar") end,
 			set = function(val)
 				ED.Database:SetSetting("NotificationTargetFlashTaskbar", val);
+			end,
+		},
+		{
+			type = "subtitle",
+			label = L.DEDICATED,
+			subLabel = L.DEDICATED_HELP,
+		},
+		{
+			type = "checkbox",
+			label = L.NOTIFICATIONS_PLAY_SOUND,
+			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSound") end,
+			set = function(val)
+				ED.Database:SetSetting("NotificationDedicatedSound", val);
+			end,
+		},
+		{
+			type = "dropdown",
+			label = L.NOTIFICATIONS_SOUND_FILE,
+			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
+			values = ED.Config.soundList,
+			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound") end,
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile") end,
+			set = function(val)
+				local soundPath = SharedMedia:Fetch("sound", val);
+				if soundPath then
+					PlaySoundFile(soundPath, "Master");
+					ED.Database:SetSetting("NotificationDedicatedSoundFile", val);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.NOTIFICATION_FLASH_TASKBAR,
+			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
+			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar") end,
+			set = function(val)
+				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
 			end,
 		},
 	};

@@ -27,6 +27,10 @@ function Events:PLAYER_REGEN_DISABLED()
 	if not ED.Database:GetSetting("HideInCombat") then return; end
 
 	ED.Frame:HandleVisibility();
+
+	ED.DedicatedFrame:ForEachFrame(function(frame)
+		frame:HandleVisibility();
+	end);
 end
 
 -- Combat is left when regen is enabled.
@@ -36,6 +40,10 @@ function Events:PLAYER_REGEN_ENABLED()
 	if not ED.Database:GetSetting("HideInCombat") then return; end
 
 	ED.Frame:HandleVisibility();
+
+	ED.DedicatedFrame:ForEachFrame(function(frame)
+		frame:HandleVisibility();
+	end);
 end
 
 ---PLAYER_FOCUS_CHANGED Fired when player focus changes.
