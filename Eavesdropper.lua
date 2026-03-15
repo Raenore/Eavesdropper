@@ -3,6 +3,9 @@
 
 function ED.Init()
 	EventUtil.ContinueOnPlayerLogin(function()
+		-- Automatically set preferred locale (respects GAME_LOCALE)
+		ED.Localization:SetCurrentLocale(ED.Localization:GetPreferredLocale(), true);
+
 		-- DB must be ready first
 		ED.Database:Init();
 

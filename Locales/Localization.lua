@@ -42,9 +42,6 @@ function Localization:New(defaultLocaleContent)
 		localeInstance:RegisterNewLocale(DEFAULT_LOCALE_CODE, "Default", defaultLocaleContent);
 	end
 
-	-- Automatically set preferred locale (respects GAME_LOCALE)
-	localeInstance:SetCurrentLocale(localeInstance:GetPreferredLocale(), true);
-
 	return localeInstance;
 end
 
@@ -70,22 +67,25 @@ function Localization:SetCurrentLocale(code, fallback)
 	end
 end
 
----Get the default locale, optionally overridden by GAME_LOCALE
+---Get the default locale
 ---@return string
 function Localization:GetDefaultLocale()
-	if GAME_LOCALE ~= nil then
-		return GAME_LOCALE;
-	end
 	return DEFAULT_LOCALE_CODE;
 end
 
----Get the preferred locale: current if valid, else default
+---Get the preferred locale, optionally overridden by GAME_LOCALE
 ---@return string
 function Localization:GetPreferredLocale()
+	-- GAME_LOCALE takes explicit priority
+	if GAME_LOCALE ~= nil and self.locales[GAME_LOCALE] then
+		return GAME_LOCALE;
+	end
+
+	-- Fall back to current, then default
 	if self.currentLocaleCode and self.locales[self.currentLocaleCode] then
 		return self.currentLocaleCode;
 	end
-	return self:GetDefaultLocale();
+	return DEFAULT_LOCALE_CODE;
 end
 
 ---Get a localized string by key

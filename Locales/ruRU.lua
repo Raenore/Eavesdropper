@@ -205,5 +205,4 @@ L = {
 	ADDONINFO_BLUESKY_SHILL_HELP = "Подписывайтесь на меня в Bluesky!",
 };
 
-ED.Localization = ED.LocalizationClass:New(L);
 ED.Localization:RegisterNewLocale("ruRU", "Russian", L);
