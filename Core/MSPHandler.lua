@@ -263,7 +263,7 @@ function MSP.TryGetMSPData(playerName, playerGUID)
 	return fullName, firstName, nameColor, lastName, className, raceName;
 end
 
-local pendingRefresh = {};
+local pendingRefresh;
 
 function MSP.Init()
 	if msp == nil then return; end
@@ -276,15 +276,14 @@ function MSP.Init()
 		if not Constants.MSP_RELEVANT_FIELDS[field] then return; end
 
 		-- Cancel any pending refresh for this sender before scheduling a new one
-		if pendingRefresh[senderID] then
-			pendingRefresh[senderID]:Cancel();
-			pendingRefresh[senderID] = nil;
+		if pendingRefresh then
+			pendingRefresh:Cancel();
+			pendingRefresh = nil;
 		end
 
 		-- Debounce: wait 0.5s in case multiple fields update in the same frame
-		pendingRefresh[senderID] = C_Timer.NewTicker(0.5, function()
-			pendingRefresh[senderID]:Cancel();
-			pendingRefresh[senderID] = nil;
+		pendingRefresh = C_Timer.NewTicker(0.5, function()
+			pendingRefresh = nil;
 			MSP.InvalidateCache();
 			ED.Keywords:ParseList();
 		end, 1);
