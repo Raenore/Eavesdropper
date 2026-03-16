@@ -176,7 +176,7 @@ local function NormalizeString(value)
 end
 
 function MSP.IsEnabled()
-	return not (msp == nil);
+	return msp ~= nil;
 end
 
 local invalidateCache = false;
