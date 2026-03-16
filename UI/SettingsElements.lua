@@ -470,15 +470,17 @@ local function CreateDropDown(parent, data)
 				end
 			end
 
+			local disabledValues = type(data.disabledValues) == "function" and data.disabledValues() or data.disabledValues or {};
 			for _, entry in ipairs(entries) do
 				local text, value = entry[1], entry[2];
 
+				local isEntryDisabled = disabled or (disabledValues[value] == true);
 				if data.style == "button" then
 					root:CreateButton(text, SetSelected, value)
-						:SetEnabled(not disabled);
+						:SetEnabled(not isEntryDisabled);
 				else
 					root:CreateRadio(text, IsSelected, SetSelected, value)
-						:SetEnabled(not disabled);
+						:SetEnabled(not isEntryDisabled);
 				end
 			end
 

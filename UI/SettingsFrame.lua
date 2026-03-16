@@ -307,6 +307,13 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				2,
 				3,
 			},
+			disabled = function() return not ED.MSP.IsEnabled() end,
+			disabledValues = function()
+				return {
+					[1] = not ED.MSP.IsEnabled(),
+					[2] = not ED.MSP.IsEnabled(),
+				}
+			end,
 			get = function() return ED.Database:GetSetting("NameDisplayMode") end,
 			set = function(val)
 				ED.Database:SetSetting("NameDisplayMode", val);
@@ -384,6 +391,12 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				3,
 			},
 			disabled = function() return not ED.MSP.IsEnabled() or not ED.QuestText.SupportedAddonsInstalled() end,
+			disabledValues = function()
+				return {
+					[1] = not ED.MSP.IsEnabled(),
+					[2] = not ED.MSP.IsEnabled(),
+				}
+			end,
 			get = function() return ED.Database:GetSetting("QuestTextNameDisplayMode") end,
 			set = function(val)
 				ED.Database:SetSetting("QuestTextNameDisplayMode", val);
