@@ -190,16 +190,17 @@ end
 ---Attempts to retrieve the MSP/TRP3 name and color of a player
 ---@param playerName string
 ---@param playerGUID string
----@param isKeywords boolean?
+---@param forceInvalidate boolean?
 ---@return string? fullName
 ---@return string? firstName
 ---@return string? nameColor
 ---@return string? lastName
 ---@return string? className
 ---@return string? raceName
-function MSP.TryGetMSPData(playerName, playerGUID)
+function MSP.TryGetMSPData(playerName, playerGUID, forceInvalidate)
 	if not MSP.IsEnabled() then return nil, nil; end
 	if not playerGUID or not playerName then return nil, nil; end
+	if forceInvalidate then invalidateCache = true; end
 
 	local now = GetTime();
 
