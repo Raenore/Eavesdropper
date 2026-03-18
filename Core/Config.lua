@@ -132,6 +132,19 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 			rootDescription:CreateDivider();
 			rootDescription:CreateTitle(L.DEDICATED_OPTIONS);
 
+			local dedicatedFontSize = rootDescription:CreateButton(L.FONT_SIZE);
+			dedicatedFontSize:CreateTitle(L.FONT_SIZE);
+			for i = ED.Constants.CHAT_BOX.MIN_FONT_SIZE, ED.Constants.CHAT_BOX.MAX_FONT_SIZE, 2 do
+				dedicatedFontSize:CreateCheckbox(
+					i,
+				function() return i == frame.FontSize; end,
+					function()
+						frame.FontSize = i;
+						ED.ChatBox:ApplyFontOptions(frame);
+					end
+				);
+			end
+
 			-- Hide Close Button
 			rootDescription:CreateCheckbox(
 				L.HIDE_CLOSE_BUTTON,
