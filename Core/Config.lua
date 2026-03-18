@@ -66,11 +66,16 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		rootDescription:AddMenuReleasedCallback(function() frame:OnLeave(); end);
 
 		-- Title
-		local title = rootDescription:CreateTitle(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title);
-		title:SetTooltip(function(tooltip, elementDescription)
-			GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
-			GameTooltip_AddNormalLine(tooltip, "Version: " .. ED.Globals.addon_version);
-		end);
+		if not dedicatedFrame then
+			local title = rootDescription:CreateTitle(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title);
+			title:SetTooltip(function(tooltip, elementDescription)
+				GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
+				GameTooltip_AddNormalLine(tooltip, "Version: " .. ED.Globals.addon_version);
+			end);
+		else
+			rootDescription:CreateTitle(L.DEDICATED_WINDOWS);
+		end
+
 
 		-- Filters
 		local filter = rootDescription:CreateButton(L.FILTER);
