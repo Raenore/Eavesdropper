@@ -4,7 +4,7 @@
 ---@type table
 local SharedMedia = LibStub("LibSharedMedia-3.0");
 
-local Localization = ED.Localization;
+local L = ED.Localization;
 
 ---@class EavesdropperConfig
 local Config = {};
@@ -73,12 +73,12 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		end);
 
 		-- Filters
-		local filter = rootDescription:CreateButton(Localization.FILTER);
+		local filter = rootDescription:CreateButton(L.FILTER);
 		filter:SetTooltip(function(tooltip, elementDescription)
 			GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
-			GameTooltip_AddNormalLine(tooltip, Localization.FILTER_HELP);
+			GameTooltip_AddNormalLine(tooltip, L.FILTER_HELP);
 		end);
-		filter:CreateTitle(Localization.FILTER .. " " .. MAIN_MENU);
+		filter:CreateTitle(L.FILTER .. " " .. MAIN_MENU);
 		ED.ChatFilters:GenerateFilterListMenu(frame, filter);
 
 		if not dedicatedFrame then
@@ -89,47 +89,47 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		end
 
 		rootDescription:CreateDivider();
-		rootDescription:CreateTitle(Localization.WINDOW_OPTIONS);
+		rootDescription:CreateTitle(L.WINDOW_OPTIONS);
 
 		-- Enable Mouse
 		local enableMouse = rootDescription:CreateCheckbox(
-			Localization.ENABLE_MOUSE,
+			L.ENABLE_MOUSE,
 			function() return getSetting("EnableMouse"); end,
 			function() toggleSetting("EnableMouse", function() frame:UpdateMouseLock(); end); end
 		);
-		SetTooltip(enableMouse, Localization.ENABLE_MOUSE_HELP);
+		SetTooltip(enableMouse, L.ENABLE_MOUSE_HELP);
 
 		-- Lock Scroll
 		local lockScroll = rootDescription:CreateCheckbox(
-			Localization.LOCK_SCROLL,
+			L.LOCK_SCROLL,
 			function() return getSetting("LockScroll"); end,
 			function() toggleSetting("LockScroll", function() frame.ChatBox:ScrollToBottom(); end); end
 		);
-		SetTooltip(lockScroll, Localization.LOCK_SCROLL_HELP);
+		SetTooltip(lockScroll, L.LOCK_SCROLL_HELP);
 
 		-- Lock Window
 		local lockWindow = rootDescription:CreateCheckbox(
-			Localization.LOCK_WINDOW,
+			L.LOCK_WINDOW,
 			function() return getSetting("LockWindow"); end,
 			function() toggleSetting("LockWindow", function() frame.ResizeHandle:SetShown(not getSetting("LockWindow")); end); end
 		);
-		SetTooltip(lockWindow, Localization.LOCK_WINDOW_HELP);
+		SetTooltip(lockWindow, L.LOCK_WINDOW_HELP);
 
 		-- Lock Title Bar
 		local lockTitleBar = rootDescription:CreateCheckbox(
-			Localization.LOCK_TITLEBAR,
+			L.LOCK_TITLEBAR,
 			function() return getSetting("LockTitleBar"); end,
 			function() toggleSetting("LockTitleBar"); end
 		);
-		SetTooltip(lockTitleBar, Localization.LOCK_TITLEBAR_HELP);
+		SetTooltip(lockTitleBar, L.LOCK_TITLEBAR_HELP);
 
 		if dedicatedFrame then
 			rootDescription:CreateDivider();
-			rootDescription:CreateTitle(Localization.DEDICATED_OPTIONS);
+			rootDescription:CreateTitle(L.DEDICATED_OPTIONS);
 
 			-- Hide Close Button
 			rootDescription:CreateCheckbox(
-				Localization.HIDE_CLOSE_BUTTON,
+				L.HIDE_CLOSE_BUTTON,
 				function() return getSetting("HideCloseButton"); end,
 				function() toggleSetting("HideCloseButton", function() frame.TitleBar.CloseButton:SetShown(not frame.HideCloseButton); end); end
 			);
