@@ -17,6 +17,7 @@
 ---@field minEntryId number
 ---@field nextEntryId number
 ---@field deduper table<string, number> Deduplication timestamps
+---@field byTime table<number, EavesdropperChatEntry> Legacy migration index keyed by timestamp
 local ChatHistory = {};
 
 ChatHistory.byTime = {};
@@ -71,7 +72,6 @@ function ChatHistory:pruneAndRebuild(now)
 end
 
 ---upgradeBareNames Upgrades old entries without realm suffix
----@return nil
 function ChatHistory:upgradeBareNames()
 	if not self.byTime then return; end
 
@@ -80,7 +80,7 @@ function ChatHistory:upgradeBareNames()
 		tinsert(byTimeKeys, ts);
 	end
 
-	table.sort(byTimeKeys, function(a, b) return a > b end);
+	table.sort(byTimeKeys, function(a, b) return a > b; end);
 
 	for _, ts in ipairs(byTimeKeys) do
 		local entry = self.byTime[ts];
@@ -96,7 +96,6 @@ function ChatHistory:upgradeBareNames()
 end
 
 ---backfillGUIDs Fills missing GUIDs per sender history
----@return nil
 function ChatHistory:backfillGUIDs()
 	for _, chatData in pairs(self.history) do
 		local knownGUID;
@@ -201,13 +200,13 @@ function ChatHistory:HandleTextEmote(sender, message, advancedFormatting)
 	if (playSound or flashTaskbar) and GetLocale() == "enUS" and message:find(" you[^a-z]") then
 		for _, phrase in ipairs(Constants.CHAT_HISTORY.IGNORE_EMOTES) do
 			if message:find(phrase, 1, true) then
-				return sender; -- skip notifications
+				return sender; -- Skip notifications for ignored phrases.
 			end
 		end
 
 		if playSound then
 			ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.EMOTES);
-			end
+		end
 		if flashTaskbar then
 			ED.Notifications:FlashTaskbar();
 		end
@@ -216,6 +215,7 @@ function ChatHistory:HandleTextEmote(sender, message, advancedFormatting)
 	return sender;
 end
 
+---Prepends a language tag to the message if the language differs from the default.
 ---@param language string? Language code
 ---@param message string Message text
 ---@return string formattedMsg Formatted message with language tag
@@ -237,7 +237,7 @@ local function SubRaidTargets(message)
 	end);
 end
 
----AddEntry Adds a chat message entry to history, handling duplicates, formatting, and notifications
+---Adds a chat message to history, handling deduplication, formatting, and target/emote notifications.
 ---@param event string Event type
 ---@param sender string Sender name
 ---@param message string Message content
@@ -253,31 +253,31 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 
 	-- Extract sender data from Blizzard Emote
 	if event == "CHAT_MSG_TEXT_EMOTE" then
-		sender = ChatHistory:HandleTextEmote(sender, message);
+		sender = self:HandleTextEmote(sender, message);
 	end
 
-	-- TRP NPC emote
+	-- TRP NPC emote: replace the blank message with the NPC name.
 	if event == "CHAT_MSG_EMOTE" and TRP3_API and message == " " then
 		message = TRP3_API.chat.getNPCMessageName();
 	end
 
 	local isOwn = ED.Utils.IsOwnPlayer(sender, event);
-
 	if isOwn then
 		guid = ED.Globals.player_guid;
 	end
 
-	-- Resolve Name-Realm if GUID exists (can be nil and secret will also return nil)
+	-- Resolve Name-Realm if GUID exists (can be nil; secrets also return nil).
 	if guid then
 		sender = ED.PlayerCache:GetSenderDataFromGUID(guid) or sender;
 	end
 
-	-- nil if secrets, guard against that
+	-- InsertAndRetrieve returns nil for secret players; guard against that.
 	local newSender, newGuid = ED.PlayerCache:InsertAndRetrieve(sender, guid);
 	if newSender then
 		sender = newSender;
 		guid = newGuid;
 	end
+
 	self.history[sender] = self.history[sender] or {};
 
 	message = AddLanguageTag(language, message);
@@ -290,7 +290,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 		e = event,
 		m = message,
 		s = sender,
-		g = guid, -- Can be tied to Companion Information
+		g = guid, -- Can be tied to Companion Information.
 	};
 
 	if channel then
@@ -306,7 +306,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 	self.nextEntryId = self.nextEntryId + 1;
 	tinsert(self.history[sender], entry);
 
-	-- Target notifications
+	-- Target notifications.
 	local targetName = ED.Utils.GetUnitName("target");
 	local notifyTargetSound = ED.Database:GetSetting("NotificationTargetSound");
 	local notifyTargetFlash = ED.Database:GetSetting("NotificationTargetFlashTaskbar");
@@ -319,7 +319,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 		if notifyTargetFlash then ED.Notifications:FlashTaskbar(); end
 	end
 
-	-- Add message to eavesdrop frame if relevant
+	-- Forward to the eavesdrop frame if this sender is currently being watched.
 	if ED.Frame then
 		local eavesdroppedPlayer = ED.Frame.eavesdropped_player;
 		if sender == eavesdroppedPlayer or ED.Utils.StripRealmSuffix(sender) == ED.Utils.StripRealmSuffix(eavesdroppedPlayer) then
