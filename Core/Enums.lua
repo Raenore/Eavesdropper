@@ -12,12 +12,12 @@ Enums.CHAT_BOX = {};
 ---@field OUTLINE number
 ---@field THICKOUTLINE number
 Enums.CHAT_BOX.FONT_OUTLINE = {
-	NONE = 1;
-	OUTLINE = 2;
-	THICKOUTLINE = 3;
+	NONE = 1,
+	OUTLINE = 2,
+	THICKOUTLINE = 3,
 };
 
---@alias ElvUISkinType
+---@alias ElvUISkinType
 ---| "button"
 ---| "checkbox"
 ---| "dropdown"
@@ -41,19 +41,20 @@ Enums.CHAT_BOX.FONT_OUTLINE = {
 ---@field SLIDER ElvUISkinType
 ---@field TOPTABBUTTON ElvUISkinType
 Enums.ELVUI_SKIN_TYPE = {
-	BUTTON = "button";
-	CHECKBOX = "checkbox";
-	DROPDOWN = "dropdown";
-	EDITBOX = "editbox";
-	FRAME = "frame";
-	ICON = "icon";
-	INSET = "inset";
-	SCROLLBAR = "scrollbar";
-	SLIDER = "slider";
-	TOPTABBUTTON = "toptabbutton";
+	BUTTON = "button",
+	CHECKBOX = "checkbox",
+	DROPDOWN = "dropdown",
+	EDITBOX = "editbox",
+	FRAME = "frame",
+	ICON = "icon",
+	INSET = "inset",
+	SCROLLBAR = "scrollbar",
+	SLIDER = "slider",
+	TOPTABBUTTON = "toptabbutton",
 };
 
---@enum EavesdropperEntryChatRemap
+---Maps internal event shorthand to the ChatTypeInfo key used for colour lookup.
+---@enum EavesdropperEntryChatRemap
 Enums.ENTRY_CHAT_REMAP = {
 	ROLL              = "SYSTEM",
 	OFFLINE           = "SYSTEM",
@@ -65,16 +66,17 @@ Enums.ENTRY_CHAT_REMAP = {
 ---@enum EavesdropperFocusTarget
 Enums.FOCUS_TARGET = {
 	OVERRIDE = 1,
-	FALLBACK   = 2,
-	IGNORE     = 3,
+	FALLBACK = 2,
+	IGNORE   = 3,
 };
 
+---Frame-level enumerations.
 ---@class EavesdropperFrameEnums
 Enums.FRAME = {};
 
 ---@class EavesdropperMouseHoverState
----@field OFF number
----@field ON number
+---@field OFF boolean
+---@field ON boolean
 Enums.FRAME.MOUSE_HOVER_STATE = {
 	OFF = false;
 	ON  = true;
@@ -104,6 +106,7 @@ Enums.NOTIFICATIONS_TYPE = {
 	TARGET = 3,
 };
 
+---Maps each notification type to its saved-variable sound file key.
 ---@type table<EavesdropperNotificationsType, string>
 Enums.NOTIFICATIONS_TYPE_SOUND_KEYS = {
 	[Enums.NOTIFICATIONS_TYPE.EMOTES]   = "NotificationEmotesSoundFile",
@@ -111,6 +114,7 @@ Enums.NOTIFICATIONS_TYPE_SOUND_KEYS = {
 	[Enums.NOTIFICATIONS_TYPE.TARGET]   = "NotificationTargetSoundFile",
 };
 
+---Maps raid target name aliases to their icon index (1–8).
 ---@type table<string, number>
 Enums.RAID_TARGETS = {
 	-- ID 1: Star
@@ -140,6 +144,7 @@ Enums.TARGET_PRIORITY = {
 	FOCUS_ONLY           = 5,
 };
 
+---Maps target priority modes to their localisation key pairs for display.
 ---@class EavesdropperPriorityStringEntry
 ---@field priority string
 ---@field secondary string?
@@ -154,6 +159,7 @@ Enums.TARGET_PRIORITY_STRING_MAP = {
 	},
 };
 
+---Maps target priority modes to their unit token pairs for API calls.
 ---@class EavesdropperPriorityUnitEntry
 ---@field priority string
 ---@field secondary string?
