@@ -22,6 +22,9 @@ function MainChat:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	local handler;
 	if event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_SYSTEM" then
 		handler = ED.AdvancedFormatter;
+	elseif event == "CHAT_MSG_MONSTER_SAY" then
+		message = ED.GossipText.SubstitutePlayerPreferredName(message);
+		return false, message, sender, ...;
 	else
 		ED.AdvancedFormatter:DisableNameFormatting();
 		handler = ED.Keywords;

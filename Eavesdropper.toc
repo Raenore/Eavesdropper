@@ -74,6 +74,7 @@ Core\Magnifier.lua
 
 ## Modules
 Modules\ElvUI\ElvUI.lua
+Modules\GossipText\GossipText.lua
 Modules\LinkDialog\LinkDialog.lua
 Modules\Minimap\Minimap.lua
 Modules\QuestText\QuestText.lua
