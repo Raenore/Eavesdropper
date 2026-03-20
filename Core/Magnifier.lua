@@ -13,20 +13,31 @@ local Magnifier = {};
 local magnifiedName = nil;
 local magnifiedGUID = nil;
 local clearTimerToken = nil;
+
+---@type Frame?
 Magnifier.Frame = nil;
 
+---Triggers a chat timestamp refresh on the main Eavesdropper frame.
 local function tickerCallback()
 	if ED.Frame then
 		ED.Frame:UpdateTarget();
 	end
 end
 
+---Starts a repeating ticker if one is not already running.
+---@param self table
+---@param handleField string
+---@param interval number
+---@param callback function
 local function createTicker(self, handleField, interval, callback)
 	if not self[handleField] then
 		self[handleField] = C_Timer.NewTicker(interval, callback);
 	end
 end
 
+---Cancels and clears the stored ticker.
+---@param self table
+---@param handleField string
 local function stopTicker(self, handleField)
 	if self[handleField] then
 		self[handleField]:Cancel();
@@ -34,8 +45,7 @@ local function stopTicker(self, handleField)
 	end
 end
 
----StartUpdateCheck begins polling via OnUpdate
----@return nil
+---Begins polling via OnUpdate to track mouseover unit changes.
 function Magnifier:StartUpdateCheck()
 	if not self.Frame or self.Frame:GetScript("OnUpdate") then return; end
 	self.Frame:SetScript("OnUpdate", function()
@@ -43,22 +53,21 @@ function Magnifier:StartUpdateCheck()
 	end);
 end
 
----StopUpdateCheck stops OnUpdate polling
----@return nil
+---Stops the OnUpdate polling loop.
 function Magnifier:StopUpdateCheck()
 	if self.Frame then
 		self.Frame:SetScript("OnUpdate", nil);
 	end
 end
 
----GetMagnified Returns current magnified unit.
+---Returns the currently magnified unit name and GUID.
 ---@return string? name
 ---@return string? guid
 function Magnifier:GetMagnified()
 	return magnifiedName, magnifiedGUID;
 end
 
----OnMagnifiedChanged Notifies UI of magnifier change.
+---Notifies the UI of a magnifier change, debounced to avoid flicker on rapid target switches.
 ---@param reason EavesdropperMagnifierReason?
 ---@return nil
 function Magnifier:OnMagnifiedChanged(reason) -- luacheck: no unused (reason)
@@ -67,13 +76,11 @@ function Magnifier:OnMagnifiedChanged(reason) -- luacheck: no unused (reason)
 		return;
 	end
 
-	-- Skip if magnified target hasn't changed (except when cleared)
+	-- Skip if the magnified target has not changed (except when being cleared).
 	local isUnchanged = magnifiedGUID ~= nil
 		and magnifiedGUID == self.lastNotifiedGUID
 		and magnifiedName == self.lastNotifiedName;
-	if isUnchanged then
-		return;
-	end
+	if isUnchanged then return; end
 
 	if clearTimerToken then
 		clearTimerToken:Cancel();
@@ -94,10 +101,9 @@ function Magnifier:OnMagnifiedChanged(reason) -- luacheck: no unused (reason)
 	end);
 end
 
----HandleUpdate polls the current target/mouseover unit.
+---Polls the current target/mouseover/focus unit and updates the magnified state accordingly.
 ---@param reason EavesdropperMagnifierReason?
----@return nil
-function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
+function Magnifier:HandleUpdate(reason)
 	if not ED or not ED.Database then return; end
 	if not canaccessvalue(magnifiedGUID) then return; end
 
@@ -109,8 +115,11 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 	local priority = entry and entry.priority;
 	local secondary = entry and entry.secondary;
 
+	-- Focus is only considered when the mode is not target-only or mouseover-only.
 	local focus;
-	if focusTarget ~= Enums.FOCUS_TARGET.IGNORE and targetPriority ~= Enums.TARGET_PRIORITY.TARGET_ONLY and targetPriority ~= Enums.TARGET_PRIORITY.MOUSEOVER_ONLY then
+	if focusTarget ~= Enums.FOCUS_TARGET.IGNORE
+	and targetPriority ~= Enums.TARGET_PRIORITY.TARGET_ONLY
+	and targetPriority ~= Enums.TARGET_PRIORITY.MOUSEOVER_ONLY then
 		focus = "focus";
 	end
 
@@ -128,19 +137,19 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 			or (secondary and UnitExists(secondary) and secondary);
 	end
 
-	-- Determine polling behavior
+	-- Determine whether OnUpdate polling should be active.
 	local target = UnitExists("target");
 	local mouseover = UnitExists("mouseover");
 	local polling = false;
 
 	if targetPriority == Enums.TARGET_PRIORITY.TARGET_ONLY then
-		polling = false; -- never poll, only track target
+		polling = false; -- Never poll; target is event-driven.
 	elseif targetPriority == Enums.TARGET_PRIORITY.MOUSEOVER_ONLY then
-		polling = mouseover; -- poll if mouseover exists
+		polling = mouseover; -- Poll whenever a mouseover exists.
 	elseif targetPriority == Enums.TARGET_PRIORITY.PRIORITIZE_TARGET then
-		polling = not target and mouseover; -- poll only if no target but mouseover exists
+		polling = not target and mouseover; -- Poll only when there is no target.
 	elseif targetPriority == Enums.TARGET_PRIORITY.PRIORITIZE_MOUSEOVER then
-		polling = mouseover; -- poll whenever mouseover exists
+		polling = mouseover; -- Poll whenever a mouseover exists.
 	end
 
 	local unitName, unitGUID;
@@ -149,15 +158,13 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 			unitName = ED.Utils.GetUnitName(unit);
 			unitGUID = UnitGUID(unit);
 		elseif UnitOwnerGUID(unit) and ED.Database:GetSetting("CompanionSupport") then
-			-- Handle pets/companions
+			-- Handle pets / companions: track the owner's GUID, not the pet's.
 			unitGUID = UnitOwnerGUID(unit);
 			unitName = nil;
 		end
 	end
 
-	if unitGUID and not canaccessvalue(unitGUID) then
-		return;
-	end
+	if unitGUID and not canaccessvalue(unitGUID) then return; end
 
 	if polling then
 		self:StartUpdateCheck();
@@ -165,26 +172,22 @@ function Magnifier:HandleUpdate(reason) -- luacheck: no unused (reason)
 		self:StopUpdateCheck();
 	end
 
-	-- Start Eavesdropper Update (to refresh chat timestamps etc) if unit is found.
+	-- Keep the chat timestamp ticker alive while a unit is magnified.
 	if unitGUID then
 		createTicker(self, "EavesdropperUpdate", Constants.CHAT_UPDATE_THROTTLE_DEFAULT, tickerCallback);
 	else
 		stopTicker(self, "EavesdropperUpdate");
 	end
 
-	-- If same unit while polling, we're already matched.
-	if polling and magnifiedGUID == unitGUID then
-		return;
-	end
+	-- If we are polling and the unit has not changed, nothing further to do.
+	if polling and magnifiedGUID == unitGUID then return; end
 
-	-- Update magnified state
 	magnifiedName = unitName;
 	magnifiedGUID = unitGUID;
 	self:OnMagnifiedChanged(reason);
 end
 
----Setup creates the internal frame for polling
----@return nil
+---Creates the internal polling frame.
 function Magnifier:Setup()
 	if Magnifier.Frame then return; end
 	Magnifier.Frame = CreateFrame("Frame");
