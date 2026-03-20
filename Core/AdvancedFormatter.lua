@@ -3,6 +3,8 @@
 
 ---@class EavesdropperAdvancedFormatter
 local AdvancedFormatter = {};
+
+---Whether the sender name filter is currently registered.
 AdvancedFormatter.senderNameFormatted = false;
 
 ---@param event string
@@ -53,8 +55,8 @@ local function CreateChatName(event, _, _, sender, _, _, _, _, _, _, _, _, _, gu
 	return sender;
 end
 
---- Registers the sender name filter if not already active.
---- Only acts when event is CHAT_MSG_TEXT_EMOTE and the filter is off.
+---Registers the sender name filter if not already active.
+---Only acts when event is CHAT_MSG_TEXT_EMOTE and the filter is off.
 ---@param event string
 function AdvancedFormatter:EnableNameFormatting(event)
 	if event ~= "CHAT_MSG_TEXT_EMOTE" or self.senderNameFormatted then return; end
@@ -62,8 +64,8 @@ function AdvancedFormatter:EnableNameFormatting(event)
 	ChatFrameUtil.AddSenderNameFilter(CreateChatName);
 end
 
---- Removes the sender name filter if currently active.
---- Only acts when event is not CHAT_MSG_TEXT_EMOTE and the filter is on.
+---Removes the sender name filter if currently active.
+---Only acts when event is not CHAT_MSG_TEXT_EMOTE and the filter is on.
 ---@param event string
 function AdvancedFormatter:DisableNameFormatting(event)
 	if event == "CHAT_MSG_TEXT_EMOTE" or not self.senderNameFormatted then return; end
@@ -71,7 +73,7 @@ function AdvancedFormatter:DisableNameFormatting(event)
 	ChatFrameUtil.RemoveSenderNameFilter(CreateChatName);
 end
 
----HandleChecks substitutes targets in a chat message
+---Substitutes targets in a chat message and returns the modified message for the chat frame.
 ---@param chatFrame table
 ---@param event string
 ---@param message string
@@ -82,8 +84,7 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 	if not message or not canaccessvalue(message) then return; end
 	if not ED.Database:GetSetting("ApplyOnMainChat") then return; end
 
-	local args = {...};
-	local guid = args[10]; -- SYSTEM may not have a GUID
+	local guid = select(10, ...); -- SYSTEM may not have a GUID
 	local msgText = message;
 	local msgSender = sender;
 
