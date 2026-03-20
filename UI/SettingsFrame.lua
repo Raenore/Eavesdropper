@@ -352,6 +352,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("ApplyOnMainChat") end,
 			set = function(val)
 				ED.Database:SetSetting("ApplyOnMainChat", val);
+				ED.MainChat:ToggleAdvancedFormatting();
 			end,
 		},
 		{
@@ -729,6 +730,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("EnableKeywords") end,
 			set = function(val)
 				ED.Database:SetSetting("EnableKeywords", val);
+				ED.MainChat:ToggleKeywords();
 			end,
 		},
 		{

@@ -1,6 +1,9 @@
 -- Copyright The Eavesdropper Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+---@type EavesdropperConstants
+local Constants = ED.Constants;
+
 ---@class EavesdropperChatHandler
 local ChatHandler = {};
 
@@ -9,7 +12,7 @@ local ChatHandler = {};
 ---@param event string Chat event
 ---@vararg any
 ---@return boolean?
-local function ChatFrameFilter(chatFrame, event, ...)
+function ChatHandler:ChatFrameFilter(chatFrame, event, ...)
 	local message, sender, language, _, _, _, _, _, channel, _, _, guid = ...;
 
 	if not message or not canaccessvalue(message) then
@@ -89,60 +92,23 @@ end
 ---@param sender string Sender name
 ---@vararg any
 ---@return boolean?
-local function MainChatFilter(chatFrame, event, message, sender, ...)
+function ChatHandler:MainChatFilter(chatFrame, event, message, sender, ...)
 	return ED.MainChat:HandleChecks(chatFrame, event, message, sender, ...);
 end
 
 ---Init Registers Blizzard chat events to be filtered
 function ChatHandler:Init()
-	if type(ChatFrame_AddMessageEventFilter) ~= "function" then
+	if type(ChatFrameUtil.AddMessageEventFilter) ~= "function" then
 		return;
 	end
 
-	local chatEvents = {
-		"CHAT_MSG_SAY",
-		"CHAT_MSG_EMOTE",
-		"CHAT_MSG_TEXT_EMOTE",
-		"CHAT_MSG_WHISPER",
-		"CHAT_MSG_WHISPER_INFORM",
-		"CHAT_MSG_PARTY",
-		"CHAT_MSG_PARTY_LEADER",
-		"CHAT_MSG_RAID",
-		"CHAT_MSG_RAID_LEADER",
-		"CHAT_MSG_RAID_WARNING",
-		"CHAT_MSG_YELL",
-		"CHAT_MSG_GUILD",
-		"CHAT_MSG_OFFICER",
-		"CHAT_MSG_CHANNEL", -- unused right now
-		"CHAT_MSG_CHANNEL_JOIN", -- unused right now
-		"CHAT_MSG_CHANNEL_LEAVE", -- unused right now
-		"CHAT_MSG_INSTANCE_CHAT",
-		"CHAT_MSG_INSTANCE_CHAT_LEADER",
-		"CHAT_MSG_SYSTEM",
-	};
-
-	local mainChatEvents = {
-		"CHAT_MSG_TEXT_EMOTE", -- Advanced Formatting
-		"CHAT_MSG_SYSTEM", -- Advanced Formatting
-		"CHAT_MSG_SAY", -- Keywords
-		"CHAT_MSG_EMOTE", -- Keywords
-		"CHAT_MSG_PARTY", -- Keywords
-		"CHAT_MSG_PARTY_LEADER", -- Keywords
-		"CHAT_MSG_RAID", -- Keywords
-		"CHAT_MSG_RAID_LEADER", -- Keywords
-		"CHAT_MSG_YELL", -- Keywords
-		"CHAT_MSG_GUILD", -- Keywords
-		"CHAT_MSG_OFFICER", -- Keywords
-		"CHAT_MSG_CHANNEL", -- Keywords (unused right now)
-	};
-
-	for _, evt in ipairs(chatEvents) do
-		ChatFrame_AddMessageEventFilter(evt, ChatFrameFilter);
+	for _, evt in ipairs(Constants.CHAT_EVENTS_ALL) do
+		ChatFrameUtil.AddMessageEventFilter(evt, function(...)
+			return self:ChatFrameFilter(...);
+		end);
 	end
 
-	for _, evt in ipairs(mainChatEvents) do
-		ChatFrame_AddMessageEventFilter(evt, MainChatFilter);
-	end
+	ED.MainChat:Toggle();
 end
 
 ED.ChatHandler = ChatHandler;

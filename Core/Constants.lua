@@ -7,14 +7,6 @@ local L = ED.Localization;
 local Constants = {};
 
 ---@type table<string, boolean>
-Constants.DIVIDE_AFTER = {
-	Public = true,
-	Instance = true,
-	Officer = true,
-	Whisper = true,
-};
-
----@type table<string, boolean>
 Constants.CHANNELS_TO_SKIP_NOTIFICATIONS = {
 	CHAT_MSG_ONLINE            = true,
 	CHAT_MSG_OFFLINE           = true,
@@ -29,6 +21,50 @@ Constants.CHANNELS_TO_SKIP_NOTIFICATIONS = {
 Constants.CHAT_BOX = {
 	MIN_FONT_SIZE = 6,
 	MAX_FONT_SIZE = 24,
+};
+
+---@type string[]
+Constants.CHAT_EVENTS_ALL = {
+	"CHAT_MSG_SAY",
+	"CHAT_MSG_EMOTE",
+	"CHAT_MSG_TEXT_EMOTE",
+	"CHAT_MSG_WHISPER",
+	"CHAT_MSG_WHISPER_INFORM",
+	"CHAT_MSG_PARTY",
+	"CHAT_MSG_PARTY_LEADER",
+	"CHAT_MSG_RAID",
+	"CHAT_MSG_RAID_LEADER",
+	"CHAT_MSG_RAID_WARNING",
+	"CHAT_MSG_YELL",
+	"CHAT_MSG_GUILD",
+	"CHAT_MSG_OFFICER",
+	-- "CHAT_MSG_CHANNEL", -- unused right now
+	-- "CHAT_MSG_CHANNEL_JOIN", -- unused right now
+	-- "CHAT_MSG_CHANNEL_LEAVE", -- unused right now
+	"CHAT_MSG_INSTANCE_CHAT",
+	"CHAT_MSG_INSTANCE_CHAT_LEADER",
+	"CHAT_MSG_SYSTEM",
+};
+
+---@type string[]
+Constants.CHAT_EVENTS_KEYWORDS = {
+	"CHAT_MSG_SAY", -- Keywords
+	"CHAT_MSG_EMOTE", -- Keywords
+	"CHAT_MSG_PARTY", -- Keywords
+	"CHAT_MSG_PARTY_LEADER", -- Keywords
+	"CHAT_MSG_RAID", -- Keywords
+	"CHAT_MSG_RAID_LEADER", -- Keywords
+	"CHAT_MSG_YELL", -- Keywords
+	"CHAT_MSG_GUILD", -- Keywords
+	"CHAT_MSG_OFFICER", -- Keywords
+	-- "CHAT_MSG_CHANNEL", -- Keywords (unused right now)
+};
+
+---@type string[]
+Constants.CHAT_EVENTS_ADVANCED_FORMATTING = {
+	"CHAT_MSG_TEXT_EMOTE", -- Advanced Formatting
+	"CHAT_MSG_SYSTEM", -- Advanced Formatting
+	"CHAT_MSG_MONSTER_SAY", -- Advanced Formatting (NPCs)
 };
 
 ---@class EavesdropperChatHistory
@@ -178,6 +214,14 @@ Constants.DEFAULT_WINDOW_SIZE = {
 };
 
 Constants.CHAT_UPDATE_THROTTLE_DEFAULT = 10;
+
+---@type table<string, boolean>
+Constants.DIVIDE_AFTER = {
+	Public = true,
+	Instance = true,
+	Officer = true,
+	Whisper = true,
+};
 
 Constants.FRAME = {
 	CLICKBLOCK_TIME = 0.4;

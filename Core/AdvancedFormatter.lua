@@ -3,6 +3,7 @@
 
 ---@class EavesdropperAdvancedFormatter
 local AdvancedFormatter = {};
+AdvancedFormatter.senderNameFormatted = false;
 
 ---@param event string
 ---@param _ any
@@ -52,11 +53,21 @@ local function CreateChatName(event, _, _, sender, _, _, _, _, _, _, _, _, _, gu
 	return sender;
 end
 
-function AdvancedFormatter:EnableNameFormatting()
+--- Registers the sender name filter if not already active.
+--- Only acts when event is CHAT_MSG_TEXT_EMOTE and the filter is off.
+---@param event string
+function AdvancedFormatter:EnableNameFormatting(event)
+	if event ~= "CHAT_MSG_TEXT_EMOTE" or self.senderNameFormatted then return; end
+	self.senderNameFormatted = true;
 	ChatFrameUtil.AddSenderNameFilter(CreateChatName);
 end
 
-function AdvancedFormatter:DisableNameFormatting()
+--- Removes the sender name filter if currently active.
+--- Only acts when event is not CHAT_MSG_TEXT_EMOTE and the filter is on.
+---@param event string
+function AdvancedFormatter:DisableNameFormatting(event)
+	if event == "CHAT_MSG_TEXT_EMOTE" or not self.senderNameFormatted then return; end
+	self.senderNameFormatted = false;
 	ChatFrameUtil.RemoveSenderNameFilter(CreateChatName);
 end
 
@@ -123,11 +134,10 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 
 	if entry.e == "CHAT_MSG_TEXT_EMOTE" and applyRPName then
 		msgToSend = ED.ChatFormatter:FormatTextEmoteTargetWithRPName(entry, msgFinalText);
+		self:EnableNameFormatting(entry.e);
 	elseif entry.e == "ROLL" and applyRPName then
 		msgToSend = ED.ChatFormatter:MsgFormatTextEmote(entry, name);
 	end
-
-	self:EnableNameFormatting();
 
 	return false, msgToSend, sender, ...;
 end
