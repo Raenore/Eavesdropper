@@ -51,7 +51,9 @@ function Keywords:ParseList()
 				:gsub("<class>",     className)
 				:gsub("<race>",      raceName);
 
-			self.List[word:lower()] = true;
+			if word ~= "" then
+				self.List[word:lower()] = true;
+			end
 		end
 	end
 
