@@ -6,12 +6,14 @@ All notable changes to this project will be documented in this file.
 Eavesdropper now supports per-character window visibility and includes minor consistency updates for the Settings menu.  
 
 ### Added
-- Eavesdropper can now replace your character's name with your RP name within quest text when using [Dialogue UI](https://www.curseforge.com/wow/addons/dialogueui) (special thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) for his work on his side) ([#36](https://github.com/Raenore/Eavesdropper/pull/36)).  
-  - This feature can be toggled under the "Advanced Formatting" category.
-  - Includes three display modes:
-	- Full Name: Displays your complete RP name.
-	- First Name: Displays only the first part of your RP name.
-	- Original (OOC) Name: Reverts to your standard character name.
+- Eavesdropper can now replace your character's name with your RP name within quest text when using [Dialogue UI](https://www.curseforge.com/wow/addons/dialogueui) (special thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) for his work on his side) ([#36](https://github.com/Raenore/Eavesdropper/pull/36) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
+- Eavesdropper can now replace your character's name within NPC's their dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
+  - Quest Text and NPC Dialogue feature can be toggled under the "Advanced Formatting" category.  
+  - Note: Chat bubbles will still show your original name, as they cannot be modified by addons. 
+  - Includes three display modes:  
+	- Full Name: Displays your complete RP name.  
+	- First Name: Displays only the first part of your RP name.  
+	- Original (OOC) Name: Reverts to your standard character name.  
 - Eavesdropper window visibility is now saved per character rather than per session.  
   - Allows the frame to be shown or hidden independently across different characters.  
   - The most recent visibility state is now remembered across logins and UI reloads.  
