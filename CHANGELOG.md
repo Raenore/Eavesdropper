@@ -12,13 +12,13 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
   - Includes optional notification options (sounds and taskbar flashing) in the "Notifications" tab.  
   - New messages will trigger a yellow message indicator on the respective window to help track conversations (enabled by default, can be disabled in settings).  
 - Eavesdropper can now replace your character's name with your RP name within quest text when using [Dialogue UI](https://www.curseforge.com/wow/addons/dialogueui) (special thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) for his work on his side) ([#36](https://github.com/Raenore/Eavesdropper/pull/36) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
-- Eavesdropper can now replace your character's name within NPC's their dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
-  - Quest Text and NPC Dialogue feature can be toggled under the "Advanced Formatting" category.  
+- Eavesdropper can now replace your character's name within NPC dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
+  - Quest Text and NPC Dialogue features can be toggled under the "Advanced Formatting" category.  
   - Note: Chat bubbles will still show your original name, as they cannot be modified by addons.  
   - Includes three display modes:  
-	- Full Name: Displays your complete RP name.  
-	- First Name: Displays only the first part of your RP name.  
-	- Original (OOC) Name: Reverts to your standard character name.  
+    - Full Name: Displays your complete RP name.  
+    - First Name: Displays only the first part of your RP name.  
+    - Original (OOC) Name: Reverts to your standard character name.  
 - Eavesdropper window visibility is now saved per character rather than per session.  
   - Allows the frame to be shown or hidden independently across different characters.  
   - The most recent visibility state is now remembered across logins and UI reloads.  
@@ -36,6 +36,7 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
 
 ### Fixed
 - Resolved another issue where TRP3 NPC Speech emotes (which typically begin with `| `) could appear invisible for certain users after using a standard Blizzard emote (e.g., /point, /wave) ([#40](https://github.com/Raenore/Eavesdropper/pull/40)).  
+- Resolved an Eavesdropper conflict with RP addons in specific rare circumstances when using completely empty profiles ([#43](https://github.com/Raenore/Eavesdropper/pull/43)).  
 
 ## [0.2.4] - 2026-03-14  
 Fourth minor patch, addressing a critical bug with TRP3's NPC Speech Emotes being invisible.  
