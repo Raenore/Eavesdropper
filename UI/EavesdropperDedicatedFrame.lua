@@ -98,6 +98,9 @@ function Eavesdropper_Dedicated_FrameMixin:OnShow()
 end
 
 function Eavesdropper_Dedicated_FrameMixin:OnHide()
+	-- When UI parent is hidden (ALT-Z etc), don't run destructive code.
+	if not UIParent:IsShown() then return; end
+
 	if self.chatTicker then
 		self.chatTicker:Cancel();
 		self.chatTicker = nil;
