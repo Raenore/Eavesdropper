@@ -10,6 +10,7 @@ PlayerName.preferredName = ED.Globals.player_character_name;
 ---Refreshes the cached preferred name from MSP data, falling back to the OOC name.
 function PlayerName.RefreshPlayerPreferredName()
 	PlayerName.preferredName = ED.Globals.player_character_name;
+
 	-- Request MSP data with a cache bust to make sure we get latest.
 	local fullName, firstName = ED.MSP.TryGetMSPData(ED.Utils.GetUnitName(), ED.Globals.player_guid);
 	local nameDisplayMode = ED.Database:GetSetting("NPCAndQuestNameDisplayMode");
@@ -32,7 +33,9 @@ function PlayerName:SubstitutePlayerPreferredName(sourceText)
 		PlayerName.RefreshPlayerPreferredName();
 	end
 
-	if not PlayerName.preferredName or not ED.Globals.player_character_name or ED.Globals.player_character_name == "" then
+	if not PlayerName.preferredName
+	or not ED.Globals.player_character_name
+	or ED.Globals.player_character_name == "" then
 		return sourceText;
 	end
 
