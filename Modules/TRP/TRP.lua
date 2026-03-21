@@ -8,11 +8,10 @@ if not C_AddOns.IsAddOnLoaded("totalRP3") then
 	return;
 end
 
+---Registers the Eavesdropper toolbar button once TRP3's workflow is fully loaded.
 local function onStart()
 	TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, function()
-		if not TRP3_API.toolbar then
-			return;
-		end
+		if not TRP3_API.toolbar then return; end
 
 		TRP3_API.toolbar.toolbarAddButton{
 			id = "trp3_eavesdropper",
@@ -39,4 +38,4 @@ TRP3_API.module.registerModule({
 	["id"] = "trp_eavesdropper",
 	["onStart"] = onStart,
 	["minVersion"] = 3,
-})
+});
