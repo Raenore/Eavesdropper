@@ -134,10 +134,6 @@ local function MsgFormatTextEmoteNoName(entry, name) -- luacheck: no unused (nam
 	return messageText;
 end;
 
-function ChatFormatter:MsgFormatTextEmoteNoName(entry, name)
-	return MsgFormatTextEmoteNoName(entry, name);
-end
-
 ---@type table<string, fun(entry:EavesdropperChatEntry, name:string):string>
 local MESSAGE_FORMATS = {
 	SAY                  = MsgFormatNormal,

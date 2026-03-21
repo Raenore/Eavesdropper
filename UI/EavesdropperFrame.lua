@@ -458,7 +458,7 @@ function Eavesdropper_FrameMixin:AddMessage(entry, fromHistory)
 		self:Show();
 	end
 
-	local r, g, b = ED.ChatFormatter:GetEntryColor(entry);
+	local r, g, b = ED.ChatFormatter.GetEntryColor(entry);
 	local formatted, firstName = ED.ChatFormatter:FormatMessage(entry);
 	self.ChatBox:AddMessage(formatted, r, g, b);
 

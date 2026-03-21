@@ -132,16 +132,16 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 	if ED.Utils.IsOwnPlayer(sender, event) then
 		msgFinalText = entry.m;
 	else
-		msgFinalText = ED.Utils.StripRealmSuffix(entry.s) .. " " .. ED.ChatFormatter:MsgFormatTextEmoteNoName(entry, name);
+		msgFinalText = ED.Utils.StripRealmSuffix(entry.s) .. " " .. ED.ChatFormatter.MsgFormatTextEmoteNoName(entry, name);
 	end
 
 	local msgToSend = msgFinalText;
 
 	if entry.e == "CHAT_MSG_TEXT_EMOTE" and applyRPName then
-		msgToSend = ED.ChatFormatter:FormatTextEmoteTargetWithRPName(entry, msgFinalText);
+		msgToSend = ED.ChatFormatter.FormatTextEmoteTargetWithRPName(entry, msgFinalText);
 		self:EnableNameFormatting(entry.e);
 	elseif entry.e == "ROLL" and applyRPName then
-		msgToSend = ED.ChatFormatter:MsgFormatTextEmote(entry, name);
+		msgToSend = ED.ChatFormatter.MsgFormatTextEmote(entry, name);
 	end
 
 	return false, msgToSend, sender, ...;
