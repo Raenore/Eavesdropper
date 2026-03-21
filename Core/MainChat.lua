@@ -23,7 +23,7 @@ local function toggleFilters(events, enable)
 	end
 end
 
---- Returns true if the event is any CHAT_MSG_MONSTER_* variant.
+---Returns true if the event is any CHAT_MSG_MONSTER_* variant.
 ---@param event string
 ---@return boolean
 local function isMonsterEvent(event)
@@ -34,19 +34,18 @@ local function isMonsterEvent(event)
 		or event == "CHAT_MSG_MONSTER_WHISPER";
 end
 
----Handles a specific chat message.
+---Routes a chat message through the appropriate handler: AdvancedFormatter, NPCDialogue, or Keywords.
 ---@param chatFrame table
 ---@param event string
 ---@param message string
 ---@param sender string
----@vararg any
+---@param ... any
 ---@return boolean?, string, string, ...
 function MainChat:HandleChecks(chatFrame, event, message, sender, ...) -- luacheck: no unused (chatFrame)
-	if not message or not canaccessvalue(message) then
-		return;
-	end
+	if not message or not canaccessvalue(message) then return; end
 
 	ED.AdvancedFormatter:DisableNameFormatting(event);
+
 	if event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_SYSTEM" then
 		local handled, newMessage, newSender = ED.AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...);
 		if handled ~= nil then return handled, newMessage, newSender, ...; end
@@ -61,14 +60,17 @@ function MainChat:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 	return false;
 end
 
+---Registers or unregisters the advanced formatting filter based on the ApplyOnMainChat setting.
 function MainChat:ToggleAdvancedFormatting()
 	toggleFilters(Constants.CHAT_EVENTS_ADVANCED_FORMATTING, ED.Database:GetSetting("ApplyOnMainChat"));
 end
 
+---Registers or unregisters the keyword filter based on the EnableKeywords setting.
 function MainChat:ToggleKeywords()
 	toggleFilters(Constants.CHAT_EVENTS_KEYWORDS, ED.Database:GetSetting("EnableKeywords"));
 end
 
+---Toggles both the advanced formatting and keyword filters according to current settings.
 function MainChat:Toggle()
 	self:ToggleAdvancedFormatting();
 	self:ToggleKeywords();
