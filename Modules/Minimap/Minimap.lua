@@ -11,7 +11,10 @@ local LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1");
 local LibDBCompartment = LibStub:GetLibrary("LibDBCompartment-1.0");
 local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0");
 
-local function OnClick(self, button)
+---Handles minimap/compartment button clicks.
+---@param self table
+---@param button string
+local function OnClick(self, button) -- luacheck: no unused (self)
 	if button == "LeftButton" then
 		ED.Settings:ShowSettings();
 	elseif button == "RightButton" then
@@ -19,12 +22,14 @@ local function OnClick(self, button)
 	end
 end
 
+---Populates the LDB tooltip with the addon title, version, and help text.
+---@param tooltip table
 local function OnTooltipShow(tooltip)
 	tooltip:AddDoubleLine(ED.Globals.addon_title, ED.Globals.addon_version, nil, nil, nil, 1, 1, 1);
 	tooltip:AddLine(Localization.ADDON_TOOLTIP_HELP);
 end
 
----Initializes and registers the addon’s minimap and compartment buttons.
+---Initialises and registers the addon's minimap icon and addon compartment button.
 function Minimap:SetupMinimapButtons()
 	local ldb = LibDataBroker:NewDataObject(ED.Globals.addon_title, {
 		type = "launcher",
@@ -43,7 +48,7 @@ function Minimap:SetupMinimapButtons()
 	self:UpdateMinimapButtons();
 end
 
----Toggles visibility of minimap-related buttons based on addon settings.
+---Refreshes the visibility of the minimap icon and compartment button from current settings.
 function Minimap:UpdateMinimapButtons()
 	---@type EavesdropperGlobalMinimapButton
 	local minimapSettings = ED.Database:GetGlobalSetting("MinimapButton");
