@@ -402,7 +402,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				[3] = L.NAME_DISPLAY_MODE_ORIGINAL_NAME,
 			},
 			sorting = { 1, 2, 3 },
-			disabled = function() return not ED.MSP.IsEnabled() or not ED.QuestText.SupportedAddonsInstalled(); end,
+			disabled = function() return not ED.MSP.IsEnabled() end,
 			disabledValues = function()
 				return {
 					[1] = not ED.MSP.IsEnabled(),
@@ -421,7 +421,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			label = L.USE_RP_NAME_FOR_QUEST_TEXT,
 			tooltip = L.USE_RP_NAME_FOR_QUEST_TEXT_HELP,
 			buildAdded = "0.3.0|120001",
-			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
+			disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
 			get = function() return ED.Database:GetSetting("UseRPNameInQuestText"); end,
 			set = function(val)
 				ED.Database:SetSetting("UseRPNameInQuestText", val);

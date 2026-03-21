@@ -26,6 +26,7 @@ function Eavesdropper_FrameMixin:OnLoad()
 	self:UpdateMouseLock();
 	self.clickblock = 0;
 	self.isMouseOver = false;
+	self.titlebar_name = nil;
 
 	self.ChatBox:SetJustifyH("LEFT");
 	self.ChatBox:SetIndentedWordWrap(true);
@@ -56,7 +57,8 @@ function Eavesdropper_FrameMixin:OnLoad()
 
 	-- Configure title button
 	local titleBtn = self.TitleBar.TitleButton;
-	titleBtn.Text:SetText("Eavesdropper");
+	self.titlebar_name = "Eavesdropper";
+	titleBtn.Text:SetText(self.titlebar_name);
 
 	hooksecurefunc(self.ChatBox, "RefreshDisplay", function()
 		self:OnChatboxRefresh();
@@ -412,11 +414,8 @@ function Eavesdropper_FrameMixin:RefreshChat()
 	local maxMessages = ED.Database:GetSetting("MaxHistory");
 	local player = self.eavesdropped_player;
 
-	local titleName = ED.Database:GetSetting("UpdateTitleBarWithName")
-		and player
-		and ED.Utils.StripRealmSuffix(player)
-		or "Eavesdropper";
-	self.TitleBar.TitleButton.Text:SetText(titleName);
+	self.titlebar_name = "Eavesdropper";
+	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
 
 	if player then
 		-- Try full name (with realm) first, fall back to bare name
@@ -432,6 +431,13 @@ function Eavesdropper_FrameMixin:RefreshChat()
 					self:AddMessage(entry, true);
 				end
 			end
+		end
+
+		-- Update title from player name directly; covers the case where AddMessage never fired.
+		if ED.Database:GetSetting("UpdateTitleBarWithName") then
+			local displayName = ED.Utils.StripColorCodes(ED.Utils.StripRealmSuffix(player));
+			self.titlebar_name = displayName;
+			self.TitleBar.TitleButton.Text:SetText(displayName);
 		end
 	end
 
@@ -462,9 +468,11 @@ function Eavesdropper_FrameMixin:AddMessage(entry, fromHistory)
 	local formatted, firstName = ED.ChatFormatter:FormatMessage(entry);
 	self.ChatBox:AddMessage(formatted, r, g, b);
 
-	if ED.Database:GetSetting("UpdateTitleBarWithName") then
-		self.TitleBar.TitleButton.Text:SetText(firstName);
+	if firstName then
+		self.titlebar_name = ED.Utils.StripColorCodes(firstName);
 	end
+	local displayName = ED.Database:GetSetting("UpdateTitleBarWithName") and self.titlebar_name or "Eavesdropper";
+	self.TitleBar.TitleButton.Text:SetText(displayName);
 end
 
 ---Safe wrapper to add a chat message

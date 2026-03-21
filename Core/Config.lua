@@ -12,6 +12,17 @@ local Config = {};
 ---@type table<string, string>
 Config.soundList = {};
 
+---Maps DB setting keys to their camelCase field names on dedicated frames.
+---Required to avoid shadowing WoW Frame API methods (e.g. EnableMouse, LockScroll).
+---@type table<string, string>
+local DedicatedFrameFieldMap = {
+	EnableMouse = "mouseEnabled",
+	LockScroll = "lockScroll",
+	LockWindow = "lockWindow",
+	LockTitleBar = "lockTitleBar",
+	HideCloseButton = "hideCloseButton",
+};
+
 ---@param element table UI element
 ---@param text string Tooltip text
 ---@return nil
@@ -22,7 +33,7 @@ local function SetTooltip(element, text)
 	end);
 end
 
----SetupSounds Registers default sounds and populates the config sound list
+---Registers default sounds and populates the config sound list
 ---@return nil
 local function SetupSounds()
 	for _, sound in ipairs(ED.Constants.DEFAULT_SOUND_LIST) do
@@ -34,24 +45,32 @@ local function SetupSounds()
 	end
 end
 
----ShowConfigMenu Displays the configuration menu for the addon
+---Displays the configuration menu for the addon
 ---@param frame table
 ---@param dedicatedFrame boolean?
 ---@return nil
 function Config:ShowConfigMenu(frame, dedicatedFrame)
 	dedicatedFrame = dedicatedFrame or false;
 
+	---Reads a setting from the dedicated frame or the DB
+	---@param key string
+	---@return any
 	local function getSetting(key)
 		if dedicatedFrame then
-			return frame[key];
+			local field = DedicatedFrameFieldMap[key] or key;
+			return frame[field];
 		else
 			return ED.Database:GetSetting(key);
 		end
 	end
 
+	---Toggles a setting on the dedicated frame or in the DB, then runs postUpdate
+	---@param key string
+	---@param postUpdate function?
 	local function toggleSetting(key, postUpdate)
 		if dedicatedFrame then
-			frame[key] = not frame[key];
+			local field = DedicatedFrameFieldMap[key] or key;
+			frame[field] = not frame[field];
 		else
 			local current = ED.Database:GetSetting(key);
 			ED.Database:SetSetting(key, not current);
@@ -75,7 +94,6 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		else
 			rootDescription:CreateTitle(L.DEDICATED_WINDOWS);
 		end
-
 
 		-- Filters
 		local filter = rootDescription:CreateButton(L.FILTER);
@@ -116,7 +134,11 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		local lockWindow = rootDescription:CreateCheckbox(
 			L.LOCK_WINDOW,
 			function() return getSetting("LockWindow"); end,
-			function() toggleSetting("LockWindow", function() frame.ResizeHandle:SetShown(not getSetting("LockWindow")); end); end
+			function()
+				toggleSetting("LockWindow", function()
+					frame.ResizeHandle:SetShown(not getSetting("LockWindow"));
+				end);
+			end
 		);
 		SetTooltip(lockWindow, L.LOCK_WINDOW_HELP);
 
@@ -137,7 +159,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 			for i = ED.Constants.CHAT_BOX.MIN_FONT_SIZE, ED.Constants.CHAT_BOX.MAX_FONT_SIZE, 2 do
 				dedicatedFontSize:CreateCheckbox(
 					i,
-				function() return i == frame.FontSize; end,
+					function() return i == frame.FontSize; end,
 					function()
 						frame.FontSize = i;
 						ED.ChatBox:ApplyFontOptions(frame);
@@ -149,7 +171,11 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 			rootDescription:CreateCheckbox(
 				L.HIDE_CLOSE_BUTTON,
 				function() return getSetting("HideCloseButton"); end,
-				function() toggleSetting("HideCloseButton", function() frame.TitleBar.CloseButton:SetShown(not frame.HideCloseButton); end); end
+				function()
+					toggleSetting("HideCloseButton", function()
+						frame.TitleBar.CloseButton:SetShown(not getSetting("HideCloseButton"));
+					end);
+				end
 			);
 		end
 	end);
