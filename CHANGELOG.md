@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]  
+## [0.3.0] - 2026-03-22  
 Significant feature update introducing Dedicated Windows for unique targets, RP name integration with Dialogue UI, and localized Russian support.  
 
 ### Added
@@ -12,14 +12,14 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
   - Includes optional notification options (sounds and taskbar flashing) in the "Notifications" tab.  
   - New messages will trigger a yellow message indicator on the respective window to help track conversations (enabled by default, can be disabled in settings).  
 - Eavesdropper can now replace your character's name with your RP name within quest text when using [Dialogue UI](https://www.curseforge.com/wow/addons/dialogueui) (special thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) for his work on his side) ([#36](https://github.com/Raenore/Eavesdropper/pull/36) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
-- Eavesdropper can now replace your character's name within NPC's their dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
-  - Quest Text and NPC Dialogue feature can be toggled under the "Advanced Formatting" category.  
+- Eavesdropper can now replace your character's name within NPC dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).  
+  - Quest Text and NPC Dialogue features can be toggled under the "Advanced Formatting" category.  
   - Note: Chat bubbles will still show your original name, as they cannot be modified by addons.  
   - Includes three display modes:  
-	- Full Name: Displays your complete RP name.  
-	- First Name: Displays only the first part of your RP name.  
-	- Original (OOC) Name: Reverts to your standard character name.  
-- Eavesdropper window visibility is now saved per character rather than per session.  
+    - Full Name: Displays your complete RP name.  
+    - First Name: Displays only the first part of your RP name.  
+    - Original (OOC) Name: Reverts to your standard character name.  
+- Eavesdropper window visibility is now saved per character rather than per session ([#25](https://github.com/Raenore/Eavesdropper/pull/25)).  
   - Allows the frame to be shown or hidden independently across different characters.  
   - The most recent visibility state is now remembered across logins and UI reloads.  
 - Russian translation added thanks to [Hubbotu](https://github.com/Hubbotu) / ZamestoTV ([#32](https://github.com/Raenore/Eavesdropper/pull/32)).  
@@ -36,6 +36,8 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
 
 ### Fixed
 - Resolved another issue where TRP3 NPC Speech emotes (which typically begin with `| `) could appear invisible for certain users after using a standard Blizzard emote (e.g., /point, /wave) ([#40](https://github.com/Raenore/Eavesdropper/pull/40)).  
+- Resolved an Eavesdropper conflict with RP addons in specific rare circumstances when using completely empty profiles ([#43](https://github.com/Raenore/Eavesdropper/pull/43)).  
+- Resolved an issue where the Eavesdropper window would sometimes randomly hide when entering instances (dungeons, Trial of Style, etc.) ([#25](https://github.com/Raenore/Eavesdropper/pull/25)).  
 
 ## [0.2.4] - 2026-03-14  
 Fourth minor patch, addressing a critical bug with TRP3's NPC Speech Emotes being invisible.  
@@ -125,7 +127,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
 [0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
