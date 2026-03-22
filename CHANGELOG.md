@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]  
+## [0.3.0] - 2026-03-22  
 Significant feature update introducing Dedicated Windows for unique targets, RP name integration with Dialogue UI, and localized Russian support.  
 
 ### Added
@@ -127,7 +127,8 @@ Eavesdropper's initial release build, targeting Midnight Pre-Patch.
 ### Added  
 - Initial release.  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
 [0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
