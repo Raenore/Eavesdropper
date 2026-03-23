@@ -26,11 +26,6 @@ Toggle visibility on the fly. You can filter the history window to show only spe
 
 ![Filters Versus](Previews/Combos/Versus.png)
 
-## Keywords
-Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
-
-![Keywords](Previews/Keywords/Tooltip.png)
-
 ## Dedicated Windows
 Create individual Eavesdropper windows for specific targets by right-clicking a unit portrait or chat name and selecting **"Eavesdrop On"**.
 
@@ -43,6 +38,11 @@ Each Dedicated Window has its own unique:
 **Note:** Dedicated Windows are session-based and do not persist through UI reloads or logouts.
 
 ![Dedicated Windows Combined](Previews/Combos/DedicatedWindowsCombined.png)
+
+## Keywords
+Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
+
+![Keywords](Previews/Keywords/Tooltip.png)
 
 ## Notifications
 Eavesdropper can play a sound notification and flash the taskbar when:
