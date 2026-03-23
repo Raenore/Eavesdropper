@@ -2,11 +2,12 @@
 Eavesdropper helps you stay immersed in busy RP environments by focusing on the interactions that matter most. 
 
 **Key Features:**
-- **Dedicated History:** A focused window for your current target or mouseover.
+- **History Window:** A focused, real-time feed for your current target or mouseover.
+- **Dedicated Windows:** Create unique, independent windows for specific targets to track multiple conversations simultaneously.
 - **Keyword Highlights:** Custom keywords highlighted in chat with optional sound alerts.
-- **Notification Support:** Play a sound and flash the taskbar when your target performs an action, or when a Blizzard emote is directed at you.
+- **Notification Support:** Play a sound and flash the taskbar when your target performs an action, or when a Blizzard emote is directed at you, or a Dedicated Window receives a message.
 - **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.
-- **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls and emotes (e.g., `/point`).
+- **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls, Blizzard emotes, NPC dialogue, and Quest Text (via Dialogue UI).
 
 Available on [CurseForge](https://www.curseforge.com/wow/addons/eavesdropper), [Wago.io](https://addons.wago.io/addons/eavesdropper), and [WoWInterface](https://www.wowinterface.com/downloads/info27060-Eavesdropper.html)!  
 
@@ -23,7 +24,20 @@ Keep track of the conversation with a customizable frame that displays the recen
 ### Filters
 Toggle visibility on the fly. You can filter the history window to show only specific types of interactions at any time.
 
-![Filters Versus](Previews/Filters/Versus.png)
+![Filters Versus](Previews/Combos/Versus.png)
+
+## Dedicated Windows
+Create individual Eavesdropper windows for specific targets by right-clicking a unit portrait or chat name and selecting **"Eavesdrop On"**.
+
+Each Dedicated Window has its own unique:
+- Filters
+- Font Size
+- New Message indicator
+- Notifications (Sounds & Flash)
+
+**Note:** Dedicated Windows are session-based and do not persist through UI reloads or logouts.
+
+![Dedicated Windows Combined](Previews/Combos/DedicatedWindowsCombined.png)
 
 ## Keywords
 Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
@@ -34,6 +48,7 @@ Never miss a mention. Define custom keywords to be highlighted in the main chat 
 Eavesdropper can play a sound notification and flash the taskbar when:
 - Your current target takes an action (e.g., `/say`, emotes, etc.).
 - A Blizzard emote is directed at you (e.g., `/point` or `/wave`).
+- A new message is received in a **Dedicated Window**.
 
 ![Notifications](Previews/Notifications/Notifications.png)
 
@@ -48,8 +63,15 @@ While Eavesdropper is designed to be broadly compatible, the following addons ar
 ![Multi-Message Support](Previews/MultiMessageSupport/MultiMessageSupport.png)
 
 ## Advanced RP Name Formatting
+Eavesdropper can replace standard character names with their respective RP names across various situations:
+- **Blizzard Emotes:** Replaces names in emotes like `/point`, `/wave`, or `/bow`.
+- **Rolls:** Shows RP names in `/roll` results.
+- **NPC Dialogue:** Replaces your name when NPCs speak to you in chat (`/say`, `/whisper`, etc.).
+- **Quest Text:** Seamlessly integrates with **Dialogue UI** to show your RP name during quest interactions.
+
 Eavesdropper can replace standard character names in system emotes (like `/point` or `/wave`) and `/roll` results with their respective RP names.
 
 > **Note:** This feature requires your client to have the player's RP data cached (via MSP) before the replacement can occur.
 
-![Advanced Formatting](Previews/AdvancedFormatting/AdvancedFormatting.png)
+![Advanced Formatting Combined](Previews/Combos/AFCombined.png)
+![Quest Text Dialogue UI](Previews/NPCDialogueAndQuestText/DialogueUI.png)
