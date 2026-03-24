@@ -57,7 +57,7 @@ end
 
 ---OnHide for Dedicated and Group instance frames.
 function Eavesdropper_SharedFrameMixin:OnHideInstanceFrame()
-	if not UIParent:IsShown() then return; end
+	if not UIParent:IsShown() or self.isCombatHidden then return; end
 
 	if self.chatTicker then
 		self.chatTicker:Cancel();
