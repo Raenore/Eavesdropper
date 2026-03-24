@@ -35,6 +35,8 @@ local Constants = ED.Constants;
 ---@return number? minLineId
 ---@return number maxLineId
 function ChatHistory:pruneAndRebuild(now)
+	local DisablePruning = true; -- dev flag: set to true to disable expiration pruning
+
 	local minLineId;
 	local maxLineId = 0;
 
@@ -44,7 +46,9 @@ function ChatHistory:pruneAndRebuild(now)
 		for i = 1, #chatData do
 			local entry = chatData[i];
 			if entry then
-				if now <= (entry.t or 0) + Constants.CHAT_HISTORY.EXPIRE_AFTER then
+				local isExpired = now > (entry.t or 0) + Constants.CHAT_HISTORY.EXPIRE_AFTER;
+
+				if DisablePruning or not isExpired then
 					chatData[i] = nil;
 					chatData[nextIndex] = entry;
 					nextIndex = nextIndex + 1;
@@ -341,6 +345,24 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 			end
 		end
 		dedicatedFrame:TryAddMessage(entry);
+	end
+
+	if entry.s and ED.GroupFrame then
+		ED.GroupFrame:ForEachFrame(function(frame)
+			if frame:HasPlayer(sender) then
+				if not entry.p then
+					local notifyGroupSound = ED.Database:GetSetting("NotificationGroupSound");
+					local notifyGroupFlash = ED.Database:GetSetting("NotificationGroupFlashTaskbar");
+
+					if (notifyGroupSound or notifyGroupFlash)
+						and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
+						if notifyGroupSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.GROUP); end
+						if notifyGroupFlash then ED.Notifications:FlashTaskbar(); end
+					end
+				end
+				frame:TryAddMessage(entry);
+			end
+		end);
 	end
 
 	return entry;
