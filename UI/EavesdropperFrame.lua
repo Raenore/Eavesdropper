@@ -4,9 +4,6 @@
 ---@type EavesdropperConstants
 local Constants = ED.Constants;
 
----@type EavesdropperEnums
-local Enums = ED.Enums;
-
 ---@class EavesdropperFrameModule
 local FrameModule = {};
 
@@ -88,12 +85,6 @@ end
 -- Mouse / Interaction
 -- ============================================================
 
-function Eavesdropper_FrameMixin:OnEnter()
-	if self.isMouseOver then return; end
-	self.isMouseOver = true;
-	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
-end
-
 ---Persist window position after a drag; intentionally not called from the base
 function Eavesdropper_FrameMixin:OnDragStop()
 	self:StopMovingOrSizing();
@@ -115,6 +106,8 @@ function Eavesdropper_FrameMixin:OnResizeFinished()
 end
 
 ---Returns true if the frame is currently tracking name
+---@param name string
+---@return boolean
 function Eavesdropper_FrameMixin:EavesdroppingOn(name)
 	local filter = self.players and self.players[name];
 	return filter == 1;
@@ -146,7 +139,8 @@ function Eavesdropper_FrameMixin:UpdateTitleBar()
 	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
 end
 
----Restore window position, size, resize handle, and close button from the database
+---Restore window position, size, resize handle, and close button from the database.
+---Overrides SharedFrameMixin:RestoreLayout which uses local frame state instead.
 function Eavesdropper_FrameMixin:RestoreLayout()
 	if not ED.Database then return; end
 
@@ -178,8 +172,8 @@ end
 -- Visibility
 -- ============================================================
 
+---Overrides SharedFrameMixin:HandleVisibility with HideWhenEmpty and WindowVisible logic
 function Eavesdropper_FrameMixin:HandleVisibility()
-	-- Hide in combat if the setting is on
 	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
 		self:Hide();
 		return;
@@ -303,13 +297,10 @@ function Eavesdropper_FrameMixin:AddMessage(entry, fromHistory)
 	self.ChatBox:AddMessage(formatted, r, g, b);
 end
 
----Apply all profile settings: font, filters, layout, colors, history, and settings UI
+---Apply all profile settings and refresh the settings UI.
+---Calls ApplyWindowSettings (shared), then additionally refreshes the settings panel.
 function Eavesdropper_FrameMixin:ApplyProfileSettings()
-	ED.ChatBox:ApplyFontOptions(self);
-	ED.ChatFilters:UpdateFilters(self);
-	self:RestoreLayout();
-	self:ApplyThemeColors();
-	self:RefreshChat();
+	self:ApplyWindowSettings();
 
 	if ED.SettingsFrame then
 		ED.SettingsFrame:RefreshWidgets();
