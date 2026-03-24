@@ -4,14 +4,13 @@
 ---@type EavesdropperConstants
 local Constants = ED.Constants;
 
----@type EavesdropperEnums
-local Enums = ED.Enums;
-
 local L = ED.Localization;
 
 ---@class EavesdropperGroupFrame
 local GroupFrame = {};
 
+---Keyed by displayName, which is enforced unique by HasFrameWithName.
+---The _G frame name uses a numeric index and is tracked separately.
 ---@type table<string, EavesdropperGroupFrame>
 GroupFrame.frames = GroupFrame.frames or {};
 
@@ -54,14 +53,7 @@ function Eavesdropper_Group_FrameMixin:OnLoad()
 	self.titlebar_name = nil;
 	self.nameDisplayMode = ED.Database and ED.Database:GetSetting("NameDisplayMode") or 3;
 
-	-- Initialise all local state before any method calls that read it
-	self.lockWindow = false;
-	self.lockTitleBar = true;
-	self.hideCloseButton = false;
-	self.lockScroll = false;
-	self.mouseEnabled = false;
-	self.clickblock = 0;
-	self.isMouseOver = false;
+	self:InitInstanceFrameState();
 
 	self:EnableMouseWheel(true);
 	self:UpdateMouseLock();
@@ -89,7 +81,7 @@ function Eavesdropper_Group_FrameMixin:OnLoad()
 		self.TitleBar.CloseButton:Hide();
 	end
 
-	-- Configure title button; prefer MSP display name, fall back to bare player name
+	-- Configure title button; triggers the group config menu
 	local titleBtn = self.TitleBar.TitleButton;
 	titleBtn:SetScript("OnClick", function()
 		ED.Config:ShowConfigMenu(self, false, true);
@@ -110,66 +102,19 @@ function Eavesdropper_Group_FrameMixin:OnShow()
 end
 
 function Eavesdropper_Group_FrameMixin:OnHide()
-	-- When the UI parent is hidden (ALT-Z etc.), skip destructive code.
-	if not UIParent:IsShown() then return; end
+	Eavesdropper_SharedFrameMixin.OnHideInstanceFrame(self);
+end
 
-	if self.chatTicker then
-		self.chatTicker:Cancel();
-		self.chatTicker = nil;
-	end
-
-	-- Stop any in-progress new-indicator animations
-	if self.NewIndicator then
-		if self.NewIndicator.NewIndicatorFadeIn then self.NewIndicator.NewIndicatorFadeIn:Stop(); end
-		if self.NewIndicator.NewIndicatorFadeOut then self.NewIndicator.NewIndicatorFadeOut:Stop(); end
-		self.NewIndicator.isFadedIn = false;
-		self.NewIndicator.isFadedOut = false;
-	end
-
-	if self.newIndicatorTimer then
-		self.newIndicatorTimer:Cancel();
-		self.newIndicatorTimer = nil;
-	end
-
-	self:UnregisterAllEvents();
-	self:SetScript("OnEnter", nil);
-	self:SetScript("OnLeave", nil);
-
-	self:SetParent(nil);
-
-	for index, frame in pairs(GroupFrame.frames) do
-		if frame == self then
-			GroupFrame.frames[index] = nil;
-			break;
-		end
-	end
-
-	-- Clean up the global reference so the name can be reused
-	local frameName = self:GetName();
-	if frameName and _G[frameName] == self then
-		_G[frameName] = nil;
+---Remove self from the GroupFrame manager on hide.
+function Eavesdropper_Group_FrameMixin:OnUnregisterFrame()
+	if self.displayName then
+		GroupFrame.frames[self.displayName] = nil;
 	end
 end
 
 -- ============================================================
--- Mouse / interaction
+-- Mouse / Interaction
 -- ============================================================
-
-function Eavesdropper_Group_FrameMixin:OnEnter()
-	if self.isMouseOver then return; end
-	self.isMouseOver = true;
-
-	-- Fade out the new-message indicator when the user hovers over the frame
-	if self.NewIndicator and self.NewIndicator.isFadedIn and not self.NewIndicator.isFadedOut then
-		self.NewIndicator.NewIndicatorFadeIn:Stop();
-		self.NewIndicator.NewIndicatorFadeOut:Stop();
-		self.NewIndicator.NewIndicatorFadeOut:Play();
-		self.NewIndicator.isFadedOut = true;
-		self.NewIndicator.isFadedIn = false;
-	end
-
-	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
-end
 
 ---Position is intentionally not persisted; group frames reset on reload
 function Eavesdropper_Group_FrameMixin:OnDragStop()
@@ -181,57 +126,27 @@ function Eavesdropper_Group_FrameMixin:OnResizeFinished()
 end
 
 -- ============================================================
--- Layout / appearance
+-- Layout / Appearance
 -- ============================================================
 
----Updates the name in the title bar
----@param newName string
+---Update the title bar text
+---@param newName string? If provided it becomes the new displayName; otherwise self.displayName is used.
 function Eavesdropper_Group_FrameMixin:UpdateTitleBar(newName)
-	if newName == self.titlebar_name then return; end
+	if newName and newName ~= self.displayName then
+		self.displayName = newName;
+	end
+
 	if self.displayName == self.titlebar_name then return; end
 
 	self.titlebar_name = self.displayName;
 	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
 end
 
----Restore resize handle and close button from local frame state (not the database)
-function Eavesdropper_Group_FrameMixin:RestoreLayout()
-	if not ED.Database then return; end
-
-	if not self.lockWindow then
-		self.ResizeHandle:Show();
-	else
-		self.ResizeHandle:Hide();
-	end
-
-	if self.hideCloseButton then
-		self.TitleBar.CloseButton:Hide();
-	else
-		self.TitleBar.CloseButton:Show();
-	end
-end
-
--- ============================================================
--- Visibility
--- ============================================================
-
-function Eavesdropper_Group_FrameMixin:HandleVisibility()
-	-- Hide in combat if the setting is on
-	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
-		self:Hide();
-		return;
-	end
-
-	-- Group frames are always shown; intentionally skip HideWhenEmpty
-	-- to avoid silently hiding a frame the user explicitly opened
-	self:Show();
-end
-
 -- ============================================================
 -- Chat
 -- ============================================================
 
----Repopulate the chat box from stored history
+---Repopulate the chat box by merging history from all tracked players
 function Eavesdropper_Group_FrameMixin:RefreshChat()
 	if not self.ChatBox then return; end
 
@@ -243,17 +158,16 @@ function Eavesdropper_Group_FrameMixin:RefreshChat()
 	if self.players and #self.players > 0 then
 		self:PopulateGroupHistoryMessages(maxMessages);
 	end
+
 	self.refreshing = false;
 end
 
----PopulateGroupHistoryMessages Collects history from all tracked players,
----merges the entries into a single chronological list sorted by entry ID,
----and feeds them into the ChatBox oldest-first.
+---Collect and deduplicate history across all tracked players, sort chronologically,
+---trim to maxMessages, then feed entries into the ChatBox oldest-first.
 ---@param maxMessages number
 function Eavesdropper_Group_FrameMixin:PopulateGroupHistoryMessages(maxMessages)
-	---Collect and deduplicate entries across all tracked players
-	---keyed by entry.id to avoid duplicates if a sender appears twice
-	local seen    = {};
+	-- Collect entries keyed by entry.id to deduplicate across players
+	local seen = {};
 	local entries = {};
 
 	for _, player in ipairs(self.players) do
@@ -275,10 +189,10 @@ function Eavesdropper_Group_FrameMixin:PopulateGroupHistoryMessages(maxMessages)
 
 	if #entries == 0 then return; end
 
-	---Sort ascending by ID: lowest ID (oldest) first, highest ID (newest) last
+	-- Sort ascending by ID: lowest ID (oldest) first, highest ID (newest) last
 	table.sort(entries, function(a, b) return a.id < b.id; end);
 
-	---Trim to maxMessages total after merging
+	-- Trim to maxMessages total after merging
 	local start = math.max(1, #entries - maxMessages + 1);
 	for i = start, #entries do
 		self:AddMessage(entries[i], true);
@@ -310,55 +224,19 @@ function Eavesdropper_Group_FrameMixin:AddMessage(entry, fromHistory)
 	self.ChatBox:AddMessage(formatted, r, g, b);
 end
 
----Override of the base TryAddMessage to handle the new-message indicator
+---Override of the base TryAddMessage to handle the new-message indicator.
 ---@param entry EavesdropperChatEntry
 function Eavesdropper_Group_FrameMixin:TryAddMessage(entry)
-	if self.ChatBox:GetScrollOffset() == 0 then
-		self.clickblock = GetTime();
-	end
+	Eavesdropper_SharedFrameMixin.TryAddMessage(self, entry);
 
-	self:AddMessage(entry);
-
-	-- Show new-message indicator for incoming messages when the frame is not hovered
 	if not entry.p
-		-- and ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator")
+		-- TODO: and ED.Database:GetGlobalSetting("GroupWindowsNewIndicator")
 		and self.NewIndicator
 		and not self.isMouseOver
 	then
-		if not self.NewIndicator.isFadedIn then
-			self.NewIndicator:Show();
-			self.NewIndicator.NewIndicatorFadeIn:Stop();
-			self.NewIndicator.NewIndicatorFadeOut:Stop();
-			self.NewIndicator.NewIndicatorFadeIn:Play();
-			self.NewIndicator.isFadedIn = true;
-			self.NewIndicator.isFadedOut = false;
-		end
-
-		if self.newIndicatorTimer then
-			self.newIndicatorTimer:Cancel();
-			self.newIndicatorTimer = nil;
-		end
-
-		self.newIndicatorTimer = C_Timer.NewTimer(Constants.CHAT_NEW_INDICATOR_FADE_OUT, function()
-			if self.NewIndicator and self.NewIndicator.NewIndicatorFadeOut and not self.NewIndicator.isFadedOut then
-				self.NewIndicator.NewIndicatorFadeIn:Stop();
-				self.NewIndicator.NewIndicatorFadeOut:Stop();
-				self.NewIndicator.NewIndicatorFadeOut:Play();
-				self.NewIndicator.isFadedOut = true;
-				self.NewIndicator.isFadedIn = false;
-			end
-			self.newIndicatorTimer = nil;
-		end);
+		self:FadeInNewIndicator();
+		self:ScheduleNewIndicatorFadeOut();
 	end
-end
-
----Apply all window settings: font, filters, layout, colors, and history
-function Eavesdropper_Group_FrameMixin:ApplyWindowSettings()
-	ED.ChatBox:ApplyFontOptions(self);
-	ED.ChatFilters:UpdateFilters(self);
-	self:RestoreLayout();
-	self:ApplyThemeColors();
-	self:RefreshChat();
 end
 
 -- ============================================================
@@ -416,13 +294,13 @@ StaticPopupDialogs["EAVESDROPPER_NAME_GROUP"] = {
 };
 
 StaticPopupDialogs["EAVESDROPPER_RENAME_GROUP"] = {
-	text                   = L.POPUP_EAVESDROP_GROUP,
-	button1                = ACCEPT,
-	button2                = CANCEL,
-	hasEditBox             = true,
-	maxLetters             = MaxGroupNameLength,
-	whileDead              = true,
-	hideOnEscape           = true,
+	text = L.POPUP_EAVESDROP_GROUP,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	hasEditBox = true,
+	maxLetters = MaxGroupNameLength,
+	whileDead = true,
+	hideOnEscape = true,
 	---@param self table
 	---@param data { frame: EavesdropperGroupFrame }
 	OnAccept = function(self, data)
@@ -447,14 +325,14 @@ StaticPopupDialogs["EAVESDROPPER_RENAME_GROUP"] = {
 	---@param self EditBox
 	---@param data { frame: EavesdropperGroupFrame }
 	EditBoxOnTextChanged = function(self, data)
-		local popup   = self:GetParent();
+		local popup = self:GetParent();
 		local button1 = _G[popup:GetName() .. "Button1"];
 		if not button1 then return; end
 
-		local newName     = self:GetText();
+		local newName = self:GetText();
 		local currentName = data and data.frame and data.frame.displayName or "";
 		local isDuplicate = GroupFrame:HasFrameWithName(newName);
-		local isSame      = newName == currentName;
+		local isSame = newName == currentName;
 
 		button1:SetEnabled(newName ~= "" and not isDuplicate and not isSame);
 	end,
@@ -477,19 +355,22 @@ StaticPopupDialogs["EAVESDROPPER_RENAME_GROUP"] = {
 	end,
 };
 
----RenameFrame Updates the display name and refreshes the title bar.
----Aborts if the new name is empty or already in use by another frame.
+---Update the display name and re-key in the manager table.
 ---@param newName string
 function Eavesdropper_Group_FrameMixin:RenameFrame(newName)
-	if not newName or newName == ""        then return; end
-	if newName == self.displayName         then return; end
+	if not newName or newName == "" then return; end
+	if newName == self.displayName then return; end
 	if GroupFrame:HasFrameWithName(newName) then return; end
 
+	-- Re-key before mutating displayName so HasFrameWithName stays consistent
+	GroupFrame.frames[self.displayName] = nil;
 	self.displayName = newName;
-	self:UpdateTitleBar(newName);
+	GroupFrame.frames[self.displayName] = self;
+
+	self:UpdateTitleBar();
 end
 
----PromptRenameFrame Opens the rename dialog for this group frame.
+---Open the rename dialog for this group frame
 function Eavesdropper_Group_FrameMixin:PromptRenameFrame()
 	StaticPopup_Show("EAVESDROPPER_RENAME_GROUP", nil, nil, { frame = self });
 end
@@ -498,7 +379,7 @@ end
 -- GroupFrame manager methods
 -- ============================================================
 
----ForEachFrame Iterates all live group frames and calls func on each.
+---Iterate all live group frames and call func on each
 ---@param func fun(frame: EavesdropperGroupFrame)
 function GroupFrame:ForEachFrame(func)
 	for _, frame in pairs(self.frames) do
@@ -506,7 +387,7 @@ function GroupFrame:ForEachFrame(func)
 	end
 end
 
----HasFrameWithName Returns true if any active group frame already uses the given display name.
+---Returns true if any active group frame already uses the given display name
 ---@param name string
 ---@return boolean
 function GroupFrame:HasFrameWithName(name)
@@ -516,46 +397,44 @@ function GroupFrame:HasFrameWithName(name)
 	return false;
 end
 
----AddFrame Prompts the user for a group name before creating any frame.
+---Prompt the user for a group name before creating any frame.
 ---No frame is created if the user cancels or submits an empty name.
 ---@param sender string Initial sender in "Name-Realm" format
 function GroupFrame:AddFrame(sender)
 	StaticPopup_Show("EAVESDROPPER_NAME_GROUP", nil, nil, { sender = sender });
 end
 
----CreateNamedFrame Finds the next available index, creates the frame, and assigns the display name.
----Aborts silently if displayName is already in use or either argument is missing.
+---Find the lowest free numeric index for the stable _G frame name, create the frame,
+---then register it in frames keyed by displayName.
 ---@param displayName string
 ---@param sender string Initial sender to seed the frame with
 function GroupFrame:CreateNamedFrame(displayName, sender)
 	if not displayName or displayName == "" then return; end
 	if self:HasFrameWithName(displayName) then return; end
 
+	-- Find the lowest free numeric slot for the _G name.
+	-- OnHide clears _G[frameName], so any previously hidden slot is available.
+	-- The numeric index is only used for the _G global name to avoid special characters.
 	local index = 1;
-	while self.frames[index] and self.frames[index]:IsShown() do
+	while _G["Eavesdropper_Group_Frame_" .. index] do
 		index = index + 1;
 	end
 
 	local globalName = "Eavesdropper_Group_Frame_" .. index;
-	local frame = _G[globalName];
-
-	if not frame then
-		frame = CreateFrame("Frame", globalName, UIParent, "Eavesdropper_Group_FrameTemplate");
-		frame:Raise();
-		frame:HandleVisibility();
-		frame:ApplyWindowSettings();
-		ED.ChatFilters:Init(frame);
-	else
-		frame:Show();
-	end
+	local frame = CreateFrame("Frame", globalName, UIParent, "Eavesdropper_Group_FrameTemplate");
+	frame:Raise();
+	frame:HandleVisibility();
+	frame:ApplyWindowSettings();
+	ED.ChatFilters:Init(frame);
 
 	frame.displayName = displayName;
 	frame.players = {};
 
 	frame:AddPlayer(sender);
-	frame:UpdateTitleBar(displayName);
+	frame:UpdateTitleBar();
 	frame:RefreshChat();
-	self.frames[index] = frame;
+
+	self.frames[displayName] = frame;
 end
 
 -- ============================================================
@@ -568,11 +447,11 @@ end
 ---@field players string[] All tracked senders in this frame
 ---@field hasSender boolean True if the queried sender is already in this frame
 
----GetGroupWindows Returns a sorted snapshot of all active group frames.
+---Returns a sorted snapshot of all active group frames.
 ---hasSender is true for any frame that already tracks the given sender.
 ---Returns nil when no frames exist.
----@param sender string ? Optional sender to check membership against
----@return GroupFrameInfo[] ?
+---@param sender string? Optional sender to check membership against
+---@return GroupFrameInfo[]?
 function GroupFrame:GetGroupWindows(sender)
 	local result = {};
 
@@ -598,14 +477,14 @@ end
 -- Mixin: player list management
 -- ============================================================
 
----RefreshEmptyState Shows or hides the empty-state label based on current player count.
+---Show or hide the empty-state label based on current player count
 function Eavesdropper_Group_FrameMixin:RefreshEmptyState()
 	if self.EmptyLabel then
 		self.EmptyLabel:SetShown(#self.players == 0);
 	end
 end
 
----AddPlayer Adds a sender to this frame's player list if not already present.
+---Add a sender to this frame's player list if not already present
 ---@param sender string
 function Eavesdropper_Group_FrameMixin:AddPlayer(sender)
 	if not sender then return; end
@@ -617,7 +496,7 @@ function Eavesdropper_Group_FrameMixin:AddPlayer(sender)
 	self:RefreshChat();
 end
 
----RemovePlayer Removes a sender from this frame's player list.
+---Remove a sender from this frame's player list
 ---@param sender string
 function Eavesdropper_Group_FrameMixin:RemovePlayer(sender)
 	for i, existing in ipairs(self.players) do
@@ -630,7 +509,7 @@ function Eavesdropper_Group_FrameMixin:RemovePlayer(sender)
 	end
 end
 
----HasPlayer Returns true if the given sender is currently tracked by this frame.
+---Returns true if the given sender is currently tracked by this frame
 ---@param sender string
 ---@return boolean
 function Eavesdropper_Group_FrameMixin:HasPlayer(sender)
