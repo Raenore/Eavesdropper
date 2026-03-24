@@ -28,6 +28,12 @@ function Events:PLAYER_REGEN_DISABLED()
 	ED.Frame:HandleVisibility();
 
 	ED.DedicatedFrame:ForEachFrame(function(frame)
+		frame.isCombatHidden = true;
+		frame:HandleVisibility();
+	end);
+
+	ED.GroupFrame:ForEachFrame(function(frame)
+		frame.isCombatHidden = true;
 		frame:HandleVisibility();
 	end);
 end
@@ -38,6 +44,12 @@ function Events:PLAYER_REGEN_ENABLED()
 	ED.Frame:HandleVisibility();
 
 	ED.DedicatedFrame:ForEachFrame(function(frame)
+		frame.isCombatHidden = false;
+		frame:HandleVisibility();
+	end);
+
+	ED.GroupFrame:ForEachFrame(function(frame)
+		frame.isCombatHidden = false;
 		frame:HandleVisibility();
 	end);
 end
