@@ -153,15 +153,17 @@ L = {
 	MINIMAP = "Minimap",
 
 	DEDICATED_WINDOWS = "Dedicated Windows",
-	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent windows.|r",
+	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent dedicated windows.|r",
 
-	DEDICATED_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
-	DEDICATED_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a dedicated window for a specific character.|n|n* Global setting - persists across all profiles.",
+	NEW_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
+	NEW_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a window for a specific character.|n|n* Global setting - persists across all profiles.",
 
-	DEDICATED_WINDOWS_NEW_INDICATOR = "New Message Indicator",
-	DEDICATED_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on any dedicated window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
+	NEW_WINDOWS_NEW_INDICATOR = "New Message Indicator",
+	NEW_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on a window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
 
 	GROUP_WINDOWS = "Group Windows",
+	GROUP_WINDOWS_HELP = "Allows the creation of separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent group windows.|r",
+
 	GROUP_OPTIONS = "Group Options",
 	GROUP_RENAME = "Change Group Name",
 
@@ -182,6 +184,9 @@ L = {
 
 	DEDICATED = "Dedicated",
 	DEDICATED_HELP = "Messages received in Dedicated Windows.",
+
+	GROUP = "Group",
+	GROUP_HELP = "Messages received in Group Windows.",
 
 	NOTIFICATIONS_PLAY_SOUND = "Play Sound",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Toggles whether Eavesdropper plays an audible alert for this notification type.",

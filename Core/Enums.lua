@@ -105,6 +105,7 @@ Enums.NOTIFICATIONS_TYPE = {
 	KEYWORDS = 2,
 	TARGET = 3,
 	DEDICATED = 4,
+	GROUP = 5,
 };
 
 ---Maps each notification type to its saved-variable sound file key.
@@ -112,6 +113,7 @@ Enums.NOTIFICATIONS_TYPE = {
 Enums.NOTIFICATIONS_TYPE_SOUND_KEYS = {
 	[Enums.NOTIFICATIONS_TYPE.DEDICATED]   = "NotificationDedicatedSoundFile",
 	[Enums.NOTIFICATIONS_TYPE.EMOTES]   = "NotificationEmotesSoundFile",
+	[Enums.NOTIFICATIONS_TYPE.GROUP]   = "NotificationGroupSoundFile",
 	[Enums.NOTIFICATIONS_TYPE.KEYWORDS] = "NotificationKeywordsSoundFile",
 	[Enums.NOTIFICATIONS_TYPE.TARGET]   = "NotificationTargetSoundFile",
 };

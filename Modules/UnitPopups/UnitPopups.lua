@@ -31,8 +31,8 @@ function UnitPopups:Init()
 end
 
 function UnitPopups:OnMenuOpen(owner, rootDescription, contextData)
-	if not ED.Database:GetGlobalSetting("DedicatedWindows") then
-		return; -- Don't show when Dedicated Windows is disabled.
+	if not ED.Database:GetGlobalSetting("DedicatedWindows") and not ED.Database:GetGlobalSetting("GroupWindows") then
+		return; -- Don't show when Dedicated and Group Windows are disabled.
 	elseif not owner or owner:IsForbidden() then
 		return; -- Invalid or forbidden owner.
 	elseif not self:ShouldCustomizeMenus() then
@@ -108,6 +108,10 @@ end
 -- ============================================================
 
 local function CreateOpenBattleNetEavesdropButton(menuDescription, contextData)
+	if not ED.Database:GetGlobalSetting("DedicatedWindows") or not ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups") then
+		return;
+	end
+
 	local function OnClick(contextData) -- luacheck: no redefined
 		local accountInfo = contextData.accountInfo;
 		local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
@@ -131,6 +135,10 @@ local function CreateOpenBattleNetEavesdropButton(menuDescription, contextData)
 end
 
 local function CreateOpenCharacterEavesdropButton(menuDescription, contextData)
+	if not ED.Database:GetGlobalSetting("DedicatedWindows") or not ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups") then
+		return;
+	end
+
 	local function OnClick(contextData) -- luacheck: no redefined
 		local sender, guid = resolveCharacterData(contextData);
 		if sender then
@@ -146,6 +154,10 @@ local function CreateOpenCharacterEavesdropButton(menuDescription, contextData)
 end
 
 local function CreateEavesdropGroupMenu(menuDescription, contextData)
+	if not ED.Database:GetGlobalSetting("GroupWindows") then
+		return;
+	end
+
 	local function OnClick(contextData, targetFrame, hasSender) -- luacheck: no redefined
 		local sender, guid = resolveCharacterData(contextData);
 		if sender then

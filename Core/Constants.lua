@@ -210,6 +210,7 @@ Constants.DEFAULT_SOUND_LIST = {
 	{ key = "UI_VoiceChat_ChatMessageIncoming"; fid = 2113871 },
 	{ key = "UI_VoiceChat_ChatMessageIncomingActive"; fid = 2113870 },
 	{ key = "UI_VoiceChat_ChatMessageOutgoing"; fid = 2113877 },
+	{ key = "UI_VoiceChat_TalkStart"; fid = 2113882 },
 };
 
 ---@class EavesdropperWindowPosition
