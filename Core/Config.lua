@@ -48,32 +48,35 @@ end
 ---Displays the configuration menu for the addon
 ---@param frame table
 ---@param dedicatedFrame boolean?
+---@param groupFrame boolean?
 ---@return nil
-function Config:ShowConfigMenu(frame, dedicatedFrame)
+function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 	dedicatedFrame = dedicatedFrame or false;
+	groupFrame = groupFrame or false;
+
+	local useFrameState = dedicatedFrame or groupFrame;
 
 	---Handles extra clicks on the Title Bar Button to not close the menu.
 	function frame.TitleBar.TitleButton.HandlesGlobalMouseEvent()
 		return true;
 	end
 
-	---Reads a setting from the dedicated frame or the DB
+	---Reads a setting from frame state or the DB
 	---@param key string
 	---@return any
 	local function getSetting(key)
-		if dedicatedFrame then
+		if useFrameState then
 			local field = DedicatedFrameFieldMap[key] or key;
 			return frame[field];
-		else
-			return ED.Database:GetSetting(key);
 		end
+		return ED.Database:GetSetting(key);
 	end
 
-	---Toggles a setting on the dedicated frame or in the DB, then runs postUpdate
+	---Toggles a setting on frame state or in the DB, then runs postUpdate
 	---@param key string
 	---@param postUpdate function?
 	local function toggleSetting(key, postUpdate)
-		if dedicatedFrame then
+		if useFrameState then
 			local field = DedicatedFrameFieldMap[key] or key;
 			frame[field] = not frame[field];
 		else
@@ -90,14 +93,16 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		rootDescription:AddMenuReleasedCallback(function() frame:OnLeave(); end);
 
 		-- Title
-		if not dedicatedFrame then
+		if groupFrame then
+			rootDescription:CreateTitle(L.GROUP_WINDOWS);
+		elseif dedicatedFrame then
+			rootDescription:CreateTitle(L.DEDICATED_WINDOWS);
+		else
 			local title = rootDescription:CreateTitle(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title);
 			title:SetTooltip(function(tooltip, elementDescription)
 				GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
 				GameTooltip_AddNormalLine(tooltip, "Version: " .. ED.Globals.addon_version);
 			end);
-		else
-			rootDescription:CreateTitle(L.DEDICATED_WINDOWS);
 		end
 
 		-- Filters
@@ -109,7 +114,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		filter:CreateTitle(L.FILTER .. " " .. MAIN_MENU);
 		ED.ChatFilters:GenerateFilterListMenu(frame, filter);
 
-		if not dedicatedFrame then
+		if not useFrameState then
 			-- Notification Settings
 			rootDescription:CreateButton(SETTINGS, function()
 				ED.Settings:ShowSettings();
@@ -155,14 +160,23 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 		);
 		SetTooltip(lockTitleBar, L.LOCK_TITLEBAR_HELP);
 
-		if dedicatedFrame then
+		if useFrameState then
 			rootDescription:CreateDivider();
-			rootDescription:CreateTitle(L.DEDICATED_OPTIONS);
 
-			local dedicatedFontSize = rootDescription:CreateButton(L.FONT_SIZE);
-			dedicatedFontSize:CreateTitle(L.FONT_SIZE);
+			if groupFrame then
+				rootDescription:CreateTitle(L.GROUP_OPTIONS);
+			else
+				rootDescription:CreateTitle(L.DEDICATED_OPTIONS);
+			end
+
+			rootDescription:CreateButton(L.GROUP_RENAME, function()
+				frame:PromptRenameFrame();
+			end);
+
+			local frameFontSize = rootDescription:CreateButton(L.FONT_SIZE);
+			frameFontSize:CreateTitle(L.FONT_SIZE);
 			for i = ED.Constants.CHAT_BOX.MIN_FONT_SIZE, ED.Constants.CHAT_BOX.MAX_FONT_SIZE, 2 do
-				dedicatedFontSize:CreateCheckbox(
+				frameFontSize:CreateCheckbox(
 					i,
 					function() return i == frame.FontSize; end,
 					function()
@@ -182,6 +196,14 @@ function Config:ShowConfigMenu(frame, dedicatedFrame)
 					end);
 				end
 			);
+
+			if groupFrame then
+				local frameNameDisplayMode = rootDescription:CreateButton(L.NAME_DISPLAY_MODE);
+				frameNameDisplayMode:CreateTitle(L.NAME_DISPLAY_MODE .. " " .. MAIN_MENU);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FULL_NAME, function() return frame.nameDisplayMode == 1 end, function() frame.nameDisplayMode = 1; frame:RefreshChat(); end);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FIRST_NAME, function() return frame.nameDisplayMode == 2 end, function() frame.nameDisplayMode = 2; frame:RefreshChat(); end);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_ORIGINAL_NAME, function() return frame.nameDisplayMode == 3 end, function() frame.nameDisplayMode = 3; frame:RefreshChat(); end);
+			end
 		end
 	end);
 end

@@ -22,6 +22,7 @@ L = {
 	FILTER = "Filter",
 	FILTER_HELP = "Choose which types of messages are visible in Eavesdropper.|n|n- Toggling a filter only changes what is currently shown.|n- No data is actually deleted; hidden messages will reappear if the filter is turned back on.|n|n|cnWARNING_FONT_COLOR:Note: Filters are applied instantly.|r",
 
+	EMPTYLABEL_TEXT = "Empty Group",
 	SCROLLMARKER_TEXT = "Scroll to Bottom",
 
 	FILTER_PUBLIC = "Public",
@@ -160,6 +161,10 @@ L = {
 	DEDICATED_WINDOWS_NEW_INDICATOR = "New Message Indicator",
 	DEDICATED_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on any dedicated window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
 
+	GROUP_WINDOWS = "Group Windows",
+	GROUP_OPTIONS = "Group Options",
+	GROUP_RENAME = "Change Group Name",
+
 	MINIMAP_BUTTON = "Minimap Button",
 	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.|n|n* Global setting - persists across all profiles.",
 
@@ -231,6 +236,10 @@ L = {
 
 	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options",
 	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On",
+	UNIT_POPUPS_EAVESDROP_GROUP = "Eavesdrop Group",
+	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Create New",
+
+	POPUP_EAVESDROP_GROUP = "Eavesdropper Group name.|nEnter to confirm.",
 
 	-- Message Prefixes (keep them shorthand)
 	MSG_PREFIX_PARTY = "P",
@@ -242,6 +251,10 @@ L = {
 	MSG_PREFIX_RAID_WARNING = "RW",
 	MSG_PREFIX_WHISPER_FROM = "W From",
 	MSG_PREFIX_WHISPER_TO = "W To",
+
+	MSG_VERB_SAY = "says",
+	MSG_VERB_YELL = "yells",
+	MSG_VERB_WHISPER = "whispers",
 };
 
 ---@class ED.L : ED.Locale.enUS, ED.Localization
