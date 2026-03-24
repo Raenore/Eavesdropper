@@ -50,7 +50,7 @@ local function SetupSounds()
 	end
 end
 
----Displays the configuration menu for the addon
+---Display the configuration menu for the addon.
 ---@param frame table
 ---@param dedicatedFrame boolean?
 ---@param groupFrame boolean?
