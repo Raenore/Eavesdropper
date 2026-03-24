@@ -32,11 +32,11 @@ end
 
 function UnitPopups:OnMenuOpen(owner, rootDescription, contextData)
 	if not ED.Database:GetGlobalSetting("DedicatedWindows") then
-		return;  -- Don't show when Dedicated Windows is disabled.
+		return; -- Don't show when Dedicated Windows is disabled.
 	elseif not owner or owner:IsForbidden() then
-		return;  -- Invalid or forbidden owner.
+		return; -- Invalid or forbidden owner.
 	elseif not self:ShouldCustomizeMenus() then
-		return;  -- Menu customizations are disabled.
+		return; -- Menu customizations are disabled.
 	end
 
 	local menuEntries = self.MenuEntries[contextData.which];
@@ -58,13 +58,17 @@ function UnitPopups:OnMenuOpen(owner, rootDescription, contextData)
 end
 
 function UnitPopups:ShouldCustomizeMenus()
-	if not ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups") then
-		return false;
-	else
-		return true;
-	end
+	return ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups") and true or false;
 end
 
+-- ============================================================
+-- Sender resolution helpers
+-- ============================================================
+
+---Resolve sender and GUID from BattleNet game account info.
+---Returns (nil, nil) if the sender string begins with UNKNOWNOBJECT.
+---@param gameAccountInfo table
+---@return string?, string?
 local function GetBattleNetCharacterFullName(gameAccountInfo)
 	local characterName = gameAccountInfo.characterName;
 	local realmName = gameAccountInfo.realmName;
@@ -78,8 +82,33 @@ local function GetBattleNetCharacterFullName(gameAccountInfo)
 	return sender, guid;
 end
 
+---Resolve the sender string and GUID from character contextData.
+---If the unit exists in the world, GetUnitName and UnitGUID are used directly.
+---Returns (nil, nil) if the constructed sender begins with UNKNOWNOBJECT.
+---@param contextData table
+---@return string?, string?
+local function resolveCharacterData(contextData)
+	local unit = contextData.unit;
+	local name = contextData.name;
+	local server = contextData.server;
+	local sender = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+	local guid = contextData.playerLocation and contextData.playerLocation.guid or nil;
+
+	if UnitExists(unit) then
+		return ED.Utils.GetUnitName(unit), UnitGUID(unit);
+	elseif string.find(sender, UNKNOWNOBJECT, 1, true) == 1 then
+		return nil, nil;
+	end
+
+	return sender, guid;
+end
+
+-- ============================================================
+-- Menu element factories
+-- ============================================================
+
 local function CreateOpenBattleNetEavesdropButton(menuDescription, contextData)
-	local function OnClick(contextData)  -- luacheck: no redefined
+	local function OnClick(contextData) -- luacheck: no redefined
 		local accountInfo = contextData.accountInfo;
 		local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
 
@@ -102,20 +131,8 @@ local function CreateOpenBattleNetEavesdropButton(menuDescription, contextData)
 end
 
 local function CreateOpenCharacterEavesdropButton(menuDescription, contextData)
-	local function OnClick(contextData)  -- luacheck: no redefined
-		local unit = contextData.unit;
-		local name = contextData.name;
-		local server = contextData.server;
-		local sender = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
-		local guid = contextData.playerLocation and contextData.playerLocation.guid or nil;
-
-		if UnitExists(unit) then
-			sender = ED.Utils.GetUnitName(unit);
-			guid = UnitGUID(unit); -- sanity check
-		elseif string.find(sender, UNKNOWNOBJECT, 1, true) == 1 then
-			sender = nil;
-		end
-
+	local function OnClick(contextData) -- luacheck: no redefined
+		local sender, guid = resolveCharacterData(contextData);
 		if sender then
 			ED.PlayerCache:InsertAndRetrieve(sender, guid);
 			ED.DedicatedFrame:AddFrame(sender);
@@ -130,19 +147,7 @@ end
 
 local function CreateEavesdropGroupMenu(menuDescription, contextData)
 	local function OnClick(contextData, targetFrame, hasSender) -- luacheck: no redefined
-		local unit = contextData.unit;
-		local name = contextData.name;
-		local server = contextData.server;
-		local sender = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
-		local guid = contextData.playerLocation and contextData.playerLocation.guid or nil;
-
-		if UnitExists(unit) then
-			sender = ED.Utils.GetUnitName(unit);
-			guid = UnitGUID(unit); -- sanity check
-		elseif string.find(sender, UNKNOWNOBJECT, 1, true) == 1 then
-			sender = nil;
-		end
-
+		local sender, guid = resolveCharacterData(contextData);
 		if sender then
 			ED.PlayerCache:InsertAndRetrieve(sender, guid);
 			if targetFrame and hasSender then
@@ -155,19 +160,12 @@ local function CreateEavesdropGroupMenu(menuDescription, contextData)
 		end
 	end
 
-	---Resolve sender once for membership checks across all group buttons
-	local unit = contextData.unit;
-	local name = contextData.name;
-	local server = contextData.server;
-	local sender = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
-	if UnitExists(unit) then
-		sender = ED.Utils.GetUnitName(unit);
-	elseif string.find(sender, UNKNOWNOBJECT, 1, true) == 1 then
-		sender = nil;
-	end
+	-- Resolve sender once for membership checks across all group buttons
+	local sender = resolveCharacterData(contextData);
 
 	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_GROUP);
 	elementDescription:CreateTitle(L.UNIT_POPUPS_EAVESDROP_GROUP .. " " .. MAIN_MENU);
+
 	local groupWindows = ED.GroupFrame:GetGroupWindows(sender);
 	if groupWindows then
 		for _, group in ipairs(groupWindows) do
@@ -192,6 +190,10 @@ local function CreateEavesdropGroupMenu(menuDescription, contextData)
 	elementDescription:SetData(contextData);
 	return elementDescription;
 end
+
+-- ============================================================
+-- Registry
+-- ============================================================
 
 UnitPopups.MenuElementFactories = {
 	OpenBattleNetProfile = CreateOpenBattleNetEavesdropButton,
