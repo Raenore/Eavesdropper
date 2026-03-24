@@ -684,6 +684,47 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
+			label = L.GROUP_WINDOWS,
+		},
+		{
+			type = "checkbox",
+			label = L.GROUP_WINDOWS .. "*",
+			tooltip = L.GROUP_WINDOWS_HELP,
+			buildAdded = "0.4.0|120001",
+			get = function() return ED.Database:GetGlobalSetting("GroupWindows"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindows", val);
+				if not val then
+					ED.GroupFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
+			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsNewIndicator"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsNewIndicator", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
+			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsUnitPopups"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsUnitPopups", val);
+			end,
+		},
+		{
+			type = "subtitle",
 			label = L.MINIMAP,
 		},
 		{
@@ -833,6 +874,47 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
 			set = function(val)
 				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
+			end,
+		},
+		{
+			type = "subtitle",
+			label = L.GROUP,
+			subLabel = L.GROUP_HELP,
+		},
+		{
+			type = "checkbox",
+			label = L.NOTIFICATIONS_PLAY_SOUND,
+			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
+			buildAdded = "0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationGroupSound"); end,
+			set = function(val)
+				ED.Database:SetSetting("NotificationGroupSound", val);
+			end,
+		},
+		{
+			type = "dropdown",
+			label = L.NOTIFICATIONS_SOUND_FILE,
+			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
+			buildAdded = "0.4.0|120001",
+			values = ED.Config.soundList,
+			disabled = function() return not ED.Database:GetSetting("NotificationGroupSound"); end,
+			get = function() return ED.Database:GetSetting("NotificationGroupSoundFile"); end,
+			set = function(val)
+				local soundPath = SharedMedia:Fetch("sound", val);
+				if soundPath then
+					PlaySoundFile(soundPath, "Master");
+					ED.Database:SetSetting("NotificationGroupSoundFile", val);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.NOTIFICATION_FLASH_TASKBAR,
+			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
+			buildAdded = "0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationGroupFlashTaskbar"); end,
+			set = function(val)
+				ED.Database:SetSetting("NotificationGroupFlashTaskbar", val);
 			end,
 		},
 	};
