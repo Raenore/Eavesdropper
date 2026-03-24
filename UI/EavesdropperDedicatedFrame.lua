@@ -4,9 +4,6 @@
 ---@type EavesdropperConstants
 local Constants = ED.Constants;
 
----@type EavesdropperEnums
-local Enums = ED.Enums;
-
 ---@class EavesdropperDedicatedFrame
 local DedicatedFrame = {};
 
@@ -51,14 +48,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnLoad()
 	self.eavesdropped_player = player;
 	self.titlebar_name = nil;
 
-	-- Initialise all local state before any method calls that read it
-	self.lockWindow = false;
-	self.lockTitleBar = true;
-	self.hideCloseButton = false;
-	self.lockScroll = false;
-	self.mouseEnabled = false;
-	self.clickblock = 0;
-	self.isMouseOver = false;
+	self:InitInstanceFrameState();
 
 	self:EnableMouseWheel(true);
 	self:UpdateMouseLock();
@@ -107,61 +97,17 @@ function Eavesdropper_Dedicated_FrameMixin:OnShow()
 end
 
 function Eavesdropper_Dedicated_FrameMixin:OnHide()
-	-- When the UI parent is hidden (ALT-Z etc.), skip destructive code.
-	if not UIParent:IsShown() then return; end
+	Eavesdropper_SharedFrameMixin.OnHideInstanceFrame(self);
+end
 
-	if self.chatTicker then
-		self.chatTicker:Cancel();
-		self.chatTicker = nil;
-	end
-
-	-- Stop any in-progress new-indicator animations
-	if self.NewIndicator then
-		if self.NewIndicator.NewIndicatorFadeIn then self.NewIndicator.NewIndicatorFadeIn:Stop(); end
-		if self.NewIndicator.NewIndicatorFadeOut then self.NewIndicator.NewIndicatorFadeOut:Stop(); end
-		self.NewIndicator.isFadedIn = false;
-		self.NewIndicator.isFadedOut = false;
-	end
-
-	if self.newIndicatorTimer then
-		self.newIndicatorTimer:Cancel();
-		self.newIndicatorTimer = nil;
-	end
-
-	self:UnregisterAllEvents();
-	self:SetScript("OnEnter", nil);
-	self:SetScript("OnLeave", nil);
-
-	self:SetParent(nil);
-
+---Remove self from the DedicatedFrame manager on hide
+function Eavesdropper_Dedicated_FrameMixin:OnUnregisterFrame()
 	DedicatedFrame.frames[self.eavesdropped_player] = nil;
-
-	-- Clean up the global reference so the name can be reused
-	local frameName = self:GetName();
-	if frameName and _G[frameName] == self then
-		_G[frameName] = nil;
-	end
 end
 
 -- ============================================================
--- Mouse / interaction
+-- Mouse / Interaction
 -- ============================================================
-
-function Eavesdropper_Dedicated_FrameMixin:OnEnter()
-	if self.isMouseOver then return; end
-	self.isMouseOver = true;
-
-	-- Fade out the new-message indicator when the user hovers over the frame
-	if self.NewIndicator and self.NewIndicator.isFadedIn and not self.NewIndicator.isFadedOut then
-		self.NewIndicator.NewIndicatorFadeIn:Stop();
-		self.NewIndicator.NewIndicatorFadeOut:Stop();
-		self.NewIndicator.NewIndicatorFadeOut:Play();
-		self.NewIndicator.isFadedOut = true;
-		self.NewIndicator.isFadedIn = false;
-	end
-
-	self:HandleHoverState(Enums.FRAME.MOUSE_HOVER_STATE.ON);
-end
 
 ---Position is intentionally not persisted; dedicated frames reset on reload
 function Eavesdropper_Dedicated_FrameMixin:OnDragStop()
@@ -173,7 +119,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnResizeFinished()
 end
 
 -- ============================================================
--- Layout / appearance
+-- Layout / Appearance
 -- ============================================================
 
 ---Updates the name in the title bar
@@ -192,39 +138,6 @@ function Eavesdropper_Dedicated_FrameMixin:UpdateTitleBar()
 
 	self.titlebar_name = newName;
 	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
-end
-
----Restore resize handle and close button from local frame state (not the database)
-function Eavesdropper_Dedicated_FrameMixin:RestoreLayout()
-	if not ED.Database then return; end
-
-	if not self.lockWindow then
-		self.ResizeHandle:Show();
-	else
-		self.ResizeHandle:Hide();
-	end
-
-	if self.hideCloseButton then
-		self.TitleBar.CloseButton:Hide();
-	else
-		self.TitleBar.CloseButton:Show();
-	end
-end
-
--- ============================================================
--- Visibility
--- ============================================================
-
-function Eavesdropper_Dedicated_FrameMixin:HandleVisibility()
-	-- Hide in combat if the setting is on
-	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
-		self:Hide();
-		return;
-	end
-
-	-- Dedicated frames are always shown; intentionally skip HideWhenEmpty
-	-- to avoid silently hiding a frame the user explicitly opened
-	self:Show();
 end
 
 -- ============================================================
@@ -277,52 +190,16 @@ end
 ---Override of the base TryAddMessage to handle the new-message indicator
 ---@param entry EavesdropperChatEntry
 function Eavesdropper_Dedicated_FrameMixin:TryAddMessage(entry)
-	if self.ChatBox:GetScrollOffset() == 0 then
-		self.clickblock = GetTime();
-	end
+	Eavesdropper_SharedFrameMixin.TryAddMessage(self, entry);
 
-	self:AddMessage(entry);
-
-	-- Show new-message indicator for incoming messages when the frame is not hovered
 	if not entry.p
 		and ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator")
 		and self.NewIndicator
 		and not self.isMouseOver
 	then
-		if not self.NewIndicator.isFadedIn then
-			self.NewIndicator:Show();
-			self.NewIndicator.NewIndicatorFadeIn:Stop();
-			self.NewIndicator.NewIndicatorFadeOut:Stop();
-			self.NewIndicator.NewIndicatorFadeIn:Play();
-			self.NewIndicator.isFadedIn = true;
-			self.NewIndicator.isFadedOut = false;
-		end
-
-		if self.newIndicatorTimer then
-			self.newIndicatorTimer:Cancel();
-			self.newIndicatorTimer = nil;
-		end
-
-		self.newIndicatorTimer = C_Timer.NewTimer(Constants.CHAT_NEW_INDICATOR_FADE_OUT, function()
-			if self.NewIndicator and self.NewIndicator.NewIndicatorFadeOut and not self.NewIndicator.isFadedOut then
-				self.NewIndicator.NewIndicatorFadeIn:Stop();
-				self.NewIndicator.NewIndicatorFadeOut:Stop();
-				self.NewIndicator.NewIndicatorFadeOut:Play();
-				self.NewIndicator.isFadedOut = true;
-				self.NewIndicator.isFadedIn = false;
-			end
-			self.newIndicatorTimer = nil;
-		end);
+		self:FadeInNewIndicator();
+		self:ScheduleNewIndicatorFadeOut();
 	end
-end
-
----Apply all window settings: font, filters, layout, colors, and history
-function Eavesdropper_Dedicated_FrameMixin:ApplyWindowSettings()
-	ED.ChatBox:ApplyFontOptions(self);
-	ED.ChatFilters:UpdateFilters(self);
-	self:RestoreLayout();
-	self:ApplyThemeColors();
-	self:RefreshChat();
 end
 
 -- ============================================================
@@ -340,6 +217,8 @@ function DedicatedFrame:ForEachFrame(func)
 end
 
 ---Show an existing dedicated frame for sender, or create and initialise a new one
+---@param sender string
+---@return EavesdropperDedicatedFrame
 function DedicatedFrame:AddFrame(sender)
 	local frame = _G["Eavesdropper_Dedicated_Frame_" .. sender];
 
