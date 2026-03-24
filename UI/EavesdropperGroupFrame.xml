@@ -7,7 +7,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
 	<Frame name="Eavesdropper_Group_FrameTemplate" mixin="Eavesdropper_Group_FrameMixin" virtual="true" parent="UIParent"
 			toplevel="true" movable="true" clampedToScreen="true" resizable="true" dontSavePosition="true" frameStrata="BACKGROUND">
-		<Size x="200" y="200"/>
+		<Size x="350" y="200"/>
 		<ResizeBounds>
 			<minResize>
 				<AbsDimension x="200" y="100"/>
