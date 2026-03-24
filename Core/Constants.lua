@@ -295,6 +295,15 @@ Constants.FILTER_ORDER = {
 	"Rolls",
 };
 
+---Maps event types that use a conversational verb in group windows instead of a channel prefix.
+---@type table<string, string>
+Constants.GROUP_EVENT_VERBS = {
+	CHAT_MSG_SAY = L.MSG_VERB_SAY,
+	CHAT_MSG_YELL = L.MSG_VERB_YELL,
+	CHAT_MSG_WHISPER = L.MSG_VERB_WHISPER,
+	CHAT_MSG_WHISPER_INFORM = L.MSG_VERB_WHISPER,
+};
+
 ---Channel names that are silently ignored by the chat filter.
 ---@type table<string, boolean>
 Constants.IGNORED_CHANNELS = {

@@ -89,6 +89,8 @@ UI\EavesdropperFrame.lua
 UI\EavesdropperFrame.xml
 UI\EavesdropperDedicatedFrame.lua
 UI\EavesdropperDedicatedFrame.xml
+UI\EavesdropperGroupFrame.lua
+UI\EavesdropperGroupFrame.xml
 UI\SettingsElements.lua
 UI\SettingsFrame.lua
 UI\SettingsFrame.xml
