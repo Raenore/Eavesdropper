@@ -23,9 +23,10 @@ function QuestText.RefreshPlayerPreferredName()
 end
 
 ---Substitutes the player's preferred name into quest text, respecting display mode and addon guards.
----@param questText string
+---@param questText string?
 ---@return string
 function QuestText.SubstitutePlayerPreferredName(questText)
+	if not questText then return; end
 	if not INSTALLED_QUEST_TEXT_ADDON or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3 or not ED.Database:GetSetting("UseRPNameInQuestText") then
 		return questText;
 	end
