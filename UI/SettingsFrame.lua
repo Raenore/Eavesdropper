@@ -409,7 +409,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 					[2] = not ED.MSP.IsEnabled(),
 				};
 			end,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode"); end,
 			set = function(val)
 				ED.Database:SetSetting("NPCAndQuestNameDisplayMode", val);
@@ -420,7 +420,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.USE_RP_NAME_FOR_QUEST_TEXT,
 			tooltip = L.USE_RP_NAME_FOR_QUEST_TEXT_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
 			get = function() return ED.Database:GetSetting("UseRPNameInQuestText"); end,
 			set = function(val)
@@ -431,7 +431,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.USE_RP_NAME_FOR_NPC_DIALOGUE,
 			tooltip = L.USE_RP_NAME_FOR_NPC_DIALOGUE_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
 			get = function() return ED.Database:GetSetting("UseRPNameInNPCDialogue"); end,
 			set = function(val)
@@ -649,7 +649,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.DEDICATED_WINDOWS .. "*",
 			tooltip = L.DEDICATED_WINDOWS_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows"); end,
 			set = function(val)
 				ED.Database:SetGlobalSetting("DedicatedWindows", val);
@@ -662,9 +662,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.DEDICATED_WINDOWS_NEW_INDICATOR .. "*",
-			tooltip = L.DEDICATED_WINDOWS_NEW_INDICATOR_HELP,
-			buildAdded = "0.3.0|120001",
+			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
+			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator"); end,
 			set = function(val)
@@ -673,9 +673,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.DEDICATED_WINDOWS_UNIT_POPUPS .. "*",
-			tooltip = L.DEDICATED_WINDOWS_UNIT_POPUPS_HELP,
-			buildAdded = "0.3.0|120001",
+			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
+			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups"); end,
 			set = function(val)
@@ -844,7 +844,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.NOTIFICATIONS_PLAY_SOUND,
 			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetSetting("NotificationDedicatedSound"); end,
 			set = function(val)
 				ED.Database:SetSetting("NotificationDedicatedSound", val);
@@ -854,7 +854,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "dropdown",
 			label = L.NOTIFICATIONS_SOUND_FILE,
 			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			values = ED.Config.soundList,
 			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound"); end,
 			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile"); end,
@@ -870,7 +870,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.NOTIFICATION_FLASH_TASKBAR,
 			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
-			buildAdded = "0.3.0|120001",
+			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
 			set = function(val)
 				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);

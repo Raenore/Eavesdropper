@@ -393,28 +393,58 @@ function Utils.CreatePriorityString(targetPriority, focusTarget)
 	return "|cnGREEN_FONT_COLOR:" .. output .. "|r";
 end
 
+---Determines if a feature should be considered newly added.
+---Supports single version (0.3.0) or version range (0.3.0-0.4.0).
+---@param buildAdded string
+---@return boolean
 function Utils.CheckNewlyAdded(buildAdded)
-	local featureVersion, featureBuild = string.match(buildAdded, "([^|]+)|([^|]+)");
-	if not featureVersion then return false; end
+	local versionPart, featureBuild = string.match(buildAdded, "([^|]+)|([^|]+)");
+	if not versionPart then return false; end
 
 	-- In dev builds, match solely on the Blizzard build number
 	if ED.Globals.addon_version == "@project-version@" then
 		return featureBuild == tostring(select(4, GetBuildInfo()));
 	end
 
-	local featureMajor, featureMinor, featurePatch = featureVersion:match("^(%d+)%.(%d+)%.(%d+)$");
-	local addonMajor, addonMinor, addonPatch = ED.Globals.addon_version:match("^(%d+)%.(%d+)%.(%d+)$");
-	if not featureMajor or not addonMajor then return false; end
+	local rangeStart, rangeEnd = versionPart:match("^([^%-]+)%-(.+)$");
+	local startVersion = rangeStart or versionPart;
+	local endVersion = rangeEnd;
 
-	featureMajor, featureMinor, featurePatch = tonumber(featureMajor), tonumber(featureMinor), tonumber(featurePatch);
+	local startMajor, startMinor, startPatch = startVersion:match("^(%d+)%.(%d+)%.(%d+)$");
+	if not startMajor then return false; end
+
+	startMajor, startMinor, startPatch = tonumber(startMajor), tonumber(startMinor), tonumber(startPatch);
+
+	local addonMajor, addonMinor, addonPatch = ED.Globals.addon_version:match("^(%d+)%.(%d+)%.(%d+)$");
+	if not addonMajor then return false; end
+
 	addonMajor, addonMinor, addonPatch = tonumber(addonMajor), tonumber(addonMinor), tonumber(addonPatch);
 
-	-- Feature is active for the entire matching major.minor window (e.g. all 0.3.x)
-	if addonMajor == featureMajor and addonMinor == featureMinor and addonPatch >= featurePatch then
-		return true;
+	-- Lower bound check
+	local afterStart =
+		(addonMajor > startMajor)
+		or (addonMajor == startMajor and addonMinor > startMinor)
+		or (addonMajor == startMajor and addonMinor == startMinor and addonPatch >= startPatch);
+
+	if not afterStart then return false; end
+
+	-- No upper bound
+	if not endVersion then
+		return addonMajor == startMajor and addonMinor == startMinor and addonPatch >= startPatch;
 	end
 
-	return false;
+	local endMajor, endMinor, endPatch = endVersion:match("^(%d+)%.(%d+)%.(%d+)$");
+	if not endMajor then return false; end
+
+	endMajor, endMinor, endPatch = tonumber(endMajor), tonumber(endMinor), tonumber(endPatch);
+
+	-- Upper bound check (minor window)
+	local beforeEnd =
+		(addonMajor < endMajor)
+		or (addonMajor == endMajor and addonMinor < endMinor)
+		or (addonMajor == endMajor and addonMinor == endMinor and addonPatch >= endPatch);
+
+	return beforeEnd;
 end
 
 ED.Utils = Utils;
