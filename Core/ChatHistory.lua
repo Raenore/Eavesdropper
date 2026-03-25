@@ -35,7 +35,8 @@ local Constants = ED.Constants;
 ---@return number? minLineId
 ---@return number maxLineId
 function ChatHistory:pruneAndRebuild(now)
-	local DisablePruning = ED.Globals.DEBUG_MODE or false; -- dev flag: set to true to disable expiration pruning
+	local DisablePruning = false; -- dev flag: disable expiration pruning (local set)
+	local ForcePruneAll = false; -- dev flag: removes all history (local set, highest priority)
 
 	local minLineId;
 	local maxLineId = 0;
@@ -48,7 +49,17 @@ function ChatHistory:pruneAndRebuild(now)
 			if entry then
 				local isExpired = now > (entry.t or 0) + Constants.CHAT_HISTORY.EXPIRE_AFTER;
 
-				if DisablePruning or not isExpired then
+				local shouldKeep;
+
+				if ForcePruneAll then
+					shouldKeep = false;
+				elseif DisablePruning then
+					shouldKeep = true;
+				else
+					shouldKeep = not isExpired;
+				end
+
+				if shouldKeep then
 					chatData[i] = nil;
 					chatData[nextIndex] = entry;
 					nextIndex = nextIndex + 1;
