@@ -93,6 +93,26 @@ local function MsgFormatEmote(entry, name)
 	return shortName .. " " .. msg;
 end
 
+---Group-aware emote formatter: delegates to MsgFormatEmote, then ensures the
+---sender name is visible so multi-player group windows remain legible.
+---@param entry EavesdropperChatEntry
+---@param name string
+---@return string
+local function MsgFormatEmoteGroup(entry, name)
+	local result = MsgFormatEmote(entry, name);
+	local shortName = strtrim(name:match("^[^-]+") or name);
+
+	---Strip WoW colour escapes for a plain-text prefix check.
+	local plainResult = result:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
+	local plainName = shortName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
+
+	if plainResult:sub(1, #plainName) ~= plainName then
+		return shortName .. " " .. result;
+	end
+
+	return result;
+end
+
 ---Formats a text-emote or roll message, colouring the message body and optionally prepending the sender name.
 ---@param entry EavesdropperChatEntry
 ---@param name string
@@ -133,6 +153,27 @@ local function MsgFormatTextEmoteNoName(entry, name) -- luacheck: no unused (nam
 	messageText = ED.Utils.WrapTextInColor(messageText, color);
 	return messageText;
 end;
+
+---Group-aware text-emote formatter: always prepends the sender name, even when
+---the sender is the current player, so group windows remain identifiable.
+---@param entry EavesdropperChatEntry
+---@param name string
+---@return string
+local function MsgFormatTextEmoteGroup(entry, name)
+	local messageText = entry.m or "";
+	local shortName = name:match("^[^-]+") or name;
+
+	---Always strip the leading sender token for group display.
+	local firstSpace = messageText:find(" ", 1, true) or 0;
+	messageText = messageText:sub(firstSpace + 1);
+
+	local eventType = entry.e:match("^CHAT_MSG_(.+)$") or entry.e;
+	local info = ResolveChatInfo(eventType);
+	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
+
+	messageText = ED.Utils.WrapTextInColor(messageText, color);
+	return strtrim(shortName) .. " " .. messageText;
+end
 
 ---@type table<string, fun(entry:EavesdropperChatEntry, name:string):string>
 local MESSAGE_FORMATS = {
@@ -201,9 +242,9 @@ local GROUP_MESSAGE_FORMATS = {
 	WHISPER              = MsgFormatNormalGroup,
 	WHISPER_INFORM       = MsgFormatNormalGroup,
 
-	EMOTE      = MsgFormatEmote,
-	TEXT_EMOTE = MsgFormatTextEmote,
-	ROLL       = MsgFormatTextEmote,
+	EMOTE      = MsgFormatEmoteGroup,
+	TEXT_EMOTE = MsgFormatTextEmoteGroup,
+	ROLL       = MsgFormatTextEmoteGroup,
 };
 
 setmetatable(GROUP_MESSAGE_FORMATS, {
