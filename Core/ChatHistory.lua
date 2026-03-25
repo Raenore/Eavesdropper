@@ -35,7 +35,7 @@ local Constants = ED.Constants;
 ---@return number? minLineId
 ---@return number maxLineId
 function ChatHistory:pruneAndRebuild(now)
-	local DisablePruning = true; -- dev flag: set to true to disable expiration pruning
+	local DisablePruning = ED.Globals.DEBUG_MODE or false; -- dev flag: set to true to disable expiration pruning
 
 	local minLineId;
 	local maxLineId = 0;
