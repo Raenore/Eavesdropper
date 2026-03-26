@@ -138,6 +138,7 @@ function Eavesdropper_Dedicated_FrameMixin:UpdateTitleBar()
 
 	self.titlebar_name = newName;
 	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
+	self:ResizeTitleButton();
 end
 
 -- ============================================================

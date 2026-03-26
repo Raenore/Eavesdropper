@@ -137,6 +137,7 @@ function Eavesdropper_FrameMixin:UpdateTitleBar()
 
 	self.titlebar_name = newName;
 	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
+	self:ResizeTitleButton();
 end
 
 ---Restore window position, size, resize handle, and close button from the database.
