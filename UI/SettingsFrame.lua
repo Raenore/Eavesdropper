@@ -724,6 +724,17 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			end,
 		},
 		{
+			type = "checkbox",
+			label = L.GROUP_WINDOWS_PERSIST .. "*",
+			tooltip = L.GROUP_WINDOWS_PERSIST_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsPersist"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsPersist", val);
+			end,
+		},
+		{
 			type = "subtitle",
 			label = L.MINIMAP,
 		},
