@@ -2,9 +2,25 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]
+## [Unreleased] - 2026-03-xx 
+<Super Awesome Summary Line That Is To Be Decided.>  
+
+### Added
+- Added Group Window support to combine multiple specific players into a single shared Eavesdropper window ([#53](https://github.com/Raenore/Eavesdropper/pull/53)).  
+  - Ideal for tracking small parties or specific "inner circles" in crowded RP hubs.  
+  - Create or manage groups by right-clicking a unit's portrait or chat name and selecting "Eavesdrop Group".  
+  - Includes a global setting (enabled by default) that saves your Group Name, Player List, and Display Mode even after logging out or reloading.  
+- Implemented a persistence upgrade for Dedicated Windows ([#55](https://github.com/Raenore/Eavesdropper/pull/55)).  
+  - Includes a global setting (enabled by default) that automatically re-opens your active Dedicated Windows after a UI reload or game restart.  
+
+### Changed
+- Improved window dragging by allowing you to move windows by clicking on the title text button ([#54](https://github.com/Raenore/Eavesdropper/pull/54), by [Peterodox](https://www.curseforge.com/members/peterodox/projects)).  
+  - You can now click and drag anywhere on the top bar to move any Eavesdropper window.  
+- New Dedicated or Group windows now automatically appear in front of existing ones when opened ([#52](https://github.com/Raenore/Eavesdropper/pull/52)).  
+  - This ensures that newly created windows are always visible and not hidden behind others.  
 
 ### Fixed
+- Improved the title bar menu to prevent it from closing and immediately re-opening when clicking the menu button while it is already active ([#56](https://github.com/Raenore/Eavesdropper/pull/56)).  
 - Resolved a rare issue where "Format Quest Text" would fail for specific NPCs that had no actual dialogue to display ([#51](https://github.com/Raenore/Eavesdropper/pull/51)).  
 
 ## [0.3.0] - 2026-03-22  
