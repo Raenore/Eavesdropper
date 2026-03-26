@@ -4,6 +4,7 @@ Eavesdropper helps you stay immersed in busy RP environments by focusing on the 
 **Key Features:**
 - **History Window:** A focused, real-time feed for your current target or mouseover.
 - **Dedicated Windows:** Create unique, independent windows for specific targets to track multiple conversations simultaneously.
+- **Group Windows:** Combine multiple targets into a single shared window for party or small-group interactions.
 - **Keyword Highlights:** Custom keywords highlighted in chat with optional sound alerts.
 - **Notification Support:** Play a sound and flash the taskbar when your target performs an action, or when a Blizzard emote is directed at you, or a Dedicated Window receives a message.
 - **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.
@@ -40,6 +41,16 @@ Each Dedicated Window has its own unique:
 [![Dedicated Windows Combined](Previews/Combos/DedicatedWindows.png)](Previews/Combos/DedicatedWindows.png)  
 *Click the image to view it in full size.*
 
+## Group Windows
+Consolidate interactions from multiple specific players into a single Eavesdropper window by right-clicking a unit portrait or chat name, select **"Eavesdrop Group"**, and either create a new group or add the player to an existing one.
+
+Ideal for keeping track of a small party or a specific "circle" of characters within a crowded environment.
+
+**Note:** Group Windows offer partial persistence: **Group Name**, **Player List**, and **Display Mode** are saved through UI reloads or logouts.
+
+[![Group Windows](Previews/Combos/GroupWindows.png)](Previews/Combos/GroupWindows.png)  
+*Click the image to view it in full size.*
+
 ## Keywords
 Never miss a mention. Define custom keywords to be highlighted in the main chat window and set up optional audio notifications for when they are triggered.
 
@@ -72,7 +83,7 @@ Eavesdropper can replace standard character names with their respective RP names
 
 Eavesdropper can replace standard character names in system emotes (like `/point` or `/wave`) and `/roll` results with their respective RP names.
 
-> **Note:** This feature requires your client to have the player's RP data cached (via MSP) before the replacement can occur.
+**Note:** This feature requires your client to have the player's RP data cached (via MSP) before the replacement can occur.
 
 [![Advanced Formatting Combined](Previews/Combos/AdvancedFormatting.png)](Previews/Combos/AdvancedFormatting.png)  
 *Click the image to view it in full size.*
