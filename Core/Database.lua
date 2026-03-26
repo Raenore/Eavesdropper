@@ -20,12 +20,14 @@ local Database = {};
 ---@class EavesdropperGlobal
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
+---@field DedicatedWindowsPersist boolean?
 ---@field GroupWindowsPersist boolean?
 ---@field WelcomeMessage boolean?
 local GLOBAL_DEFAULTS = {
 	DedicatedWindows = true,
 	DedicatedWindowsNewIndicator = true,
 	DedicatedWindowsUnitPopups = true,
+	DedicatedWindowsPersist = true,
 	GroupWindows = true,
 	GroupWindowsNewIndicator = true,
 	GroupWindowsUnitPopups = true,
@@ -226,6 +228,7 @@ end
 ---@field history table
 ---@field playerCache table
 ---@field settings EavesdropperCharSettings
+---@field dedicatedFrames string[]
 ---@field groupFrames EavesdropperSavedGroupFrame[]
 
 ---Initialises or migrates the character-specific chat database, clearing history on version change.
@@ -239,8 +242,9 @@ function Database:InitCharacterDatabase()
 
 	local charDB = EavesdropperCharDB;
 
-	-- Ensure settings and groupFrames tables exist for older DB versions.
+	-- Ensure settings, dedicatedFrames, and groupFrames tables exist for older DB versions.
 	charDB.settings = charDB.settings or {};
+	charDB.dedicatedFrames = charDB.dedicatedFrames or {};
 	charDB.groupFrames = charDB.groupFrames or {};
 
 	if charDB.version ~= ED.Globals.addon_version then
@@ -543,6 +547,7 @@ end
 ---| "DedicatedWindows"
 ---| "DedicatedWindowsNewIndicator"
 ---| "DedicatedWindowsUnitPopups"
+---| "DedicatedWindowsPersist"
 ---| "GroupWindows"
 ---| "GroupWindowsNewIndicator"
 ---| "GroupWindowsUnitPopups"

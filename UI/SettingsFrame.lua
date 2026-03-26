@@ -683,6 +683,17 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			end,
 		},
 		{
+			type = "checkbox",
+			label = L.DEDICATED_WINDOWS_PERSIST .. "*",
+			tooltip = L.DEDICATED_WINDOWS_PERSIST_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("DedicatedWindowsPersist"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("DedicatedWindowsPersist", val);
+			end,
+		},
+		{
 			type = "subtitle",
 			label = L.GROUP_WINDOWS,
 		},

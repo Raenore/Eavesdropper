@@ -100,9 +100,10 @@ function Eavesdropper_Dedicated_FrameMixin:OnHide()
 	Eavesdropper_SharedFrameMixin.OnHideInstanceFrame(self);
 end
 
----Remove self from the DedicatedFrame manager on hide
+---Remove self from the DedicatedFrame manager on hide and update saved data.
 function Eavesdropper_Dedicated_FrameMixin:OnUnregisterFrame()
 	DedicatedFrame.frames[self.eavesdropped_player] = nil;
+	DedicatedFrame:SaveToCharDB();
 end
 
 -- ============================================================
@@ -217,6 +218,40 @@ function DedicatedFrame:ForEachFrame(func)
 	end
 end
 
+---Stores only players/senders in saved variables.
+function DedicatedFrame:SaveToCharDB()
+	if not EavesdropperCharDB then return; end
+
+	if not ED.Database:GetGlobalSetting("DedicatedWindowsPersist") then
+		EavesdropperCharDB.dedicatedFrames = {};
+		return;
+	end
+
+	local saved = {};
+	for sender, frame in pairs(self.frames) do
+		if frame and sender then
+			table.insert(saved, sender);
+		end
+	end
+
+	EavesdropperCharDB.dedicatedFrames = saved;
+end
+
+---Restore dedicated frames from the character saved variables.
+function DedicatedFrame:RestoreFromCharDB()
+	if not EavesdropperCharDB then return; end
+	if not ED.Database:GetGlobalSetting("DedicatedWindowsPersist") then return; end
+
+	local saved = EavesdropperCharDB.dedicatedFrames;
+	if not saved or #saved == 0 then return; end
+
+	for _, sender in ipairs(saved) do
+		if sender and sender ~= "" then
+			self:AddFrame(sender);
+		end
+	end
+end
+
 ---Show an existing dedicated frame for sender, or create and initialise a new one
 ---@param sender string
 ---@return EavesdropperDedicatedFrame
@@ -235,6 +270,7 @@ function DedicatedFrame:AddFrame(sender)
 	end
 
 	self.frames[sender] = frame;
+	self:SaveToCharDB();
 
 	return frame;
 end
