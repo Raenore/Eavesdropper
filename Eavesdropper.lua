@@ -23,9 +23,16 @@ function ED.Init()
 
 		SLASH_EAVESDROPPER1, SLASH_EAVESDROPPER2 = "/ed", "/eavesdropper";
 		SlashCmdList["EAVESDROPPER"] = function(msg)
-			msg = type(msg) == "string" and msg:lower() or "";
+			local originalMsg = type(msg) == "string" and msg or "";
+			msg = originalMsg:lower();
 
-			if msg == "help" then
+			if ED.Globals.DEBUG_MODE and (msg == "testclear" or msg:sub(1, 10) == "testclear ") then
+				ED.Debug:HandleTestClear(originalMsg:sub(11));
+				return;
+			elseif ED.Globals.DEBUG_MODE and (msg == "test" or msg:sub(1, 5) == "test ") then
+				ED.Debug:HandleTest(originalMsg:sub(6));
+				return;
+			elseif msg == "help" then
 				ED.Utils.WriteCommandTable({
 					[ED.Localization.SLASH_COMMAND_ED] = "/ed",
 					[ED.Localization.SLASH_COMMAND_ED_SHOW] = "/ed show",
