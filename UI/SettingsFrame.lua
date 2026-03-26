@@ -972,7 +972,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			values = function() return ED.Database:GetAllProfiles(true, false); end,
 			get = function() end,
 			set = function(val)
-				ED.Database:CopyProfile(val);
+				ED.ConfirmDialog:Show(L.PROFILES_CONFIRM_COPYFROM:format(val), function()
+					ED.Database:CopyProfile(val);
+				end);
 			end,
 		},
 		{
@@ -980,8 +982,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			label = L.PROFILES_RESETBUTTON,
 			tooltip = L.PROFILES_RESETBUTTON_HELP,
 			func = function()
-				ED.Database:ResetProfile();
-				self:RefreshWidgets();
+				ED.ConfirmDialog:Show(L.PROFILES_CONFIRM_RESET, function()
+					ED.Database:ResetProfile();
+					self:RefreshWidgets();
+				end);
 			end,
 		},
 		{
@@ -992,7 +996,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			values = function() return ED.Database:GetAllProfiles(true, true); end,
 			get = function() end,
 			set = function(val)
-				ED.Database:DeleteProfile(val);
+				ED.ConfirmDialog:Show(L.PROFILES_CONFIRM_DELETE:format(val), function()
+					ED.Database:DeleteProfile(val);
+				end);
 			end,
 		},
 	};

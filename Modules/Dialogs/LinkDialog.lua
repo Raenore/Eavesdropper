@@ -56,10 +56,10 @@ StaticPopupDialogs["EAVESDROPPER_LINK_DIALOG"] = {
 	button1 = CANCEL,
 	hasEditBox = true,
 	editBoxWidth = 320,
-	OnShow = function(self, data)
+	OnShow = function(self)
 		local editBox = GetDialogEditBox(self);
 		SkinEditBox(editBox);
-		SetupEditBox(editBox, data);
+		SetupEditBox(editBox, StaticPopupDialogs["EAVESDROPPER_LINK_DIALOG"].url or "");
 	end,
 	timeout = false,
 	whileDead = true,
@@ -70,7 +70,8 @@ StaticPopupDialogs["EAVESDROPPER_LINK_DIALOG"] = {
 ---Displays a static popup dialog containing the given URL in a copyable editBox.
 ---@param url string
 function LinkDialog.CreateExternalLinkDialog(url)
-	local dialog = StaticPopup_Show("EAVESDROPPER_LINK_DIALOG", nil, nil, url);
+	StaticPopupDialogs["EAVESDROPPER_LINK_DIALOG"].url = url;
+	local dialog = StaticPopup_Show("EAVESDROPPER_LINK_DIALOG");
 	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");

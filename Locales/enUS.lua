@@ -216,13 +216,17 @@ L = {
 	PROFILES_NEWPROFILE_HELP = "Create a new profile. Enter a name and press Enter to save it.",
 
 	PROFILES_COPYFROM = "Copy From",
-	PROFILES_COPYFROM_HELP = "Copy all settings from an existing profile into your currently active profile.|n|n|cnWARNING_FONT_COLOR:Warning: Selecting a profile from this dropdown will overwrite your current settings immediately without an additional confirmation.|r",
+	PROFILES_COPYFROM_HELP = "Copy all settings from an existing profile into your currently active profile.",
 
 	PROFILES_RESETBUTTON = "Reset Profile",
-	PROFILES_RESETBUTTON_HELP = "Reset all settings in the current profile back to their original defaults.|n|n|cnWARNING_FONT_COLOR:Warning: Clicking this button will reset your settings immediately without an additional confirmation.|r",
+	PROFILES_RESETBUTTON_HELP = "Reset all settings in the current profile back to their original defaults.",
 
 	PROFILES_DELETEPROFILE = "Delete Profile",
-	PROFILES_DELETEPROFILE_HELP = "Permanently remove the selected profile from the Eavesdropper database.|n|n|cnWARNING_FONT_COLOR:Warning: Selecting a profile from this dropdown will delete it immediately without an additional confirmation.|r",
+	PROFILES_DELETEPROFILE_HELP = "Permanently remove the selected profile from the Eavesdropper database.",
+
+	PROFILES_CONFIRM_COPYFROM = "Are you sure you want to copy all settings from profile '%s'?",
+	PROFILES_CONFIRM_RESET = "Are you sure you want to reset the current profile to its defaults?",
+	PROFILES_CONFIRM_DELETE = "Are you sure you want to delete profile '%s'?",
 
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Build:|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " is not optimized for this game build.|n|n|cnWARNING_FONT_COLOR:This may cause unexpected behavior.|r",
