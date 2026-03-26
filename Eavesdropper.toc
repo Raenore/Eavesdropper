@@ -75,6 +75,7 @@ Core\Magnifier.lua
 ## Modules
 Modules\ElvUI\ElvUI.lua
 Modules\Dialogs\ConfirmDialog.lua
+Modules\Dialogs\GroupDialog.lua
 Modules\Dialogs\LinkDialog.lua
 Modules\Minimap\Minimap.lua
 Modules\NPCDialogue\NPCDialogue.lua
