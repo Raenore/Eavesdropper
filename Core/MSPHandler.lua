@@ -169,7 +169,7 @@ end
 ---@return string?
 local function NormalizeString(value)
 	if not value then return nil; end
-	value = strtrim(value);
+	value = string.trim(value);
 	if value == "" then return nil; end
 	return value;
 end
