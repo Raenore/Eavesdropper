@@ -52,6 +52,11 @@ end
 function Config:ShowConfigMenu(frame, dedicatedFrame)
 	dedicatedFrame = dedicatedFrame or false;
 
+	---Handles extra clicks on the Title Bar Button to not close the menu.
+	function frame.TitleBar.TitleButton.HandlesGlobalMouseEvent()
+		return true;
+	end
+
 	---Reads a setting from the dedicated frame or the DB
 	---@param key string
 	---@return any
