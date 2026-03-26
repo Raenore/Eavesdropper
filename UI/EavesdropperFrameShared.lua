@@ -255,7 +255,7 @@ end
 
 ---Begin moving the frame; only fires from the title bar when not locked
 function Eavesdropper_SharedFrameMixin:OnDragStart()
-	if self:IsWindowLocked() then return; end;
+	if self:IsWindowLocked() then return; end
 
 	self:StopMovingOrSizing();
 	self:StartMoving();
