@@ -46,7 +46,7 @@ end
 ---@return string
 local function MsgFormatEmote(entry, name)
 	local msg = entry.m or "";
-	local shortName = strtrim(name:match("^[^-]+") or name);
+	local shortName = string.trim(name:match("^[^-]+") or name);
 
 	local nameDisplayMode = ED.Database:GetSetting("NameDisplayMode");
 	local useRPName = nameDisplayMode ~= 3;
@@ -63,7 +63,7 @@ local function MsgFormatEmote(entry, name)
 	if Chattery then
 		splitMarker = Chattery.Settings.GetSetting(Chattery.Setting.SplitMarker);
 	elseif Yapper and Yapper.Config then
-		splitMarker = strtrim(Yapper.Config.Chat.DELINEATOR);
+		splitMarker = string.trim(Yapper.Config.Chat.DELINEATOR);
 	elseif EmoteSplitter and EmoteSplitter.db then
 		splitMarker = EmoteSplitter.db.global.premark;
 	end
@@ -113,7 +113,7 @@ local function MsgFormatTextEmote(entry, name)
 	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
 
 	messageText = ED.Utils.WrapTextInColor(messageText, color);
-	return (shortName and (strtrim(shortName) .. " ") or "") .. messageText;
+	return (shortName and (string.trim(shortName) .. " ") or "") .. messageText;
 end
 
 ---Formats a text-emote message body only, stripping the leading sender token and colouring the remainder.
@@ -255,8 +255,8 @@ function ChatFormatter:GetFormattedName(entry)
 		end
 	end
 
-	local trimmedName = strtrim(name);
-	local trimmedFirstName = firstName and strtrim(firstName) or trimmedName;
+	local trimmedName = string.trim(name);
+	local trimmedFirstName = firstName and string.trim(firstName) or trimmedName;
 
 	return trimmedName, applyRPName, trimmedFirstName;
 end
