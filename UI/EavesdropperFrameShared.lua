@@ -255,8 +255,7 @@ end
 
 ---Begin moving the frame; only fires from the title bar when not locked
 function Eavesdropper_SharedFrameMixin:OnDragStart()
-	local isTitlebar = GetMouseFoci()[1] == self.TitleBar;
-	if self:IsWindowLocked() or not isTitlebar then return; end
+	if self:IsWindowLocked() then return; end;
 
 	self:StopMovingOrSizing();
 	self:StartMoving();

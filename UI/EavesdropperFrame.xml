@@ -86,7 +86,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					</Button>
 
 					<!-- Title Button -->
-					<Button parentKey="TitleButton">
+					<Button parentKey="TitleButton" registerForDrag="LeftButton">
 						<Size x="110" y="15"/>
 						<Anchors>
 							<Anchor point="TOPLEFT"/>
@@ -102,6 +102,12 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<OnLeave>
 								self:GetParent():GetParent():OnLeave();
 							</OnLeave>
+							<OnDragStart>
+								self:GetParent():GetParent():OnDragStart();
+							</OnDragStart>
+							<OnDragStop>
+								self:GetParent():GetParent():OnDragStop();
+							</OnDragStop>
 						</Scripts>
 
 						<Layers>
