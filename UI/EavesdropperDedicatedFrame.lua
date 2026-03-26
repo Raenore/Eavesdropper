@@ -345,8 +345,10 @@ function DedicatedFrame:AddFrame(sender)
 
 	if frame then
 		frame:Show();
+		frame:Raise();
 	else
 		frame = CreateFrame("Frame", "Eavesdropper_Dedicated_Frame_" .. sender, UIParent, "Eavesdropper_Dedicated_FrameTemplate");
+		frame:Raise();
 		frame:HandleVisibility();
 		frame:ApplyWindowSettings();
 		ED.ChatFilters:Init(frame);

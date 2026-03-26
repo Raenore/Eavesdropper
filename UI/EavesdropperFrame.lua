@@ -323,6 +323,7 @@ end
 function FrameModule:Init()
 	local frame = CreateFrame("Frame", "Eavesdropper_Frame", UIParent, "Eavesdropper_FrameTemplate");
 	ED.Frame = frame;
+	frame:Raise();
 	frame:HandleVisibility(); -- Takes HideWhenEmpty & HideInCombat in account
 
 	frame:ApplyProfileSettings();
