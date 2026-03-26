@@ -9,6 +9,11 @@ local L = ED.Localization;
 ---@class EavesdropperGroupFrame
 local GroupFrame = {};
 
+---@class EavesdropperSavedGroupFrame
+---@field name string Display name of the group window
+---@field players string[] Tracked senders in "Name-Realm" format
+---@field nameDisplayMode number? Only stored when it differs from main Eavesdropper
+
 ---Keyed by displayName, which is enforced unique by HasFrameWithName.
 ---The _G frame name uses a numeric index and is tracked separately.
 ---@type table<string, EavesdropperGroupFrame>
@@ -39,6 +44,14 @@ end
 ---@return boolean
 function Eavesdropper_Group_FrameMixin:IsTitleBarLocked()
 	return self.lockTitleBar;
+end
+
+---@param mode number
+function Eavesdropper_Group_FrameMixin:SetNameDisplayMode(mode)
+	if self.nameDisplayMode == mode then return; end
+	self.nameDisplayMode = mode;
+	self:RefreshChat();
+	GroupFrame:SaveToCharDB();
 end
 
 -- ============================================================
@@ -105,10 +118,11 @@ function Eavesdropper_Group_FrameMixin:OnHide()
 	Eavesdropper_SharedFrameMixin.OnHideInstanceFrame(self);
 end
 
----Remove self from the GroupFrame manager on hide.
+---Remove self from the GroupFrame manager on hide and update saved data.
 function Eavesdropper_Group_FrameMixin:OnUnregisterFrame()
 	if self.displayName then
 		GroupFrame.frames[self.displayName] = nil;
+		GroupFrame:SaveToCharDB();
 	end
 end
 
@@ -368,6 +382,7 @@ function Eavesdropper_Group_FrameMixin:RenameFrame(newName)
 	GroupFrame.frames[self.displayName] = self;
 
 	self:UpdateTitleBar();
+	GroupFrame:SaveToCharDB();
 end
 
 ---Open the rename dialog for this group frame
@@ -397,6 +412,59 @@ function GroupFrame:HasFrameWithName(name)
 	return false;
 end
 
+---Stores only displayName, players, and nameDisplayMode (when overridden) in saved variables.
+function GroupFrame:SaveToCharDB()
+	if not EavesdropperCharDB then return; end
+
+	if not ED.Database:GetGlobalSetting("GroupWindowsPersist") then
+		EavesdropperCharDB.groupFrames = {};
+		return;
+	end
+
+	local profileMode = ED.Database:GetSetting("NameDisplayMode");
+	local saved = {};
+
+	for _, frame in pairs(self.frames) do
+		if frame and frame.displayName and frame.players and #frame.players > 0 then
+			local entry = {
+				name = frame.displayName,
+				players = ED.Utils.ShallowCopy(frame.players),
+			};
+
+			---Only persist nameDisplayMode when it differs from the profile default.
+			if frame.nameDisplayMode and frame.nameDisplayMode ~= profileMode then
+				entry.nameDisplayMode = frame.nameDisplayMode;
+			end
+
+			table.insert(saved, entry);
+		end
+	end
+
+	EavesdropperCharDB.groupFrames = saved;
+end
+
+---Restore group frames from the character saved variables.
+function GroupFrame:RestoreFromCharDB()
+	if not EavesdropperCharDB then return; end
+	if not ED.Database:GetGlobalSetting("GroupWindowsPersist") then return; end
+
+	local saved = EavesdropperCharDB.groupFrames;
+	if not saved or #saved == 0 then return; end
+
+	for _, entry in ipairs(saved) do
+		if entry.name and entry.players and #entry.players > 0 then
+			self:CreateNamedFrame(entry.name, nil, entry.players);
+
+			---Apply saved nameDisplayMode override if present.
+			local frame = self.frames[entry.name];
+			if frame and entry.nameDisplayMode then
+				frame.nameDisplayMode = entry.nameDisplayMode;
+				frame:RefreshChat();
+			end
+		end
+	end
+end
+
 ---Prompt the user for a group name before creating any frame.
 ---No frame is created if the user cancels or submits an empty name.
 ---@param sender string Initial sender in "Name-Realm" format
@@ -406,9 +474,11 @@ end
 
 ---Find the lowest free numeric index for the stable _G frame name, create the frame,
 ---then register it in frames keyed by displayName.
+---When playerList is provided (restore path), the full list is set directly.
 ---@param displayName string
----@param sender string Initial sender to seed the frame with
-function GroupFrame:CreateNamedFrame(displayName, sender)
+---@param sender string? Initial sender to seed the frame with
+---@param playerList string[]? Full player list for restore; takes precedence over sender
+function GroupFrame:CreateNamedFrame(displayName, sender, playerList)
 	if not displayName or displayName == "" then return; end
 	if self:HasFrameWithName(displayName) then return; end
 
@@ -430,11 +500,20 @@ function GroupFrame:CreateNamedFrame(displayName, sender)
 	frame.displayName = displayName;
 	frame.players = {};
 
-	frame:AddPlayer(sender);
+	if playerList and #playerList > 0 then
+		for _, player in ipairs(playerList) do
+			table.insert(frame.players, player);
+		end
+		frame:RefreshEmptyState();
+	elseif sender then
+		frame:AddPlayer(sender);
+	end
+
 	frame:UpdateTitleBar();
 	frame:RefreshChat();
 
 	self.frames[displayName] = frame;
+	self:SaveToCharDB();
 end
 
 -- ============================================================
@@ -494,6 +573,7 @@ function Eavesdropper_Group_FrameMixin:AddPlayer(sender)
 	table.insert(self.players, sender);
 	self:RefreshEmptyState();
 	self:RefreshChat();
+	GroupFrame:SaveToCharDB();
 end
 
 ---Remove a sender from this frame's player list
@@ -504,6 +584,7 @@ function Eavesdropper_Group_FrameMixin:RemovePlayer(sender)
 			table.remove(self.players, i);
 			self:RefreshEmptyState();
 			self:RefreshChat();
+			GroupFrame:SaveToCharDB();
 			return;
 		end
 	end

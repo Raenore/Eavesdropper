@@ -195,9 +195,9 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 			if groupFrame then
 				local frameNameDisplayMode = rootDescription:CreateButton(L.NAME_DISPLAY_MODE);
 				frameNameDisplayMode:CreateTitle(L.NAME_DISPLAY_MODE .. " " .. MAIN_MENU);
-				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FULL_NAME, function() return frame.nameDisplayMode == 1 end, function() frame.nameDisplayMode = 1; frame:RefreshChat(); end);
-				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FIRST_NAME, function() return frame.nameDisplayMode == 2 end, function() frame.nameDisplayMode = 2; frame:RefreshChat(); end);
-				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_ORIGINAL_NAME, function() return frame.nameDisplayMode == 3 end, function() frame.nameDisplayMode = 3; frame:RefreshChat(); end);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FULL_NAME, function() return frame.nameDisplayMode == 1 end, function() frame:SetNameDisplayMode(1); end);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_FIRST_NAME, function() return frame.nameDisplayMode == 2 end, function() frame:SetNameDisplayMode(2); end);
+				frameNameDisplayMode:CreateRadio(L.NAME_DISPLAY_MODE_ORIGINAL_NAME, function() return frame.nameDisplayMode == 3 end, function() frame:SetNameDisplayMode(3); end);
 			end
 		end
 	end);
