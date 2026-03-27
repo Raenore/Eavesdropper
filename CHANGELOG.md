@@ -3,31 +3,31 @@
 All notable changes to this project will be documented in this file.  
 
 ## [Unreleased] - 2026-03-xx 
-<Super Awesome Summary Line That Is To Be Decided.>  
+Significant feature update introducing Group Windows, session persistence for dedicated frames, and various quality-of-life UI improvements.  
 
 ### Added
-- Added Group Window support to combine multiple specific players into a single shared Eavesdropper window ([#53](https://github.com/Raenore/Eavesdropper/pull/53)).  
+- Added **Group Window** support to combine multiple specific players into a single shared Eavesdropper window ([#53](https://github.com/Raenore/Eavesdropper/pull/53)).  
   - Ideal for tracking small parties or specific "inner circles" in crowded RP hubs.  
   - Create or manage groups by right-clicking a unit's portrait or chat name and selecting "Eavesdrop Group".  
-  - Includes a global setting (enabled by default) that saves your Group Name, Player List, and Display Mode even after logging out or reloading.  
-- Implemented a persistence upgrade for Dedicated Windows ([#55](https://github.com/Raenore/Eavesdropper/pull/55)).  
+  - Includes a global setting (enabled by default) that remembers your Group Name, Player List, and Display Mode even after logging out or reloading.  
+- Improved how **Dedicated Windows** are saved across sessions ([#55](https://github.com/Raenore/Eavesdropper/pull/55)).  
   - Includes a global setting (enabled by default) that automatically re-opens your active Dedicated Windows after a UI reload or game restart.  
 - Added the **Beep** and **Poke** sounds from the Listener addon as new notification options with proper licensing ([#28](https://github.com/Raenore/Eavesdropper/pull/28) and [#61](https://github.com/Raenore/Eavesdropper/pull/61)).  
   - Special thanks to [Bitwise1057](https://github.com/Bitwise1057) for the initial implementation.  
 - Added confirmation popups for profile actions to prevent accidental clicks ([#59](https://github.com/Raenore/Eavesdropper/pull/59) and [#60](https://github.com/Raenore/Eavesdropper/pull/60)).  
-  - "New," "Copy From," "Reset," and "Delete" profile options now require you to confirm the action before it is processed.  
-- The title bar button (which opens the window menu) now dynamically resizes based on its text.  
-  - Whether it shows "Eavesdropper," a target name, or a group name, the button will now expand or shrink to fit the text while maintaining a clean minimum width.  
+  - "New," "Copy From," "Reset," and "Delete" profile options now ask for confirmation before any changes are made.  
+- The title bar button (which opens the window menu) now automatically resizes to fit its text.  
+  - Whether it shows "Eavesdropper," a target name, or a group name, the button will grow or shrink to fit the name while keeping a clean minimum width.  
 
 ### Changed
-- Improved window dragging by allowing you to move windows by clicking on the title text button ([#54](https://github.com/Raenore/Eavesdropper/pull/54), by [Peterodox](https://www.curseforge.com/members/peterodox/projects)).  
+- Improved window dragging by allowing you to move windows by clicking directly on the title text ([#54](https://github.com/Raenore/Eavesdropper/pull/54), by [Peterodox](https://www.curseforge.com/members/peterodox/projects)).  
   - You can now click and drag anywhere on the top bar to move any Eavesdropper window.  
 - New Dedicated or Group windows now automatically appear in front of existing ones when opened ([#52](https://github.com/Raenore/Eavesdropper/pull/52)).  
-  - This ensures that newly created windows are always visible and not hidden behind others.  
+  - This ensures that newly created windows are always on top and not hidden behind others.  
 
 ### Fixed
-- Improved the title bar menu to prevent it from closing and immediately re-opening when clicking the menu button while it is already active ([#56](https://github.com/Raenore/Eavesdropper/pull/56)).  
-- Resolved a rare issue where "Format Quest Text" would fail for specific NPCs that had no actual dialogue to display ([#51](https://github.com/Raenore/Eavesdropper/pull/51)).  
+- Improved the title bar menu to prevent it from flickering or closing if you click the menu button while it is already open ([#56](https://github.com/Raenore/Eavesdropper/pull/56)).  
+- Resolved a rare issue where "Format Quest Text" would fail for certain NPCs that had no actual dialogue to show ([#51](https://github.com/Raenore/Eavesdropper/pull/51)).  
 
 ## [0.3.0] - 2026-03-22  
 Significant feature update introducing Dedicated Windows for unique targets, RP name integration with Dialogue UI, and localized Russian support.  
