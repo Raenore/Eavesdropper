@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
   - Includes a global setting (enabled by default) that saves your Group Name, Player List, and Display Mode even after logging out or reloading.  
 - Implemented a persistence upgrade for Dedicated Windows ([#55](https://github.com/Raenore/Eavesdropper/pull/55)).  
   - Includes a global setting (enabled by default) that automatically re-opens your active Dedicated Windows after a UI reload or game restart.  
+- Added the **Beep** and **Poke** sounds from the Listener addon as new notification options with proper licensing ([#28](https://github.com/Raenore/Eavesdropper/pull/28) and [#61](https://github.com/Raenore/Eavesdropper/pull/61)).  
+  - Special thanks to [Bitwise1057](https://github.com/Bitwise1057) for the initial implementation.  
 - Added confirmation popups for profile actions to prevent accidental clicks ([#59](https://github.com/Raenore/Eavesdropper/pull/59) and [#60](https://github.com/Raenore/Eavesdropper/pull/60)).  
   - "New," "Copy From," "Reset," and "Delete" profile options now require you to confirm the action before it is processed.  
 - The title bar button (which opens the window menu) now dynamically resizes based on its text.  
