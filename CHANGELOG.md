@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased] - 2026-03-xx 
+## [0.4.0] - 2026-03-28 
 Significant feature update introducing Group Windows, session persistence for dedicated frames, and various quality-of-life UI improvements.  
 
 ### Added
@@ -69,7 +69,8 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
 [0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
