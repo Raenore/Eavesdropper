@@ -16,9 +16,10 @@ StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"] = {
 	end,
 	timeout = false,
 	whileDead = true,
-	hideOnEscape = true,
+	hideOnEscape = true, -- does not work with enterClicksFirstButton
 	showAlert = true,
 	enterClicksFirstButton = true,
+	escapeHides = true, -- required with enterClicksFirstButton
 	preferredIndex = 3,
 };
 
