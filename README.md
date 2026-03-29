@@ -80,7 +80,7 @@ While Eavesdropper is designed to be broadly compatible, the following addons ar
 ![Multi-Message Support](Previews/MultiMessageSupport/MultiMessageSupport.png)
 
 ## Advanced RP Name Formatting
-Eavesdropper cab reokace standard character names with their respective RP names across the entire UI.  
+Eavesdropper can replace standard character names with their respective RP names across the entire UI.  
 This formatting applies to **all Eavesdropper windows** (History, Dedicated, and Group) and can optionally be enabled for the **main chat window**.  
 
 **Supported Situations:**
