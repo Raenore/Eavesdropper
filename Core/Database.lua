@@ -199,6 +199,25 @@ local function pruneToDefaults(value, def)
 	return next(newTable) and newTable or nil;
 end
 
+---Removes any stored values from a profile that are identical to their defaults.
+---Primitives matching defaults are nilled; table values are pruned key-by-key
+---and removed entirely when every key matches the default.
+---@param profile table
+local function pruneProfile(profile)
+	for key, value in pairs(profile) do
+		local def = DEFAULT_PROFILE[key];
+		if def == nil then -- luacheck: ignore 542 (empty if branch)
+			-- No default exists for this key; leave it untouched.
+		elseif type(value) == "table" then
+			if type(def) == "table" then
+				profile[key] = pruneToDefaults(value, def);
+			end
+		elseif value == def then
+			profile[key] = nil;
+		end
+	end
+end
+
 ---Initialises the account-wide saved variable and resolves the active profile for the current player.
 function Database:Init()
 	EavesdropperDB = EavesdropperDB or {
@@ -219,6 +238,11 @@ function Database:Init()
 
 	self.currentProfile = db.profiles[profileName];
 	db.profileKeys[playerKey] = profileName;
+
+	---Prune all profiles to remove values that match their defaults.
+	for _, profileData in pairs(db.profiles) do
+		pruneProfile(profileData);
+	end
 
 	self:InitCharacterDatabase();
 end
@@ -379,10 +403,6 @@ function Database:ResetProfile()
 
 	for k in pairs(current) do
 		current[k] = nil;
-	end
-
-	for k, v in pairs(self.defaults) do
-		current[k] = type(v) == "table" and ED.Utils.ShallowCopy(v) or v;
 	end
 
 	ED.Frame:ApplyProfileSettings();
