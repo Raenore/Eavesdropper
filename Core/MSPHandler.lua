@@ -46,6 +46,8 @@ local function GetClassColor(playerGUID)
 	if not playerGUID then return; end
 
 	local _, englishClass = GetPlayerInfoByGUID(playerGUID);
+	if not englishClass then return; end
+
 	local color;
 	if TRP3_API then
 		color = TRP3_API.GetClassDisplayColor(englishClass);
@@ -105,12 +107,18 @@ end
 ---@param playerGUID string
 ---@return string
 local function GetTRPColor(profile, playerGUID)
-	local _, englishClass = GetPlayerInfoByGUID(playerGUID);
-	local color = TRP3_API.GetClassDisplayColor(englishClass);
+	local color;
 
-	if profile and profile.characteristics then
-		color = profile.characteristics.CH and TRP3_API.CreateColorFromHexString(profile.characteristics.CH) or color;
+	if profile and profile.characteristics and profile.characteristics.CH then
+		color = TRP3_API.CreateColorFromHexString(profile.characteristics.CH);
 	end
+
+	if not color then
+		local _, englishClass = GetPlayerInfoByGUID(playerGUID);
+		color = englishClass and TRP3_API.GetClassDisplayColor(englishClass);
+	end
+
+	if not color then return nil; end
 
 	color = TRP3_API.GenerateReadableColor(color, TRP3_API.Colors.Black);
 	return color:GenerateHexColor();
