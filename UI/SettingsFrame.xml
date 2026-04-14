@@ -39,7 +39,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				</Layers>
 			</Frame>
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
-
 			<Frame parentKey="CategoryList">
 				<Size x="120"/>
 				<Anchors>
@@ -103,7 +102,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<KeyValue key="scrollBarTopY" value="-10" type="number"/>
 			<KeyValue key="scrollBarBottomY" value="10" type="number"/>
 		</KeyValues>
-
 		<Scripts>
 			<OnLoad function="ScrollFrame_OnLoad"/>
 		</Scripts>

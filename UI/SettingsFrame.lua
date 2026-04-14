@@ -1297,8 +1297,3 @@ function Settings:Init()
 end
 
 ED.Settings = Settings;
-
-
-C_Timer.After(1, function()
-	Settings:ShowSettings();
-end);
