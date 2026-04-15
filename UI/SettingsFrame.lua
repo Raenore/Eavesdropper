@@ -1182,7 +1182,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	end
 
 
-	local categoryButtonWidth = math.ceil(labelPaddingLeft + maxLabelWidth + labelPaddingRight);
+	local categoryButtonWidth = math.ceil(labelPaddingLeft + maxLabelWidth + labelPaddingRight); -- Fit to the longest word
 	self.CategoryList:SetWidth(categoryButtonWidth);
 	for _, tab in ipairs(self.Tabs) do
 		tab.Text:ClearAllPoints();
@@ -1190,9 +1190,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		tab:SetWidth(categoryButtonWidth);
 	end
 
-	local settingsListWidth = 380;
-	local frameHeight = 380;
-	self:SetSize(categoryButtonWidth + settingsListWidth, frameHeight);
+	local frameWidth = categoryButtonWidth + Constants.SETTINGS.SETTINGS_LIST_WIDTH;
+	local frameHeight = Constants.SETTINGS.FRAME_HEIGHT;
+	self:SetSize(frameWidth, frameHeight);
 
 	ED.ElvUI.RegisterSkinnableElement(self, "frame");
 end
