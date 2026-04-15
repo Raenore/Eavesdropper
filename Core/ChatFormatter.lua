@@ -46,7 +46,7 @@ end
 ---@return string
 local function MsgFormatEmote(entry, name)
 	local msg = entry.m or "";
-	local shortName = string.trim(name:match("^[^-]+") or name);
+	local shortName = strtrim(name);
 
 	local nameDisplayMode = ED.Database:GetSetting("NameDisplayMode");
 	local useRPName = nameDisplayMode ~= 3;
@@ -100,7 +100,7 @@ end
 ---@return string
 local function MsgFormatEmoteGroup(entry, name)
 	local result = MsgFormatEmote(entry, name);
-	local shortName = strtrim(name:match("^[^-]+") or name);
+	local shortName = name;
 
 	---Strip WoW colour escapes for a plain-text prefix check.
 	local plainResult = result:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
@@ -123,7 +123,7 @@ local function MsgFormatTextEmote(entry, name)
 	local shortName;
 
 	if entry.e == "ROLL" or unitName ~= entry.s then
-		shortName = name:match("^[^-]+") or name;
+		shortName = name;
 		local firstSpace = messageText:find(" ", 1, true) or 0;
 		messageText = messageText:sub(firstSpace + 1);
 	end
@@ -161,7 +161,7 @@ end;
 ---@return string
 local function MsgFormatTextEmoteGroup(entry, name)
 	local messageText = entry.m or "";
-	local shortName = name:match("^[^-]+") or name;
+	local shortName = name;
 
 	---Always strip the leading sender token for group display.
 	local firstSpace = messageText:find(" ", 1, true) or 0;
