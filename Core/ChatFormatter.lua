@@ -46,7 +46,6 @@ end
 ---@return string
 local function MsgFormatEmote(entry, name)
 	local msg = entry.m or "";
-	local shortName = strtrim(name);
 
 	local nameDisplayMode = ED.Database:GetSetting("NameDisplayMode");
 	local useRPName = nameDisplayMode ~= 3;
@@ -75,7 +74,7 @@ local function MsgFormatEmote(entry, name)
 	-- handle leading punctuation cases
 	local firstTwo = msg:sub(1, 2);
 	if firstTwo == ", " or firstTwo == "'s" then
-		return shortName .. msg;
+		return name .. msg;
 	end
 
 	-- Strip inner RP colours when RP colour display is disabled.
@@ -90,7 +89,7 @@ local function MsgFormatEmote(entry, name)
 	-- Skip prepending name for punctuation-starting messages.
 	if msg:match("^%s*%p") then return msg; end
 
-	return shortName .. " " .. msg;
+	return name .. " " .. msg;
 end
 
 ---Group-aware emote formatter: delegates to MsgFormatEmote, then ensures the
@@ -100,40 +99,56 @@ end
 ---@return string
 local function MsgFormatEmoteGroup(entry, name)
 	local result = MsgFormatEmote(entry, name);
-	local shortName = name;
 
 	---Strip WoW colour escapes for a plain-text prefix check.
 	local plainResult = result:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
-	local plainName = shortName:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
+	local plainName = name:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
 
 	if plainResult:sub(1, #plainName) ~= plainName then
-		return shortName .. " " .. result;
+		return name .. " " .. result;
 	end
 
 	return result;
 end
 
----Formats a text-emote or roll message, colouring the message body and optionally prepending the sender name.
+---Strips the leading sender token (everything up to and including the first space).
+---@param text string
+---@return string
+local function StripLeadingToken(text)
+	local firstSpace = text:find(" ", 1, true) or 0;
+	return text:sub(firstSpace + 1);
+end
+
+---Resolves the chat colour for the given event and wraps text in it.
+---@param text string
+---@param event string
+---@return string
+local function ColorByEvent(text, event)
+	local eventType = event:match("^CHAT_MSG_(.+)$") or event;
+	local info = ResolveChatInfo(eventType);
+	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
+	return ED.Utils.WrapTextInColor(text, color);
+end
+
+---Formats a text-emote or roll message, colouring the message body and prepending the sender name in rolls and when not self.
 ---@param entry EavesdropperChatEntry
 ---@param name string
 ---@return string
 local function MsgFormatTextEmote(entry, name)
 	local messageText = entry.m or "";
-	local unitName = ED.Utils.GetUnitName();
-	local shortName;
+	local prependName = (entry.e == "ROLL" or ED.Utils.GetUnitName() ~= entry.s);
 
-	if entry.e == "ROLL" or unitName ~= entry.s then
-		shortName = name;
-		local firstSpace = messageText:find(" ", 1, true) or 0;
-		messageText = messageText:sub(firstSpace + 1);
+	if prependName then
+		messageText = StripLeadingToken(messageText);
 	end
 
-	local eventType = entry.e:match("^CHAT_MSG_(.+)$") or entry.e;
-	local info = ResolveChatInfo(eventType);
-	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
+	messageText = ColorByEvent(messageText, entry.e);
 
-	messageText = ED.Utils.WrapTextInColor(messageText, color);
-	return (shortName and (string.trim(shortName) .. " ") or "") .. messageText;
+	if prependName then
+		return name .. " " .. messageText;
+	end
+
+	return messageText;
 end
 
 ---Formats a text-emote message body only, stripping the leading sender token and colouring the remainder.
@@ -141,18 +156,8 @@ end
 ---@param name string
 ---@return string
 local function MsgFormatTextEmoteNoName(entry, name) -- luacheck: no unused (name)
-	local messageText = entry.m or "";
-
-	local firstSpace = messageText:find(" ", 1, true) or 0;
-	messageText = messageText:sub(firstSpace + 1);
-
-	local eventType = entry.e:match("^CHAT_MSG_(.+)$") or entry.e;
-	local info = ResolveChatInfo(eventType);
-	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
-
-	messageText = ED.Utils.WrapTextInColor(messageText, color);
-	return messageText;
-end;
+	return ColorByEvent(StripLeadingToken(entry.m or ""), entry.e);
+end
 
 ---Group-aware text-emote formatter: always prepends the sender name, even when
 ---the sender is the current player, so group windows remain identifiable.
@@ -160,19 +165,7 @@ end;
 ---@param name string
 ---@return string
 local function MsgFormatTextEmoteGroup(entry, name)
-	local messageText = entry.m or "";
-	local shortName = name;
-
-	---Always strip the leading sender token for group display.
-	local firstSpace = messageText:find(" ", 1, true) or 0;
-	messageText = messageText:sub(firstSpace + 1);
-
-	local eventType = entry.e:match("^CHAT_MSG_(.+)$") or entry.e;
-	local info = ResolveChatInfo(eventType);
-	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
-
-	messageText = ED.Utils.WrapTextInColor(messageText, color);
-	return strtrim(shortName) .. " " .. messageText;
+	return name .. " " .. ColorByEvent(StripLeadingToken(entry.m or ""), entry.e);
 end
 
 ---@type table<string, fun(entry:EavesdropperChatEntry, name:string):string>
