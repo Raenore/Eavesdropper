@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [Unreleased]  
+
+### Fixed
+- Hyphenated RP names (e.g., Ivy-Rose) now display properly in emotes thanks to [Bitwise1057](https://github.com/Bitwise1057) ([#73](https://github.com/Raenore/Eavesdropper/pull/73)).  
+
 ## [0.4.1] - 2026-04-04  
 Minor patch introducing the ability to rename profiles and internal data optimizations.  
 
