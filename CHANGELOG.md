@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - Updated how the addon communicates with Yapper to use their latest public API for handling split messages ([#75](https://github.com/Raenore/Eavesdropper/pull/75)).  
 
 ### Fixed
-- Hyphenated RP names (e.g., Ivy-Rose) now display properly in emotes thanks to [Bitwise1057](https://github.com/Bitwise1057) ([#73](https://github.com/Raenore/Eavesdropper/pull/73)).  
+- Group Windows now correctly handle multi-part messages by using split markers, preventing player names from repeating unnecessarily on every line ([#76](https://github.com/Raenore/Eavesdropper/pull/76)).  
 - When "Enable Mouse" is disabled, hyperlinks (e.g. items) no longer block camera movement or clicks, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#68](https://github.com/Raenore/Eavesdropper/pull/68)).  
 
 ## [0.4.1] - 2026-04-04  
