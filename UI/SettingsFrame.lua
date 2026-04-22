@@ -1357,7 +1357,7 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 			self.Background.BackgroundColor:SetColorTexture(0, 0, 0, 0.95);
 		else
 			self.fullscreenBackdrop:SetColorTexture(0, 0, 0);
-			self.Background.BackgroundColor:SetColorTexture(0.12, 0.12, 0.12, 0.95);
+			self.Background.BackgroundColor:SetColorTexture(0.12, 0.12, 0.12, 1);
 		end
 	else
 		self.Background.BackgroundColor:SetColorTexture(0.12, 0.12, 0.12, 0.95);
