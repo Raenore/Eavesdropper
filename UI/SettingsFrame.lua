@@ -1169,10 +1169,11 @@ function Eavesdropper_SettingsMixin:OnLoad()
 
 	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
 
-	-- Adjust category list and button width
+	-- Adjust category list and button width so that the category label is always shown in full in one line
+	-- If the category list becomes wider, the right section, SettingsList width will not be affected. The entire frame will become wider.
 	local labelPaddingLeft = Constants.SETTINGS.CATEGORY_BUTTON_TEXT_OFFSET;
-	local labelPaddingRight = 24;
-	local maxLabelWidth = 80;
+	local labelPaddingRight = Constants.SETTINGS.CATEGORY_BUTTON_TEXT_RIGHT_PADDING;
+	local maxLabelWidth = Constants.SETTINGS.CATEGORY_BUTTON_TEXT_MIN_WIDTH;
 
 	for _, tab in ipairs(self.Tabs) do
 		local labelWidth = tab.Text:GetWidth();
