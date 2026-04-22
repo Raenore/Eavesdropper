@@ -13,32 +13,6 @@ local SettingsElements = {};
 -- Header elements
 -- ============================================================
 
----Creates a large title with a description line beneath it
-function SettingsElements.CreateTitleWithDescription(parent, titleText, descriptionText)
-	local title = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge");
-	title:SetPoint("TOPLEFT", Constants.SETTINGS.TITLE_OFFSET, -8);
-	title:SetText(titleText or "");
-
-	local description = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	description:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8);
-	description:SetWidth(parent:GetWidth());
-	description:SetJustifyH("LEFT");
-	description:SetText(descriptionText or "");
-	local descTextColor = Constants.SETTINGS.DESC_TEXT_COLOR;
-	description:SetTextColor(descTextColor, descTextColor, descTextColor);
-
-	return description;
-end
-
----Creates a large title with no description
-function SettingsElements.CreateTitle(parent, titleText)
-	local title = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge");
-	title:SetPoint("TOPLEFT", 0, -8);
-	title:SetText(titleText or "");
-
-	return title;
-end
-
 ---Creates a medium subtitle with an optional dynamic subtitle line
 function SettingsElements.CreateSubTitle(parent, titleText, subTitleText, data)
 	local container = CreateFrame("Frame", nil, parent);
