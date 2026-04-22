@@ -36,7 +36,7 @@ read_globals = {
 	"AddOn_TotalRP3",
 	"Chattery",
 	"EmoteSplitter",
-	"Yapper",
+	"YapperAPI",
 
 	-- Common protocol globals
 	"CUSTOM_CLASS_COLORS",

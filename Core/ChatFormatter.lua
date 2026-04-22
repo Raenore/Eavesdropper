@@ -60,12 +60,17 @@ local function MsgFormatEmote(entry, name)
 	-- Chattery, EmoteSplitter and Yapper are supported by default
 	-- (bar no changes on their part since addition)
 	local splitMarker = "»";
-	if Chattery then
-		splitMarker = Chattery.Settings.GetSetting(Chattery.Setting.SplitMarker);
-	elseif Yapper and Yapper.Config then
-		splitMarker = string.trim(Yapper.Config.Chat.DELINEATOR);
-	elseif EmoteSplitter and EmoteSplitter.db then
-		splitMarker = EmoteSplitter.db.global.premark;
+	local ok, result = pcall(function()
+		if Chattery then
+			return Chattery.Settings.GetSetting(Chattery.Setting.SplitMarker);
+		elseif YapperAPI then
+			return YapperAPI:GetDelineator();
+		elseif EmoteSplitter and EmoteSplitter.db then
+			return EmoteSplitter.db.global.premark;
+		end
+	end);
+	if ok and result then
+		splitMarker = result;
 	end
 
 	if msg:sub(1, #splitMarker) == splitMarker then
