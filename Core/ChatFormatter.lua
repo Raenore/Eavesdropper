@@ -23,7 +23,7 @@ local function ResolveChatInfo(eventType)
 end
 
 ---Retrieve current split marker, default is "»" but it can be different per addon.
----Chattery, EmoteSplitter and Yapper are supported by default.
+---Chattery, EmoteScribe, EmoteSplitter and Yapper are supported by default.
 ---@return string
 local function RetrieveSplitMarker()
 	local splitMarker = "»";
@@ -31,10 +31,13 @@ local function RetrieveSplitMarker()
 	local ok, result = pcall(function()
 		if Chattery then
 			return Chattery.Settings.GetSetting(Chattery.Setting.SplitMarker);
-		elseif YapperAPI then
-			return YapperAPI:GetDelineator();
+		elseif LibEnscriber then
+			local startMark = LibEnscriber.GetSplitmarks(true);
+			return startMark;
 		elseif EmoteSplitter and EmoteSplitter.db then
 			return EmoteSplitter.db.global.premark;
+		elseif YapperAPI then
+			return YapperAPI:GetDelineator();
 		end
 	end);
 	if ok and result then

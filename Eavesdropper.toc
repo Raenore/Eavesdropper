@@ -6,7 +6,7 @@
 ## IconTexture: Interface\AddOns\Eavesdropper\Resources\SmallLogo32
 
 ## Notes-frFR: Affiche une fenêtre d'historique dédiée pour votre cible sélectionnée ou survolée, met en surbrillance les mots-clefs, facilite le suivi de certains joueurs dans des zones RP denses, et gère le formatage avancé des noms RP dans le chat.
-## OptionalDeps: Chattery, ElvUI, EmoteSplitter, totalRP3, MyRolePlay, XRP, Yapper
+## OptionalDeps: Chattery, ElvUI, EmoteScribe, EmoteSplitter, totalRP3, MyRolePlay, XRP, Yapper
 ## SavedVariables: EavesdropperDB
 ## SavedVariablesPerCharacter: EavesdropperCharDB
 ## LoadSavedVariablesFirst: 1

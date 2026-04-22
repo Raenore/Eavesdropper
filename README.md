@@ -7,7 +7,7 @@ Eavesdropper helps you stay immersed in busy RP environments by focusing on the 
 - **Group Windows:** Combine multiple targets into a single shared window for party or small-group interactions.  
 - **Keyword Highlights:** Custom keywords highlighted in chat with optional sound alerts.  
 - **Notification Support:** Play a sound and flash the taskbar when your target performs an action, a Blizzard emote is directed at you, or a Dedicated/Group Window receives a message.  
-- **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteSplitter, and Yapper.  
+- **Seamless Multi-Message Compatibility:** Built-in support for multi-message addons like Chattery, EmoteScribe, EmoteSplitter, and Yapper.  
 - **Advanced RP Name Formatting:** Replaces standard names with RP names in rolls, Blizzard emotes, NPC dialogue, and Quest Text (via Dialogue UI).
 
 Available on [CurseForge](https://www.curseforge.com/wow/addons/eavesdropper), [Wago.io](https://addons.wago.io/addons/eavesdropper), and [WoWInterface](https://www.wowinterface.com/downloads/info27060-Eavesdropper.html)!  
@@ -74,10 +74,12 @@ Eavesdropper intelligently handles long-form RP by detecting split messages from
 
 While Eavesdropper is designed to be broadly compatible, the following addons are **explicitly supported**:
 - [Chattery](https://www.curseforge.com/wow/addons/chattery)
+- [EmoteScribe](https://www.curseforge.com/wow/addons/emotescribe)
 - [Emote Splitter](https://www.curseforge.com/wow/addons/emote-splitter)
 - [Yapper](https://www.curseforge.com/wow/addons/yapper-post-splitter)
 
-![Multi-Message Support](Previews/MultiMessageSupport/MultiMessageSupport.png)
+![Multi-Message Support](Previews/MultiMessageSupport/MultiMessageSupport.png)  
+*Multi-Message support with Chattery (with "Enable RP Formatting" enabled).*
 
 ## Advanced RP Name Formatting
 Eavesdropper can replace standard character names with their respective RP names across the entire UI.  

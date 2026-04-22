@@ -37,6 +37,7 @@ read_globals = {
 	"Chattery",
 	"EmoteSplitter",
 	"YapperAPI",
+	"LibEnscriber",
 
 	-- Common protocol globals
 	"CUSTOM_CLASS_COLORS",
