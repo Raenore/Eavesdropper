@@ -41,33 +41,41 @@ end
 -- Tab management
 -- ============================================================
 
-function Eavesdropper_SettingsMixin:AddTab()
-	local tabs = self.Tabs;
-	local tab = CreateFrame("Button", nil, self.CategoryList, "Eavesdropper_SettingsCategoryListButtonTemplate");
+function Eavesdropper_SettingsMixin:CreateCategoryListButton(addToBottom)
+	local button = CreateFrame("Button", nil, self.CategoryList, "Eavesdropper_SettingsCategoryListButtonTemplate");
 
-	if tIndexOf(tabs, tab) == nil then
-		table.insert(tabs, tab);
+	if not self.topTabCount then
+		self.topTabCount = 0;
 	end
 
-	local tabCount = #tabs;
+	if not self.bottomTabCount then
+		self.bottomTabCount = 0;
+	end
 
-	if tabCount > 1 then
-		tab:SetPoint("TOPLEFT", tabs[tabCount - 1], "BOTTOMLEFT", 0, -2);
+	local tabHeight = button:GetHeight();
+	local tabPadding = 2;
+
+	if addToBottom then
+		-- Add a button to the bottom of the list, such as Changelog
+		self.bottomTabCount = self.bottomTabCount + 1;
+		local fromOffset = 12;
+		button:SetPoint("BOTTOMLEFT", 0, fromOffset + (self.bottomTabCount - 1) * (tabHeight + tabPadding) + tabPadding);
 	else
-		tab:SetPoint("TOPLEFT", 0, -16);
+		self.topTabCount = self.topTabCount + 1;
+		local fromOffset = -16;
+		button:SetPoint("TOPLEFT", 0, fromOffset - (self.topTabCount - 1) * (tabHeight + tabPadding) - tabPadding);
 	end
 
-	tab.tabIndex = tabCount;
+	ED.ElvUI.RegisterSkinnableElement(button);
 
-	ED.ElvUI.RegisterSkinnableElement(tab, "toptabbutton");
-
-	return tab;
+	return button;
 end
 
 function Eavesdropper_SettingsMixin:SetTab(index)
 	for i, panel in ipairs(self.Views) do
 		local isSelected = (i == index);
 		panel:SetShown(isSelected);
+		panel.categoryListBtton:SetSelected(isSelected);
 
 		local scroll = panel.scrollFrame;
 		if scroll then
@@ -78,11 +86,6 @@ function Eavesdropper_SettingsMixin:SetTab(index)
 		end
 	end
 
-	for _, tab in ipairs(self.Tabs) do
-		tab:SetSelected(tab.tabIndex == index);
-	end
-
-	self.selectedTab = index;
 	lastSelectedTab = index;
 end
 
@@ -143,8 +146,8 @@ function Eavesdropper_SettingsMixin:AddScrollableFrame()
 	return frame, scrollChild;
 end
 
----Populates a tab panel with a list of options
-function Eavesdropper_SettingsMixin:PopulateTab(tab, options)
+---Populates a panel (frame or scrollChild) with a list of options
+function Eavesdropper_SettingsMixin:PopulatePanel(panel, options)
 	local previousContainer = nil;
 
 	tinsert(options, {type = "spacer"}); -- Additional spacer to the bottom so the last widget doesn't touch the bottom of border
@@ -154,23 +157,23 @@ function Eavesdropper_SettingsMixin:PopulateTab(tab, options)
 		local padding = -Constants.SETTINGS.PADDING_HEIGHT;
 
 		if data.type == "subtitle" then
-			container = SettingsElements.CreateSubTitle(tab, data.label, data.subLabel, data);
+			container = SettingsElements.CreateSubTitle(panel, data.label, data.subLabel, data);
 			widget = data and container or nil;
 			padding = -Constants.SETTINGS.PADDING_HEIGHT_TITLE;
 		elseif data.type == "description" then
-			container = SettingsElements.CreateDescription(tab, data.label);
+			container = SettingsElements.CreateDescription(panel, data.label);
 			widget = nil;
 		elseif data.type == "spacer" then
-			container = CreateFrame("Frame", nil, tab);
+			container = CreateFrame("Frame", nil, panel);
 			container:SetSize(2, Constants.SETTINGS.PADDING_HEIGHT_TITLE);
 		else
-			container, widget = SettingsElements.CreateElement(tab, data);
+			container, widget = SettingsElements.CreateElement(panel, data);
 		end
 
 		if previousContainer then
 			container:SetPoint("TOPLEFT", previousContainer, "BOTTOMLEFT", 0, padding);
 		else
-			container:SetPoint("TOPLEFT", tab, "TOPLEFT", 0, padding);
+			container:SetPoint("TOPLEFT", panel, "TOPLEFT", 0, padding);
 		end
 
 		if widget then
@@ -184,6 +187,40 @@ function Eavesdropper_SettingsMixin:PopulateTab(tab, options)
 	return previousContainer;
 end
 
+---Create a CategoryListButton (left) and a panel (right) populated with options
+function Eavesdropper_SettingsMixin:CreateCategory(categoryName, isScrollable, options, addToBottom)
+	if not self.categoryIndex then
+		self.categoryIndex = 0;
+	end
+
+	self.categoryIndex = self.categoryIndex + 1;
+
+	local categoryListBtton = self:CreateCategoryListButton(addToBottom);
+	categoryListBtton:SetText(categoryName);
+
+	local frame, scrollChild;
+
+	if isScrollable then
+		frame, scrollChild = self:AddScrollableFrame();
+	else
+		frame = self:AddFrame();
+	end
+
+	frame.categoryListBtton = categoryListBtton;
+
+	-- Store the following two values because we need to re-index categories due to adding categories to the bottom
+	frame.categoryIndex = self.categoryIndex;
+	frame.addToBottom = addToBottom;
+
+	local panel = scrollChild or frame; -- This is the options' container
+
+	if options then
+		self:PopulatePanel(panel, options);
+	end
+
+	return panel;
+end
+
 -- ============================================================
 -- OnLoad
 -- ============================================================
@@ -191,7 +228,7 @@ end
 function Eavesdropper_SettingsMixin:OnLoad()
 	tinsert(UISpecialFrames, self:GetName());
 
-	self.Tabs = {};
+	self.CategoryListButtons = {};
 	self.Views = {};
 
 	self.NineSlice.Text:SetText(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title .. " " .. SETTINGS);
@@ -231,22 +268,6 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	end
 	CreateLine(self.CategoryList, self.CategoryList, "vertical", 6, 0); -- Vertical divider between CategoryList and SettingsList
 
-	-- Create tabs and their panels
-	local generalTab = self:AddTab();
-	generalTab:SetText(L.GENERAL_TITLE);
-	local generalPanel, generalContent = self:AddScrollableFrame(); -- luacheck: no unused (generalPanel)
-
-	local keywordsTab = self:AddTab();
-	keywordsTab:SetText(L.KEYWORDS_TITLE);
-	local keywordsPanel, keywordsContent = self:AddScrollableFrame(); -- luacheck: no unused (keywordsPanel)
-
-	local notificationsTab = self:AddTab();
-	notificationsTab:SetText(L.NOTIFICATIONS_TITLE);
-	local notificationsPanel, notificationsContent = self:AddScrollableFrame(); -- luacheck: no unused (notificationsPanel)
-
-	local profilesTab = self:AddTab();
-	profilesTab:SetText(L.PROFILES_TITLE);
-	local profilesPanel = self:AddFrame();
 
 	-- --------------------------------------------------------
 	-- General options
@@ -1163,12 +1184,34 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	-- Populate & finalise
 	-- --------------------------------------------------------
 
-	self:PopulateTab(generalContent, generalOptions);
-	self:PopulateTab(keywordsContent, keywordsOptions);
-	self:PopulateTab(notificationsContent, notificationsOptions);
-	self:PopulateTab(profilesPanel, profilesOptions);
+	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
+	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
+	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
+	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
+
+	-- ReIndex Categories
+	local function SortFunc(a, b)
+		if a.addToBottom == b.addToBottom then
+			if a.addToBottom then
+				return a.categoryIndex > b.categoryIndex;
+			else
+				return a.categoryIndex < b.categoryIndex;
+			end
+		elseif a.addToBottom then
+			return false;
+		else
+			return true;
+		end
+	end
+
+	table.sort(self.Views, SortFunc);
+
+	for i, panel in ipairs(self.Views) do
+		panel.categoryIndex = i;
+		panel.categoryListBtton.tabIndex = i;
+	end
 
 	-- Adjust category list and button width so that the category label is always shown in full in one line
 	-- If the category list becomes wider, the right section, SettingsList width will not be affected. The entire frame will become wider.
@@ -1176,8 +1219,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	local labelPaddingRight = Constants.SETTINGS.CATEGORY_BUTTON_TEXT_RIGHT_PADDING;
 	local maxLabelWidth = Constants.SETTINGS.CATEGORY_BUTTON_TEXT_MIN_WIDTH;
 
-	for _, tab in ipairs(self.Tabs) do
-		local labelWidth = tab.Text:GetWidth();
+	for _, button in ipairs(self.CategoryListButtons) do
+		local labelWidth = button.Text:GetWidth();
 		if labelWidth > maxLabelWidth then
 			maxLabelWidth = labelWidth;
 		end
@@ -1186,10 +1229,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 
 	local categoryButtonWidth = math.ceil(labelPaddingLeft + maxLabelWidth + labelPaddingRight); -- Fit to the longest word
 	self.CategoryList:SetWidth(categoryButtonWidth);
-	for _, tab in ipairs(self.Tabs) do
-		tab.Text:ClearAllPoints();
-		tab.Text:SetPoint("LEFT", tab, "LEFT", labelPaddingLeft, 1);
-		tab:SetWidth(categoryButtonWidth);
+	for _, button in ipairs(self.CategoryListButtons) do
+		button.Text:ClearAllPoints();
+		button.Text:SetPoint("LEFT", button, "LEFT", labelPaddingLeft, 1);
+		button:SetWidth(categoryButtonWidth);
 	end
 
 	local frameWidth = categoryButtonWidth + Constants.SETTINGS.SETTINGS_LIST_WIDTH;
