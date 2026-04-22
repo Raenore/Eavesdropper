@@ -47,6 +47,26 @@ local function RetrieveSplitMarker()
 	return splitMarker;
 end
 
+---Returns true if the message is part of a multi-message split chain.
+---Mutates entry.sm to cache the result so future calls skip the pcall.
+---@param entry EavesdropperChatEntry
+---@param msg string
+---@return boolean
+local function IsSplitMarkerMsg(entry, msg)
+	local splitMarker = entry.sm;
+	if splitMarker == false then
+		splitMarker = RetrieveSplitMarker();
+		if msg:sub(1, #splitMarker) == splitMarker then
+			entry.sm = splitMarker;
+			return true;
+		else
+			entry.sm = nil;
+		end
+	elseif splitMarker and msg:sub(1, #splitMarker) == splitMarker then
+		return true;
+	end
+end
+
 ---Formats a normal chat message, prepending any configured prefix.
 ---@param entry EavesdropperChatEntry
 ---@param name string
@@ -81,18 +101,7 @@ local function MsgFormatEmote(entry, name)
 	if stripped then return stripped; end
 
 	-- Check if a split marker was prior identified, use that
-	local splitMarker = entry.sm;
-	if splitMarker == false then
-		splitMarker = RetrieveSplitMarker();
-		if msg:sub(1, #splitMarker) == splitMarker then
-			entry.sm = splitMarker;
-			return msg;
-		else
-			entry.sm = nil;
-		end
-	elseif splitMarker and msg:sub(1, #splitMarker) == splitMarker then
-		return msg;
-	end
+	if IsSplitMarkerMsg(entry, msg) then return msg; end
 
 	-- handle leading punctuation cases
 	local firstTwo = msg:sub(1, 2);
@@ -229,18 +238,7 @@ local function MsgFormatNormalGroup(entry, name)
 	local msg = entry.m or "";
 
 	-- Check if a split marker was prior identified, use that
-	local splitMarker = entry.sm;
-	if splitMarker == false then
-		splitMarker = RetrieveSplitMarker();
-		if msg:sub(1, #splitMarker) == splitMarker then
-			entry.sm = splitMarker;
-			return msg;
-		else
-			entry.sm = nil;
-		end
-	elseif splitMarker and msg:sub(1, #splitMarker) == splitMarker then
-		return msg;
-	end
+	if IsSplitMarkerMsg(entry, msg) then return msg; end
 
 	local verb = ED.Constants.GROUP_EVENT_VERBS[entry.e];
 
