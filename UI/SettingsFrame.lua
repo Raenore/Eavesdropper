@@ -1275,6 +1275,10 @@ end
 function Eavesdropper_SettingsMixin:OnHide()
 	ED.Frame.settingsOpened = false;
 	ED.Frame:HandleVisibility();
+
+	if self.SetAlphaChannelMode then
+		self:SetAlphaChannelMode(nil);
+	end
 end
 
 -- ============================================================
