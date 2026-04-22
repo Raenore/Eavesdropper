@@ -15,18 +15,18 @@ local Enums = ED.Enums;
 local Database = {};
 
 ---@class EavesdropperGlobalMinimapButton
----@field Hide boolean
----@field ShowAddonCompartmentButton boolean
+---@field Hide boolean?
+---@field ShowAddonCompartmentButton boolean?
 
 ---@class EavesdropperGlobal
----@field DedicatedWindows boolean
----@field DedicatedWindowsNewIndicator boolean
----@field DedicatedWindowsUnitPopups boolean
----@field DedicatedWindowsPersist boolean
----@field GroupWindows boolean
----@field GroupWindowsNewIndicator boolean
----@field GroupWindowsUnitPopups boolean
----@field GroupWindowsPersist boolean
+---@field DedicatedWindows boolean?
+---@field DedicatedWindowsNewIndicator boolean?
+---@field DedicatedWindowsUnitPopups boolean?
+---@field DedicatedWindowsPersist boolean?
+---@field GroupWindows boolean?
+---@field GroupWindowsNewIndicator boolean?
+---@field GroupWindowsUnitPopups boolean?
+---@field GroupWindowsPersist boolean?
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
 ---@field WelcomeMessage boolean?
@@ -51,8 +51,8 @@ local GLOBAL_DEFAULTS = {
 
 ---@class EavesdropperProfile
 ---@field ApplyOnMainChat boolean?
----@field ColorBackground EavesdropperColor
----@field ColorTitleBar EavesdropperColor
+---@field ColorBackground EavesdropperColor?
+---@field ColorTitleBar EavesdropperColor?
 ---@field CompanionSupport boolean?
 ---@field ElvUITheme boolean?
 ---@field EnableKeywords boolean?
@@ -66,7 +66,7 @@ local GLOBAL_DEFAULTS = {
 ---@field HideCloseButton boolean?
 ---@field HideInCombat boolean?
 ---@field HideWhenEmpty boolean?
----@field HighlightColor table<string, number>?
+---@field HighlightColor EavesdropperColor?
 ---@field HighlightKeywords string?
 ---@field HighlightMessages boolean?
 ---@field LockScroll boolean?
