@@ -37,7 +37,7 @@ function SettingsElements.CreateSubTitle(parent, titleText, subTitleText, data)
 	subTitle:SetTextColor(descTextColor, descTextColor, descTextColor);
 
 	local function UpdateTextWidth()
-		local containerWidth = parent:GetWidth() - 2*padding;
+		local containerWidth = parent:GetWidth() - (2 * padding);
 		title:SetWidth(containerWidth);
 		subTitle:SetWidth(containerWidth);
 	end
