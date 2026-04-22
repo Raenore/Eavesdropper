@@ -79,7 +79,7 @@ While Eavesdropper is designed to be broadly compatible, the following addons ar
 - [Yapper](https://www.curseforge.com/wow/addons/yapper-post-splitter)
 
 ![Multi-Message Support](Previews/MultiMessageSupport/MultiMessageSupport.png)  
-*Multi-Message support with Chattery (with "Enable RP Formatting" enabled).*
+*Multi-message support in action with **Chattery** (utilizing the "Enable RP Formatting" setting).*
 
 ## Advanced RP Name Formatting
 Eavesdropper can replace standard character names with their respective RP names across the entire UI.  
