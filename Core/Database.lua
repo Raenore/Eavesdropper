@@ -10,19 +10,28 @@ local Enums = ED.Enums;
 ---@class EavesdropperDatabase
 ---@field currentProfile EavesdropperProfile?
 ---@field defaults EavesdropperProfile
+---@field charDefaults EavesdropperCharSettings
 ---@field globalDefaults EavesdropperGlobal
 local Database = {};
 
 ---@class EavesdropperGlobalMinimapButton
----@field Hide boolean
----@field ShowAddonCompartmentButton boolean
+---@field Hide boolean?
+---@field ShowAddonCompartmentButton boolean?
 
 ---@class EavesdropperGlobal
+---@field DedicatedWindows boolean?
+---@field DedicatedWindowsNewIndicator boolean?
+---@field DedicatedWindowsUnitPopups boolean?
+---@field DedicatedWindowsPersist boolean?
+---@field GroupWindows boolean?
+---@field GroupWindowsNewIndicator boolean?
+---@field GroupWindowsUnitPopups boolean?
+---@field GroupWindowsPersist boolean?
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
----@field DedicatedWindowsPersist boolean?
----@field GroupWindowsPersist boolean?
 ---@field WelcomeMessage boolean?
+
+---@type EavesdropperGlobal
 local GLOBAL_DEFAULTS = {
 	DedicatedWindows = true,
 	DedicatedWindowsNewIndicator = true,
@@ -42,8 +51,8 @@ local GLOBAL_DEFAULTS = {
 
 ---@class EavesdropperProfile
 ---@field ApplyOnMainChat boolean?
----@field ColorBackground table?
----@field ColorTitleBar table?
+---@field ColorBackground EavesdropperColor?
+---@field ColorTitleBar EavesdropperColor?
 ---@field CompanionSupport boolean?
 ---@field ElvUITheme boolean?
 ---@field EnableKeywords boolean?
@@ -57,7 +66,7 @@ local GLOBAL_DEFAULTS = {
 ---@field HideCloseButton boolean?
 ---@field HideInCombat boolean?
 ---@field HideWhenEmpty boolean?
----@field HighlightColor table<string, number>?
+---@field HighlightColor EavesdropperColor?
 ---@field HighlightKeywords string?
 ---@field HighlightMessages boolean?
 ---@field LockScroll boolean?
@@ -97,6 +106,8 @@ local GLOBAL_DEFAULTS = {
 ---@field WindowPosition EavesdropperWindowPosition?
 ---@field WindowSize EavesdropperWindowSize?
 ---@field Filters table<string, boolean>?
+
+---@type EavesdropperProfile
 local DEFAULT_PROFILE = {
 	ApplyOnMainChat = true,
 	ColorBackground = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
@@ -158,6 +169,8 @@ local DEFAULT_PROFILE = {
 
 ---@class EavesdropperCharSettings
 ---@field WindowVisible boolean?
+
+---@type EavesdropperCharSettings
 local CHAR_DEFAULTS = {
 	WindowVisible = true,
 };

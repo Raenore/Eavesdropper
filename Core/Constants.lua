@@ -165,9 +165,10 @@ Constants.COMMON_TITLES = commonTitles;
 ---@field r number
 ---@field g number
 ---@field b number
+---@field a number? -- optional alpha
 
 ---Default RGBA background colour for the eavesdrop frame.
----@type table
+---@type EavesdropperColor
 Constants.DEFAULT_BACKGROUND_COLOR = {
 	r = 0,
 	g = 0,
