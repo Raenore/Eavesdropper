@@ -1335,6 +1335,7 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 	end
 
 	SetupFunc(self);
+	SetupFunc(GameTooltip);
 
 	self.Background.BackgroundColor:SetVertexColor(1, 1, 1);
 
