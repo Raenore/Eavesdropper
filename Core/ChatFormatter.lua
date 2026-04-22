@@ -78,7 +78,6 @@ local function MsgFormatEmote(entry, name)
 	if stripped then return stripped; end
 
 	local splitMarker = RetrieveSplitMarker();
-
 	if msg:sub(1, #splitMarker) == splitMarker then
 		return msg;
 	end
@@ -112,6 +111,10 @@ end
 local function MsgFormatEmoteGroup(entry, name)
 	local result = MsgFormatEmote(entry, name);
 
+	--[[
+	Kept for archival purposes (for now), this adds names for multi-msg.
+	This should not be necessary, the first multi-msg always has a name associated.
+
 	---Strip WoW colour escapes for a plain-text prefix check.
 	local plainResult = result:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
 	local plainName = name:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "");
@@ -119,6 +122,7 @@ local function MsgFormatEmoteGroup(entry, name)
 	if plainResult:sub(1, #plainName) ~= plainName then
 		return name .. " " .. result;
 	end
+	]]
 
 	return result;
 end
@@ -211,6 +215,12 @@ setmetatable(MESSAGE_FORMATS, {
 ---@return string
 local function MsgFormatNormalGroup(entry, name)
 	local msg = entry.m or "";
+
+	local splitMarker = RetrieveSplitMarker();
+	if msg:sub(1, #splitMarker) == splitMarker then
+		return msg;
+	end
+
 	local verb = ED.Constants.GROUP_EVENT_VERBS[entry.e];
 
 	if verb then
