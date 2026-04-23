@@ -218,7 +218,7 @@ function Eavesdropper_SettingsMixin:CreateCategory(categoryName, isScrollable, o
 		self:PopulatePanel(panel, options);
 	end
 
-	return panel;
+	return panel, categoryListBtton;
 end
 
 -- ============================================================
@@ -1187,6 +1187,34 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
 	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
+
+	local version = ED.Globals.addon_version;
+	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";
+	if not string.match(version, "%d") then
+		version = "0.0.0"; -- Show 0.0.0 instead of {@project-version@} for internal build
+	end
+	local aboutPanel, aboutCategoryListButton = self:CreateCategory(string.format("%s  |cn%s:%s|r", L.ABOUT_TITLE, versionTextColor, version), false, nil, true);
+
+	aboutCategoryListButton:SetScript("OnEnter", function(_self)
+		_self:UpdateVisual();
+
+		GameTooltip:SetOwner(_self, "ANCHOR_RIGHT");
+		GameTooltip:AddDoubleLine(L.ADDONINFO_BUILD:format(ED.Utils.OutputBuild(true)), L.ADDONINFO_VERSION:format(ED.Globals.addon_version), 1, 1, 1, 1, 1, 1);
+
+		if ED.Utils.ValidateLatestBuild() then
+			GameTooltip:AddLine(L.ADDONINFO_BUILD_CURRENT, 1, 1, 1, true);
+		else
+			GameTooltip:AddLine(L.ADDONINFO_BUILD_OUTDATED, 1, 1, 1, true);
+		end
+
+		GameTooltip:Show();
+	end);
+
+	aboutCategoryListButton:SetScript("OnLeave", function(_self)
+		_self:UpdateVisual();
+		GameTooltip:Hide();
+	end);
+
 	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
@@ -1225,7 +1253,6 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			maxLabelWidth = labelWidth;
 		end
 	end
-
 
 	local categoryButtonWidth = math.ceil(labelPaddingLeft + maxLabelWidth + labelPaddingRight); -- Fit to the longest word
 	self.CategoryList:SetWidth(categoryButtonWidth);
