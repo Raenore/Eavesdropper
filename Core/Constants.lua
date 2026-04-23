@@ -390,24 +390,28 @@ Constants.PLAYER_CACHE = {
 ---@field LABEL_WIDTH number
 ---@field DESC_TEXT_COLOR number
 ---@field CATEGORY_BUTTON_TEXT_OFFSET number
+---@field CATEGORY_BUTTON_TEXT_RIGHT_PADDING number
+---@field CATEGORY_BUTTON_TEXT_MIN_WIDTH number
 ---@field TITLE_JUSTIFY_H string
 ---@field TITLE_OFFSET number
----@field OPTION_OFFSET number
+---@field OPTION_OFFSET_LEFT number
+---@field OPTION_OFFSET_RIGHT number
 Constants.SETTINGS = {
 	WIDGET_HEIGHT = 25,
 	PADDING_HEIGHT = 5,
 	PADDING_MULTILINE_EDITBOX = 10,
 	PADDING_HEIGHT_TITLE = 20,
-	SETTINGS_LIST_WIDTH = 380,
+	SETTINGS_LIST_WIDTH = 400,
 	FRAME_HEIGHT = 380,
 	LABEL_WIDTH = 145,
 	DESC_TEXT_COLOR = 0.659,
 	CATEGORY_BUTTON_TEXT_OFFSET = 16,
 	CATEGORY_BUTTON_TEXT_RIGHT_PADDING = 24,
 	CATEGORY_BUTTON_TEXT_MIN_WIDTH = 80,
-	TITLE_JUSTIFY_H = "CENTER",
+	TITLE_JUSTIFY_H = "LEFT", -- Align the Titles and Options to the LEFT or CENTER
 	TITLE_OFFSET = 20,
-	OPTION_OFFSET = 20,
+	OPTION_OFFSET_LEFT = 36, -- The distance to vertical divider and the left of the option
+	OPTION_OFFSET_RIGHT = 20, -- Usually the value should be the same as TITLE_OFFSET
 };
 
 ---TRP3 profile field paths used for name extraction.

@@ -155,13 +155,13 @@ local function CreateLabeledFrame(parent, data)
 
 	local left = CreateFrame("Frame", nil, parent);
 	left:SetWidth(Constants.SETTINGS.LABEL_WIDTH);
-	left:SetPoint("LEFT", parent, "LEFT", Constants.SETTINGS.OPTION_OFFSET, 0);
+	left:SetPoint("LEFT", parent, "LEFT", Constants.SETTINGS.OPTION_OFFSET_LEFT, 0);
 	left:SetPoint("TOP", parent, "TOP");
 	left:SetPoint("BOTTOM", parent, "BOTTOM");
 
 	local right = CreateFrame("Frame", nil, parent);
 	right:SetPoint("LEFT", left, "RIGHT", 0, 0);
-	right:SetPoint("RIGHT", parent, "RIGHT", -Constants.SETTINGS.OPTION_OFFSET, 0);
+	right:SetPoint("RIGHT", parent, "RIGHT", -Constants.SETTINGS.OPTION_OFFSET_RIGHT, 0);
 	right:SetPoint("TOP", parent, "TOP");
 	right:SetPoint("BOTTOM", parent, "BOTTOM");
 
@@ -185,7 +185,7 @@ end
 function SettingsElements.CreateDescription(parent, descriptionText)
 	local description = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
 	description:SetText(descriptionText or "");
-	description:SetPoint("LEFT", parent, "LEFT", Constants.SETTINGS.OPTION_OFFSET, 0);
+	description:SetPoint("LEFT", parent, "LEFT", Constants.SETTINGS.OPTION_OFFSET_LEFT, 0);
 	description:SetHeight(Constants.SETTINGS.WIDGET_HEIGHT);
 
 	return description;
@@ -532,7 +532,7 @@ local function CreateMultiLineEditBox(parent, data)
 	local label;
 	if data.label then
 		label = container:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-		label:SetPoint("TOPLEFT", container, "TOPLEFT", Constants.SETTINGS.OPTION_OFFSET, 0);
+		label:SetPoint("TOPLEFT", container, "TOPLEFT", Constants.SETTINGS.OPTION_OFFSET_LEFT, 0);
 		label:SetSize(container:GetWidth(), 20);
 		label:SetJustifyH("LEFT");
 		label:SetText(data.label);
@@ -542,9 +542,9 @@ local function CreateMultiLineEditBox(parent, data)
 	if label then
 		backdrop:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -labelScrollFrameDistance);
 	else
-		backdrop:SetPoint("TOPLEFT", container, "TOPLEFT", Constants.SETTINGS.OPTION_OFFSET, 0);
+		backdrop:SetPoint("TOPLEFT", container, "TOPLEFT", Constants.SETTINGS.OPTION_OFFSET_LEFT, 0);
 	end
-	backdrop:SetPoint("TOPRIGHT", container, "TOPRIGHT", -Constants.SETTINGS.OPTION_OFFSET, 0);
+	backdrop:SetPoint("TOPRIGHT", container, "TOPRIGHT", -Constants.SETTINGS.OPTION_OFFSET_RIGHT, 0);
 	backdrop:SetHeight(height);
 
 	backdrop:SetBackdrop({
