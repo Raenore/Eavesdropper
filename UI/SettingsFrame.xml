@@ -17,7 +17,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
 				</Anchors>
 				<Layers>
-					<Layer level="BACKGROUND">
+					<Layer level="BACKGROUND" textureSubLevel="-3">
 						<Texture parentKey="BackgroundColor">
 							<Anchors>
 								<Anchor point="TOPLEFT" x="0" y="0"/>
@@ -25,7 +25,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							</Anchors>
 						</Texture>
 					</Layer>
-					<Layer level="OVERLAY">
+					<Layer level="Background" textureSubLevel="-2">
 						<Texture parentKey="InnerShadow" setAllPoints="true"/>
 					</Layer>
 				</Layers>
