@@ -4,8 +4,6 @@
 ---@class EavesdropperChangelogs
 local Changelogs = {};
 
-local ChangelogFrame;
-
 local changelogText = [[
 # Changelog
 
@@ -133,9 +131,7 @@ local function ConvertMarkdownToDataProvider()
 
 	for line in string.gmatch(changelogText, "[^\r\n]*") do
 		index = index + 1;
-		if line == "" then
-			-- todo?
-		else
+		if line ~= "" then
 			-- Process the start of the line
 			local tag;
 			local text;
@@ -152,7 +148,7 @@ local function ConvertMarkdownToDataProvider()
 				-- Convert url [text](url)
 				text = gsub(text, gitRefRemovalPattern, "");
 
-				local linkName, linkURL = match(text, urlMatchPattern);
+				local linkName, linkURL = match(text, urlMatchPattern); -- luacheck: no unused (linkURL)
 				while linkName do
 					--print(linkName);
 					--print(linkURL);
@@ -162,7 +158,7 @@ local function ConvertMarkdownToDataProvider()
 
 				if tag == "h1" or tag == "h2" then
 					text = gsub(text, "%[([^]]+)%]", "|cffffd100%1|r"); -- Make version [0.0.0] yellow
-					text = gsub(text, "%s+([-%d%s]+)", "|cff808080%1|r");
+					text = gsub(text, "(%s+[-%d%s]+)", "|cff808080%1|r"); -- Make Date - 2026-12-08 grey
 				end
 
 				text = gsub(text, "%*%*([^%*]+)%*%*", "|cffffd100%1|r"); -- Colorize **bold**
@@ -218,18 +214,12 @@ end
 Eavesdropper_ChangelogFrameMixin = {};
 
 function Eavesdropper_ChangelogFrameMixin:OnLoad()
-	ChangelogFrame = self;
-
-	local function TextContainerResetter(button)
-		--button
-	end
-
 	local contentWidth = self.ScrollBox:GetWidth() - (2 * scrollBoxPaddingH);
 	self.PlaceholderParagraph:SetWidth(contentWidth);
 	self.PlaceholderParagraph:SetSpacing(paragraphLineSpacing);
 
 	local view = CreateScrollBoxListLinearView();
-	view:SetElementExtentCalculator(function(dataIndex, elementData)
+	view:SetElementExtentCalculator(function(_dataIndex, elementData)
 		SetupFont(self.PlaceholderParagraph, elementData);
 		self.PlaceholderParagraph:SetWidth(CalculateTextWidthAndIndent(contentWidth, elementData));
 		self.PlaceholderParagraph:SetText(elementData.text);
@@ -270,7 +260,7 @@ function Eavesdropper_ChangelogFrameMixin:OnLoad()
 		frame:SetSize(width, frame.Text:GetHeight() + spacingBefore + spacingAfter);
 	end
 	view:SetElementInitializer("Eavesdropper_ChangelogTextContainerTemplate", TextContainerInitializer);
-	view:SetElementResetter(TextContainerResetter);
+	--view:SetElementResetter(TextContainerResetter); -- Unused for now
 
 	local top, bottom, left, right, spacing = scrollBoxPaddingV, scrollBoxPaddingV, scrollBoxPaddingH, scrollBoxPaddingH, 0;
 	view:SetPadding(top, bottom, left, right, spacing);

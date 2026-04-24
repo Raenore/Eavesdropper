@@ -457,6 +457,7 @@ stds.wow = {
 		ScrollUtil = {
 			fields = {
 				"AddManagedScrollBarVisibilityBehavior",
+				"AddResizableChildrenBehavior",
 				"InitScrollBoxListWithScrollBar",
 				"InitScrollBoxWithScrollBar",
 				"RegisterScrollBoxWithScrollBar",
