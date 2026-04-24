@@ -27,7 +27,7 @@ jobs:
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.2
         with:
           args: -no-color
-          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:Locales/*.lua')
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:Locales/*.lua' ':!:UI/ChangelogMarkdown.lua')
 
       - name: Create Package
         uses: BigWigsMods/packager@v2

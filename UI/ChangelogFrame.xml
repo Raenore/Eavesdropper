@@ -43,7 +43,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<FontString parentKey="PlaceholderParagraph" inherits="GameFontNormal" hidden="true"/>
 			</Layer>
 		</Layers>
-        <Frames>
+		<Frames>
 			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList" frameStrata="HIGH">
 				<KeyValues>
 					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
@@ -62,7 +62,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-7" y="8"/>
 				</Anchors>
 			</EventFrame>
-        </Frames>
+		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnShow method="OnShow"/>

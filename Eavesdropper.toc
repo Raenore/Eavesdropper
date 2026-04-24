@@ -95,6 +95,7 @@ UI\EavesdropperGroupFrame.lua
 UI\EavesdropperGroupFrame.xml
 UI\ChangelogFrame.lua
 UI\ChangelogFrame.xml
+UI\ChangelogMarkdown.lua
 UI\SettingsElements.lua
 UI\SettingsFrame.lua
 UI\SettingsFrame.xml
