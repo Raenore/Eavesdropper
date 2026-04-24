@@ -1145,44 +1145,6 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	};
 
 	-- --------------------------------------------------------
-	-- Inset (about on Profiles)
-	-- --------------------------------------------------------
-
-	local insetWidgets = {
-		{
-			type = "logo",
-		},
-		{
-			type = "title",
-			text = ED.Globals.addon_title,
-		},
-		{
-			type = "version",
-			text = ED.Globals.addon_version,
-		},
-		{
-			type = "build",
-			text = L.ADDONINFO_BUILD:format(ED.Utils.OutputBuild(true)),
-			tooltip = function()
-				if ED.Utils.ValidateLatestBuild() then
-					return L.ADDONINFO_BUILD_CURRENT;
-				else
-					return L.ADDONINFO_BUILD_OUTDATED;
-				end
-			end,
-		},
-		{
-			type = "author",
-			text = ED.Globals.author,
-		},
-		{
-			type = "bsky",
-			text = "Bluesky",
-			tooltip = L.ADDONINFO_BLUESKY_SHILL_HELP,
-		},
-	};
-
-	-- --------------------------------------------------------
 	-- Populate & finalise
 	-- --------------------------------------------------------
 
@@ -1190,7 +1152,6 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
 	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
 	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
-	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
 
 	local version = ED.Globals.addon_version;
 	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";

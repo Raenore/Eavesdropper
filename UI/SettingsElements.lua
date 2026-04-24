@@ -784,7 +784,7 @@ end
 ---@param relativeTo Frame? Optional frame to anchor the inset below.
 ---@param topOffset number? Optional vertical offset (default -5 if relativeTo, -20 otherwise).
 ---@return Frame infoInset The created inset frame containing the widgets.
-function SettingsElements.CreateInset(parent, insetData, bottomOfParent, relativeTo, topOffset)
+function SettingsElements.CreateInset(parent, insetData, bottomOfParent, relativeTo, topOffset) -- this function is no longer in use
 	local infoInset = CreateFrame("Frame", nil, parent, "InsetFrameTemplate");
 
 	local padding = 10;
