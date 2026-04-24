@@ -1151,7 +1151,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
 	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
-	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
+	self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	local version = ED.Globals.addon_version;
 	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";
