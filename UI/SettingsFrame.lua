@@ -1188,13 +1188,15 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
 	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
+	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
+	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
 
 	local version = ED.Globals.addon_version;
 	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";
 	if not string.match(version, "%d") then
 		version = "0.0.0"; -- Show 0.0.0 instead of {@project-version@} for internal build
 	end
-	local _, aboutCategoryListButton = self:CreateCategory(string.format("%s  |cn%s:%s|r", L.ABOUT_TITLE, versionTextColor, version), false, nil, true);
+	local aboutPanel, aboutCategoryListButton = self:CreateCategory(string.format("%s  |cn%s:%s|r", L.ABOUT_TITLE, versionTextColor, version), false, nil, true);
 
 	aboutCategoryListButton:SetScript("OnEnter", function(button)
 		button:UpdateVisual();
@@ -1216,9 +1218,10 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		GameTooltip:Hide();
 	end);
 
-	local profilesPanel = self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
+	ED.Changelogs:CreateChangelogFrame(aboutPanel);
 
-	SettingsElements.CreateInset(profilesPanel, insetWidgets, true);
+	--CreateFrame("")
+
 
 	-- ReIndex Categories
 	local function SortFunc(a, b)

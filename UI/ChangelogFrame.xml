@@ -1,0 +1,71 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="Eavesdropper_ChangelogTextContainerTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Text" inherits="GameFontHighlight" justifyH="LEFT" spacing="2"/>
+
+				<Texture parentKey="Bullet" snapToPixelGrid="false" texelSnappingBias="0.0" hidden="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.Text" relativePoint="TOPLEFT" x="-6" y="-3"/>
+					</Anchors>
+					<Size x="4" y="4"/>
+					<Color r="1" g="1" b="1"/>
+				</Texture>
+
+				<Texture parentKey="Divider" snapToPixelGrid="false" texelSnappingBias="0.0" hidden="true">
+					<Anchors>
+						<Anchor point="TOP" relativeKey="$parent.Text" relativePoint="BOTTOM" y="-6"/>
+					</Anchors>
+					<Size x="350" y="1"/>
+					<Color r="1" g="1" b="1" a="0.2"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="Eavesdropper_ChangelogFrameTemplate" mixin="Eavesdropper_ChangelogFrameMixin" virtual="true">
+		<Size x="380" y="380"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture setAllPoints="true" hidden="true">
+					<Color r="0" g="0" b="0" a="0.5"/>
+				</Texture>
+
+				<FontString parentKey="PlaceholderParagraph" inherits="GameFontNormal" hidden="true"/>
+			</Layer>
+		</Layers>
+        <Frames>
+			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList" frameStrata="HIGH">
+				<KeyValues>
+					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="0"/>
+				</Anchors>
+			</Frame>
+			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar" frameStrata="HIGH">
+				<KeyValues>
+					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-7" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-7" y="8"/>
+				</Anchors>
+			</EventFrame>
+        </Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+		</Scripts>
+	</Frame>
+</Ui>
