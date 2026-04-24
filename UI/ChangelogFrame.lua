@@ -28,6 +28,13 @@ local supportedURL = {
 	"dialogueui",
 };
 
+local textColors = {
+	Emphasis = "NORMAL_FONT_COLOR", -- #, ##, ###, **
+	Date = "HIGHLIGHT_FONT_COLOR",
+	ClickableLink = "LINK_FONT_COLOR",
+	UnclickableLink = "LIGHTYELLOW_FONT_COLOR",
+};
+
 local function ConvertMarkdownToDataProvider()
 	local dataProvider = CreateDataProvider();
 	local index = 0;
@@ -72,29 +79,29 @@ local function ConvertMarkdownToDataProvider()
 
 					if isSupportedURL then
 						linkURL = string.gsub(linkURL, "https://", "");
-						local linkHyperlink = string.format("|cn%s:|Haddon:Eavesdropper:url:%s:0|h[%s]|h|r", "LINK_FONT_COLOR", linkURL, linkName);
+						local linkHyperlink = string.format("|cn%s:|Haddon:Eavesdropper:url:%s:0|h[%s]|h|r", textColors.ClickableLink, linkURL, linkName);
 						text = string.gsub(text, urlRemovalPattern, linkHyperlink, 1);
 					else
-						text = string.gsub(text, urlRemovalPattern, ColorizeText(linkName, "LIGHTYELLOW_FONT_COLOR"), 1); -- for credits
+						text = string.gsub(text, urlRemovalPattern, ColorizeText(linkName, textColors.UnclickableLink), 1); -- for credits
 					end
 
 					linkName, linkURL = string.match(text, urlMatchPattern);
 				end
 
 				if tag == "h1" then
-					text = string.gsub(text, "%[([^]]+)%]", ColorizeText("%1", "NORMAL_FONT_COLOR")); -- Make version [0.0.0] yellow
+					text = string.gsub(text, "%[([^]]+)%]", ColorizeText("%1", textColors.Emphasis)); -- Make version [0.0.0] yellow
 				elseif tag == "h2" then
 					text = string.gsub(text, "%[([^%]]+)%]", "%1");
 					local versionText, dateText = string.match(text, "(%d+%.%d+%.%d+)%s*%-%s*(%d+%-%d+%-%d+)");
 					if versionText then
-						text = ColorizeText(versionText, "NORMAL_FONT_COLOR");
-						rightText = ColorizeText(dateText, "HIGHLIGHT_FONT_COLOR");
+						text = ColorizeText(versionText, textColors.Emphasis);
+						rightText = ColorizeText(dateText, textColors.Date);
 					end
 				elseif tag == "h3" then
-					text = ColorizeText(text, "NORMAL_FONT_COLOR"); -- Make ### yellow
+					text = ColorizeText(text, textColors.Emphasis); -- Make ### yellow
 				end
 
-				text = string.gsub(text, "%*%*([^%*]+)%*%*", ColorizeText("%1", "NORMAL_FONT_COLOR")); -- Colorize **bold** yellow
+				text = string.gsub(text, "%*%*([^%*]+)%*%*", ColorizeText("%1", textColors.Emphasis)); -- Colorize **bold** yellow
 
 				dataProvider:Insert({index = index, tag = tag, text = text, rightText = rightText});
 			end
