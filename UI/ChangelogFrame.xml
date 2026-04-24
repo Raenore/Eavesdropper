@@ -49,7 +49,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		<Frames>
 			<Frame parentKey="ScrollBox" inherits="WowScrollBoxList" frameStrata="HIGH">
 				<KeyValues>
-					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+					<KeyValue key="canInterpolateScroll" value="false" type="boolean"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-4"/>
@@ -58,7 +58,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar" frameStrata="HIGH">
 				<KeyValues>
-					<KeyValue key="canInterpolateScroll" value="true" type="boolean"/>
+					<KeyValue key="canInterpolateScroll" value="false" type="boolean"/>
 				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-12" y="-9"/>
