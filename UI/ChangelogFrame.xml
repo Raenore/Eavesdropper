@@ -46,10 +46,10 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Texture setAllPoints="true" hidden="true">
 					<Color r="0" g="0" b="0" a="0.5"/>
 				</Texture>
-                <Texture parentKey="Background" file="Interface\AddOns\Eavesdropper\Resources\SettingsPanelInset.png" setAllPoints="true">
-                    <TextureSliceMode mode="Tiled"/>
-                    <TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
-                </Texture>
+				<Texture parentKey="Background" file="Interface\AddOns\Eavesdropper\Resources\SettingsPanelInset.png" setAllPoints="true">
+					<TextureSliceMode mode="Tiled"/>
+					<TextureSliceMargins left="8" right="8" top="8" bottom="8"/>
+				</Texture>
 				<FontString parentKey="PlaceholderText" inherits="GameFontNormal" hidden="true"/>
 			</Layer>
 		</Layers>
