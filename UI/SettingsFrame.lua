@@ -1155,7 +1155,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	local version = ED.Globals.addon_version;
-	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";
+	local versionTextColor = ED.Utils.ValidateLatestBuild() and "COMMON_GRAY_COLOR" or "WARNING_FONT_COLOR";
 	if version == "@project-version@" then
 		version = "Dev"; -- Show "Dev" for internal build
 	end
