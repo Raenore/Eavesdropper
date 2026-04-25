@@ -946,6 +946,7 @@ function SettingsElements.CreateDeveloperInfoFrame(parent)
 		logoButton:SetScript("OnClick", LogoButton_OnClick);
 		logoButton:SetScript("OnMouseDown", LogoButton_OnMouseDown);
 		logoButton:SetScript("OnMouseUp", LogoButton_OnMouseUp);
+		logoButton:RegisterForClicks("AnyUp");
 		LogoButton_SetHighlighted(logoButton, false);
 	end
 

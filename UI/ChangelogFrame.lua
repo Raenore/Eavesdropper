@@ -176,12 +176,10 @@ function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkLeave()
 end
 
 function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkClick(link, text, button, region, left, bottom, width, height) -- luacheck: no unused
-	if button == "LeftButton" then
-		local url = string.match(link, "url:([^:]+):0");
-		if url then
-			url = "https://" .. url;
-			ED.LinkDialog.CreateExternalLinkDialog(url);
-		end
+	local url = string.match(link, "url:([^:]+):0");
+	if url then
+		url = "https://" .. url;
+		ED.LinkDialog.CreateExternalLinkDialog(url);
 	end
 end
 
