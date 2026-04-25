@@ -25,7 +25,7 @@ local styleList = {
 
 local supportedURL = {
 	"Eavesdropper/wiki",
-	"dialogueui",
+	"curseforge.com/wow/addons/",
 };
 
 local textColors = {
