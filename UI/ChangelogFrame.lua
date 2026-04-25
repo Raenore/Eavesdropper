@@ -256,6 +256,8 @@ function Eavesdropper_ChangelogFrameMixin:OnLoad()
 
 	ScrollUtil.InitScrollBoxListWithScrollBar(self.ScrollBox, self.ScrollBar, view);
 	ScrollUtil.AddResizableChildrenBehavior(self.ScrollBox);
+
+	ED.ElvUI.RegisterSkinnableElement(self.ScrollBar, "scrollbar", true);
 end
 
 function Eavesdropper_ChangelogFrameMixin:OnShow()
