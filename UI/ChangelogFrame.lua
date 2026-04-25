@@ -160,7 +160,7 @@ end
 
 Eavesdropper_ChangelogTextContainerMixin = {};
 
-function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkEnter(link, text, region, left, bottom, width, height) -- luacheck: no unused
+function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkEnter(link, text, region, left, bottom, width, height) -- luacheck: no unused (link, height)
 	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE");
 	GameTooltip:ClearAllPoints();
 	GameTooltip:SetPoint("BOTTOMLEFT", region, "TOPLEFT", left + width, bottom);
