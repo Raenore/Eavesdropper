@@ -1353,7 +1353,7 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 
 	if showFullScreenBackdrop then
 		if not self.fullscreenBackdrop then
-			self.fullscreenBackdrop = self:CreateTexture(nil, "BACKGROUND", nil, -2);
+			self.fullscreenBackdrop = self:CreateTexture(nil, "BACKGROUND", nil, -8);
 			self.fullscreenBackdrop:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 0);
 			self.fullscreenBackdrop:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", 0, 0);
 		end
