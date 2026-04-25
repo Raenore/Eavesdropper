@@ -871,16 +871,22 @@ function SettingsElements.CreateDeveloperInfoFrame(parent)
 	local infoFrame = CreateFrame("Frame", nil, parent);
 	infoFrame:SetSize(240, 24);
 
-	local authorFontString = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
 	local text = ED.Globals.author;
 	local characterName, server = string.match(text, "(%w+)%s*(%([%s%-%w%d)]+%))");
 	if not characterName then
 		characterName = text;
 		server = "";
 	end
-	authorFontString:SetText(string.format("%s |cffff17a9%s|r |cff808080%s|r", L.AUTHOR_COLON, characterName, server));
-	authorFontString:SetTextColor(0.8, 0.8, 0.8);
-	authorFontString:SetPoint("LEFT", infoFrame, "LEFT", 0, 0);
+
+	local authorNameFontString = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	authorNameFontString:SetText(string.format("%s |cffff17a9%s|r", L.AUTHOR_COLON, characterName));
+	authorNameFontString:SetTextColor(0.8, 0.8, 0.8);
+	authorNameFontString:SetPoint("LEFT", infoFrame, "LEFT", 0, 0);
+
+	local authorServerFontString = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall");
+	authorServerFontString:SetText(string.format("|cff808080%s|r", server));
+	authorServerFontString:SetTextColor(0.8, 0.8, 0.8);
+	authorServerFontString:SetPoint("LEFT", authorNameFontString, "RIGHT", 4, 0);
 
 	local websites = {
 		{name = "Bluesky", link = "https://bsky.app/profile/dawnsong.me", icon = "Bluesky.png", tooltip = L.ADDONINFO_BLUESKY_SHILL_HELP},
