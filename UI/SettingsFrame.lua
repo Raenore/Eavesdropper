@@ -1156,7 +1156,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 
 	local version = ED.Globals.addon_version;
 	local versionTextColor = ED.Utils.ValidateLatestBuild() and "GRAY_FONT_COLOR" or "WARNING_FONT_COLOR";
-	if ED.Globals.addon_version == "@project-version@" then
+	if version == "@project-version@" then
 		version = "Dev"; -- Show "Dev" for internal build
 	end
 	local aboutPanel, aboutCategoryListButton = self:CreateCategory(string.format("%s  |cn%s:%s|r", L.ABOUT_TITLE, versionTextColor, version), false, nil, true);
@@ -1165,7 +1165,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		button:UpdateVisual();
 
 		GameTooltip:SetOwner(button, "ANCHOR_RIGHT");
-		GameTooltip:AddDoubleLine(L.ADDONINFO_VERSION:format(ED.Globals.addon_version), L.ADDONINFO_BUILD:format(ED.Utils.OutputBuild(true)), 1, 1, 1, 1, 1, 1);
+		GameTooltip:AddDoubleLine(L.ADDONINFO_VERSION:format(version), L.ADDONINFO_BUILD:format(ED.Utils.OutputBuild(true)), 1, 1, 1, 1, 1, 1);
 
 		if ED.Utils.ValidateLatestBuild() then
 			GameTooltip:AddLine(L.ADDONINFO_BUILD_CURRENT, 1, 1, 1, true);
