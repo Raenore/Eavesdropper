@@ -80,6 +80,14 @@ function Utils.StripColorCodes(text)
 	return text;
 end
 
+---CommandHyperlink Builds a clickable addon hyperlink that dispatches an /ed subcommand when clicked.
+---@param command string The subcommand to execute (e.g. "show", "help", "" for settings)
+---@param displayText string The visible label shown in chat (e.g. "/ed show")
+---@return string
+function Utils.CommandHyperlink(command, displayText)
+	return string.format("|cnLINK_FONT_COLOR:|Haddon:eavesdropper:%s|h[%s]|h|r", command, displayText);
+end
+
 ---HandleLinks Converts URLs to clickable WoW hyperlinks
 ---@param message string
 ---@return string
@@ -337,7 +345,9 @@ function Utils.WriteCommandTable(commands, noprefix)
 
 	Print(ED.Localization.SLASH_COMMAND_HEADER);
 	for description, command in pairs(commands) do
-		local formattedOutput = ("|cnGREEN_FONT_COLOR:%s|r |cnWHITE_FONT_COLOR:%s|r"):format(command, description);
+		local subcommand = command:match("%s(.+)$") or "";
+		local clickableDescription = Utils.CommandHyperlink(subcommand, description);
+		local formattedOutput = "|cnGREEN_FONT_COLOR:" .. command .. "|r " .. clickableDescription;
 		if noprefix then
 			print(formattedOutput);
 		else

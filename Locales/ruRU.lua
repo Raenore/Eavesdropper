@@ -7,7 +7,7 @@ local L;
 
 L = {
 	WELCOMEMSG_VERSION = "Активен профиль: |cnGREEN_FONT_COLOR:%s|r (|cnGOLD_FONT_COLOR:%s|r)!",
-	WELCOMEMSG_SETTINGS = "Настройки: |cnGREEN_FONT_COLOR:/ed|r или |cnGREEN_FONT_COLOR:/ed help|r",
+	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r % или |cnGREEN_FONT_COLOR:/ed help|r %s",
 
 	SLASH_COMMAND_HEADER = "Список команд:",
 	SLASH_COMMAND_ED = "Открыть настройки; Eavesdropper отображается во время",
