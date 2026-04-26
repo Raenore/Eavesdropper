@@ -893,6 +893,11 @@ function SettingsElements.CreateElement(parent, data)
 	local widget;
 	local height = Constants.SETTINGS.WIDGET_HEIGHT;
 
+	if data.global then
+		data.label = data.label .. "*";
+		data.tooltip = data.tooltip .. L.GLOBAL_SETTING_TOOLTIP;
+	end
+
 	if data.type == "dropdown" then
 		widget = CreateDropDown(frame, data);
 	elseif data.type == "slider" then

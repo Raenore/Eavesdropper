@@ -18,6 +18,7 @@ L = {
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:ЛКМ: настройки|nПКМ: профили|r",
 	POPUP_LINK = "|n|nНажмите |cnGREEN_FONT_COLOR:Ctrl+C|r, чтобы скопировать, и |cnGREEN_FONT_COLOR:Ctrl+V|r для вставки в браузере.",
 	COPY_SYSTEM_MESSAGE = "Скопировано в буфер обмена.",
+	GLOBAL_SETTING_TOOLTIP = "|cnLIGHTBLUE_FONT_COLOR:|n|n* Global setting - persists across all profiles.|r", -- NEW
 
 	FILTER = "Фильтр",
 	FILTER_HELP = "Выберите типы сообщений для отображения.|n|n- Переключение фильтров меняет только видимость сообщений.|n- Данные не удаляются; скрытые записи появятся снова при включении фильтра.|n|n|cnWARNING_FONT_COLOR:Примечание: фильтры применяются мгновенно.|r",
@@ -34,19 +35,25 @@ L = {
 	FILTER_WHISPER = "Личные сообщения",
 	FILTER_ROLLS = "Ролл",
 
-
 	WINDOW_OPTIONS = "Параметры окна",
+
 	ENABLE_MOUSE = "Взаимодействие мышью",
 	ENABLE_MOUSE_HELP = "Позволяет взаимодействовать с окном Eavesdropper при помощи мыши.|n|n- Включено: можно кликать по ссылкам на предметы и URL в истории сообщений.|n- Выключено: клики проходят «сквозь» окно, исключая случайные нажатия во время боя или игры.",
+
 	LOCK_SCROLL = "Блокировка прокрутки",
 	LOCK_SCROLL_HELP = "Отключает возможность прокрутки истории сообщений.|n|n- Используйте это, чтобы окно всегда оставалось в самом низу и показывало только свежие сообщения.",
+
 	LOCK_WINDOW = "Закрепить окно",
 	LOCK_WINDOW_HELP = "Запрещает перемещение и изменение размера окна.|n|n- Рекомендуется включить после настройки положения окна, чтобы случайно не сдвинуть его в пылу сражения.",
+
 	LOCK_TITLEBAR = "Закрепить заголовок",
 	LOCK_TITLEBAR_HELP = "Настройка видимости верхней панели (заголовка).|n|n- Включено: заголовок виден всегда.|n- Выключено: заголовок скрыт и появляется только при наведении курсора на окно.|n|nПримечание: в настройках можно включить отображение имени вашей цели вместо названия аддона.",
 
-	-- General Tab
+	DEDICATED_OPTIONS = "Dedicated Options", -- NEW
+	APPEARANCE_TITLE = "Appearance", -- NEW
+
 	GENERAL_TITLE = "Общие",
+
 	TARGETING = "Выбор цели",
 	TARGETING_PRIORITY_MOUSEOVER = "Под курсором",
 	TARGETING_PRIORITY_TARGET = "Цель",
@@ -94,6 +101,7 @@ L = {
 	TIMESTAMP_BRACKETS_HELP = "Отображать ли скобки вокруг времени сообщения (например, [5м] или 5м).",
 
 	ADVANCED_FORMATTING = "Расширенное форматирование",
+	ADV_FORMATTING = "Adv. Formatting", -- NEW
 
 	APPLY_ON_MAIN_CHAT = "Применить к основному чату",
 	APPLY_ON_MAIN_CHAT_HELP = "Применять расширенное форматирование не только к истории Eavesdropper, но и к стандартному чату Blizzard.|n|n|cnWARNING_FONT_COLOR:Примечание: форматирование не применяется к уже полученным сообщениям. Если РП-данные персонажа неизвестны в момент получения сообщения, отобразится его обычное имя.|r",
@@ -108,8 +116,10 @@ L = {
 
 	HIDE_CLOSE_BUTTON = "Скрыть кнопку закрытия",
 	HIDE_CLOSE_BUTTON_HELP = "Скрывает «крестик» закрытия на рамке окна.|n|n- Вы по-прежнему сможете управлять окном через команды |cnGREEN_FONT_COLOR:/ed show|r и |cnGREEN_FONT_COLOR:/ed hide|r.",
+
 	HIDE_IN_COMBAT = "Скрывать в бою",
 	HIDE_IN_COMBAT_HELP = "Автоматически скрывать окно аддона при вступлении в бой.|n|n|cnWARNING_FONT_COLOR:Примечание: в некоторых подземельях или сценариях запись сообщений может быть ограничена игрой независимо от этой настройки.|r",
+
 	HIDE_WHEN_EMPTY = "Скрывать, если пусто",
 	HIDE_WHEN_EMPTY_HELP = "Автоматически скрывать окно, если в нем нет сообщений для отображения.|n|n- Окно появится снова, как только будет записано новое сообщение.|n|n|cnWARNING_FONT_COLOR:Примечание: настройка вступит в силу сразу после закрытия этого окна настроек.|r",
 
@@ -120,6 +130,7 @@ L = {
 	WELCOME_MSG_HELP = "Показывать ли приветствие в чате при загрузке аддона.|n|n* Это общая настройка для всех профилей.",
 
 	FONT = "Шрифт",
+	FONT_HELP = "Customize the font of Eavesdropper to suit your preference.", -- NEW
 
 	FONT_FACE = "Гарнитура",
 	FONT_FACE_HELP = "Выберите шрифт для всего текста в Eavesdropper.|n|nПримечание: в этом списке также отображаются шрифты из других аддонов (через LibSharedMedia).",
@@ -153,6 +164,14 @@ L = {
 	TARGET = "Текущая цель",
 	TARGET_HELP = "Сообщения, полученные от вашей текущей цели.",
 
+	DEDICATED = "Dedicated", -- NEW
+	DEDICATED_HELP = "Messages received in Dedicated Windows.", -- NEW
+	DEDICATED_NOTIFICATIONS_HELP = "Messages received in Dedicated Windows.", -- NEW
+
+	GROUPS = "Groups", -- NEW
+	GROUP_HELP = "Separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).", -- NEW
+	GROUP_NOTIFICATIONS_HELP = "Messages received in Group Windows.", -- NEW
+
 	NOTIFICATIONS_PLAY_SOUND = "Звуковой сигнал",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Включает звуковое оповещение для этого типа уведомлений.",
 
@@ -164,45 +183,70 @@ L = {
 
 	-- Keywords Tab
 	KEYWORDS_TITLE = "Ключевые слова",
-
 	KEYWORDS_HELP = "Выделение цветом определенных слов или фраз в чате.",
-
 	KEYWORDS_ENABLE = "Включить подсветку",
 	KEYWORDS_ENABLE_HELP = "Включает систему отслеживания ключевых слов в Eavesdropper.|n|n|cnWARNING_FONT_COLOR:Примечание: списки слов сохраняются для профиля целиком, а не для каждого персонажа отдельно.|r",
-
 	KEYWORDS_LIST = "Список слов",
 	KEYWORDS_LIST_HELP = "Введите слова или фразы для выделения в истории чата.|n|nСпециальные теги:|n|cnGREEN_FONT_COLOR:<firstname>|r - ваше РП-имя|n|cnGREEN_FONT_COLOR:<lastname>|r - ваша РП-фамилия|n|cnGREEN_FONT_COLOR:<oocname>|r - ваш игровой никнейм|n|cnGREEN_FONT_COLOR:<class>|r - ваш РП-класс (или игровой)|n|cnGREEN_FONT_COLOR:<race>|r - ваша РП-раса (или игровая)|n|nПравила:|n- Разделяйте записи запятыми.|n- Регистр не учитывается (н-р, «Герой» совпадет с «герой»).|n- Пробелы внутри фраз учитываются.|n|n|cnWARNING_FONT_COLOR:Примечание: пробелы до и после запятой игнорируются.|r",
-
 	KEYWORDS_HIGHLIGHT_COLOR = "Цвет выделения",
 	KEYWORDS_HIGHLIGHT_COLOR_HELP = "Выберите цвет, которым будут окрашены ключевые слова в тексте.",
-
 	KEYWORDS_ENABLE_PARTIAL_MATCHING = "Частичное совпадение",
 	KEYWORDS_ENABLE_PARTIAL_MATCHING_HELP = "Позволяет находить ключевые слова внутри других слов.|n|nПримеры:|n- Включено: «Маг» подсветится и в слове «Магия».|n- Выключено: подсветится только отдельное слово «Маг».|n|n|cnWARNING_FONT_COLOR:Примечание: может приводить к ложным срабатываниям (например, «рог» внутри «доРОГа»).|r",
-
 	KEYWORDS_NOTIFICATIONS_HELP = "Уведомления при обнаружении ключевого слова в сообщении.",
 
 	-- Profiles Tab
 	PROFILES_TITLE = "Профили",
-
 	PROFILES_CURRENTPROFILE = "Текущий профиль",
 	PROFILES_CURRENTPROFILE_HELP = "Выберите профиль настроек для этого персонажа.",
-
 	PROFILES_NEWPROFILE = "Новый профиль",
 	PROFILES_NEWPROFILE_HELP = "Создать новый профиль. Введите название и нажмите Enter.",
-
 	PROFILES_COPYFROM = "Скопировать из",
 	PROFILES_COPYFROM_HELP = "Копирует все параметры из другого профиля в текущий.|n|n|cnWARNING_FONT_COLOR:Внимание: настройки будут перезаписаны мгновенно и без подтверждения!|r",
-
 	PROFILES_RESETBUTTON = "Сбросить профиль",
 	PROFILES_RESETBUTTON_HELP = "Сброс всех настроек текущего профиля до значений по умолчанию.|n|n|cnWARNING_FONT_COLOR:Внимание: сброс произойдет мгновенно и без подтверждения!|r",
-
 	PROFILES_DELETEPROFILE = "Удалить профиль",
 	PROFILES_DELETEPROFILE_HELP = "Безвозвратное удаление выбранного профиля из базы данных аддона.|n|n|cnWARNING_FONT_COLOR:Внимание: профиль будет удален мгновенно и без подтверждения!|r",
+
+	PROFILES_RENAMEPROFILE = "Rename Profile", -- NEW
+	PROFILES_RENAMEPROFILE_HELP = "Choose a new name for the current profile.", -- NEW
+
+	PROFILES_CONFIRM_NEWPROFILE = "Are you sure you want to create the profile '%s'?", -- NEW
+	PROFILES_CONFIRM_COPYFROM = "Are you sure you want to copy all settings from '%s'? This will overwrite your current configuration.", -- NEW
+	PROFILES_CONFIRM_RESET = "Are you sure you want to reset the current profile to its original defaults?", -- NEW
+	PROFILES_CONFIRM_DELETE = "Are you sure you want to permanently delete the profile '%s'?", -- NEW
 
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Версия:|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " не оптимизирован для этой версии игры.|n|n|cnWARNING_FONT_COLOR:Это может привести к ошибкам в работе аддона.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " совместим с вашей версиями игры.|n|n|cnGREEN_FONT_COLOR:Все функции должны работать корректно.|r",
 	ADDONINFO_BLUESKY_SHILL_HELP = "Подписывайтесь на меня в Bluesky!",
+
+	ABOUT_TITLE = "About", -- NEW
+	ADDONINFO_VERSION = "|cnNORMAL_FONT_COLOR:Version:|r %s", -- NEW
+	CLICK_TO_COPY = "|cnGREEN_FONT_COLOR:Click: Open link to copy|r", -- NEW
+	AUTHOR_COLON = "Author: ", -- NEW
+	VISIT_ADDON_PAGE_TOOLTIP = "Visit the addon page on %s.", -- NEW
+
+	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options", -- NEW
+	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On", -- NEW
+	UNIT_POPUPS_EAVESDROP_GROUP = "Eavesdrop Group", -- NEW
+	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Create New", -- NEW
+
+	POPUP_EAVESDROP_GROUP = "Eavesdropper Group name.|nEnter to confirm.", -- NEW
+	POPUP_RENAME_PROFILE = "Rename profile '%s'.|nEnter to confirm.", -- NEW
+
+	MSG_PREFIX_PARTY = "P", -- NEW
+	MSG_PREFIX_RAID = "R", -- NEW
+	MSG_PREFIX_INSTANCE = "I", -- NEW
+	MSG_PREFIX_OFFICER = "O", -- NEW
+	MSG_PREFIX_GUILD = "G", -- NEW
+	MSG_PREFIX_CHANNEL = "C", -- NEW
+	MSG_PREFIX_RAID_WARNING = "RW", -- NEW
+	MSG_PREFIX_WHISPER_FROM = "W From", -- NEW
+	MSG_PREFIX_WHISPER_TO = "W To", -- NEW
+
+	MSG_VERB_SAY = "says", -- NEW
+	MSG_VERB_YELL = "yells", -- NEW
+	MSG_VERB_WHISPER = "whispers", -- NEW
 };
 
 ED.Localization:RegisterNewLocale("ruRU", "Russian", L);

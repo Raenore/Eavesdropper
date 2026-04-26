@@ -9,7 +9,10 @@ All notable changes to this project will be documented in this file.
   - This ensures that long-form RP emotes split across multiple messages remain cohesive within your history window.  
 
 ### Changed
-- Updated how the addon communicates with Yapper to use their latest public API for handling split messages ([#75](https://github.com/Raenore/Eavesdropper/pull/75)).  
+- Revamped the **Settings menu** with a new **sidebar navigation** and an "About" category featuring an in-game changelog, in collaboration with [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#69](https://github.com/Raenore/Eavesdropper/pull/69) and [#86](https://github.com/Raenore/Eavesdropper/pull/86)).  
+  - Reorganized the interface by splitting options from the "General" tab into new, dedicated categories: **Appearance**, **Adv. Formatting**, **Dedicated**, and **Groups**.  
+  - Added extra descriptions for various options and more clearly marked Global Settings to improve clarity.  
+- Updated how the addon communicates with [Yapper](https://www.curseforge.com/wow/addons/yapper-post-splitter) to use their latest public API for handling split messages ([#75](https://github.com/Raenore/Eavesdropper/pull/75)).  
 
 ### Fixed
 - Group Windows now correctly handle multi-part messages by using split markers, preventing player names from repeating unnecessarily on every line ([#76](https://github.com/Raenore/Eavesdropper/pull/76)).  

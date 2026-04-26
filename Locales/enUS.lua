@@ -18,6 +18,7 @@ L = {
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:Left-Click: Open settings|nRight-Click: Open profiles|nShift-Click: Toggle Eavesdropper|r",
 	POPUP_LINK = "|n|nPress |cnGREEN_FONT_COLOR:CTRL-C|r to copy the highlighted, then paste it in your web browser with |cnGREEN_FONT_COLOR:CTRL-V|r.",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
+	GLOBAL_SETTING_TOOLTIP = "|cnLIGHTBLUE_FONT_COLOR:|n|n* Global setting - persists across all profiles.|r",
 
 	FILTER = "Filter",
 	FILTER_HELP = "Choose which types of messages are visible in Eavesdropper.|n|n- Toggling a filter only changes what is currently shown.|n- No data is actually deleted; hidden messages will reappear if the filter is turned back on.|n|n|cnWARNING_FONT_COLOR:Note: Filters are applied instantly.|r",
@@ -46,6 +47,9 @@ L = {
 	LOCK_TITLEBAR_HELP = "Toggles the visibility of the window's title bar.|n|n- Enabled: The title bar remains visible at all times.|n- Disabled: The title bar is hidden and only appears when you hover over the window.|n|nNote: You can enable 'Title Bar Target Name' in the settings to replace the 'Eavesdropper' text with your current target's name.",
 
 	DEDICATED_OPTIONS = "Dedicated Options",
+
+	-- Category Titles
+	APPEARANCE_TITLE = "Appearance",
 
 	-- General Tab
 	GENERAL_TITLE = "General",
@@ -107,12 +111,15 @@ L = {
 	TIMESTAMP_BRACKETS = "Timestamp Brackets",
 	TIMESTAMP_BRACKETS_HELP = "Toggles the visibility of brackets around message timestamps (e.g., [5m] vs 5m).",
 
+	ADV_FORMATTING = "Adv. Formatting",
 	ADVANCED_FORMATTING = "Advanced Formatting",
+	ADVANCED_FORMATTING_HELP = "These options handle RP name formatting in system messages, emotes, and NPC interactions.",
 
 	APPLY_ON_MAIN_CHAT = "Apply to Main Chat",
 	APPLY_ON_MAIN_CHAT_HELP = "Toggles whether Advanced Formatting is applied to the main Blizzard chat window in addition to the Eavesdropper history window.|n|n|cnWARNING_FONT_COLOR:Note: Formatting is not retroactive. If the required RP data is unavailable at the time a message is received, standard in-game names will be displayed.|r",
 
 	DISPLAY = "Display",
+	DISPLAY_HELP = "Configure the visual style and color themes of Eavesdropper.",
 	THEMES_BACKGROUND_COLOR = "Background Color",
 	THEMES_BACKGROUND_COLOR_HELP = "Adjust the color and transparency of Eavesdropper.|n|n- Use the slider in the color picker to set the background opacity.",
 	THEMES_TITLEBAR_COLOR = "Title Bar Color",
@@ -131,9 +138,10 @@ L = {
 	TITLE_BAR_TARGET_NAME_HELP = "Replaces the 'Eavesdropper' label in the title bar with the name of your current target. This provides a quick visual confirmation of which character's history is currently being tracked.",
 
 	WELCOME_MSG = "Startup message",
-	WELCOME_MSG_HELP = "Toggles the display of the welcome message.|n|n* Global setting - persists across all profiles.",
+	WELCOME_MSG_HELP = "Toggles the display of the welcome message.",
 
 	FONT = "Font",
+	FONT_HELP = "Customize the font of Eavesdropper to suit your preference.",
 
 	FONT_FACE = "Font Face",
 	FONT_FACE_HELP = "Choose the typeface used for all text within Eavesdropper.|n|nNote: Fonts from other addons that use LibSharedMedia will also appear in this list.",
@@ -153,31 +161,31 @@ L = {
 	MINIMAP = "Minimap",
 
 	DEDICATED_WINDOWS = "Dedicated Windows",
-	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent dedicated windows.|r",
+	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent dedicated windows.|r",
 
 	NEW_WINDOWS_UNIT_POPUPS = "Quick-Access Menu",
-	NEW_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a window for a specific character.|n|n* Global setting - persists across all profiles.",
+	NEW_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a window for a specific character.",
 
 	NEW_WINDOWS_NEW_INDICATOR = "New Message Indicator",
-	NEW_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on a window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.|n|n* Global setting - persists across all profiles.",
+	NEW_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on a window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.",
 
 	DEDICATED_WINDOWS_PERSIST = "Save Windows",
-	DEDICATED_WINDOWS_PERSIST_HELP = "Toggles whether currently open Dedicated Windows are restored after a game restart or UI reload.|n|nThe following data is preserved:|n- List of opened windows|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Visual settings such as font size and window positions are not saved and will reset.|r",
+	DEDICATED_WINDOWS_PERSIST_HELP = "Toggles whether currently open Dedicated Windows are restored after a game restart or UI reload.|n|nThe following data is preserved:|n- List of opened windows|n|n|cnWARNING_FONT_COLOR:Note: Visual settings such as font size and window positions are not saved and will reset.|r",
 
 	GROUP_WINDOWS = "Group Windows",
-	GROUP_WINDOWS_HELP = "Allows the creation of separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent group windows.|r",
+	GROUP_WINDOWS_HELP = "Allows the creation of separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent group windows.|r",
 
 	GROUP_WINDOWS_PERSIST = "Save Groups",
-	GROUP_WINDOWS_PERSIST_HELP = "Toggles whether Group Window configurations are saved across game restarts or UI reloads.|n|nThe following data is preserved:|n- Group Window name|n- List of included players|n- Name Display Mode settings|n|n* Global setting - persists across all profiles.|n|n|cnWARNING_FONT_COLOR:Note: Visual settings such as font size and window positions are not saved and will reset.|r",
+	GROUP_WINDOWS_PERSIST_HELP = "Toggles whether Group Window configurations are saved across game restarts or UI reloads.|n|nThe following data is preserved:|n- Group Window name|n- List of included players|n- Name Display Mode settings|n|n|cnWARNING_FONT_COLOR:Note: Visual settings such as font size and window positions are not saved and will reset.|r",
 
 	GROUP_OPTIONS = "Group Options",
 	GROUP_RENAME = "Change Group Name",
 
 	MINIMAP_BUTTON = "Minimap Button",
-	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.|n|n* Global setting - persists across all profiles.",
+	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.",
 
 	ADDON_COMPARTMENT_BUTTON = "Addon compartment",
-	ADDON_COMPARTMENT_BUTTON_HELP = "Toggles the display of the addon compartment button.|n|n* Global setting - persists across all profiles.",
+	ADDON_COMPARTMENT_BUTTON_HELP = "Toggles the display of the addon compartment button.",
 
 	-- Notifications Tab
 	NOTIFICATIONS_TITLE = "Notifications",
@@ -189,10 +197,12 @@ L = {
 	TARGET_HELP = "Messages received from your current target.",
 
 	DEDICATED = "Dedicated",
-	DEDICATED_HELP = "Messages received in Dedicated Windows.",
+	DEDICATED_HELP = "Separate, independent windows to track specific units.",
+	DEDICATED_NOTIFICATIONS_HELP = "Messages received in Dedicated Windows.",
 
-	GROUP = "Group",
-	GROUP_HELP = "Messages received in Group Windows.",
+	GROUPS = "Groups",
+	GROUP_HELP = "Separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).",
+	GROUP_NOTIFICATIONS_HELP = "Messages received in Group Windows.",
 
 	NOTIFICATIONS_PLAY_SOUND = "Play Sound",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Toggles whether Eavesdropper plays an audible alert for this notification type.",
