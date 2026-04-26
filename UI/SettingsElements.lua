@@ -557,13 +557,17 @@ local function CreateMultiLineEditBox(parent, data)
 	backdrop:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
 
 
-	local paddingLeft, paddingRight, paddingTop, paddingBottom = 10, 25, 5, 0;
+	local paddingLeft, paddingRight, paddingTop, paddingBottom = 5, 5, 5, 5;
 
 	local scrollFrame = CreateFrame("ScrollFrame", nil, container, "ScrollFrameTemplate");
 	scrollFrame:SetPoint("TOPLEFT", backdrop, "TOPLEFT", paddingLeft, -paddingTop);
 	scrollFrame:SetPoint("BOTTOMRIGHT", backdrop, "BOTTOMRIGHT", -paddingRight, paddingBottom);
-	scrollFrame.ScrollBar:Hide();
 	scrollFrame:EnableMouseWheel(false);
+
+	scrollFrame.ScrollBar:Hide();
+	scrollFrame.ScrollBar:ClearAllPoints();
+	scrollFrame.ScrollBar:SetPoint("TOPRIGHT", scrollFrame, "TOPRIGHT", -6, -3);
+	scrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT", -6, 2);
 
 	local editBox = CreateFrame("EditBox", nil, scrollFrame);
 	editBox:SetMultiLine(true);
@@ -571,10 +575,13 @@ local function CreateMultiLineEditBox(parent, data)
 	editBox:SetFontObject("ChatFontNormal");
 	editBox:SetWidth(scrollFrame:GetWidth());
 	editBox:SetHeight(height);
+	local surroundingInset = 4; -- Text inset for left/top/bottom of the EditBox
+	local rightInset = 24; -- Leave room for the ScrollBar on the right
+	editBox:SetTextInsets(surroundingInset, rightInset, surroundingInset, surroundingInset);
 
 	scrollFrame:SetScrollChild(editBox);
 
-	editBox:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT", 0, -5);
+	editBox:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT", 0, 0);
 
 	editBox.settingKey = data.settingKey;
 	editBox.savedThisEdit = false;
