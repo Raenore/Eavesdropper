@@ -4,7 +4,6 @@ title: "[BUG]: "
 labels: ["bug", "needs triage"]
 assignees:
   - Raenore
-type: bug
 body:
 - type: checkboxes
   attributes:
