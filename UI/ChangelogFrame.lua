@@ -42,13 +42,14 @@ local function ConvertMarkdownToDataProvider()
 	local urlMatchPattern = "%[([^]]+)%]%(([^%)]+)%)"; -- [text](url) Preserve text only
 	local urlRemovalPattern = "%[[^]]+%]%([^%)]+%)";
 	local gitRefRemovalPattern = "%s*%(%[#.-%([^%)]+%)%s*%)"; -- ([#1](url)) or ([#1](url) and [#2](url)) Remove entirely
+	local versionComparePatter = "^%[[%w%d%.%-]+%]:"; -- Ignore line started with [version]:
 
 	local function ColorizeText(text, color)
 		return "|cn" .. color .. ":" .. text .. "|r";
 	end
 
 	for line in string.gmatch(Changelogs.currentMarkdown, "[^\r\n]*") do
-		if line ~= "" then
+		if line ~= "" and not string.find(line, versionComparePatter) then
 			index = index + 1;
 
 			local tag;

@@ -93,6 +93,23 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
 
 ## Full Changelog
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).
+
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...HEAD
+[0.4.1]: https://github.com/Raenore/Eavesdropper/compare/0.4.0...0.4.1
+[0.4.0]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...0.4.0
+[0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
+[0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
+[0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
+[0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
+[0.1.4]: https://github.com/Raenore/Eavesdropper/compare/0.1.3...0.1.4
+[0.1.3]: https://github.com/Raenore/Eavesdropper/compare/0.1.2...0.1.3
+[0.1.2]: https://github.com/Raenore/Eavesdropper/compare/0.1.1...0.1.2
+[0.1.1]: https://github.com/Raenore/Eavesdropper/compare/0.1.0...0.1.1
+[0.1.0]: https://github.com/Raenore/Eavesdropper/releases/tag/0.1.0
+
 ]]
 
 ED.Changelogs:SetMarkdown(changelogMarkdown);
