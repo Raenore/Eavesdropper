@@ -636,7 +636,6 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 	};
 
-
 	-- --------------------------------------------------------
 	-- Advanced Formatting options
 	-- --------------------------------------------------------
