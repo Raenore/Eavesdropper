@@ -392,94 +392,46 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
-			label = L.ADVANCED_FORMATTING,
+			label = L.MINIMAP,
 		},
 		{
 			type = "checkbox",
-			label = L.APPLY_ON_MAIN_CHAT,
-			tooltip = L.APPLY_ON_MAIN_CHAT_HELP,
-			get = function() return ED.Database:GetSetting("ApplyOnMainChat"); end,
+			global = true,
+			label = L.MINIMAP_BUTTON,
+			tooltip = L.MINIMAP_BUTTON_HELP,
+			get = function() return not ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
 			set = function(val)
-				ED.Database:SetSetting("ApplyOnMainChat", val);
-				ED.MainChat:ToggleAdvancedFormatting();
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.USE_RP_NAME_FOR_TARGETS,
-			tooltip = L.USE_RP_NAME_FOR_TARGETS_HELP,
-			disabled = function() return ED.Database:GetSetting("NameDisplayMode") == 3; end,
-			get = function() return ED.Database:GetSetting("UseRPNameForTargets"); end,
-			set = function(val)
-				ED.Database:SetSetting("UseRPNameForTargets", val);
-				ED.Frame:RefreshChat();
+				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
+				minimap.Hide = not val;
+				ED.Database:SetGlobalSetting("MinimapButton", minimap);
+				ED.Minimap:UpdateMinimapButtons();
 			end,
 		},
 		{
 			type = "checkbox",
-			label = L.USE_RP_NAME_IN_ROLLS,
-			tooltip = L.USE_RP_NAME_IN_ROLLS_HELP,
-			disabled = function() return ED.Database:GetSetting("NameDisplayMode") == 3; end,
-			get = function() return ED.Database:GetSetting("UseRPNameInRolls"); end,
+			global = true,
+			label = L.ADDON_COMPARTMENT_BUTTON,
+			tooltip = L.ADDON_COMPARTMENT_BUTTON_HELP,
+			disabled = function() return ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
+			get = function() return ED.Database:GetGlobalSetting("MinimapButton").ShowAddonCompartmentButton; end,
 			set = function(val)
-				ED.Database:SetSetting("UseRPNameInRolls", val);
-				ED.Frame:RefreshChat();
-			end,
-		},--[[ Decide on if we make this a separate category
-		{
-			type = "subtitle",
-			label = L.NPC_DIALOGUE_AND_QUEST_TEXT,
-			subLabel = L.NPC_DIALOGUE_AND_QUEST_TEXT_HELP,
-		},]]
-		{
-			type = "dropdown",
-			label = L.NPC_AND_QUEST_NAME_DISPLAY,
-			tooltip = L.NPC_AND_QUEST_NAME_DISPLAY_HELP,
-			values = {
-				[1] = L.NAME_DISPLAY_MODE_FULL_NAME,
-				[2] = L.NAME_DISPLAY_MODE_FIRST_NAME,
-				[3] = L.NAME_DISPLAY_MODE_ORIGINAL_NAME,
-			},
-			sorting = { 1, 2, 3 },
-			disabled = function() return not ED.MSP.IsEnabled() end,
-			disabledValues = function()
-				return {
-					[1] = not ED.MSP.IsEnabled(),
-					[2] = not ED.MSP.IsEnabled(),
-				};
-			end,
-			buildAdded = "0.3.0-0.4.0|120001",
-			get = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode"); end,
-			set = function(val)
-				ED.Database:SetSetting("NPCAndQuestNameDisplayMode", val);
-				ED.QuestText.RefreshPlayerPreferredName();
+				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
+				minimap.ShowAddonCompartmentButton = val;
+				ED.Database:SetGlobalSetting("MinimapButton", minimap);
+				ED.Minimap:UpdateMinimapButtons();
 			end,
 		},
-		{
-			type = "checkbox",
-			label = L.USE_RP_NAME_FOR_QUEST_TEXT,
-			tooltip = L.USE_RP_NAME_FOR_QUEST_TEXT_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
-			get = function() return ED.Database:GetSetting("UseRPNameInQuestText"); end,
-			set = function(val)
-				ED.Database:SetSetting("UseRPNameInQuestText", val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.USE_RP_NAME_FOR_NPC_DIALOGUE,
-			tooltip = L.USE_RP_NAME_FOR_NPC_DIALOGUE_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
-			get = function() return ED.Database:GetSetting("UseRPNameInNPCDialogue"); end,
-			set = function(val)
-				ED.Database:SetSetting("UseRPNameInNPCDialogue", val);
-			end,
-		},
+	};
+
+	-- --------------------------------------------------------
+	-- Appearance options
+	-- --------------------------------------------------------
+
+	local appearanceOptions = {
 		{
 			type = "subtitle",
 			label = L.DISPLAY,
+			subLabel = L.DISPLAY_HELP,
 		},
 		{
 			type = "colorswatch",
@@ -610,7 +562,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.WELCOME_MSG .. "*",
+			global = true,
+			label = L.WELCOME_MSG,
 			tooltip = L.WELCOME_MSG_HELP,
 			get = function() return ED.Database:GetGlobalSetting("WelcomeMessage"); end,
 			set = function(val)
@@ -620,6 +573,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		{
 			type = "subtitle",
 			label = L.FONT,
+			subLabel = L.FONT_HELP,
 		},
 		{
 			type = "dropdown",
@@ -680,13 +634,118 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				end);
 			end,
 		},
+	};
+
+
+	-- --------------------------------------------------------
+	-- Advanced Formatting options
+	-- --------------------------------------------------------
+
+	local advancedFormattingOptions = {
 		{
 			type = "subtitle",
-			label = L.DEDICATED_WINDOWS,
+			label = L.ADVANCED_FORMATTING,
+			subLabel = L.ADVANCED_FORMATTING_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.DEDICATED_WINDOWS .. "*",
+			label = L.APPLY_ON_MAIN_CHAT,
+			tooltip = L.APPLY_ON_MAIN_CHAT_HELP,
+			get = function() return ED.Database:GetSetting("ApplyOnMainChat"); end,
+			set = function(val)
+				ED.Database:SetSetting("ApplyOnMainChat", val);
+				ED.MainChat:ToggleAdvancedFormatting();
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.USE_RP_NAME_FOR_TARGETS,
+			tooltip = L.USE_RP_NAME_FOR_TARGETS_HELP,
+			disabled = function() return ED.Database:GetSetting("NameDisplayMode") == 3; end,
+			get = function() return ED.Database:GetSetting("UseRPNameForTargets"); end,
+			set = function(val)
+				ED.Database:SetSetting("UseRPNameForTargets", val);
+				ED.Frame:RefreshChat();
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.USE_RP_NAME_IN_ROLLS,
+			tooltip = L.USE_RP_NAME_IN_ROLLS_HELP,
+			disabled = function() return ED.Database:GetSetting("NameDisplayMode") == 3; end,
+			get = function() return ED.Database:GetSetting("UseRPNameInRolls"); end,
+			set = function(val)
+				ED.Database:SetSetting("UseRPNameInRolls", val);
+				ED.Frame:RefreshChat();
+			end,
+		},--[[ Decide on if we make this a separate category
+		{
+			type = "subtitle",
+			label = L.NPC_DIALOGUE_AND_QUEST_TEXT,
+			subLabel = L.NPC_DIALOGUE_AND_QUEST_TEXT_HELP,
+		},]]
+		{
+			type = "dropdown",
+			label = L.NPC_AND_QUEST_NAME_DISPLAY,
+			tooltip = L.NPC_AND_QUEST_NAME_DISPLAY_HELP,
+			values = {
+				[1] = L.NAME_DISPLAY_MODE_FULL_NAME,
+				[2] = L.NAME_DISPLAY_MODE_FIRST_NAME,
+				[3] = L.NAME_DISPLAY_MODE_ORIGINAL_NAME,
+			},
+			sorting = { 1, 2, 3 },
+			disabled = function() return not ED.MSP.IsEnabled() end,
+			disabledValues = function()
+				return {
+					[1] = not ED.MSP.IsEnabled(),
+					[2] = not ED.MSP.IsEnabled(),
+				};
+			end,
+			buildAdded = "0.3.0-0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode"); end,
+			set = function(val)
+				ED.Database:SetSetting("NPCAndQuestNameDisplayMode", val);
+				ED.QuestText.RefreshPlayerPreferredName();
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.USE_RP_NAME_FOR_QUEST_TEXT,
+			tooltip = L.USE_RP_NAME_FOR_QUEST_TEXT_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
+			get = function() return ED.Database:GetSetting("UseRPNameInQuestText"); end,
+			set = function(val)
+				ED.Database:SetSetting("UseRPNameInQuestText", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.USE_RP_NAME_FOR_NPC_DIALOGUE,
+			tooltip = L.USE_RP_NAME_FOR_NPC_DIALOGUE_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
+			get = function() return ED.Database:GetSetting("UseRPNameInNPCDialogue"); end,
+			set = function(val)
+				ED.Database:SetSetting("UseRPNameInNPCDialogue", val);
+			end,
+		},
+	};
+
+	-- --------------------------------------------------------
+	-- Dedicated options
+	-- --------------------------------------------------------
+
+	local dedicatedOptions = {
+				{
+			type = "subtitle",
+			label = L.DEDICATED,
+			subLabel = L.DEDICATED_HELP,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = ENABLE,
 			tooltip = L.DEDICATED_WINDOWS_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -701,7 +760,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
+			global = true,
+			label = L.NEW_WINDOWS_NEW_INDICATOR,
 			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -712,7 +772,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
+			global = true,
+			label = L.NEW_WINDOWS_UNIT_POPUPS,
 			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -723,7 +784,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.DEDICATED_WINDOWS_PERSIST .. "*",
+			global = true,
+			label = L.DEDICATED_WINDOWS_PERSIST,
 			tooltip = L.DEDICATED_WINDOWS_PERSIST_HELP,
 			buildAdded = "0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -734,83 +796,43 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
-			label = L.GROUP_WINDOWS,
+			label = L.NOTIFICATIONS_TITLE,
+			subLabel = L.DEDICATED_NOTIFICATIONS_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.GROUP_WINDOWS .. "*",
-			tooltip = L.GROUP_WINDOWS_HELP,
-			buildAdded = "0.4.0|120001",
-			get = function() return ED.Database:GetGlobalSetting("GroupWindows"); end,
+			label = L.NOTIFICATIONS_PLAY_SOUND,
+			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSound"); end,
 			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindows", val);
-				if not val then
-					ED.GroupFrame:ForEachFrame(function(frame)
-						frame:Hide();
-					end);
+				ED.Database:SetSetting("NotificationDedicatedSound", val);
+			end,
+		},
+		{
+			type = "dropdown",
+			label = L.NOTIFICATIONS_SOUND_FILE,
+			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			values = ED.Config.soundList,
+			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound"); end,
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile"); end,
+			set = function(val)
+				local soundPath = SharedMedia:Fetch("sound", val);
+				if soundPath then
+					PlaySoundFile(soundPath, "Master");
+					ED.Database:SetSetting("NotificationDedicatedSoundFile", val);
 				end
 			end,
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
-			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsNewIndicator"); end,
+			label = L.NOTIFICATION_FLASH_TASKBAR,
+			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
 			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsNewIndicator", val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
-			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsUnitPopups"); end,
-			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsUnitPopups", val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.GROUP_WINDOWS_PERSIST .. "*",
-			tooltip = L.GROUP_WINDOWS_PERSIST_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsPersist"); end,
-			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsPersist", val);
-			end,
-		},
-		{
-			type = "subtitle",
-			label = L.MINIMAP,
-		},
-		{
-			type = "checkbox",
-			label = L.MINIMAP_BUTTON .. "*",
-			tooltip = L.MINIMAP_BUTTON_HELP,
-			get = function() return not ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
-			set = function(val)
-				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
-				minimap.Hide = not val;
-				ED.Database:SetGlobalSetting("MinimapButton", minimap);
-				ED.Minimap:UpdateMinimapButtons();
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.ADDON_COMPARTMENT_BUTTON .. "*",
-			tooltip = L.ADDON_COMPARTMENT_BUTTON_HELP,
-			disabled = function() return ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
-			get = function() return ED.Database:GetGlobalSetting("MinimapButton").ShowAddonCompartmentButton; end,
-			set = function(val)
-				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
-				minimap.ShowAddonCompartmentButton = val;
-				ED.Database:SetGlobalSetting("MinimapButton", minimap);
-				ED.Minimap:UpdateMinimapButtons();
+				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
 			end,
 		},
 	};
@@ -896,51 +918,74 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				ED.Database:SetSetting("NotificationTargetFlashTaskbar", val);
 			end,
 		},
-		{
+	};
+
+	-- --------------------------------------------------------
+	-- Groups options
+	-- --------------------------------------------------------
+
+	local groupOptions = {
+				{
 			type = "subtitle",
-			label = L.DEDICATED,
-			subLabel = L.DEDICATED_HELP,
+			label = L.GROUPS,
+			subLabel = L.GROUP_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.NOTIFICATIONS_PLAY_SOUND,
-			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			get = function() return ED.Database:GetSetting("NotificationDedicatedSound"); end,
+			global = true,
+			label = ENABLE,
+			tooltip = L.GROUP_WINDOWS_HELP,
+			buildAdded = "0.4.0|120001",
+			get = function() return ED.Database:GetGlobalSetting("GroupWindows"); end,
 			set = function(val)
-				ED.Database:SetSetting("NotificationDedicatedSound", val);
-			end,
-		},
-		{
-			type = "dropdown",
-			label = L.NOTIFICATIONS_SOUND_FILE,
-			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			values = ED.Config.soundList,
-			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound"); end,
-			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile"); end,
-			set = function(val)
-				local soundPath = SharedMedia:Fetch("sound", val);
-				if soundPath then
-					PlaySoundFile(soundPath, "Master");
-					ED.Database:SetSetting("NotificationDedicatedSoundFile", val);
+				ED.Database:SetGlobalSetting("GroupWindows", val);
+				if not val then
+					ED.GroupFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
 				end
 			end,
 		},
 		{
 			type = "checkbox",
-			label = L.NOTIFICATION_FLASH_TASKBAR,
-			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
+			global = true,
+			label = L.NEW_WINDOWS_NEW_INDICATOR,
+			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsNewIndicator"); end,
 			set = function(val)
-				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
+				ED.Database:SetGlobalSetting("GroupWindowsNewIndicator", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.NEW_WINDOWS_UNIT_POPUPS,
+			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsUnitPopups"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsUnitPopups", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.GROUP_WINDOWS_PERSIST,
+			tooltip = L.GROUP_WINDOWS_PERSIST_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsPersist"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsPersist", val);
 			end,
 		},
 		{
 			type = "subtitle",
-			label = L.GROUP,
-			subLabel = L.GROUP_HELP,
+			label = L.NOTIFICATIONS_TITLE,
+			subLabel = L.GROUP_NOTIFICATIONS_HELP,
 		},
 		{
 			type = "checkbox",
@@ -992,7 +1037,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.KEYWORDS_ENABLE,
+			label = ENABLE,
 			tooltip = L.KEYWORDS_ENABLE_HELP,
 			get = function() return ED.Database:GetSetting("EnableKeywords"); end,
 			set = function(val)
@@ -1150,8 +1195,12 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	-- --------------------------------------------------------
 
 	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
+	self:CreateCategory(L.APPEARANCE_TITLE, true, appearanceOptions);
+	self:CreateCategory(L.ADV_FORMATTING, false, advancedFormattingOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
-	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
+	self:CreateCategory(L.DEDICATED, false, dedicatedOptions);
+	self:CreateCategory(L.GROUPS, false, groupOptions);
+	self:CreateCategory(L.NOTIFICATIONS_TITLE, false, notificationsOptions);
 	self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	local version = ED.Globals.addon_version;
