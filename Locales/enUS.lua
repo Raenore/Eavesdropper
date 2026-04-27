@@ -14,6 +14,8 @@ L = {
 	SLASH_COMMAND_ED_SHOW = "Show Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Hide Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Toggle Eavesdropper",
+	SLASH_COMMAND_ED_SETTINGS = "Show Settings",
+	SLASH_COMMAND_ED_HELP = "Available Commands",
 
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:Left-Click: Open settings|nRight-Click: Open profiles|nShift-Click: Toggle Eavesdropper|r",
 	POPUP_LINK = "|n|nPress |cnGREEN_FONT_COLOR:CTRL-C|r to copy the highlighted, then paste it in your web browser with |cnGREEN_FONT_COLOR:CTRL-V|r.",

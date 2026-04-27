@@ -7,13 +7,15 @@ local L;
 
 L = {
 	WELCOMEMSG_VERSION = "Активен профиль: |cnGREEN_FONT_COLOR:%s|r (|cnGOLD_FONT_COLOR:%s|r)!",
-	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r % или |cnGREEN_FONT_COLOR:/ed help|r %s",
+	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r %s или |cnGREEN_FONT_COLOR:/ed help|r %s",
 
 	SLASH_COMMAND_HEADER = "Список команд:",
 	SLASH_COMMAND_ED = "Открыть настройки; Eavesdropper отображается во время",
 	SLASH_COMMAND_ED_SHOW = "Показать Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Скрыть Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Переключить видимость",
+	SLASH_COMMAND_ED_SETTINGS = "Show Settings", -- NEW
+	SLASH_COMMAND_ED_HELP = "Available Commands", -- NEW
 
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:ЛКМ: настройки|nПКМ: профили|r",
 	POPUP_LINK = "|n|nНажмите |cnGREEN_FONT_COLOR:Ctrl+C|r, чтобы скопировать, и |cnGREEN_FONT_COLOR:Ctrl+V|r для вставки в браузере.",

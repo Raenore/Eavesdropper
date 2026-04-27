@@ -86,8 +86,8 @@ function ED.Init()
 			if ED.Database:GetGlobalSetting("WelcomeMessage") then
 				ED.Utils.Write(ED.Localization.WELCOMEMSG_VERSION:format(ED.Database:GetProfileName(), ED.Globals.addon_version));
 				ED.Utils.Write(ED.Localization.WELCOMEMSG_SETTINGS:format(
-					ED.Utils.CommandHyperlink("", "Show Settings"),
-					ED.Utils.CommandHyperlink("help", "Available Commands")
+					ED.Utils.CommandHyperlink("", ED.Localization.SLASH_COMMAND_ED_SETTINGS),
+					ED.Utils.CommandHyperlink("help", ED.Localization.SLASH_COMMAND_ED_HELP)
 				));
 			end
 		end);
