@@ -7,13 +7,15 @@ local L;
 ---@class ED.Locale.enUS
 L = {
 	WELCOMEMSG_VERSION = "Listening with profile |cnGREEN_FONT_COLOR:%s|r (|cnGOLD_FONT_COLOR:%s|r)!",
-	WELCOMEMSG_SETTINGS = "Settings available through |cnGREEN_FONT_COLOR:/ed|r & |cnGREEN_FONT_COLOR:/ed help|r",
+	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r %s & |cnGREEN_FONT_COLOR:/ed help|r %s",
 
-	SLASH_COMMAND_HEADER = "List of commands:",
+	SLASH_COMMAND_HEADER = "List of commands (clickable & writeable):",
 	SLASH_COMMAND_ED = "Show settings, Eavesdropper unhides during",
 	SLASH_COMMAND_ED_SHOW = "Show Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Hide Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Toggle Eavesdropper",
+	SLASH_COMMAND_ED_SETTINGS = "Show Settings",
+	SLASH_COMMAND_ED_HELP = "Available Commands",
 
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:Left-Click: Open settings|nRight-Click: Open profiles|nShift-Click: Toggle Eavesdropper|r",
 	POPUP_LINK = "|n|nPress |cnGREEN_FONT_COLOR:CTRL-C|r to copy the highlighted, then paste it in your web browser with |cnGREEN_FONT_COLOR:CTRL-V|r.",
@@ -259,6 +261,7 @@ L = {
 	CLICK_TO_COPY = "|cnGREEN_FONT_COLOR:Click: Open link to copy|r",
 	AUTHOR_COLON = "Author: ",
 	VISIT_ADDON_PAGE_TOOLTIP = "Visit the addon page on %s.";
+	RUN_CLICKABLE_COMMAND = "|cnGREEN_FONT_COLOR:Click: Run clickable command|r",
 
 	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options",
 	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On",
