@@ -261,6 +261,7 @@ L = {
 	CLICK_TO_COPY = "|cnGREEN_FONT_COLOR:Click: Open link to copy|r",
 	AUTHOR_COLON = "Author: ",
 	VISIT_ADDON_PAGE_TOOLTIP = "Visit the addon page on %s.";
+	RUN_CLICKABLE_COMMAND = "|cnGREEN_FONT_COLOR:Click: Run clickable command|r",
 
 	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options",
 	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On",
