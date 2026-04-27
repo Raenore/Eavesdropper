@@ -1,7 +1,7 @@
 -- Copyright The Eavesdropper Authors
 -- SPDX-License-Identifier: Apache-2.0
 
-local function ProcessCommand(msg)
+function ED.ProcessCommand(msg)
 	local originalMsg = type(msg) == "string" and msg or "";
 	local subcommand = originalMsg:lower():match("^%s*(%S+)") or ""; -- Extract first word as subcommand (e.g. show from "/ed show")
 	local args = originalMsg:match("^%s*%S+%s+(.-)%s*$") or ""; -- Extract everything after subcommand as args
@@ -60,16 +60,14 @@ function ED.Init()
 		ED.UnitPopups:Init()
 
 		SLASH_EAVESDROPPER1, SLASH_EAVESDROPPER2 = "/ed", "/eavesdropper";
-		SlashCmdList["EAVESDROPPER"] = function(msg) ProcessCommand(msg); end
+		SlashCmdList["EAVESDROPPER"] = function(msg) ED.ProcessCommand(msg); end
 
 		EventRegistry:RegisterCallback("SetItemRef", function(_owner, link, _text, _button, _frame)
 			--[[ if ED.Globals.DEBUG_MODE then
 				print("[ED] SetItemRef: " .. tostring(link));
 			end --]]
-			local linkType, linkSubtype, command = string.split(":", link, 3);
-			if linkType == "addon" and linkSubtype == "eavesdropper" then
-				ProcessCommand(command or "");
-			end
+			local cmd = link:match("^addon:Eavesdropper:cmd:(.*)$");
+			if cmd then ED.ProcessCommand(cmd); end
 		end);
 
 		if ED.Globals.DEBUG_MODE then

@@ -82,10 +82,14 @@ end
 
 ---CommandHyperlink Builds a clickable addon hyperlink that dispatches an /ed subcommand when clicked.
 ---@param command string The subcommand to execute (e.g. "show", "help", "" for settings)
----@param displayText string The visible label shown in chat (e.g. "/ed show")
+---@param displayText string? The visible label; defaults to the matching SLASH_COMMAND_ED locale string
 ---@return string
 function Utils.CommandHyperlink(command, displayText)
-	return string.format("|cnLINK_FONT_COLOR:|Haddon:eavesdropper:%s|h[%s]|h|r", command, displayText);
+	if not displayText then
+		local key = "SLASH_COMMAND_ED" .. (command ~= "" and "_" .. command:upper() or "");
+		displayText = ED.Localization[key] or ("/ed" .. (command ~= "" and " " .. command or ""));
+	end
+	return string.format("|cnLINK_FONT_COLOR:|Haddon:Eavesdropper:cmd:%s|h[%s]|h|r", command, displayText);
 end
 
 ---HandleLinks Converts URLs to clickable WoW hyperlinks
