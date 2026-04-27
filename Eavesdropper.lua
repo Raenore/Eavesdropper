@@ -3,15 +3,16 @@
 
 local function ProcessCommand(msg)
 	local originalMsg = type(msg) == "string" and msg or "";
-	msg = originalMsg:lower();
+	local subcommand = originalMsg:lower():match("^%s*(%S+)") or ""; -- Extract first word as subcommand (e.g. show from "/ed show")
+	local args = originalMsg:match("^%s*%S+%s+(.-)%s*$") or ""; -- Extract everything after subcommand as args
 
-	if ED.Globals.DEBUG_MODE and (msg == "testclear" or msg:sub(1, 10) == "testclear ") then
-		ED.Debug:HandleTestClear(originalMsg:sub(11));
+	if ED.Globals.DEBUG_MODE and subcommand == "testclear" then
+		ED.Debug:HandleTestClear(args);
 		return;
-	elseif ED.Globals.DEBUG_MODE and (msg == "test" or msg:sub(1, 5) == "test ") then
-		ED.Debug:HandleTest(originalMsg:sub(6));
+	elseif ED.Globals.DEBUG_MODE and subcommand == "test" then
+		ED.Debug:HandleTest(args);
 		return;
-	elseif msg == "help" then
+	elseif subcommand == "help" then
 		ED.Utils.WriteCommandTable({
 			[ED.Localization.SLASH_COMMAND_ED] = "/ed",
 			[ED.Localization.SLASH_COMMAND_ED_SHOW] = "/ed show",
@@ -19,15 +20,15 @@ local function ProcessCommand(msg)
 			[ED.Localization.SLASH_COMMAND_ED_TOGGLE] = "/ed toggle",
 		});
 		return;
-	elseif msg == "show" then
+	elseif subcommand == "show" then
 		ED.Frame:Show();
 		ED.Database:SetCharSetting("WindowVisible", true);
 		return;
-	elseif msg == "hide" then
+	elseif subcommand == "hide" then
 		ED.Frame:Hide();
 		ED.Database:SetCharSetting("WindowVisible", false);
 		return;
-	elseif msg == "toggle" then
+	elseif subcommand == "toggle" then
 		ED.Frame:SetShown(not ED.Frame:IsShown());
 		ED.Database:SetCharSetting("WindowVisible", ED.Frame:IsShown());
 		return;
