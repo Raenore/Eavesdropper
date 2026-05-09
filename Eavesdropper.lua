@@ -1,6 +1,43 @@
 -- Copyright The Eavesdropper Authors
 -- SPDX-License-Identifier: Apache-2.0
 
+function ED.ProcessCommand(msg)
+	local originalMsg = type(msg) == "string" and msg or "";
+	local subcommand = originalMsg:lower():match("^%s*(%S+)") or ""; -- Extract first word as subcommand (e.g. show from "/ed show")
+	local args = originalMsg:match("^%s*%S+%s+(.-)%s*$") or ""; -- Extract everything after subcommand as args
+
+	if ED.Globals.DEBUG_MODE and subcommand == "testclear" then
+		ED.Debug:HandleTestClear(args);
+		return;
+	elseif ED.Globals.DEBUG_MODE and subcommand == "test" then
+		ED.Debug:HandleTest(args);
+		return;
+	elseif subcommand == "help" then
+		ED.Utils.WriteCommandTable({
+			[ED.Localization.SLASH_COMMAND_ED] = "/ed",
+			[ED.Localization.SLASH_COMMAND_ED_SHOW] = "/ed show",
+			[ED.Localization.SLASH_COMMAND_ED_HIDE] = "/ed hide",
+			[ED.Localization.SLASH_COMMAND_ED_TOGGLE] = "/ed toggle",
+		});
+		return;
+	elseif subcommand == "show" then
+		ED.Frame:Show();
+		ED.Database:SetCharSetting("WindowVisible", true);
+		return;
+	elseif subcommand == "hide" then
+		ED.Frame:Hide();
+		ED.Database:SetCharSetting("WindowVisible", false);
+		return;
+	elseif subcommand == "toggle" then
+		ED.Frame:SetShown(not ED.Frame:IsShown());
+		ED.Database:SetCharSetting("WindowVisible", ED.Frame:IsShown());
+		return;
+	end
+
+	ED.Settings:ShowSettings();
+	return;
+end
+
 function ED.Init()
 	EventUtil.ContinueOnPlayerLogin(function()
 		-- Automatically set preferred locale (respects GAME_LOCALE)
@@ -23,41 +60,15 @@ function ED.Init()
 		ED.UnitPopups:Init()
 
 		SLASH_EAVESDROPPER1, SLASH_EAVESDROPPER2 = "/ed", "/eavesdropper";
-		SlashCmdList["EAVESDROPPER"] = function(msg)
-			local originalMsg = type(msg) == "string" and msg or "";
-			msg = originalMsg:lower();
+		SlashCmdList["EAVESDROPPER"] = function(msg) ED.ProcessCommand(msg); end
 
-			if ED.Globals.DEBUG_MODE and (msg == "testclear" or msg:sub(1, 10) == "testclear ") then
-				ED.Debug:HandleTestClear(originalMsg:sub(11));
-				return;
-			elseif ED.Globals.DEBUG_MODE and (msg == "test" or msg:sub(1, 5) == "test ") then
-				ED.Debug:HandleTest(originalMsg:sub(6));
-				return;
-			elseif msg == "help" then
-				ED.Utils.WriteCommandTable({
-					[ED.Localization.SLASH_COMMAND_ED] = "/ed",
-					[ED.Localization.SLASH_COMMAND_ED_SHOW] = "/ed show",
-					[ED.Localization.SLASH_COMMAND_ED_HIDE] = "/ed hide",
-					[ED.Localization.SLASH_COMMAND_ED_TOGGLE] = "/ed toggle",
-				});
-				return;
-			elseif msg == "show" then
-				ED.Frame:Show();
-				ED.Database:SetCharSetting("WindowVisible", true);
-				return;
-			elseif msg == "hide" then
-				ED.Frame:Hide();
-				ED.Database:SetCharSetting("WindowVisible", false);
-				return;
-			elseif msg == "toggle" then
-				ED.Frame:SetShown(not ED.Frame:IsShown());
-				ED.Database:SetCharSetting("WindowVisible", ED.Frame:IsShown());
-				return;
-			end
-
-			ED.Settings:ShowSettings();
-			return;
-		end
+		EventRegistry:RegisterCallback("SetItemRef", function(_owner, link, _text, _button, _frame)
+			--[[ if ED.Globals.DEBUG_MODE then
+				print("[ED] SetItemRef: " .. tostring(link));
+			end --]]
+			local cmd = link:match("^addon:Eavesdropper:cmd:(.*)$");
+			if cmd then ED.ProcessCommand(cmd); end
+		end);
 
 		if ED.Globals.DEBUG_MODE then
 			-- Register /rl for reloading if it hasn't already (other addons can/will overwrite).
@@ -74,7 +85,10 @@ function ED.Init()
 
 			if ED.Database:GetGlobalSetting("WelcomeMessage") then
 				ED.Utils.Write(ED.Localization.WELCOMEMSG_VERSION:format(ED.Database:GetProfileName(), ED.Globals.addon_version));
-				ED.Utils.Write(ED.Localization.WELCOMEMSG_SETTINGS);
+				ED.Utils.Write(ED.Localization.WELCOMEMSG_SETTINGS:format(
+					ED.Utils.CommandHyperlink("", ED.Localization.SLASH_COMMAND_ED_SETTINGS),
+					ED.Utils.CommandHyperlink("help", ED.Localization.SLASH_COMMAND_ED_HELP)
+				));
 			end
 		end);
 	end);

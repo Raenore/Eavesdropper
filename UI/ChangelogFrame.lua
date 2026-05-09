@@ -33,6 +33,7 @@ local textColors = {
 	Date = "HIGHLIGHT_FONT_COLOR",
 	ClickableLink = "LINK_FONT_COLOR",
 	UnclickableLink = "LIGHTYELLOW_FONT_COLOR",
+	Command = "GREEN_FONT_COLOR",
 };
 
 local function ConvertMarkdownToDataProvider()
@@ -43,6 +44,7 @@ local function ConvertMarkdownToDataProvider()
 	local urlRemovalPattern = "%[[^]]+%]%([^%)]+%)";
 	local gitRefRemovalPattern = "%s*%(%[#.-%([^%)]+%)%s*%)"; -- ([#1](url)) or ([#1](url) and [#2](url)) Remove entirely
 	local versionComparePatter = "^%[[%w%d%.%-]+%]:"; -- Ignore line started with [version]:
+	local commandPattern = "(/ed%s+([%w_%-]+))"; -- "/ed xxxx"
 
 	local function ColorizeText(text, color)
 		return "|cn" .. color .. ":" .. text .. "|r";
@@ -102,6 +104,9 @@ local function ConvertMarkdownToDataProvider()
 				end
 
 				text = string.gsub(text, "%*%*([^%*]+)%*%*", ColorizeText("%1", textColors.Emphasis)); -- Colorize **bold** yellow
+				text = string.gsub(text, commandPattern, function(cmd, subcommand)
+					return ColorizeText(cmd, textColors.Command) .. " " .. ED.Utils.CommandHyperlink(subcommand);
+				end); -- Colorize /ed xxxx green and append clickable command
 
 				dataProvider:Insert({index = index, tag = tag, text = text, rightText = rightText});
 			end
@@ -166,7 +171,9 @@ function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkEnter(link, text, r
 	text = string.gsub(text, "%[", "");
 	text = string.gsub(text, "%]", "");
 	GameTooltip:SetText(text, 1, 1, 1);
-	GameTooltip:AddLine(L.CLICK_TO_COPY, 1, 1, 1, false);
+
+	local tooltipText = link:match("cmd:") and L.RUN_CLICKABLE_COMMAND or L.CLICK_TO_COPY;
+	GameTooltip:AddLine(tooltipText, 1, 1, 1, false);
 	GameTooltip:Show();
 end
 
@@ -175,10 +182,17 @@ function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkLeave()
 end
 
 function Eavesdropper_ChangelogTextContainerMixin:OnHyperlinkClick(link)
-	local url = string.match(link, "url:([^:]+):0");
-	if url then
+	local url = link:match("url:(.+):0");
+	if url and url ~= "" then
 		url = "https://" .. url;
 		ED.LinkDialog.CreateExternalLinkDialog(url);
+		return;
+	end
+
+	local cmd = link:match("cmd:(.*)$");
+	if cmd ~= nil then
+		ED.ProcessCommand(cmd);
+		return;
 	end
 end
 
