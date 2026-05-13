@@ -175,7 +175,7 @@ end
 
 ---Overrides SharedFrameMixin:HandleVisibility with HideWhenEmpty and WindowVisible logic
 function Eavesdropper_FrameMixin:HandleVisibility()
-	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
+	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then
 		self:Hide();
 		return;
 	end
@@ -207,7 +207,7 @@ end
 ---Update the eavesdropped target based on the magnifier, then refresh if needed
 function Eavesdropper_FrameMixin:UpdateTarget()
 	ED.Debug:Print("UpdateTarget");
-	if InCombatLockdown() then return; end
+	if ED.Utils.CombatLockdown() then return; end
 
 	-- Resolve target from magnifier
 	local magnifiedName, magnifiedGUID = ED.Magnifier:GetMagnified();

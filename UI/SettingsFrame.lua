@@ -567,7 +567,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("HideInCombat"); end,
 			set = function(val)
 				ED.Database:SetSetting("HideInCombat", val);
-				if InCombatLockdown() then
+				if ED.Utils.CombatLockdown() then
 					ED.Frame:Hide();
 					ED.DedicatedFrame:ForEachFrame(function(frame)
 						frame:Hide();

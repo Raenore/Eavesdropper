@@ -605,6 +605,7 @@ stds.wow = {
 		"PanelTemplates_TabResize",
 		"PetCanBeAbandoned",
 		"PlayerHasToy",
+		"PlayerIsInCombat",
 		"PlayMusic",
 		"PlaySound",
 		"PlaySoundFile",

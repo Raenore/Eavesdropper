@@ -321,7 +321,7 @@ end
 ---Hide in combat when the setting is on; otherwise show the frame.
 ---Overridden by Eavesdropper_FrameMixin for HideWhenEmpty and WindowVisible logic.
 function Eavesdropper_SharedFrameMixin:HandleVisibility()
-	if ED.Database:GetSetting("HideInCombat") and InCombatLockdown() then
+	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then
 		self:Hide();
 		return;
 	end

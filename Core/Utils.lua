@@ -265,6 +265,13 @@ function Utils.IsOwnPlayer(sender, event)
 		or (type(sender) == "string" and sender:match("^@.+%-self$"));
 end
 
+---Checks both InCombatLockdown() or PlayerIsInCombat() to determine combat lockdown.
+---There is a potential with bad ping that InCombatLockdown() might not fire in time.
+---@return boolean
+function Utils.CombatLockdown()
+	return InCombatLockdown() or PlayerIsInCombat();
+end
+
 -- ============================================================================
 -- BUILD / VERSION UTILITIES
 -- ============================================================================
