@@ -8,11 +8,15 @@ StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
+		StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onCancel = nil; -- Cleared so OnHide does not get called after OnAccept
 		if StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onAccept then
 			StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onAccept();
 		end
 	end,
-	OnCancel = function()
+	OnHide = function() -- OnHide is required as due to enterClicksFirstButton escape does not call OnCancel
+		if StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onCancel then
+			StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onCancel();
+		end
 	end,
 	timeout = false,
 	whileDead = true,
@@ -26,9 +30,11 @@ StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"] = {
 ---Displays a reusable confirmation dialog with ACCEPT/CANCEL buttons.
 ---@param message string The confirmation message shown to the player.
 ---@param onAccept function Callback invoked when the player clicks ACCEPT or presses Enter.
-function ConfirmDialog:Show(message, onAccept)
+---@param onCancel function Callback invoked when the player clicks CANCEL or presses Escape.
+function ConfirmDialog:Show(message, onAccept, onCancel)
 	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].text = message;
 	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onAccept = onAccept;
+	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onCancel = onCancel;
 	local dialog = StaticPopup_Show("EAVESDROPPER_CONFIRM_DIALOG");
 	if dialog then
 		dialog:ClearAllPoints();
