@@ -110,6 +110,9 @@ function ScreenshotHelper.SetupObjectColorByMode(object, alphaChannelMode)
 	ScreenshotHelper.SetupObjectColor(object, colorize, colorValue);
 end
 
+---Store all Menu (dropdown, context) overlays
+local MenuOverlayFrames = {};
+
 function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
 	if not ED.SettingsFrame then
 		ED.Settings:Init();
