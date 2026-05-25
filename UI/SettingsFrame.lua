@@ -1346,61 +1346,14 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 	self.alphaChannelMode = mode;
 
 	local showFullScreenBackdrop = mode == 1 or mode == 2;
-	local enableColorizing = mode == 1;
-	local a = mode == 1 and 0 or 1;
+	local colorize = mode == 1;
 
-	local function SetupFunc(object)
-		if object:IsObjectType("FontString") then
-			if enableColorizing then
-				if not object.originalColor then
-					local r, g, b = object:GetTextColor();
-					object.originalColor = {r = r, g = g, b = b};
-				end
-				object:SetTextColor(a, a, a);
-				object:SetFixedColor(true);
-			else
-				if object.originalColor then
-					local color = object.originalColor;
-					object:SetTextColor(color.r, color.g, color.b);
-					object.originalColor = nil;
-				end
-				object:SetFixedColor(false);
-			end
-		elseif object:IsObjectType("Texture") then
-			if enableColorizing then
-				if not object.originalColor then
-					local r, g, b = object:GetVertexColor();
-					object.originalColor = {r = r, g = g, b = b};
-				end
-				object:SetVertexColor(a, a, a);
-			else
-				if object.originalColor then
-					local color = object.originalColor;
-					object:SetVertexColor(color.r, color.g, color.b);
-					object.originalColor = nil;
-				end
-			end
-		end
-
-		if object.GetRegions then
-			for _, region in ipairs({object:GetRegions()}) do
-				SetupFunc(region);
-			end
-		end
-
-		if object.GetChildren then
-			for _, child in ipairs({object:GetChildren()}) do
-				SetupFunc(child);
-			end
-		end
-	end
-
-	SetupFunc(self);
-	SetupFunc(GameTooltip);
+	ED.ScreenshotHelper.SetupObjectColorByMode(self, mode);
+	ED.ScreenshotHelper.SetupObjectColorByMode(GameTooltip, mode);
 
 	self.Background.BackgroundColor:SetVertexColor(1, 1, 1);
 
-	if enableColorizing then
+	if colorize then
 		self.NineSlice.Text:SetText(nil);
 	else
 		self.NineSlice.Text:SetText(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title .. " " .. SETTINGS);
