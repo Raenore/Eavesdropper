@@ -1349,7 +1349,6 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 	local colorize = mode == 1;
 
 	ED.ScreenshotHelper.SetupObjectColorByMode(self, mode);
-	ED.ScreenshotHelper.SetupObjectColorByMode(GameTooltip, mode);
 
 	self.Background.BackgroundColor:SetVertexColor(1, 1, 1);
 
