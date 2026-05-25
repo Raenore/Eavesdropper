@@ -1329,7 +1329,7 @@ function Eavesdropper_SettingsMixin:OnHide()
 	ED.Frame.settingsOpened = false;
 	ED.Frame:HandleVisibility();
 
-	if self.SetAlphaChannelMode then
+	if self.alphaChannelMode and self.SetAlphaChannelMode then
 		self:SetAlphaChannelMode(nil);
 	end
 end
@@ -1342,6 +1342,8 @@ function Eavesdropper_SettingsMixin:SetAlphaChannelMode(mode)
 	-- mode 1: All Widgets turn black + white fullscreen backdrop
 	-- mode 2: Widgets use original colors + black fullscreen backdrop
 	-- other : Disable
+
+	self.alphaChannelMode = mode;
 
 	local showFullScreenBackdrop = mode == 1 or mode == 2;
 	local enableColorizing = mode == 1;
