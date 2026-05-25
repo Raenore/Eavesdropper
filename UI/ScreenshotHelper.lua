@@ -67,4 +67,29 @@ function ScreenshotHelper.SetupObjectColorByMode(object, alphaChannelMode)
 	ScreenshotHelper.SetupObjectColor(object, colorize, colorValue);
 end
 
+function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
+	if not ED.SettingsFrame then
+		ED.Settings:Init();
+	end
+
+	ED.SettingsFrame:Show();
+	ED.SettingsFrame:SetAlphaChannelMode(alphaChannelMode);
+
+	if ED.Frame:IsVisible() then
+		ED.Frame:SetAlphaChannelMode(alphaChannelMode);
+	end
+
+	ED.DedicatedFrame:ForEachFrame(function(frame)
+		if frame:IsVisible() then
+			frame:SetAlphaChannelMode(alphaChannelMode);
+		end
+	end);
+
+	ED.GroupFrame:ForEachFrame(function(frame)
+		if frame:IsVisible() then
+			frame:SetAlphaChannelMode(alphaChannelMode);
+		end
+	end);
+end
+
 ED.ScreenshotHelper = ScreenshotHelper;
