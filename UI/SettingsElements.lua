@@ -191,14 +191,39 @@ function SettingsElements.CreateDescription(parent, descriptionText)
 	return description;
 end
 
+---Make the widget's label grey when disabled
+local function SetupDisabledVisual(widget, label)
+	if label then
+		widget:HookScript("OnEnable", function(self)
+			if label then
+				label:SetTextColor(1, 1, 1);
+				if widget:IsObjectType("EditBox") then
+					widget:SetTextColor(1, 1, 1);
+				end
+			end
+		end);
+
+		widget:HookScript("OnDisable", function(self)
+			if label then
+				local descTextColor = Constants.SETTINGS.DESC_TEXT_COLOR;
+				label:SetTextColor(descTextColor, descTextColor, descTextColor);
+				if widget:IsObjectType("EditBox") then
+					widget:SetTextColor(descTextColor, descTextColor, descTextColor);
+				end
+			end
+		end);
+	end
+end
+
 local function CreateCheckbox(parent, data)
-	local _, right = CreateLabeledFrame(parent, data);
+	local _, right, label = CreateLabeledFrame(parent, data);
 
 	local widget = CreateFrame("CheckButton", nil, right, "SettingsCheckBoxTemplate");
 	widget:SetPoint("LEFT", right);
 	widget:SetSize(Constants.SETTINGS.WIDGET_HEIGHT, Constants.SETTINGS.WIDGET_HEIGHT);
 	widget:SetMotionScriptsWhileDisabled(true);
 	widget:EnableMouse(true);
+	SetupDisabledVisual(widget, label);
 
 	widget.settingKey = data.settingKey;
 
@@ -234,13 +259,14 @@ local function CreateCheckbox(parent, data)
 end
 
 local function CreateColorSwatch(parent, data)
-	local _, right = CreateLabeledFrame(parent, data);
+	local _, right, label = CreateLabeledFrame(parent, data);
 
 	local widget = CreateFrame("Button", nil, right, "ColorSwatchTemplate");
 	widget:SetPoint("LEFT", right);
 	widget:SetSize(Constants.SETTINGS.WIDGET_HEIGHT, Constants.SETTINGS.WIDGET_HEIGHT);
 	widget:SetMotionScriptsWhileDisabled(true);
 	widget:EnableMouse(true);
+	SetupDisabledVisual(widget, label);
 
 	---@type { r:number, g:number, b:number, a:number }
 	widget.currentColor = { r = 0, g = 1, b = 0, a = 1 };
@@ -322,12 +348,13 @@ local function CreateColorSwatch(parent, data)
 end
 
 local function CreateSlider(parent, data)
-	local _, right = CreateLabeledFrame(parent, data);
+	local _, right, label = CreateLabeledFrame(parent, data);
 
 	local widget = CreateFrame("Slider", nil, right, "MinimalSliderWithSteppersTemplate");
 	widget:SetPoint("LEFT", right, "LEFT", 0, 0);
 	widget:SetPoint("RIGHT", right, "RIGHT", -25, 0); -- leave space for RightText
 	widget:SetPoint("CENTER", right, "CENTER");
+	SetupDisabledVisual(widget.Slider, label);
 
 	local minVal = data.min or 1;
 	local maxVal = data.max or 10;
@@ -402,13 +429,14 @@ local function CreateSlider(parent, data)
 end
 
 local function CreateDropDown(parent, data)
-	local _, right = CreateLabeledFrame(parent, data);
+	local _, right, label = CreateLabeledFrame(parent, data);
 
 	local widget = CreateFrame("DropdownButton", nil, right, "WowStyle1DropdownTemplate");
 	widget:SetPoint("LEFT", right, "LEFT", 0, 0);
 	widget:SetPoint("RIGHT", right, "RIGHT", 0, 0);
 	widget:SetPoint("CENTER", right, "CENTER");
 	widget:SetMotionScriptsWhileDisabled(true);
+	SetupDisabledVisual(widget, label);
 
 	widget.settingKey = data.settingKey;
 
@@ -578,6 +606,7 @@ local function CreateMultiLineEditBox(parent, data)
 	local surroundingInset = 4; -- Text inset for left/top/bottom of the EditBox
 	local rightInset = 24; -- Leave room for the ScrollBar on the right
 	editBox:SetTextInsets(surroundingInset, rightInset, surroundingInset, surroundingInset);
+	SetupDisabledVisual(editBox, label);
 
 	scrollFrame:SetScrollChild(editBox);
 
@@ -680,10 +709,11 @@ local function CreateMultiLineEditBox(parent, data)
 end
 
 local function CreateEditBox(parent, data)
-	local _, right = CreateLabeledFrame(parent, data);
+	local _, right, label = CreateLabeledFrame(parent, data);
 
 	local widget = CreateFrame("EditBox", nil, right, "InputBoxTemplate");
 	widget:SetAutoFocus(false);
+	SetupDisabledVisual(widget, label);
 
 	local visualOffsetLeft = 4; -- Workaround for border textures not aligned to frame. It will still be problematic when ElvUI skin is enabled.
 	local visualOffsetRight = -1;
@@ -747,11 +777,12 @@ local function CreateEditBox(parent, data)
 end
 
 local function CreateButton(parent, data)
-	local _, right = CreateLabeledFrame(parent, { label = "" });
+	local _, right, label = CreateLabeledFrame(parent, { label = "" });
 
 	local widget = CreateFrame("Button", nil, right, "UIPanelButtonTemplate");
 	widget:SetAllPoints(right);
 	widget:SetText(data.label or "Button");
+	SetupDisabledVisual(widget, label);
 
 	widget.settingKey = data.settingKey;
 
