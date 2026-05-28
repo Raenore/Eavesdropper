@@ -193,26 +193,24 @@ end
 
 ---Make the widget's label grey when disabled
 local function SetupDisabledVisual(widget, label)
-	if label then
-		widget:HookScript("OnEnable", function(self)
-			if label then
-				label:SetTextColor(1, 1, 1);
-				if widget:IsObjectType("EditBox") then
-					widget:SetTextColor(1, 1, 1);
-				end
+	widget:HookScript("OnEnable", function(self)
+		if label then
+			label:SetTextColor(1, 1, 1);
+			if widget:IsObjectType("EditBox") then
+				widget:SetTextColor(1, 1, 1);
 			end
-		end);
+		end
+	end);
 
-		widget:HookScript("OnDisable", function(self)
-			if label then
-				local descTextColor = Constants.SETTINGS.DESC_TEXT_COLOR;
-				label:SetTextColor(descTextColor, descTextColor, descTextColor);
-				if widget:IsObjectType("EditBox") then
-					widget:SetTextColor(descTextColor, descTextColor, descTextColor);
-				end
+	widget:HookScript("OnDisable", function(self)
+		if label then
+			local descTextColor = Constants.SETTINGS.DESC_TEXT_COLOR;
+			label:SetTextColor(descTextColor, descTextColor, descTextColor);
+			if widget:IsObjectType("EditBox") then
+				widget:SetTextColor(descTextColor, descTextColor, descTextColor);
 			end
-		end);
-	end
+		end
+	end);
 end
 
 local function CreateCheckbox(parent, data)
