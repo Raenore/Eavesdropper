@@ -45,6 +45,7 @@ function ED.Init()
 
 		-- DB must be ready first
 		ED.Database:Init();
+		ED.Flyway.ApplyPatches();
 
 		ED.QuestText.Init();
 		ED.MSP.Init();

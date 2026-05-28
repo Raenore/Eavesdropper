@@ -1,4 +1,4 @@
-## Interface: 120001
+## Interface: 120005
 ## Title: |cnFRAMESTACK_REGION_COLOR:Eavesdropper|r
 ## Notes: Shows a dedicated history window for your current target or mouseover, highlights keywords, helps focus on specific players in busy RP environments, and supports advanced RP name formatting in chat.
 ## Author: Raenore (Argent Dawn EU)
@@ -23,7 +23,7 @@
 ## Category-zhCN: 角色扮演
 ## Category-zhTW: 角色扮演
 
-## X-Build: 120001
+## X-Build: 120005
 ## X-Category: Roleplay, Chat
 
 ## X-Curse-Project-ID: 1468933
@@ -74,6 +74,8 @@ Core\Magnifier.lua
 
 ## Modules
 Modules\ElvUI\ElvUI.lua
+Modules\Flyway\Flyway.lua
+Modules\Flyway\FlywayPatches.lua
 Modules\Dialogs\ConfirmDialog.lua
 Modules\Dialogs\GroupDialog.lua
 Modules\Dialogs\LinkDialog.lua

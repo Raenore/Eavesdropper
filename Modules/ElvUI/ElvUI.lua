@@ -51,7 +51,7 @@ end
 function ED.ElvUI.SkinRegisteredElements()
 	UpdateElvUICaches();
 
-	if not ElvUI_E or not SkinsModule or not ED.Database:GetSetting("ElvUITheme") then
+	if not ElvUI_E or not SkinsModule or not ED.Database:GetGlobalSetting("ElvUITheme") then
 		return;
 	end
 
@@ -102,7 +102,7 @@ end
 ---@param tooltip table Tooltip frame to style.
 function ED.ElvUI.SkinTooltip(tooltip)
 	UpdateElvUICaches();
-	if not ElvUI_E or not SkinsModule or not ED.Database:GetSetting("ElvUITheme") then
+	if not ElvUI_E or not SkinsModule or not ED.Database:GetGlobalSetting("ElvUITheme") then
 		return;
 	end
 

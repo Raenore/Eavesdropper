@@ -241,7 +241,7 @@ local function CreateCheckbox(parent, data)
 
 		local checked = self:GetChecked();
 		if type(data.get) == "function" and checked ~= data.get() then
-			data.set(checked);
+			data.set(checked, self);
 		end
 	end);
 
@@ -921,6 +921,11 @@ function SettingsElements.CreateElement(parent, data)
 
 	local widget;
 	local height = Constants.SETTINGS.WIDGET_HEIGHT;
+
+	if data.global then
+		data.label = data.label .. "*";
+		data.tooltip = data.tooltip .. L.GLOBAL_SETTING_TOOLTIP;
+	end
 
 	if data.type == "dropdown" then
 		widget = CreateDropDown(frame, data);

@@ -392,7 +392,264 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
+			label = L.MINIMAP,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.MINIMAP_BUTTON,
+			tooltip = L.MINIMAP_BUTTON_HELP,
+			get = function() return not ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
+			set = function(val)
+				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
+				minimap.Hide = not val;
+				ED.Database:SetGlobalSetting("MinimapButton", minimap);
+				ED.Minimap:UpdateMinimapButtons();
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.ADDON_COMPARTMENT_BUTTON,
+			tooltip = L.ADDON_COMPARTMENT_BUTTON_HELP,
+			disabled = function() return ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
+			get = function() return ED.Database:GetGlobalSetting("MinimapButton").ShowAddonCompartmentButton; end,
+			set = function(val)
+				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
+				minimap.ShowAddonCompartmentButton = val;
+				ED.Database:SetGlobalSetting("MinimapButton", minimap);
+				ED.Minimap:UpdateMinimapButtons();
+			end,
+		},
+	};
+
+	-- --------------------------------------------------------
+	-- Appearance options
+	-- --------------------------------------------------------
+
+	local appearanceOptions = {
+		{
+			type = "subtitle",
+			label = L.DISPLAY,
+			subLabel = L.DISPLAY_HELP,
+		},
+		{
+			type = "colorswatch",
+			label = L.THEMES_BACKGROUND_COLOR,
+			tooltip = L.THEMES_BACKGROUND_COLOR_HELP,
+			opacity = true,
+			get = function()
+				local color = ED.Database:GetSetting("ColorBackground");
+				if type(color) ~= "table" then
+					return { r = 0, g = 0, b = 0, a = 0.5 };
+				end
+				return color;
+			end,
+			set = function(val)
+				if type(val) ~= "table" then return; end
+
+				local background = ED.Frame.Background;
+				if not background then return; end
+
+				background:SetColorTexture(val.r, val.g, val.b, val.a);
+
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					local frameBg = frame.Background;
+					if not frameBg then return; end
+					frameBg:SetColorTexture(val.r, val.g, val.b, val.a);
+				end);
+
+				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.5 then
+					ED.Database:SetSetting("ColorBackground", nil);
+					return;
+				end
+
+				ED.Database:SetSetting("ColorBackground", { r = val.r, g = val.g, b = val.b, a = val.a });
+			end,
+		},
+		{
+			type = "colorswatch",
+			label = L.THEMES_TITLEBAR_COLOR,
+			tooltip = L.THEMES_TITLEBAR_COLOR_HELP,
+			opacity = true,
+			get = function()
+				local color = ED.Database:GetSetting("ColorTitleBar");
+				if type(color) ~= "table" then
+					return { r = 0, g = 0, b = 0, a = 0.25 };
+				end
+				return color;
+			end,
+			set = function(val)
+				if type(val) ~= "table" then return; end
+
+				local background = ED.Frame.TitleBar.Background;
+				if not background then return; end
+
+				background:SetColorTexture(val.r, val.g, val.b, val.a);
+
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					local frameTitleBg = frame.TitleBar.Background;
+					if not frameTitleBg then return; end
+					frameTitleBg:SetColorTexture(val.r, val.g, val.b, val.a);
+				end);
+
+				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.25 then
+					ED.Database:SetSetting("ColorTitleBar", nil);
+					return;
+				end
+
+				ED.Database:SetSetting("ColorTitleBar", { r = val.r, g = val.g, b = val.b, a = val.a });
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.THEMES_SETTINGS_ELVUI,
+			tooltip = L.THEMES_SETTINGS_ELVUI_HELP,
+			buildAdded = "0.5.0|120005",
+			disabled = function() return not C_AddOns.IsAddOnLoaded("ElvUI"); end,
+			get = function() return ED.Database:GetGlobalSetting("ElvUITheme"); end,
+			set = function(val, widget)
+				widget:SetEnabled(false);
+				ED.ConfirmDialog:Show(L.THEMES_SETTINGS_ELVUI_CONFIRM, function()
+					ED.Database:SetGlobalSetting("ElvUITheme", val);
+					ReloadUI();
+				end, function() widget:Refresh(); end);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.HIDE_IN_COMBAT,
+			tooltip = L.HIDE_IN_COMBAT_HELP,
+			get = function() return ED.Database:GetSetting("HideInCombat"); end,
+			set = function(val)
+				ED.Database:SetSetting("HideInCombat", val);
+				if ED.Utils.CombatLockdown() then
+					ED.Frame:Hide();
+					ED.DedicatedFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.HIDE_WHEN_EMPTY,
+			tooltip = L.HIDE_WHEN_EMPTY_HELP,
+			get = function() return ED.Database:GetSetting("HideWhenEmpty"); end,
+			set = function(val)
+				ED.Database:SetSetting("HideWhenEmpty", val);
+				-- If users turn this off, we can assume they want the frame to be visible.
+				if not val then
+					ED.Database:SetCharSetting("WindowVisible", true);
+				end
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.HIDE_CLOSE_BUTTON,
+			tooltip = L.HIDE_CLOSE_BUTTON_HELP,
+			get = function() return ED.Database:GetSetting("HideCloseButton"); end,
+			set = function(val)
+				ED.Database:SetSetting("HideCloseButton", val);
+				ED.Frame.TitleBar.CloseButton:SetShown(not val);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.TITLE_BAR_TARGET_NAME,
+			tooltip = L.TITLE_BAR_TARGET_NAME_HELP,
+			get = function() return ED.Database:GetSetting("UpdateTitleBarWithName"); end,
+			set = function(val)
+				ED.Database:SetSetting("UpdateTitleBarWithName", val);
+				ED.Frame:RefreshChat();
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.WELCOME_MSG,
+			tooltip = L.WELCOME_MSG_HELP,
+			get = function() return ED.Database:GetGlobalSetting("WelcomeMessage"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("WelcomeMessage", val);
+			end,
+		},
+		{
+			type = "subtitle",
+			label = L.FONT,
+			subLabel = L.FONT_HELP,
+		},
+		{
+			type = "dropdown",
+			label = L.FONT_FACE,
+			tooltip = L.FONT_FACE_HELP,
+			values = fontList,
+			get = function() return ED.Database:GetSetting("FontFace"); end,
+			set = function(val)
+				ED.Database:SetSetting("FontFace", val);
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
+			end,
+		},
+		{
+			type = "slider",
+			label = L.FONT_SIZE,
+			tooltip = L.FONT_SIZE_HELP,
+			min = 6,
+			max = 24,
+			step = 1,
+			get = function() return ED.Database:GetSetting("FontSize"); end,
+			set = function(val)
+				ED.Database:SetSetting("FontSize", val);
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+			end,
+		},
+		{
+			type = "dropdown",
+			label = L.FONT_OUTLINE,
+			tooltip = L.FONT_OUTLINE_HELP,
+			values = {
+				[1] = L.FONT_OUTLINE_NONE,
+				[2] = L.FONT_OUTLINE_THIN,
+				[3] = L.FONT_OUTLINE_THICK,
+			},
+			sorting = { 1, 2, 3 },
+			get = function() return ED.Database:GetSetting("FontOutline"); end,
+			set = function(val)
+				ED.Database:SetSetting("FontOutline", val);
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
+			end,
+		},
+		{
+			type = "checkbox",
+			label = L.FONT_SHADOW,
+			tooltip = L.FONT_SHADOW_HELP,
+			get = function() return ED.Database:GetSetting("FontShadow"); end,
+			set = function(val)
+				ED.Database:SetSetting("FontShadow", val);
+				ED.ChatBox:ApplyFontOptions(ED.Frame);
+				ED.DedicatedFrame:ForEachFrame(function(frame)
+					ED.ChatBox:ApplyFontOptions(frame);
+				end);
+			end,
+		},
+	};
+
+	-- --------------------------------------------------------
+	-- Advanced Formatting options
+	-- --------------------------------------------------------
+
+	local advancedFormattingOptions = {
+		{
+			type = "subtitle",
 			label = L.ADVANCED_FORMATTING,
+			subLabel = L.ADVANCED_FORMATTING_HELP,
 		},
 		{
 			type = "checkbox",
@@ -477,216 +734,22 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				ED.Database:SetSetting("UseRPNameInNPCDialogue", val);
 			end,
 		},
-		{
+	};
+
+	-- --------------------------------------------------------
+	-- Dedicated options
+	-- --------------------------------------------------------
+
+	local dedicatedOptions = {
+				{
 			type = "subtitle",
-			label = L.DISPLAY,
-		},
-		{
-			type = "colorswatch",
-			label = L.THEMES_BACKGROUND_COLOR,
-			tooltip = L.THEMES_BACKGROUND_COLOR_HELP,
-			opacity = true,
-			get = function()
-				local color = ED.Database:GetSetting("ColorBackground");
-				if type(color) ~= "table" then
-					return { r = 0, g = 0, b = 0, a = 0.5 };
-				end
-				return color;
-			end,
-			set = function(val)
-				if type(val) ~= "table" then return; end
-
-				local background = ED.Frame.Background;
-				if not background then return; end
-
-				background:SetColorTexture(val.r, val.g, val.b, val.a);
-
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					local frameBg = frame.Background;
-					if not frameBg then return; end
-					frameBg:SetColorTexture(val.r, val.g, val.b, val.a);
-				end);
-
-				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.5 then
-					ED.Database:SetSetting("ColorBackground", nil);
-					return;
-				end
-
-				ED.Database:SetSetting("ColorBackground", { r = val.r, g = val.g, b = val.b, a = val.a });
-			end,
-		},
-		{
-			type = "colorswatch",
-			label = L.THEMES_TITLEBAR_COLOR,
-			tooltip = L.THEMES_TITLEBAR_COLOR_HELP,
-			opacity = true,
-			get = function()
-				local color = ED.Database:GetSetting("ColorTitleBar");
-				if type(color) ~= "table" then
-					return { r = 0, g = 0, b = 0, a = 0.25 };
-				end
-				return color;
-			end,
-			set = function(val)
-				if type(val) ~= "table" then return; end
-
-				local background = ED.Frame.TitleBar.Background;
-				if not background then return; end
-
-				background:SetColorTexture(val.r, val.g, val.b, val.a);
-
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					local frameTitleBg = frame.TitleBar.Background;
-					if not frameTitleBg then return; end
-					frameTitleBg:SetColorTexture(val.r, val.g, val.b, val.a);
-				end);
-
-				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.25 then
-					ED.Database:SetSetting("ColorTitleBar", nil);
-					return;
-				end
-
-				ED.Database:SetSetting("ColorTitleBar", { r = val.r, g = val.g, b = val.b, a = val.a });
-			end,
+			label = L.DEDICATED,
+			subLabel = L.DEDICATED_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.THEMES_SETTINGS_ELVUI,
-			tooltip = L.THEMES_SETTINGS_ELVUI_HELP,
-			disabled = function() return not C_AddOns.IsAddOnLoaded("ElvUI"); end,
-			get = function() return ED.Database:GetSetting("ElvUITheme"); end,
-			set = function(val)
-				ED.Database:SetSetting("ElvUITheme", val);
-				ReloadUI();
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.HIDE_IN_COMBAT,
-			tooltip = L.HIDE_IN_COMBAT_HELP,
-			get = function() return ED.Database:GetSetting("HideInCombat"); end,
-			set = function(val)
-				ED.Database:SetSetting("HideInCombat", val);
-				if ED.Utils.CombatLockdown() then
-					ED.Frame:Hide();
-					ED.DedicatedFrame:ForEachFrame(function(frame)
-						frame:Hide();
-					end);
-				end
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.HIDE_WHEN_EMPTY,
-			tooltip = L.HIDE_WHEN_EMPTY_HELP,
-			get = function() return ED.Database:GetSetting("HideWhenEmpty"); end,
-			set = function(val)
-				ED.Database:SetSetting("HideWhenEmpty", val);
-				-- If users turn this off, we can assume they want the frame to be visible.
-				if not val then
-					ED.Database:SetCharSetting("WindowVisible", true);
-				end
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.HIDE_CLOSE_BUTTON,
-			tooltip = L.HIDE_CLOSE_BUTTON_HELP,
-			get = function() return ED.Database:GetSetting("HideCloseButton"); end,
-			set = function(val)
-				ED.Database:SetSetting("HideCloseButton", val);
-				ED.Frame.TitleBar.CloseButton:SetShown(not val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.TITLE_BAR_TARGET_NAME,
-			tooltip = L.TITLE_BAR_TARGET_NAME_HELP,
-			get = function() return ED.Database:GetSetting("UpdateTitleBarWithName"); end,
-			set = function(val)
-				ED.Database:SetSetting("UpdateTitleBarWithName", val);
-				ED.Frame:RefreshChat();
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.WELCOME_MSG .. "*",
-			tooltip = L.WELCOME_MSG_HELP,
-			get = function() return ED.Database:GetGlobalSetting("WelcomeMessage"); end,
-			set = function(val)
-				ED.Database:SetGlobalSetting("WelcomeMessage", val);
-			end,
-		},
-		{
-			type = "subtitle",
-			label = L.FONT,
-		},
-		{
-			type = "dropdown",
-			label = L.FONT_FACE,
-			tooltip = L.FONT_FACE_HELP,
-			values = fontList,
-			get = function() return ED.Database:GetSetting("FontFace"); end,
-			set = function(val)
-				ED.Database:SetSetting("FontFace", val);
-				ED.ChatBox:ApplyFontOptions(ED.Frame);
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					ED.ChatBox:ApplyFontOptions(frame);
-				end);
-			end,
-		},
-		{
-			type = "slider",
-			label = L.FONT_SIZE,
-			tooltip = L.FONT_SIZE_HELP,
-			min = 6,
-			max = 24,
-			step = 1,
-			get = function() return ED.Database:GetSetting("FontSize"); end,
-			set = function(val)
-				ED.Database:SetSetting("FontSize", val);
-				ED.ChatBox:ApplyFontOptions(ED.Frame);
-			end,
-		},
-		{
-			type = "dropdown",
-			label = L.FONT_OUTLINE,
-			tooltip = L.FONT_OUTLINE_HELP,
-			values = {
-				[1] = L.FONT_OUTLINE_NONE,
-				[2] = L.FONT_OUTLINE_THIN,
-				[3] = L.FONT_OUTLINE_THICK,
-			},
-			sorting = { 1, 2, 3 },
-			get = function() return ED.Database:GetSetting("FontOutline"); end,
-			set = function(val)
-				ED.Database:SetSetting("FontOutline", val);
-				ED.ChatBox:ApplyFontOptions(ED.Frame);
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					ED.ChatBox:ApplyFontOptions(frame);
-				end);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.FONT_SHADOW,
-			tooltip = L.FONT_SHADOW_HELP,
-			get = function() return ED.Database:GetSetting("FontShadow"); end,
-			set = function(val)
-				ED.Database:SetSetting("FontShadow", val);
-				ED.ChatBox:ApplyFontOptions(ED.Frame);
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					ED.ChatBox:ApplyFontOptions(frame);
-				end);
-			end,
-		},
-		{
-			type = "subtitle",
-			label = L.DEDICATED_WINDOWS,
-		},
-		{
-			type = "checkbox",
-			label = L.DEDICATED_WINDOWS .. "*",
+			global = true,
+			label = ENABLE,
 			tooltip = L.DEDICATED_WINDOWS_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			get = function() return ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -701,7 +764,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
+			global = true,
+			label = L.NEW_WINDOWS_NEW_INDICATOR,
 			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -712,7 +776,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
+			global = true,
+			label = L.NEW_WINDOWS_UNIT_POPUPS,
 			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -723,7 +788,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.DEDICATED_WINDOWS_PERSIST .. "*",
+			global = true,
+			label = L.DEDICATED_WINDOWS_PERSIST,
 			tooltip = L.DEDICATED_WINDOWS_PERSIST_HELP,
 			buildAdded = "0.4.0|120001",
 			disabled = function() return not ED.Database:GetGlobalSetting("DedicatedWindows"); end,
@@ -734,83 +800,43 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
-			label = L.GROUP_WINDOWS,
+			label = L.NOTIFICATIONS_TITLE,
+			subLabel = L.DEDICATED_NOTIFICATIONS_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.GROUP_WINDOWS .. "*",
-			tooltip = L.GROUP_WINDOWS_HELP,
-			buildAdded = "0.4.0|120001",
-			get = function() return ED.Database:GetGlobalSetting("GroupWindows"); end,
+			label = L.NOTIFICATIONS_PLAY_SOUND,
+			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSound"); end,
 			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindows", val);
-				if not val then
-					ED.GroupFrame:ForEachFrame(function(frame)
-						frame:Hide();
-					end);
+				ED.Database:SetSetting("NotificationDedicatedSound", val);
+			end,
+		},
+		{
+			type = "dropdown",
+			label = L.NOTIFICATIONS_SOUND_FILE,
+			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			values = ED.Config.soundList,
+			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound"); end,
+			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile"); end,
+			set = function(val)
+				local soundPath = SharedMedia:Fetch("sound", val);
+				if soundPath then
+					PlaySoundFile(soundPath, "Master");
+					ED.Database:SetSetting("NotificationDedicatedSoundFile", val);
 				end
 			end,
 		},
 		{
 			type = "checkbox",
-			label = L.NEW_WINDOWS_NEW_INDICATOR .. "*",
-			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsNewIndicator"); end,
+			label = L.NOTIFICATION_FLASH_TASKBAR,
+			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
+			buildAdded = "0.3.0-0.4.0|120001",
+			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
 			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsNewIndicator", val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.NEW_WINDOWS_UNIT_POPUPS .. "*",
-			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsUnitPopups"); end,
-			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsUnitPopups", val);
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.GROUP_WINDOWS_PERSIST .. "*",
-			tooltip = L.GROUP_WINDOWS_PERSIST_HELP,
-			buildAdded = "0.4.0|120001",
-			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
-			get = function() return ED.Database:GetGlobalSetting("GroupWindowsPersist"); end,
-			set = function(val)
-				ED.Database:SetGlobalSetting("GroupWindowsPersist", val);
-			end,
-		},
-		{
-			type = "subtitle",
-			label = L.MINIMAP,
-		},
-		{
-			type = "checkbox",
-			label = L.MINIMAP_BUTTON .. "*",
-			tooltip = L.MINIMAP_BUTTON_HELP,
-			get = function() return not ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
-			set = function(val)
-				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
-				minimap.Hide = not val;
-				ED.Database:SetGlobalSetting("MinimapButton", minimap);
-				ED.Minimap:UpdateMinimapButtons();
-			end,
-		},
-		{
-			type = "checkbox",
-			label = L.ADDON_COMPARTMENT_BUTTON .. "*",
-			tooltip = L.ADDON_COMPARTMENT_BUTTON_HELP,
-			disabled = function() return ED.Database:GetGlobalSetting("MinimapButton").Hide; end,
-			get = function() return ED.Database:GetGlobalSetting("MinimapButton").ShowAddonCompartmentButton; end,
-			set = function(val)
-				local minimap = ED.Database:GetGlobalSetting("MinimapButton");
-				minimap.ShowAddonCompartmentButton = val;
-				ED.Database:SetGlobalSetting("MinimapButton", minimap);
-				ED.Minimap:UpdateMinimapButtons();
+				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
 			end,
 		},
 	};
@@ -896,51 +922,74 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				ED.Database:SetSetting("NotificationTargetFlashTaskbar", val);
 			end,
 		},
-		{
+	};
+
+	-- --------------------------------------------------------
+	-- Groups options
+	-- --------------------------------------------------------
+
+	local groupOptions = {
+				{
 			type = "subtitle",
-			label = L.DEDICATED,
-			subLabel = L.DEDICATED_HELP,
+			label = L.GROUPS,
+			subLabel = L.GROUP_HELP,
 		},
 		{
 			type = "checkbox",
-			label = L.NOTIFICATIONS_PLAY_SOUND,
-			tooltip = L.NOTIFICATIONS_PLAY_SOUND_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			get = function() return ED.Database:GetSetting("NotificationDedicatedSound"); end,
+			global = true,
+			label = ENABLE,
+			tooltip = L.GROUP_WINDOWS_HELP,
+			buildAdded = "0.4.0|120001",
+			get = function() return ED.Database:GetGlobalSetting("GroupWindows"); end,
 			set = function(val)
-				ED.Database:SetSetting("NotificationDedicatedSound", val);
-			end,
-		},
-		{
-			type = "dropdown",
-			label = L.NOTIFICATIONS_SOUND_FILE,
-			tooltip = L.NOTIFICATIONS_SOUND_FILE_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			values = ED.Config.soundList,
-			disabled = function() return not ED.Database:GetSetting("NotificationDedicatedSound"); end,
-			get = function() return ED.Database:GetSetting("NotificationDedicatedSoundFile"); end,
-			set = function(val)
-				local soundPath = SharedMedia:Fetch("sound", val);
-				if soundPath then
-					PlaySoundFile(soundPath, "Master");
-					ED.Database:SetSetting("NotificationDedicatedSoundFile", val);
+				ED.Database:SetGlobalSetting("GroupWindows", val);
+				if not val then
+					ED.GroupFrame:ForEachFrame(function(frame)
+						frame:Hide();
+					end);
 				end
 			end,
 		},
 		{
 			type = "checkbox",
-			label = L.NOTIFICATION_FLASH_TASKBAR,
-			tooltip = L.NOTIFICATION_FLASH_TASKBAR_HELP,
-			buildAdded = "0.3.0-0.4.0|120001",
-			get = function() return ED.Database:GetSetting("NotificationDedicatedFlashTaskbar"); end,
+			global = true,
+			label = L.NEW_WINDOWS_NEW_INDICATOR,
+			tooltip = L.NEW_WINDOWS_NEW_INDICATOR_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsNewIndicator"); end,
 			set = function(val)
-				ED.Database:SetSetting("NotificationDedicatedFlashTaskbar", val);
+				ED.Database:SetGlobalSetting("GroupWindowsNewIndicator", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.NEW_WINDOWS_UNIT_POPUPS,
+			tooltip = L.NEW_WINDOWS_UNIT_POPUPS_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsUnitPopups"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsUnitPopups", val);
+			end,
+		},
+		{
+			type = "checkbox",
+			global = true,
+			label = L.GROUP_WINDOWS_PERSIST,
+			tooltip = L.GROUP_WINDOWS_PERSIST_HELP,
+			buildAdded = "0.4.0|120001",
+			disabled = function() return not ED.Database:GetGlobalSetting("GroupWindows"); end,
+			get = function() return ED.Database:GetGlobalSetting("GroupWindowsPersist"); end,
+			set = function(val)
+				ED.Database:SetGlobalSetting("GroupWindowsPersist", val);
 			end,
 		},
 		{
 			type = "subtitle",
-			label = L.GROUP,
-			subLabel = L.GROUP_HELP,
+			label = L.NOTIFICATIONS_TITLE,
+			subLabel = L.GROUP_NOTIFICATIONS_HELP,
 		},
 		{
 			type = "checkbox",
@@ -992,7 +1041,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
-			label = L.KEYWORDS_ENABLE,
+			label = ENABLE,
 			tooltip = L.KEYWORDS_ENABLE_HELP,
 			get = function() return ED.Database:GetSetting("EnableKeywords"); end,
 			set = function(val)
@@ -1150,8 +1199,12 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	-- --------------------------------------------------------
 
 	self:CreateCategory(L.GENERAL_TITLE, true, generalOptions);
+	self:CreateCategory(L.APPEARANCE_TITLE, true, appearanceOptions);
+	self:CreateCategory(L.ADV_FORMATTING, false, advancedFormattingOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
-	self:CreateCategory(L.NOTIFICATIONS_TITLE, true, notificationsOptions);
+	self:CreateCategory(L.DEDICATED, false, dedicatedOptions);
+	self:CreateCategory(L.GROUPS, false, groupOptions);
+	self:CreateCategory(L.NOTIFICATIONS_TITLE, false, notificationsOptions);
 	self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 
 	local version = ED.Globals.addon_version;

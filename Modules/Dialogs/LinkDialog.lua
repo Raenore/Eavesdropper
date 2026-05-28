@@ -19,7 +19,7 @@ end
 ---@param editBox table
 local function SkinEditBox(editBox)
 	local E = ElvUI and ElvUI[1];
-	if not E or not ED.Database:GetSetting("ElvUITheme") then return; end
+	if not E or not ED.Database:GetGlobalSetting("ElvUITheme") then return; end
 	local S = E:GetModule("Skins");
 	if not S then return; end
 

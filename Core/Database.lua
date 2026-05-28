@@ -18,11 +18,18 @@ local Database = {};
 ---@field Hide boolean?
 ---@field ShowAddonCompartmentButton boolean?
 
+---Flyway patching/tracking information for database upgrades.
+---@class EavesdropperFlyway
+---@field CurrentBuild integer The last applied database patch version. Starts at 0.
+---@field Log string A text log of the last patch operation, or "" if none.
+
 ---@class EavesdropperGlobal
+---@field ElvUITheme boolean?
 ---@field DedicatedWindows boolean?
 ---@field DedicatedWindowsNewIndicator boolean?
 ---@field DedicatedWindowsUnitPopups boolean?
 ---@field DedicatedWindowsPersist boolean?
+---@field Flyway EavesdropperFlyway? Database patch versioning and migration tracking.
 ---@field GroupWindows boolean?
 ---@field GroupWindowsNewIndicator boolean?
 ---@field GroupWindowsUnitPopups boolean?
@@ -35,10 +42,15 @@ local Database = {};
 
 ---@type EavesdropperGlobal
 local GLOBAL_DEFAULTS = {
+	ElvUITheme = true,
 	DedicatedWindows = true,
 	DedicatedWindowsNewIndicator = true,
 	DedicatedWindowsUnitPopups = true,
 	DedicatedWindowsPersist = true,
+	Flyway = {
+		CurrentBuild = 0,
+		Log = "",
+	},
 	GroupWindows = true,
 	GroupWindowsNewIndicator = true,
 	GroupWindowsNPCSpeechDetectionNameShown = false,
@@ -57,7 +69,6 @@ local GLOBAL_DEFAULTS = {
 ---@field ColorBackground EavesdropperColor?
 ---@field ColorTitleBar EavesdropperColor?
 ---@field CompanionSupport boolean?
----@field ElvUITheme boolean?
 ---@field EnableKeywords boolean?
 ---@field EnableMouse boolean?
 ---@field EnablePartialKeywords boolean?
@@ -116,7 +127,6 @@ local DEFAULT_PROFILE = {
 	ColorBackground = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
 	ColorTitleBar = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
 	CompanionSupport = true,
-	ElvUITheme = true,
 	EnableKeywords = true,
 	EnableMouse = false,
 	EnablePartialKeywords = false,
@@ -474,7 +484,6 @@ end
 ---| "ColorBackground"
 ---| "ColorTitleBar"
 ---| "CompanionSupport"
----| "ElvUITheme"
 ---| "EnableKeywords"
 ---| "EnableMouse"
 ---| "EnablePartialKeywords"
@@ -624,10 +633,12 @@ function Database:SetCharSetting(key, value)
 end
 
 ---@alias EavesdropperGlobalSettingKey
+---| "ElvUITheme"
 ---| "DedicatedWindows"
 ---| "DedicatedWindowsNewIndicator"
 ---| "DedicatedWindowsUnitPopups"
 ---| "DedicatedWindowsPersist"
+---| "Flyway"
 ---| "GroupWindows"
 ---| "GroupWindowsNewIndicator"
 ---| "GroupWindowsNPCSpeechDetectionNameShown"
