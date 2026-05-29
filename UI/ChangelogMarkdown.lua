@@ -4,6 +4,7 @@ local changelogMarkdown = [[
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.
 
 ### Added
 - Expanded multi-message support to include [EmoteScribe](https://www.curseforge.com/wow/addons/emotescribe) as the latest explicitly supported provider ([#78](https://github.com/Raenore/Eavesdropper/pull/78)).
