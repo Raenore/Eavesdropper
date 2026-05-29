@@ -19,7 +19,7 @@ local function OnClick(self, button) -- luacheck: no unused (self)
 		if button == "LeftButton" then
 			ED.Settings:ShowSettings();
 		elseif button == "RightButton" then
-			ED.Settings:ShowSettings(4);
+			ED.Settings:ShowSettings(8);
 		end
 	else
 		ED.Frame:SetShown(not ED.Frame:IsShown());

@@ -23,7 +23,7 @@ local function onStart()
 				if button == "LeftButton" then
 					ED.Settings:ShowSettings();
 				elseif button == "RightButton" then
-					ED.Settings:ShowSettings(4);
+					ED.Settings:ShowSettings(8);
 				end
 			end,
 		};
