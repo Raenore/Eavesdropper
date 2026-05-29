@@ -259,6 +259,18 @@ function DedicatedFrame:FrameExists(sender)
 	return self.frames[sender] ~= nil;
 end
 
+--Handle creating/showing a dedicated frame for current magnified target.
+--GetMagnified incorporates the user's choice of targeting priority.
+function DedicatedFrame:AddFrameForMagnified()
+	local magnifiedName, magnifiedGUID = ED.Magnifier:GetMagnified();
+	local target = magnifiedName
+		or (magnifiedGUID and canaccessvalue(magnifiedGUID) and ED.PlayerCache:GetSenderDataFromGUID(magnifiedGUID));
+
+	if target then
+		self:AddFrame(target);
+	end
+end
+
 ---Show an existing dedicated frame for sender, or create and initialise a new one
 ---@param sender string
 ---@return EavesdropperDedicatedFrame

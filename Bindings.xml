@@ -1,0 +1,15 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Bindings>
+	<Binding name="ED_TOGGLE" category="BINDING_HEADER_ED">
+		ED.Frame:SetShown(not ED.Frame:IsShown());
+	</Binding>
+	<Binding name="ED_SETTINGS" category="BINDING_HEADER_ED">
+		ED.Settings:ShowSettings();
+	</Binding>
+	<Binding name="ED_EAVESDROP_ON" category="BINDING_HEADER_ED">
+		ED.DedicatedFrame:AddFrameForMagnified();
+	</Binding>
+</Bindings>

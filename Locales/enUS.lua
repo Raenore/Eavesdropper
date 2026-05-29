@@ -10,12 +10,16 @@ L = {
 	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r %s & |cnGREEN_FONT_COLOR:/ed help|r %s",
 
 	SLASH_COMMAND_HEADER = "List of commands (clickable & writable):",
-	SLASH_COMMAND_ED = "Show settings, Eavesdropper unhides during",
+	SLASH_COMMAND_ED = "Toggle settings, Eavesdropper unhides during",
 	SLASH_COMMAND_ED_SHOW = "Show Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Hide Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Toggle Eavesdropper",
-	SLASH_COMMAND_ED_SETTINGS = "Show Settings",
+	SLASH_COMMAND_ED_SETTINGS = "Toggle Settings",
 	SLASH_COMMAND_ED_HELP = "Available Commands",
+
+	BINDING_NAME_ED_TOGGLE = "Toggle Eavesdropper",
+	BINDING_NAME_ED_SETTINGS = "Toggle Settings",
+	BINDING_NAME_ED_EAVESDROP_ON = "Eavesdrop On (Dedicated)";
 
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:Left-Click: Open settings|nRight-Click: Open profiles|nShift-Click: Toggle Eavesdropper|r",
 	POPUP_LINK = "|n|nPress |cnGREEN_FONT_COLOR:CTRL-C|r to copy the highlighted, then paste it in your web browser with |cnGREEN_FONT_COLOR:CTRL-V|r.",
@@ -299,6 +303,8 @@ L = {
 	MSG_VERB_YELL = "yells",
 	MSG_VERB_WHISPER = "whispers",
 };
+
+BINDING_HEADER_ED = title;
 
 ---@class ED.L : ED.Locale.enUS, ED.Localization
 ED.Localization = ED.LocalizationClass:New(L);

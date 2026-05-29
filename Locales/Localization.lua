@@ -125,4 +125,13 @@ function Localization:__call(key, ...)
 	return self:GetText(key, ...);
 end
 
+---Initialize localization and set the Global keybindings.
+function Localization:Initialize()
+	self:SetCurrentLocale(self:GetPreferredLocale(), true);
+
+	BINDING_NAME_ED_TOGGLE = ED.Localization.BINDING_NAME_ED_TOGGLE;
+	BINDING_NAME_ED_SETTINGS = ED.Localization.BINDING_NAME_ED_SETTINGS;
+	BINDING_NAME_ED_EAVESDROP_ON = ED.Localization.BINDING_NAME_ED_EAVESDROP_ON;
+end
+
 ED.LocalizationClass = Localization;

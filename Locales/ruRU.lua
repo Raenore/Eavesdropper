@@ -14,8 +14,12 @@ L = {
 	SLASH_COMMAND_ED_SHOW = "Показать Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Скрыть Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Переключить видимость",
-	SLASH_COMMAND_ED_SETTINGS = "Show Settings", -- NEW
+	SLASH_COMMAND_ED_SETTINGS = "Toggle Settings", -- NEW
 	SLASH_COMMAND_ED_HELP = "Available Commands", -- NEW
+
+	BINDING_NAME_ED_TOGGLE = "Toggle Eavesdropper", -- NEW
+	BINDING_NAME_ED_SETTINGS = "Toggle Settings", -- NEW
+	BINDING_NAME_ED_EAVESDROP_ON = "Eavesdrop On (Dedicated)"; -- NEW
 
 	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:ЛКМ: настройки|nПКМ: профили|r",
 	POPUP_LINK = "|n|nНажмите |cnGREEN_FONT_COLOR:Ctrl+C|r, чтобы скопировать, и |cnGREEN_FONT_COLOR:Ctrl+V|r для вставки в браузере.",

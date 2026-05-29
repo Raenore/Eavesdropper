@@ -19,6 +19,10 @@ ignore = {
 
 globals = {
 	-- Globals
+	"BINDING_HEADER_ED",
+	"BINDING_NAME_ED_TOGGLE",
+	"BINDING_NAME_ED_SETTINGS",
+	"BINDING_NAME_ED_EAVESDROP_ON",
 	"ED",
 	"ED_Addon",
 	"EavesdropperDB",
