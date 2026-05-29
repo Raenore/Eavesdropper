@@ -10,6 +10,49 @@ local ScreenshotHelper = {};
 ---@param colorValue number
 function ScreenshotHelper.SetupObjectColor(object, colorize, colorValue)
 	if object:IsObjectType("FontString") then
+		local text = object:GetText();
+		if text then
+			-- Change the vertex color for Texture/Atlas escape sequences
+			local textureFound;
+
+			local sequence = string.match(text, "|A:([^|]+)|a");
+			while sequence do
+				local atlas, height, width, offsetX, offsetY, r, g, b = string.split(":", sequence);
+				if colorize then
+					local vertexColor = math.floor(colorValue * 255);
+					r, g, b = vertexColor, vertexColor, vertexColor;
+				else
+					r, g, b = 255, 255, 255;
+				end
+				sequence = string.gsub(sequence, "%-", "%%-");
+				text = string.gsub(text, "|A:"..sequence.."|a", string.format("|AA:%s:%s:%s:%s:%s:%s:%s:%s|a", atlas, height or 0, width or 0, offsetX or 0, offsetY or 0, r or 255, g or 255, b or 255), 1);
+				sequence = string.match(text, "|A:([^|]+)|a");
+				textureFound = true;
+			end
+
+			sequence = string.match(text, "|T([^|]+)|t");
+			while sequence do
+				local path, height, width, offsetX, offsetY, textureWidth, textureHeight, leftTexel, rightTexel, topTexel, bottomTexel, r, g, b = string.split(":", sequence);
+				if colorize then
+					local vertexColor = math.floor(colorValue * 255);
+					r, g, b = vertexColor, vertexColor, vertexColor;
+				else
+					r, g, b = 255, 255, 255;
+				end
+				sequence = string.gsub(sequence, "%-", "%%-");
+				text = string.gsub(text, "|T"..sequence.."|t", string.format("|Z%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s|z", path, height or 0, width or 0, offsetX or 0, offsetY or 0, textureWidth or 16, textureHeight or 16, leftTexel or 0, rightTexel or 16, topTexel or 0, bottomTexel or 16, r or 255, g or 255, b or 255), 1);
+				sequence = string.match(text, "|T([^|]+)|t");
+				textureFound = true;
+			end
+
+			if textureFound then
+				text = string.gsub(text, "|AA", "|A");
+				text = string.gsub(text, "|Z", "|T");
+				text = string.gsub(text, "|z", "|t");
+				object:SetText(text);
+			end
+		end
+
 		if colorize then
 			if not object.originalColor then
 				local r, g, b = object:GetTextColor();
