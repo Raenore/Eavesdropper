@@ -67,9 +67,6 @@ function ScreenshotHelper.SetupObjectColorByMode(object, alphaChannelMode)
 	ScreenshotHelper.SetupObjectColor(object, colorize, colorValue);
 end
 
----Store all Menu (dropdown, context) overlays
-local MenuOverlayFrames = {};
-
 function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
 	if not ED.SettingsFrame then
 		ED.Settings:Init();
@@ -98,55 +95,10 @@ function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
 		ED.ScreenshotHelper.SetupObjectColorByMode(GameTooltip, alphaChannelMode);
 	end
 
-	-- Modify Context Menu
-	if alphaChannelMode == 1 then
-		local OverrideMenuStyleMixin = CreateFromMixins(MenuStyle1Mixin);
-
-		function OverrideMenuStyleMixin:Generate()
-			local background = self:AttachTexture();
-			background:SetAtlas("common-dropdown-bg");
-
-			local x, y = 10, 3;
-			background:SetPoint("TOPLEFT", -x, y);
-			background:SetPoint("BOTTOMRIGHT", x, -y);
-			background:SetAlpha(.925);
-
-			local menu = background:GetParent();
-			if not menu.OverlayFrame then
-				local overlay = CreateFrame("Frame", nil, menu);
-				MenuOverlayFrames[overlay] = true;
-				menu.OverlayFrame = overlay;
-				overlay:SetAllPoints(true);
-				overlay.Background = overlay:CreateTexture(nil, "OVERLAY");
-				overlay.Background:SetAtlas("common-dropdown-bg");
-				overlay.Background:SetPoint("TOPLEFT", -x, y);
-				overlay.Background:SetPoint("BOTTOMRIGHT", x, -y);
-				overlay.Background:SetVertexColor(0, 0, 0);
-				overlay:SetScript("OnHide", function()
-					overlay:Hide();
-				end);
-			end
-			menu.OverlayFrame.MenuBackground = background;
-		end
-
-		MenuVariants.GetDefaultContextMenuMixin = function()
-			return OverrideMenuStyleMixin;
-		end
-
-		for overlay in pairs(MenuOverlayFrames) do
-			overlay:Show();
-			overlay:SetFrameStrata("TOOLTIP");
-			overlay:SetFrameLevel(10000);
-			overlay.MenuBackground:Hide();
-		end
-	else
-		MenuVariants.GetDefaultContextMenuMixin = function()
-			return MenuStyle1Mixin;
-		end
-
-		for overlay in pairs(MenuOverlayFrames) do
-			overlay:Hide();
-			overlay.MenuBackground:Show();
+	if Menu.GetManager():IsAnyMenuOpen() then
+		local openMenu = Menu.GetManager():GetOpenMenu();
+		if openMenu then
+			ED.ScreenshotHelper.SetupObjectColorByMode(openMenu, alphaChannelMode);
 		end
 	end
 end
