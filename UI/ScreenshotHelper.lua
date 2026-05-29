@@ -142,6 +142,18 @@ function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
 		local openMenu = Menu.GetManager():GetOpenMenu();
 		if openMenu then
 			ED.ScreenshotHelper.SetupObjectColorByMode(openMenu, alphaChannelMode);
+
+			-- To modify submenu, hover the cursor over a button on the submenu then call this function again
+			local foci = GetMouseFoci();
+			if foci and foci[1] then
+				local objectParent = foci[1]:GetParent();
+				if objectParent and objectParent.GetPoint then
+					local _, relativeTo = objectParent:GetPoint(1);
+					if relativeTo and relativeTo.GetParent and relativeTo:GetParent() == openMenu then
+						ED.ScreenshotHelper.SetupObjectColorByMode(objectParent, alphaChannelMode);
+					end
+				end
+			end
 		end
 	end
 end
