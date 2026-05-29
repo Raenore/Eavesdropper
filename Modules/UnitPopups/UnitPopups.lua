@@ -14,6 +14,16 @@ local UnitPopups = {};
 UnitPopups.MenuElementFactories = {};
 UnitPopups.MenuEntries = {};
 
+---@param element table UI element
+---@param text string Tooltip text
+---@return nil
+local function SetTooltip(element, text)
+	element:SetTooltip(function(tooltip, desc)
+		GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(desc));
+		GameTooltip_AddNormalLine(tooltip, text);
+	end);
+end
+
 function UnitPopups:Init()
 	for menuTagSuffix in pairs(UnitPopups.MenuEntries) do
 		-- The closure supplied to ModifyMenu needs to be unique on each
@@ -129,6 +139,7 @@ local function CreateOpenBattleNetEavesdropButton(menuDescription, contextData)
 	end
 
 	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_ON);
+	SetTooltip(elementDescription, L.UNIT_POPUPS_EAVESDROP_ON_HELP);
 	elementDescription:SetResponder(OnClick);
 	elementDescription:SetData(contextData);
 	return elementDescription;
@@ -147,9 +158,16 @@ local function CreateOpenCharacterEavesdropButton(menuDescription, contextData)
 		end
 	end
 
+	-- Resolve sender once for existing dedicated window check
+	local sender = resolveCharacterData(contextData);
+
 	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_ON);
+	SetTooltip(elementDescription, L.UNIT_POPUPS_EAVESDROP_ON_HELP);
 	elementDescription:SetResponder(OnClick);
 	elementDescription:SetData(contextData);
+	if ED.DedicatedFrame:FrameExists(sender) then
+		elementDescription:SetEnabled(false);
+	end
 	return elementDescription;
 end
 
@@ -177,6 +195,7 @@ local function CreateEavesdropGroupMenu(menuDescription, contextData)
 
 	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_GROUP);
 	elementDescription:CreateTitle(L.UNIT_POPUPS_EAVESDROP_GROUP .. " " .. MAIN_MENU);
+	SetTooltip(elementDescription, L.UNIT_POPUPS_EAVESDROP_GROUP_HELP);
 
 	local groupWindows = ED.GroupFrame:GetGroupWindows(sender);
 	if groupWindows then

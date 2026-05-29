@@ -252,6 +252,13 @@ function DedicatedFrame:RestoreFromCharDB()
 	end
 end
 
+---Returns true if a dedicated frame already exists for sender
+---@param sender string
+---@return boolean
+function DedicatedFrame:FrameExists(sender)
+	return self.frames[sender] ~= nil;
+end
+
 ---Show an existing dedicated frame for sender, or create and initialise a new one
 ---@param sender string
 ---@return EavesdropperDedicatedFrame
