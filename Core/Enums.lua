@@ -7,10 +7,7 @@ local Enums = {};
 ---@class EavesdropperChatBoxEnums
 Enums.CHAT_BOX = {};
 
----@class EavesdropperFontOutline
----@field NONE number
----@field OUTLINE number
----@field THICKOUTLINE number
+---@enum EavesdropperFontOutline
 Enums.CHAT_BOX.FONT_OUTLINE = {
 	NONE = 1,
 	OUTLINE = 2,
@@ -53,16 +50,6 @@ Enums.ELVUI_SKIN_TYPE = {
 	TOPTABBUTTON = "toptabbutton",
 };
 
----Maps internal event shorthand to the ChatTypeInfo key used for colour lookup.
----@enum EavesdropperEntryChatRemap
-Enums.ENTRY_CHAT_REMAP = {
-	ROLL              = "SYSTEM",
-	OFFLINE           = "SYSTEM",
-	ONLINE            = "SYSTEM",
-	GUILD_MOTD        = "GUILD",
-	GUILD_ITEM_LOOTED = "GUILD_ACHIEVEMENT",
-};
-
 ---@enum EavesdropperFocusTarget
 Enums.FOCUS_TARGET = {
 	OVERRIDE = 1,
@@ -78,16 +65,14 @@ Enums.FRAME = {};
 ---@field OFF boolean
 ---@field ON boolean
 Enums.FRAME.MOUSE_HOVER_STATE = {
-	OFF = false;
-	ON  = true;
+	OFF = false,
+	ON  = true,
 };
 
----@class EavesdropperScrollDirection
----@field UP number
----@field DOWN number
+---@enum EavesdropperScrollDirection
 Enums.FRAME.SCROLL_DIRECTION = {
-	UP   = 1;
-	DOWN = -1;
+	UP   = 1,
+	DOWN = -1,
 };
 
 ---@enum EavesdropperMagnifierReason
@@ -112,10 +97,10 @@ Enums.NOTIFICATIONS_TYPE = {
 ---@type table<EavesdropperNotificationsType, string>
 Enums.NOTIFICATIONS_TYPE_SOUND_KEYS = {
 	[Enums.NOTIFICATIONS_TYPE.DEDICATED]   = "NotificationDedicatedSoundFile",
-	[Enums.NOTIFICATIONS_TYPE.EMOTES]   = "NotificationEmotesSoundFile",
-	[Enums.NOTIFICATIONS_TYPE.GROUP]   = "NotificationGroupSoundFile",
-	[Enums.NOTIFICATIONS_TYPE.KEYWORDS] = "NotificationKeywordsSoundFile",
-	[Enums.NOTIFICATIONS_TYPE.TARGET]   = "NotificationTargetSoundFile",
+	[Enums.NOTIFICATIONS_TYPE.EMOTES]      = "NotificationEmotesSoundFile",
+	[Enums.NOTIFICATIONS_TYPE.GROUP]       = "NotificationGroupSoundFile",
+	[Enums.NOTIFICATIONS_TYPE.KEYWORDS]    = "NotificationKeywordsSoundFile",
+	[Enums.NOTIFICATIONS_TYPE.TARGET]      = "NotificationTargetSoundFile",
 };
 
 ---Maps raid target name aliases to their icon index (1–8).

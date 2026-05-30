@@ -18,7 +18,7 @@ end
 ---@param eventType string
 ---@return table
 local function ResolveChatInfo(eventType)
-	local chatType = ED.Enums.ENTRY_CHAT_REMAP[eventType] or eventType;
+	local chatType = ED.Constants.ENTRY_CHAT_REMAP[eventType] or eventType;
 	return ChatTypeInfo[chatType] or ChatTypeInfo.SAY;
 end
 

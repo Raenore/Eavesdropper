@@ -119,6 +119,7 @@ Constants.CHAT_HISTORY = {
 	},
 };
 
+---@type number
 Constants.CHAT_NEW_INDICATOR_FADE_OUT = 10;
 
 ---Default chat refresh throttle interval in milliseconds.
@@ -249,7 +250,7 @@ Constants.DIVIDE_AFTER = {
 	Whisper = true,
 };
 
----@class EavesdropperFrame
+---@class EavesdropperFrameConstants
 ---@field CLICKBLOCK_TIME number
 Constants.FRAME = {
 	CLICKBLOCK_TIME = 0.4,
@@ -297,6 +298,16 @@ Constants.FILTER_ORDER = {
 	"Rolls",
 };
 
+---Maps internal event shorthand to the ChatTypeInfo key used for colour lookup.
+---@type table<string, string>
+Constants.ENTRY_CHAT_REMAP = {
+	ROLL              = "SYSTEM",
+	OFFLINE           = "SYSTEM",
+	ONLINE            = "SYSTEM",
+	GUILD_MOTD        = "GUILD",
+	GUILD_ITEM_LOOTED = "GUILD_ACHIEVEMENT",
+};
+
 ---Maps event types that use a conversational verb in group windows instead of a channel prefix.
 ---@type table<string, string>
 Constants.GROUP_EVENT_VERBS = {
@@ -327,6 +338,7 @@ Constants.LOCAL_SOUND_LIST = {
 	{ key = "ListenerPoke"; fileName = "Listener\\ListenerPoke.ogg" }, -- Source: Listener by Tammya (MIT)
 };
 
+---@type string
 Constants.LOCAL_SOUND_PATH = "Interface\\AddOns\\Eavesdropper\\Sounds\\";
 
 ---Throttle for magnifier updates when the target changes.
