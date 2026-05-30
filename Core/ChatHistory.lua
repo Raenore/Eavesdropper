@@ -94,7 +94,7 @@ function ChatHistory:upgradeBareNames()
 
 	local byTimeKeys = {};
 	for ts in pairs(self.byTime) do
-		tinsert(byTimeKeys, ts);
+		byTimeKeys[#byTimeKeys + 1] = ts;
 	end
 
 	table.sort(byTimeKeys, function(a, b) return a > b; end);
@@ -106,7 +106,7 @@ function ChatHistory:upgradeBareNames()
 			if fullSender then
 				entry.sender = fullSender;
 				self.history[fullSender] = self.history[fullSender] or {};
-				tinsert(self.history[fullSender], entry);
+				self.history[fullSender][#self.history[fullSender] + 1] = entry;
 			end
 		end
 	end
