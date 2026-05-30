@@ -164,7 +164,7 @@ end
 ---@param event string
 ---@return string
 local function ColorByEvent(text, event)
-	local eventType = event:match("^CHAT_MSG_(.+)$") or event;
+	local eventType = NormalizeEventType(event);
 	local info = ResolveChatInfo(eventType);
 	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
 	return ED.Utils.WrapTextInColor(text, color);
@@ -298,9 +298,7 @@ local function GetEntryColor(entry)
 		local index = GetChannelName(entry.c);
 		info = ChatTypeInfo["CHANNEL" .. index] or ChatTypeInfo.CHANNEL;
 	else
-		local eventType = NormalizeEventType(entry.e);
-		local chatType = ED.Enums.ENTRY_CHAT_REMAP[eventType] or eventType;
-		info = ChatTypeInfo[chatType] or ChatTypeInfo.SAY;
+		info = ResolveChatInfo(NormalizeEventType(entry.e));
 	end
 
 	return info.r, info.g, info.b;
