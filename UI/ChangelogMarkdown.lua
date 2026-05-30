@@ -25,6 +25,7 @@ Significant update featuring a modernized Settings menu, initial keybindings sup
 - Improved the unit popup **target menu options** ([#95](https://github.com/Raenore/Eavesdropper/pull/95)):
   - The **"Eavesdrop On"** option will now dynamically disable itself if a Dedicated Window already exists for that target.
   - Added informative **tooltips** to both the "Eavesdrop On" and "Eavesdrop Group" menu selections to clearly explain their functionality.
+- Improved the reliability of the **"Hide in Combat"** setting, ensuring windows hide and reveal correctly even for players experiencing high latency or poor connections ([#88](https://github.com/Raenore/Eavesdropper/pull/88)).
 
 ### Fixed
 - Group Windows now correctly handle multi-part messages by using split markers, preventing player names from repeating unnecessarily on every line ([#76](https://github.com/Raenore/Eavesdropper/pull/76)).
