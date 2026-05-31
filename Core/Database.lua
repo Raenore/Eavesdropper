@@ -37,7 +37,6 @@ local Database = {};
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
 ---@field GroupWindowsNPCSpeechDetectionNameShown boolean?
----@field GroupWindowsPersist boolean?
 ---@field WelcomeMessage boolean?
 
 ---@type EavesdropperGlobal
