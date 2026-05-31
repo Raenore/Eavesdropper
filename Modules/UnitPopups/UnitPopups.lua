@@ -161,6 +161,64 @@ local function CreateOpenCharacterEavesdropButton(menuDescription, contextData)
 	return elementDescription;
 end
 
+local function CreateBattleNetEavesdropGroupMenu(menuDescription, contextData)
+	if not ED.Database:GetGlobalSetting("GroupWindows") then
+		return;
+	end
+
+	local function OnClick(contextData, targetFrame, hasSender) -- luacheck: no redefined
+		local accountInfo = contextData.accountInfo;
+		local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo or nil;
+		if not gameAccountInfo then return; end
+
+		local sender, guid = GetBattleNetCharacterFullName(gameAccountInfo);
+		if sender then
+			ED.PlayerCache:InsertAndRetrieve(sender, guid);
+			if targetFrame and hasSender then
+				targetFrame:RemovePlayer(sender);
+			elseif targetFrame and not hasSender then
+				targetFrame:AddPlayer(sender);
+			else
+				ED.GroupFrame:AddFrame(sender);
+			end
+		end
+	end
+
+	-- Resolve sender once for membership checks across all group buttons
+	local accountInfo = contextData.accountInfo;
+	local gameAccountInfo = accountInfo and accountInfo.gameAccountInfo;
+	local sender = gameAccountInfo and GetBattleNetCharacterFullName(gameAccountInfo);
+
+	local elementDescription = menuDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_GROUP);
+	elementDescription:CreateTitle(L.UNIT_POPUPS_EAVESDROP_GROUP .. " " .. MAIN_MENU);
+	ED.Utils.SetMenuTooltip(elementDescription, L.UNIT_POPUPS_EAVESDROP_GROUP_HELP);
+
+	local groupWindows = ED.GroupFrame:GetGroupWindows(sender);
+	if groupWindows then
+		for _, group in ipairs(groupWindows) do
+			local frame = _G[group.globalName];
+			if frame then
+				local buttonText = group.displayName;
+				if group.hasSender then
+					buttonText = "|cnGREEN_FONT_COLOR:" .. group.displayName .. "|r";
+				end
+				elementDescription:CreateButton(buttonText, function() -- luacheck: no redefined
+					OnClick(contextData, frame, group.hasSender);
+				end);
+			end
+		end
+		elementDescription:CreateDivider();
+	end
+
+	elementDescription:CreateButton(L.UNIT_POPUPS_EAVESDROP_GROUP_NEW, function() -- luacheck: no redefined
+		OnClick(contextData);
+	end);
+
+	elementDescription:SetData(contextData);
+	return elementDescription;
+end
+
+
 local function CreateEavesdropGroupMenu(menuDescription, contextData)
 	if not ED.Database:GetGlobalSetting("GroupWindows") then
 		return;
@@ -219,14 +277,15 @@ end
 UnitPopups.MenuElementFactories = {
 	OpenBattleNetProfile = CreateOpenBattleNetEavesdropButton,
 	OpenEavesdropperOn = CreateOpenCharacterEavesdropButton,
+	BattleNetEavesdropGroup = CreateBattleNetEavesdropGroupMenu,
 	EavesdropGroup = CreateEavesdropGroupMenu,
 };
 
 UnitPopups.MenuEntries = {
-	BN_FRIEND = { "OpenBattleNetProfile" },
+	BN_FRIEND = { "OpenBattleNetProfile", "BattleNetEavesdropGroup" },
 	CHAT_ROSTER = { "OpenEavesdropperOn", "EavesdropGroup" },
 	COMMUNITIES_GUILD_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
-	COMMUNITIES_MEMBER = { "OpenBattleNetProfile" },
+	COMMUNITIES_MEMBER = { "OpenBattleNetProfile", "BattleNetEavesdropGroup" },
 	COMMUNITIES_WOW_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
 	FRIEND = { "OpenEavesdropperOn", "EavesdropGroup" },
 	FRIEND_OFFLINE = { "OpenEavesdropperOn", "EavesdropGroup" },
