@@ -267,6 +267,7 @@ function DedicatedFrame:AddFrameForMagnified()
 		or (magnifiedGUID and canaccessvalue(magnifiedGUID) and ED.PlayerCache:GetSenderDataFromGUID(magnifiedGUID));
 
 	if target then
+		ED.PlayerCache:InsertAndRetrieve(magnifiedName, magnifiedGUID);
 		self:AddFrame(target);
 	end
 end
