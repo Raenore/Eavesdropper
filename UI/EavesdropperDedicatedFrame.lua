@@ -91,7 +91,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnShow()
 	self:RefreshChat();
 	if not self.chatTicker then
 		self.chatTicker = C_Timer.NewTicker(Constants.CHAT_UPDATE_THROTTLE_DEFAULT, function()
-			self:RefreshChat();
+			self:RefreshChat(true);
 		end);
 	end
 end
@@ -147,10 +147,13 @@ end
 -- ============================================================
 
 ---Repopulate the chat box from stored history
-function Eavesdropper_Dedicated_FrameMixin:RefreshChat()
+---@param retainScroll boolean? If true, retain the previous scroll position.
+function Eavesdropper_Dedicated_FrameMixin:RefreshChat(retainScroll)
 	if not self.ChatBox then return; end
 
 	self.refreshing = true;
+
+	local scrollOffset = self.ChatBox:GetScrollOffset();
 	self.ChatBox:Clear();
 
 	local maxMessages = ED.Database:GetSetting("MaxHistory");
@@ -158,6 +161,10 @@ function Eavesdropper_Dedicated_FrameMixin:RefreshChat()
 
 	if player then
 		self:PopulateHistoryMessages(player, maxMessages);
+	end
+
+	if retainScroll then
+		self.ChatBox:SetScrollOffset(scrollOffset or 0);
 	end
 
 	self:UpdateTitleBar();
