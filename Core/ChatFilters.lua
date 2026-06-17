@@ -9,7 +9,7 @@ local ChatFilters = {};
 local function GetGroupColor(groupName)
 	local option = ED.Constants.FILTER_OPTIONS[groupName];
 	local chatType = type(option) == "table" and option[1] or option;
-	chatType = ED.Enums.ENTRY_CHAT_REMAP[chatType] or chatType;
+	chatType = ED.Constants.ENTRY_CHAT_REMAP[chatType] or chatType;
 
 	local chatInfo = ChatTypeInfo[chatType] or { r = 1, g = 1, b = 1 };
 	return CreateColor(chatInfo.r, chatInfo.g, chatInfo.b);
@@ -18,7 +18,7 @@ end
 ---@param event string
 ---@return string
 local function NormalizeEvent(event)
-	local remapped = ED.Enums.ENTRY_CHAT_REMAP[event];
+	local remapped = ED.Constants.ENTRY_CHAT_REMAP[event];
 	if remapped then
 		return remapped;
 	end
@@ -33,7 +33,7 @@ end
 ---@param chatType string
 ---@return string
 local function ResolveEvent(chatType)
-	local remapped = ED.Enums.ENTRY_CHAT_REMAP[chatType] or chatType;
+	local remapped = ED.Constants.ENTRY_CHAT_REMAP[chatType] or chatType;
 	return remapped:upper();
 end
 

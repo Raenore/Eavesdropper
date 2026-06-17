@@ -273,6 +273,21 @@ function Utils.CombatLockdown()
 end
 
 -- ============================================================================
+-- UI UTILITIES
+-- ============================================================================
+
+---SetMenuTooltip Attaches a two-line tooltip callback to a menu element.
+---@param element table Menu element
+---@param text string Tooltip body line
+---@param title string? Title override; defaults to the element's own label
+function Utils.SetMenuTooltip(element, text, title)
+	element:SetTooltip(function(tooltip, desc)
+		GameTooltip_SetTitle(tooltip, title or MenuUtil.GetElementText(desc));
+		GameTooltip_AddNormalLine(tooltip, text);
+	end);
+end
+
+-- ============================================================================
 -- BUILD / VERSION UTILITIES
 -- ============================================================================
 

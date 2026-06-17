@@ -37,7 +37,6 @@ local Database = {};
 ---@field MinimapButton EavesdropperGlobalMinimapButton?
 ---@field SettingsWindowPosition EavesdropperWindowPosition?
 ---@field GroupWindowsNPCSpeechDetectionNameShown boolean?
----@field GroupWindowsPersist boolean?
 ---@field WelcomeMessage boolean?
 
 ---@type EavesdropperGlobal
@@ -265,7 +264,7 @@ function Database:Init()
 	self.currentProfile = db.profiles[profileName];
 	db.profileKeys[playerKey] = profileName;
 
-	---Prune all profiles to remove values that match their defaults.
+	-- Prune all profiles to remove values that match their defaults.
 	for _, profileData in pairs(db.profiles) do
 		pruneProfile(profileData);
 	end
@@ -390,18 +389,18 @@ function Database:RenameProfile(oldName, newName)
 
 	local db = EavesdropperDB;
 
-	---Move profile data from the old key to the new key.
+	-- Move profile data from the old key to the new key.
 	db.profiles[newName] = db.profiles[oldName];
 	db.profiles[oldName] = nil;
 
-	---Reassign every character binding that pointed at the old name.
+	-- Reassign every character binding that pointed at the old name.
 	for charKey, profName in pairs(db.profileKeys) do
 		if profName == oldName then
 			db.profileKeys[charKey] = newName;
 		end
 	end
 
-	---If the current character was on the renamed profile, update the live reference.
+	-- If the current character was on the renamed profile, update the live reference.
 	if self.currentProfile == db.profiles[newName] then
 		ED.Frame:ApplyProfileSettings();
 	end

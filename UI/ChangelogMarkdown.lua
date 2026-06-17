@@ -4,6 +4,7 @@ local changelogMarkdown = [[
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.
 
 ### Added
 - Expanded multi-message support to include [EmoteScribe](https://www.curseforge.com/wow/addons/emotescribe) as the latest explicitly supported provider ([#78](https://github.com/Raenore/Eavesdropper/pull/78)).
@@ -13,6 +14,7 @@ All notable changes to this project will be documented in this file.
   - **Toggle Eavesdropper:** Opens or closes the main history window.
   - **Toggle Settings:** Opens or closes the Eavesdropper configuration menu.
   - **Eavesdrop On (Dedicated):** Opens a Dedicated Window for your current target or mouseover unit, respecting your configured targeting priority.
+- Expanded **"Eavesdrop Group"** right-click menu options to support **Battle.net friends** across the Social Panel and Communities tabs (available when they are actively logged into a WoW character).
 
 ### Changed
 - Revamped the **Settings menu** with a new **sidebar navigation** and an "About" category featuring an in-game changelog, in collaboration with [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#69](https://github.com/Raenore/Eavesdropper/pull/69) and [#86](https://github.com/Raenore/Eavesdropper/pull/86)).
@@ -24,8 +26,11 @@ All notable changes to this project will be documented in this file.
 - Improved the unit popup **target menu options** ([#95](https://github.com/Raenore/Eavesdropper/pull/95)):
   - The **"Eavesdrop On"** option will now dynamically disable itself if a Dedicated Window already exists for that target.
   - Added informative **tooltips** to both the "Eavesdrop On" and "Eavesdrop Group" menu selections to clearly explain their functionality.
+- Improved the reliability of the **"Hide in Combat"** setting, ensuring windows hide and reveal correctly even for players experiencing high latency or poor connections ([#88](https://github.com/Raenore/Eavesdropper/pull/88)).
+- Updated the TOC for Patch 12.0.7.
 
 ### Fixed
+- Prevent Dedicated and Group Windows from scrolling down automatically when they are scrolled up, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#101](https://github.com/Raenore/Eavesdropper/pull/101)).
 - Group Windows now correctly handle multi-part messages by using split markers, preventing player names from repeating unnecessarily on every line ([#76](https://github.com/Raenore/Eavesdropper/pull/76)).
 - Hyphenated RP names (e.g., Ivy-Rose) now display properly in emotes thanks to [Bitwise1057](https://github.com/Bitwise1057) ([#73](https://github.com/Raenore/Eavesdropper/pull/73) and [#74](https://github.com/Raenore/Eavesdropper/pull/74)).
 - When "Enable Mouse" is disabled, hyperlinks (e.g. items) no longer block camera movement or clicks, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#68](https://github.com/Raenore/Eavesdropper/pull/68)).

@@ -23,16 +23,6 @@ local DedicatedFrameFieldMap = {
 	HideCloseButton = "hideCloseButton",
 };
 
----@param element table UI element
----@param text string Tooltip text
----@return nil
-local function SetTooltip(element, text)
-	element:SetTooltip(function(tooltip, desc)
-		GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(desc));
-		GameTooltip_AddNormalLine(tooltip, text);
-	end);
-end
-
 ---Registers default sounds and populates the config sound list
 ---@return nil
 local function SetupSounds()
@@ -104,18 +94,12 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 			rootDescription:CreateTitle(L.DEDICATED_WINDOWS);
 		else
 			local title = rootDescription:CreateTitle(ED.Globals.addon_settings_icon .. " " .. ED.Globals.addon_title);
-			title:SetTooltip(function(tooltip, elementDescription)
-				GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
-				GameTooltip_AddNormalLine(tooltip, "Version: " .. ED.Globals.addon_version);
-			end);
+			ED.Utils.SetMenuTooltip(title, "Version: " .. ED.Globals.addon_version);
 		end
 
 		-- Filters
 		local filter = rootDescription:CreateButton(L.FILTER);
-		filter:SetTooltip(function(tooltip, elementDescription)
-			GameTooltip_SetTitle(tooltip, MenuUtil.GetElementText(elementDescription));
-			GameTooltip_AddNormalLine(tooltip, L.FILTER_HELP);
-		end);
+		ED.Utils.SetMenuTooltip(filter, L.FILTER_HELP);
 		filter:CreateTitle(L.FILTER .. " " .. MAIN_MENU);
 		ED.ChatFilters:GenerateFilterListMenu(frame, filter);
 
@@ -135,7 +119,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 			function() return getSetting("EnableMouse"); end,
 			function() toggleSetting("EnableMouse", function() frame:UpdateMouseLock(); end); end
 		);
-		SetTooltip(enableMouse, L.ENABLE_MOUSE_HELP);
+		ED.Utils.SetMenuTooltip(enableMouse, L.ENABLE_MOUSE_HELP);
 
 		-- Lock Scroll
 		local lockScroll = rootDescription:CreateCheckbox(
@@ -143,7 +127,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 			function() return getSetting("LockScroll"); end,
 			function() toggleSetting("LockScroll", function() frame.ChatBox:ScrollToBottom(); end); end
 		);
-		SetTooltip(lockScroll, L.LOCK_SCROLL_HELP);
+		ED.Utils.SetMenuTooltip(lockScroll, L.LOCK_SCROLL_HELP);
 
 		-- Lock Window
 		local lockWindow = rootDescription:CreateCheckbox(
@@ -155,7 +139,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 				end);
 			end
 		);
-		SetTooltip(lockWindow, L.LOCK_WINDOW_HELP);
+		ED.Utils.SetMenuTooltip(lockWindow, L.LOCK_WINDOW_HELP);
 
 		-- Lock Title Bar
 		local lockTitleBar = rootDescription:CreateCheckbox(
@@ -163,7 +147,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 			function() return getSetting("LockTitleBar"); end,
 			function() toggleSetting("LockTitleBar"); end
 		);
-		SetTooltip(lockTitleBar, L.LOCK_TITLEBAR_HELP);
+		ED.Utils.SetMenuTooltip(lockTitleBar, L.LOCK_TITLEBAR_HELP);
 
 		if useFrameState then
 			rootDescription:CreateDivider();
