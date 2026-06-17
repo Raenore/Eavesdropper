@@ -26,6 +26,7 @@ Significant update featuring a modernized Settings menu, initial keybindings sup
   - The **"Eavesdrop On"** option will now dynamically disable itself if a Dedicated Window already exists for that target.  
   - Added informative **tooltips** to both the "Eavesdrop On" and "Eavesdrop Group" menu selections to clearly explain their functionality.  
 - Improved the reliability of the **"Hide in Combat"** setting, ensuring windows hide and reveal correctly even for players experiencing high latency or poor connections ([#88](https://github.com/Raenore/Eavesdropper/pull/88)).  
+- Updated the TOC for Patch 12.0.7.  
 
 ### Fixed
 - Prevent Dedicated and Group Windows from scrolling down automatically when they are scrolled up, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#101](https://github.com/Raenore/Eavesdropper/pull/101)).  

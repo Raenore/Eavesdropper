@@ -1,4 +1,4 @@
-## Interface: 120005
+## Interface: 120007
 ## Title: |cnFRAMESTACK_REGION_COLOR:Eavesdropper|r
 ## Notes: Shows a dedicated history window for your current target or mouseover, highlights keywords, helps focus on specific players in busy RP environments, and supports advanced RP name formatting in chat.
 ## Author: Raenore (Argent Dawn EU)
