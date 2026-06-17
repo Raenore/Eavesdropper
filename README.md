@@ -65,7 +65,8 @@ Never miss a mention. Define custom keywords to be highlighted in the main chat 
 Eavesdropper can play a sound notification and flash the taskbar when:  
 - Your current target takes an action (e.g., `/say`, emotes, etc.).  
 - A Blizzard emote is directed at you (e.g., `/point` or `/wave`).  
-- A new message is received in a **Dedicated or Group Window**.
+
+> **Note:** Notifications for Dedicated and Group windows are configured individually within their respective *Dedicated* and *Group* settings pages.  
 
 ![Notifications](Previews/Notifications/Notifications.png)
 
