@@ -23,7 +23,7 @@
 ## Category-zhCN: 角色扮演
 ## Category-zhTW: 角色扮演
 
-## X-Build: 120005
+## X-Build: 120007
 ## X-Category: Roleplay, Chat
 
 ## X-Curse-Project-ID: 1468933
