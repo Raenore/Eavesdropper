@@ -333,6 +333,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 
 	if (notifyTargetSound or notifyTargetFlash)
 		and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
+		and ED.ChatFilters:HasEvent(entry.e, ED.Frame)
 		and targetName == sender
 		and not entry.p then
 		if notifyTargetSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.TARGET); end
@@ -356,7 +357,8 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 				local notifyDedicatedFlash = ED.Database:GetSetting("NotificationDedicatedFlashTaskbar");
 
 				if (notifyDedicatedSound or notifyDedicatedFlash)
-					and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
+					and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
+					and ED.ChatFilters:HasEvent(entry.e, dedicatedFrame) then
 					if notifyDedicatedSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.DEDICATED); end
 					if notifyDedicatedFlash then ED.Notifications:FlashTaskbar(); end
 				end
@@ -373,7 +375,8 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 					local notifyGroupFlash = ED.Database:GetSetting("NotificationGroupFlashTaskbar");
 
 					if (notifyGroupSound or notifyGroupFlash)
-						and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
+						and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
+						and ED.ChatFilters:HasEvent(entry.e, frame) then
 						if notifyGroupSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.GROUP); end
 						if notifyGroupFlash then ED.Notifications:FlashTaskbar(); end
 					end

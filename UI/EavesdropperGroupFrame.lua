@@ -253,6 +253,7 @@ function Eavesdropper_Group_FrameMixin:TryAddMessage(entry)
 
 	if not entry.p
 		-- TODO: and ED.Database:GetGlobalSetting("GroupWindowsNewIndicator")
+		and ED.ChatFilters:HasEvent(entry.e, self)
 		and self.NewIndicator
 		and not self.isMouseOver
 	then
