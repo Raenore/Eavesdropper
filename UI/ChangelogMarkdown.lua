@@ -3,7 +3,7 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.5.0] - 2026-06-30
 Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.
 
 ### Added
@@ -76,61 +76,13 @@ Significant feature update introducing Group Windows, session persistence for de
 - Improved the title bar menu to prevent it from flickering or closing if you click the menu button while it is already open ([#56](https://github.com/Raenore/Eavesdropper/pull/56)).
 - Resolved a rare issue where "Format Quest Text" would fail for certain NPCs that had no actual dialogue to show ([#51](https://github.com/Raenore/Eavesdropper/pull/51)).
 
-## [0.3.0] - 2026-03-22
-Significant feature update introducing Dedicated Windows for unique targets, RP name integration with Dialogue UI, and localized Russian support.
-
-### Added
-- Dedicated Window support for unique targets ([#26](https://github.com/Raenore/Eavesdropper/pull/26)).
-  - This feature can be toggled under the "Dedicated Windows" category.
-  - Open a unique window by right-clicking a unit's portrait or their name in chat and selecting "Eavesdrop On".
-  - Includes optional notification options (sounds and taskbar flashing) in the "Notifications" tab.
-  - New messages will trigger a yellow message indicator on the respective window to help track conversations (enabled by default, can be disabled in settings).
-- Eavesdropper can now replace your character's name with your RP name within quest text when using [Dialogue UI](https://www.curseforge.com/wow/addons/dialogueui) (special thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) for his work on his side) ([#36](https://github.com/Raenore/Eavesdropper/pull/36) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).
-- Eavesdropper can now replace your character's name within NPC dialogue (Say, Emote, etc.) when a supported RP addon is used ([#42](https://github.com/Raenore/Eavesdropper/pull/42) and [#44](https://github.com/Raenore/Eavesdropper/pull/44)).
-  - Quest Text and NPC Dialogue features can be toggled under the "Advanced Formatting" category.
-  - Note: Chat bubbles will still show your original name, as they cannot be modified by addons.
-  - Includes three display modes:
-    - Full Name: Displays your complete RP name.
-    - First Name: Displays only the first part of your RP name.
-    - Original (OOC) Name: Reverts to your standard character name.
-- Eavesdropper window visibility is now saved per character rather than per session ([#25](https://github.com/Raenore/Eavesdropper/pull/25)).
-  - Allows the frame to be shown or hidden independently across different characters.
-  - The most recent visibility state is now remembered across logins and UI reloads.
-- Russian translation added thanks to [Hubbotu](https://github.com/Hubbotu) / ZamestoTV ([#32](https://github.com/Raenore/Eavesdropper/pull/32)).
-
-### Changed
-- Standardized terminology across the addon; all instances now consistently use "Settings" instead of a mix of "Options" and "Settings".
-- Refined the keyword highlighting system to improve overall consistency and resolve rare occurrences of missed keywords ([#31](https://github.com/Raenore/Eavesdropper/pull/31)).
-- Implemented various improvements to the Keywords multi-line editbox ([#30](https://github.com/Raenore/Eavesdropper/pull/30)).
-  - Escaping or clicking out of the editbox will now properly sanitize and save your changes.
-  - Scrolling while hovering over the editbox (without focus) will now correctly scroll the Keywords tab itself.
-  - Improved the scrollbar logic to reveal more intuitively when the content exceeds the editbox height.
-  - Clicking anywhere within the editbox now properly focuses the text, removing the need to click specifically on existing text.
-- Total RP 3 NPC Speech Emotes once again support keyword color highlighting for users on TRP3 v3.3.3; for users on older versions, support remains limited to keyword notification sounds ([#40](https://github.com/Raenore/Eavesdropper/pull/40)).
-
-### Fixed
-- Resolved another issue where TRP3 NPC Speech emotes (which typically begin with `| `) could appear invisible for certain users after using a standard Blizzard emote (e.g., /point, /wave) ([#40](https://github.com/Raenore/Eavesdropper/pull/40)).
-- Resolved an Eavesdropper conflict with RP addons in specific rare circumstances when using completely empty profiles ([#43](https://github.com/Raenore/Eavesdropper/pull/43)).
-- Resolved an issue where the Eavesdropper window would sometimes randomly hide when entering instances (dungeons, Trial of Style, etc.) ([#25](https://github.com/Raenore/Eavesdropper/pull/25)).
-
 ## Full Changelog
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).
 
 [unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...HEAD
+[0.5.0]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Raenore/Eavesdropper/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...0.4.0
-[0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
-[0.2.4]: https://github.com/Raenore/Eavesdropper/compare/0.2.3...0.2.4
-[0.2.3]: https://github.com/Raenore/Eavesdropper/compare/0.2.2...0.2.3
-[0.2.2]: https://github.com/Raenore/Eavesdropper/compare/0.2.1...0.2.2
-[0.2.1]: https://github.com/Raenore/Eavesdropper/compare/0.2.0...0.2.1
-[0.2.0]: https://github.com/Raenore/Eavesdropper/compare/0.1.5...0.2.0
-[0.1.5]: https://github.com/Raenore/Eavesdropper/compare/0.1.4...0.1.5
-[0.1.4]: https://github.com/Raenore/Eavesdropper/compare/0.1.3...0.1.4
-[0.1.3]: https://github.com/Raenore/Eavesdropper/compare/0.1.2...0.1.3
-[0.1.2]: https://github.com/Raenore/Eavesdropper/compare/0.1.1...0.1.2
-[0.1.1]: https://github.com/Raenore/Eavesdropper/compare/0.1.0...0.1.1
-[0.1.0]: https://github.com/Raenore/Eavesdropper/releases/tag/0.1.0
 
 ]]
 
