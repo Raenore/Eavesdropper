@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]  
+## [0.5.0] - 2026-06-29  
 Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.  
 
 ### Added  
@@ -116,6 +116,7 @@ Significant feature update introducing Dedicated Windows for unique targets, RP 
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
 [unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...HEAD
+[0.5.0]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Raenore/Eavesdropper/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/Raenore/Eavesdropper/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/Raenore/Eavesdropper/compare/0.2.4...0.3.0
