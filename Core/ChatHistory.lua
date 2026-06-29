@@ -147,21 +147,23 @@ function ChatHistory:LoadFromSaved(savedHistory)
 	self.nextEntryId = (maxLineId or 0) + 1;
 end
 
----Returns the most recent chat entries for a player
+---Returns the most recent chat entries for a player filtered for the given frame.
 ---@param player string Player name
 ---@param maxEntries number? Maximum number of entries to return
+---@param frame table? Frame whose filters to apply; defaults to ED.Frame
 ---@return EavesdropperChatEntry[]? entries Array of chat entries, or nil if none
-function ChatHistory:GetPlayerHistory(player, maxEntries)
+function ChatHistory:GetPlayerHistory(player, maxEntries, frame)
 	if not player or not self.history[player] then
 		return nil;
 	end
 
+	local targetFrame = frame or ED.Frame;
 	local chat = self.history[player];
 	local entries = {};
 	local limit = maxEntries or 50;
 
 	for i = #chat, 1, -1 do
-		if ED.ChatFilters:HasEvent(chat[i].e, ED.Frame) then
+		if ED.ChatFilters:HasEvent(chat[i].e, targetFrame) then
 			tinsert(entries, 1, chat[i]);
 			if #entries >= limit then
 				break;
