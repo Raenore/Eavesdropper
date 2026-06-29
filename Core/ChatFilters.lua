@@ -40,7 +40,8 @@ end
 ---Generates the chat filter menu for UI
 ---@param frame table
 ---@param menu table
-function ChatFilters:GenerateFilterListMenu(frame, menu)
+---@param useFrameState boolean?
+function ChatFilters:GenerateFilterListMenu(frame, menu, useFrameState)
 	for i = 1, #ED.Constants.FILTER_ORDER do
 		local groupName = ED.Constants.FILTER_ORDER[i];
 
@@ -51,21 +52,36 @@ function ChatFilters:GenerateFilterListMenu(frame, menu)
 		menu:CreateCheckbox(
 			groupLabel,
 			function()
+				if useFrameState then
+					local filters = frame.filters;
+					if not filters then return false; end
+					return filters[groupName] or false;
+				end
 				local current = ED.Database:GetSetting("Filters");
 				if not current then return false; end
 				return current[groupName] or false;
 			end,
 			function()
-				local current = ED.Database:GetSetting("Filters") or {};
-				local value = current[groupName];
-				if value == nil then
-					value = ED.Constants.DEFAULT_FILTERS[groupName] or false;
+				if useFrameState then
+					local filters = frame.filters or {};
+					local value = filters[groupName];
+					if value == nil then
+						value = ED.Constants.DEFAULT_FILTERS[groupName] or false;
+					end
+					frame.filters = frame.filters or {};
+					frame.filters[groupName] = not value;
+				else
+					local current = ED.Database:GetSetting("Filters") or {};
+					local value = current[groupName];
+					if value == nil then
+						value = ED.Constants.DEFAULT_FILTERS[groupName] or false;
+					end
+
+					local newFilters = ED.Utils.ShallowCopy(current);
+					newFilters[groupName] = not value;
+
+					ED.Database:SetSetting("Filters", newFilters);
 				end
-
-				local newFilters = ED.Utils.ShallowCopy(current);
-				newFilters[groupName] = not value;
-
-				ED.Database:SetSetting("Filters", newFilters);
 				ChatFilters:UpdateFilters(frame);
 			end
 		);
@@ -80,8 +96,9 @@ end
 ---Tracks changes via a dirty flag and only refreshes the chat frame if needed.
 ---@param frame table?
 function ChatFilters:UpdateFilters(frame)
-	local filters = ED.Database:GetSetting("Filters");
-	if not filters or not frame then return; end
+	if not frame then return; end
+	local filters = frame.filters or ED.Database:GetSetting("Filters");
+	if not filters then return; end
 
 	frame.active_events = frame.active_events or {};
 	local dirty = false;
@@ -116,7 +133,8 @@ function ChatFilters:HasEvent(event, frame)
 	return frame.active_events[event] == true;
 end
 
----Initialises active events for a frame based on filter settings.
+---Initialises active events and per-frame filter state from the DB.
+---Per-frame filters start from main frame as base (and don't save for now); the main frame always reads from DB.
 ---@param frame table?
 function ChatFilters:Init(frame)
 	if not frame then return; end
@@ -124,6 +142,10 @@ function ChatFilters:Init(frame)
 
 	local filters = ED.Database:GetSetting("Filters");
 	if not filters then return; end
+
+	if frame ~= ED.Frame then
+		frame.filters = ED.Utils.ShallowCopy(filters);
+	end
 
 	for groupName, enabled in pairs(filters) do
 		local chatTypes = ED.Constants.FILTER_OPTIONS[groupName];

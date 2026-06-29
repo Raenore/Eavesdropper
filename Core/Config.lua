@@ -101,7 +101,7 @@ function Config:ShowConfigMenu(frame, dedicatedFrame, groupFrame)
 		local filter = rootDescription:CreateButton(L.FILTER);
 		ED.Utils.SetMenuTooltip(filter, L.FILTER_HELP);
 		filter:CreateTitle(L.FILTER .. " " .. MAIN_MENU);
-		ED.ChatFilters:GenerateFilterListMenu(frame, filter);
+		ED.ChatFilters:GenerateFilterListMenu(frame, filter, useFrameState);
 
 		if not useFrameState then
 			-- Notification Settings
