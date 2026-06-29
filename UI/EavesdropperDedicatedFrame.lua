@@ -210,6 +210,7 @@ function Eavesdropper_Dedicated_FrameMixin:TryAddMessage(entry)
 	Eavesdropper_SharedFrameMixin.TryAddMessage(self, entry);
 
 	if not entry.p
+		and ED.ChatFilters:HasEvent(entry.e, self)
 		and ED.Database:GetGlobalSetting("DedicatedWindowsNewIndicator")
 		and self.NewIndicator
 		and not self.isMouseOver

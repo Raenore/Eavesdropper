@@ -460,7 +460,7 @@ end
 ---@param player string
 ---@param maxMessages number
 function Eavesdropper_SharedFrameMixin:PopulateHistoryMessages(player, maxMessages)
-	local chatFull = ED.ChatHistory:GetPlayerHistory(player, maxMessages);
+	local chatFull = ED.ChatHistory:GetPlayerHistory(player, maxMessages, self);
 	if chatFull and #chatFull > 0 then
 		for _, entry in ipairs(chatFull) do
 			self:AddMessage(entry, true);
@@ -468,7 +468,7 @@ function Eavesdropper_SharedFrameMixin:PopulateHistoryMessages(player, maxMessag
 		return;
 	end
 
-	local chatBare = ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), maxMessages);
+	local chatBare = ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), maxMessages, self);
 	if chatBare and #chatBare > 0 then
 		for _, entry in ipairs(chatBare) do
 			self:AddMessage(entry, true);

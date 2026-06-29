@@ -201,10 +201,10 @@ function Eavesdropper_Group_FrameMixin:PopulateGroupHistoryMessages(maxMessages)
 	local entries = {};
 
 	for _, player in ipairs(self.players) do
-		local history = ED.ChatHistory:GetPlayerHistory(player, maxMessages);
+		local history = ED.ChatHistory:GetPlayerHistory(player, maxMessages, self);
 
 		if not history or #history == 0 then
-			history = ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), maxMessages);
+			history = ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), maxMessages, self);
 		end
 
 		if history then
@@ -261,6 +261,7 @@ function Eavesdropper_Group_FrameMixin:TryAddMessage(entry)
 
 	if not entry.p
 		-- TODO: and ED.Database:GetGlobalSetting("GroupWindowsNewIndicator")
+		and ED.ChatFilters:HasEvent(entry.e, self)
 		and self.NewIndicator
 		and not self.isMouseOver
 	then

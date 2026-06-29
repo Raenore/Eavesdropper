@@ -147,21 +147,23 @@ function ChatHistory:LoadFromSaved(savedHistory)
 	self.nextEntryId = (maxLineId or 0) + 1;
 end
 
----Returns the most recent chat entries for a player
+---Returns the most recent chat entries for a player filtered for the given frame.
 ---@param player string Player name
 ---@param maxEntries number? Maximum number of entries to return
+---@param frame table? Frame whose filters to apply; defaults to ED.Frame
 ---@return EavesdropperChatEntry[]? entries Array of chat entries, or nil if none
-function ChatHistory:GetPlayerHistory(player, maxEntries)
+function ChatHistory:GetPlayerHistory(player, maxEntries, frame)
 	if not player or not self.history[player] then
 		return nil;
 	end
 
+	local targetFrame = frame or ED.Frame;
 	local chat = self.history[player];
 	local entries = {};
 	local limit = maxEntries or 50;
 
 	for i = #chat, 1, -1 do
-		if ED.ChatFilters:HasEvent(chat[i].e, ED.Frame) then
+		if ED.ChatFilters:HasEvent(chat[i].e, targetFrame) then
 			tinsert(entries, 1, chat[i]);
 			if #entries >= limit then
 				break;
@@ -254,6 +256,24 @@ local function SubRaidTargets(message)
 	end);
 end
 
+---Fires sound and taskbar flash notifications if the entry passes filter and skip-channel checks.
+---@param entry EavesdropperChatEntry
+---@param frame table Frame whose filters to check
+---@param soundKey string DB setting key for sound notification
+---@param flashKey string DB setting key for taskbar flash
+---@param notifType number ED.Enums.NOTIFICATIONS_TYPE value
+local function TryNotify(entry, frame, soundKey, flashKey, notifType)
+	if ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then return; end
+	if not ED.ChatFilters:HasEvent(entry.e, frame) then return; end
+
+	if ED.Database:GetSetting(soundKey) then
+		ED.Notifications:PlayAlertSound(notifType);
+	end
+	if ED.Database:GetSetting(flashKey) then
+		ED.Notifications:FlashTaskbar();
+	end
+end
+
 ---Adds a chat message to history, handling deduplication, formatting, and target/emote notifications.
 ---@param event string Event type
 ---@param sender string Sender name
@@ -325,16 +345,8 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 	tinsert(self.history[sender], entry);
 
 	-- Target notifications.
-	local targetName = ED.Utils.GetUnitName("target");
-	local notifyTargetSound = ED.Database:GetSetting("NotificationTargetSound");
-	local notifyTargetFlash = ED.Database:GetSetting("NotificationTargetFlashTaskbar");
-
-	if (notifyTargetSound or notifyTargetFlash)
-		and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e]
-		and targetName == sender
-		and not entry.p then
-		if notifyTargetSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.TARGET); end
-		if notifyTargetFlash then ED.Notifications:FlashTaskbar(); end
+	if not entry.p and ED.Utils.GetUnitName("target") == sender then
+		TryNotify(entry, ED.Frame, "NotificationTargetSound", "NotificationTargetFlashTaskbar", ED.Enums.NOTIFICATIONS_TYPE.TARGET);
 	end
 
 	-- Forward to the eavesdrop frame if this sender is currently being watched.
@@ -350,14 +362,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 		local dedicatedFrame = _G["Eavesdropper_Dedicated_Frame_" .. entry.s];
 		if dedicatedFrame then
 			if not entry.p then
-				local notifyDedicatedSound = ED.Database:GetSetting("NotificationDedicatedSound");
-				local notifyDedicatedFlash = ED.Database:GetSetting("NotificationDedicatedFlashTaskbar");
-
-				if (notifyDedicatedSound or notifyDedicatedFlash)
-					and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
-					if notifyDedicatedSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.DEDICATED); end
-					if notifyDedicatedFlash then ED.Notifications:FlashTaskbar(); end
-				end
+				TryNotify(entry, dedicatedFrame, "NotificationDedicatedSound", "NotificationDedicatedFlashTaskbar", ED.Enums.NOTIFICATIONS_TYPE.DEDICATED);
 			end
 			dedicatedFrame:TryAddMessage(entry);
 		end
@@ -367,14 +372,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel)
 		ED.GroupFrame:ForEachFrame(function(frame)
 			if frame:HasPlayer(sender) then
 				if not entry.p then
-					local notifyGroupSound = ED.Database:GetSetting("NotificationGroupSound");
-					local notifyGroupFlash = ED.Database:GetSetting("NotificationGroupFlashTaskbar");
-
-					if (notifyGroupSound or notifyGroupFlash)
-						and not ED.Constants.CHANNELS_TO_SKIP_NOTIFICATIONS[entry.e] then
-						if notifyGroupSound then ED.Notifications:PlayAlertSound(ED.Enums.NOTIFICATIONS_TYPE.GROUP); end
-						if notifyGroupFlash then ED.Notifications:FlashTaskbar(); end
-					end
+					TryNotify(entry, frame, "NotificationGroupSound", "NotificationGroupFlashTaskbar", ED.Enums.NOTIFICATIONS_TYPE.GROUP);
 				end
 				frame:TryAddMessage(entry);
 			end
