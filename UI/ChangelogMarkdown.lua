@@ -3,7 +3,7 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
-## [0.5.0] - 2026-06-29
+## [0.5.0] - 2026-06-30
 Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.
 
 ### Added
