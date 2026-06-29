@@ -32,7 +32,7 @@ Significant update featuring a modernized Settings menu, initial keybindings sup
 ### Fixed
 - Dedicated and Group Windows now maintain their own independent chat filters, based on the main window's filters on creation, and no longer share or overwrite each other's filter state ([#103](https://github.com/Raenore/Eavesdropper/pull/103)).
 - Chat history loaded into Dedicated and Group Windows is now filtered using that window's own filters, rather than the main window's ([#103](https://github.com/Raenore/Eavesdropper/pull/103)).
-- Sound notifications, taskbar flash, and the new message indicator on Dedicated and Group Windows are now suppressed for chat types that are filtered out on that window ([#103](https://github.com/Raenore/Eavesdropper/pull/103)).
+- **Sound notifications**, **taskbar flash**, and the **new message indicator** on Dedicated and Group Windows are now suppressed for chat types that are filtered out on that window ([#103](https://github.com/Raenore/Eavesdropper/pull/103)).
 - Prevent Dedicated and Group Windows from scrolling down automatically when they are scrolled up, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#101](https://github.com/Raenore/Eavesdropper/pull/101)).
 - Group Windows now correctly handle multi-part messages by using split markers, preventing player names from repeating unnecessarily on every line ([#76](https://github.com/Raenore/Eavesdropper/pull/76)).
 - Hyphenated RP names (e.g., Ivy-Rose) now display properly in emotes thanks to [Bitwise1057](https://github.com/Bitwise1057) ([#73](https://github.com/Raenore/Eavesdropper/pull/73) and [#74](https://github.com/Raenore/Eavesdropper/pull/74)).
