@@ -110,13 +110,21 @@ end
 -- Mouse / Interaction
 -- ============================================================
 
----Position is intentionally not persisted; dedicated frames reset on reload
+---Persist position after a drag.
 function Eavesdropper_Dedicated_FrameMixin:OnDragStop()
 	self:StopMovingOrSizing();
+	local point, _, relativePoint, x, y = self:GetPoint(1);
+	self.savedPos = { point = point, relativePoint = relativePoint, x = x, y = y };
+	DedicatedFrame:SaveToCharDB();
 end
 
----Size is intentionally not persisted; dedicated frames reset on reload
+---Persist size and position after a resize.
 function Eavesdropper_Dedicated_FrameMixin:OnResizeFinished()
+	local w, h = self:GetSize();
+	local point, _, relativePoint, x, y = self:GetPoint(1);
+	self.savedSize = { width = w, height = h };
+	self.savedPos = { point = point, relativePoint = relativePoint, x = x, y = y };
+	DedicatedFrame:SaveToCharDB();
 end
 
 -- ============================================================
@@ -225,7 +233,7 @@ function DedicatedFrame:ForEachFrame(func)
 	end
 end
 
----Stores only players/senders in saved variables.
+---Stores sender, position, and size for each visible dedicated frame.
 function DedicatedFrame:SaveToCharDB()
 	if not EavesdropperCharDB then return; end
 
@@ -236,8 +244,8 @@ function DedicatedFrame:SaveToCharDB()
 
 	local saved = {};
 	for sender, frame in pairs(self.frames) do
-		if frame and sender then
-			table.insert(saved, sender);
+		if frame then
+			table.insert(saved, { sender = sender, pos = frame.savedPos, size = frame.savedSize });
 		end
 	end
 
@@ -245,6 +253,7 @@ function DedicatedFrame:SaveToCharDB()
 end
 
 ---Restore dedicated frames from the character saved variables.
+---Handles both the legacy string format and the current table format.
 function DedicatedFrame:RestoreFromCharDB()
 	if not EavesdropperCharDB then return; end
 	if not ED.Database:GetGlobalSetting("DedicatedWindowsPersist") then return; end
@@ -252,11 +261,19 @@ function DedicatedFrame:RestoreFromCharDB()
 	local saved = EavesdropperCharDB.dedicatedFrames;
 	if not saved or #saved == 0 then return; end
 
-	for _, sender in ipairs(saved) do
+	for _, entry in ipairs(saved) do
+		local sender = type(entry) == "string" and entry or entry.sender;
 		if sender and sender ~= "" then
-			self:AddFrame(sender);
+			local frame = self:AddFrame(sender);
+			if frame and type(entry) == "table" then
+				frame:ApplySavedLayout(entry.pos, entry.size);
+			end
 		end
 	end
+
+	-- AddFrame calls SaveToCharDB before savedPos/savedSize are saved onto the frame.
+	-- Save once more now that all frames have their layout restored.
+	self:SaveToCharDB();
 end
 
 ---Returns true if a dedicated frame already exists for sender

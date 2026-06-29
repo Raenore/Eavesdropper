@@ -130,13 +130,21 @@ end
 -- Mouse / Interaction
 -- ============================================================
 
----Position is intentionally not persisted; group frames reset on reload
+---Persist position after a drag.
 function Eavesdropper_Group_FrameMixin:OnDragStop()
 	self:StopMovingOrSizing();
+	local point, _, relativePoint, x, y = self:GetPoint(1);
+	self.savedPos = { point = point, relativePoint = relativePoint, x = x, y = y };
+	GroupFrame:SaveToCharDB();
 end
 
----Size is intentionally not persisted; group frames reset on reload
+---Persist size and position after a resize.
 function Eavesdropper_Group_FrameMixin:OnResizeFinished()
+	local w, h = self:GetSize();
+	local point, _, relativePoint, x, y = self:GetPoint(1);
+	self.savedSize = { width = w, height = h };
+	self.savedPos = { point = point, relativePoint = relativePoint, x = x, y = y };
+	GroupFrame:SaveToCharDB();
 end
 
 -- ============================================================
@@ -332,6 +340,9 @@ function GroupFrame:SaveToCharDB()
 				entry.nameDisplayMode = frame.nameDisplayMode;
 			end
 
+			entry.pos = frame.savedPos;
+			entry.size = frame.savedSize;
+
 			table.insert(saved, entry);
 		end
 	end
@@ -351,14 +362,22 @@ function GroupFrame:RestoreFromCharDB()
 		if entry.name and entry.players and #entry.players > 0 then
 			self:CreateNamedFrame(entry.name, nil, entry.players);
 
-			---Apply saved nameDisplayMode override if present.
 			local frame = self.frames[entry.name];
-			if frame and entry.nameDisplayMode then
-				frame.nameDisplayMode = entry.nameDisplayMode;
-				frame:RefreshChat();
+			if frame then
+				---Apply saved nameDisplayMode override if present.
+				if entry.nameDisplayMode then
+					frame.nameDisplayMode = entry.nameDisplayMode;
+					frame:RefreshChat();
+				end
+
+				frame:ApplySavedLayout(entry.pos, entry.size);
 			end
 		end
 	end
+
+	-- CreateNamedFrame calls SaveToCharDB before savedPos/savedSize are saved onto the frame.
+	-- Save once more now that all frames have their layout restored.
+	self:SaveToCharDB();
 end
 
 ---Prompt the user for a group name before creating any frame.
