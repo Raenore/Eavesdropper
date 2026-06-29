@@ -15,6 +15,7 @@ Significant update featuring a modernized Settings menu, initial keybindings sup
   - **Toggle Settings:** Opens or closes the Eavesdropper configuration menu.
   - **Eavesdrop On (Dedicated):** Opens a Dedicated Window for your current target or mouseover unit, respecting your configured targeting priority.
 - Expanded **"Eavesdrop Group"** right-click menu options to support **Battle.net friends** across the Social Panel and Communities tabs (available when they are actively logged into a WoW character).
+- Dedicated and Group Windows now persist their **position** and **size** across reloads and restarts ([#104](https://github.com/Raenore/Eavesdropper/pull/104)).
 
 ### Changed
 - Revamped the **Settings menu** with a new **sidebar navigation** and an "About" category featuring an in-game changelog, in collaboration with [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#69](https://github.com/Raenore/Eavesdropper/pull/69) and [#86](https://github.com/Raenore/Eavesdropper/pull/86)).

@@ -300,6 +300,21 @@ function Eavesdropper_SharedFrameMixin:ShowResizeHandle(show)
 	end
 end
 
+---Applies saved position and size from a CharDB entry onto this frame so SaveToCharDB picks them up.
+---@param pos table?
+---@param size table?
+function Eavesdropper_SharedFrameMixin:ApplySavedLayout(pos, size)
+	if pos then
+		self.savedPos = pos;
+		self:ClearAllPoints();
+		self:SetPoint(pos.point, UIParent, pos.relativePoint, pos.x, pos.y);
+	end
+	if size then
+		self.savedSize = size;
+		self:SetSize(size.width, size.height);
+	end
+end
+
 ---Restore resize handle and close-button visibility from local frame state.
 ---Overridden by Eavesdropper_FrameMixin to also restore position and size from the DB.
 function Eavesdropper_SharedFrameMixin:RestoreLayout()
