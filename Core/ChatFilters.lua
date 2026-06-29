@@ -63,12 +63,11 @@ function ChatFilters:GenerateFilterListMenu(frame, menu, useFrameState)
 			end,
 			function()
 				if useFrameState then
-					local filters = frame.filters or {};
-					local value = filters[groupName];
+					frame.filters = frame.filters or {};
+					local value = frame.filters[groupName];
 					if value == nil then
 						value = ED.Constants.DEFAULT_FILTERS[groupName] or false;
 					end
-					frame.filters = frame.filters or {};
 					frame.filters[groupName] = not value;
 				else
 					local current = ED.Database:GetSetting("Filters") or {};
