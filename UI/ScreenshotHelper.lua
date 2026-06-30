@@ -17,7 +17,8 @@ function ScreenshotHelper.SetupObjectColor(object, colorize, colorValue)
 
 			local sequence = string.match(text, "|A:([^|]+)|a");
 			while sequence do
-				local atlas, height, width, offsetX, offsetY, r, g, b = string.split(":", sequence);
+				local atlas, height, width, offsetX, offsetY = string.split(":", sequence);
+				local r, g, b;
 				if colorize then
 					local vertexColor = math.floor(colorValue * 255);
 					r, g, b = vertexColor, vertexColor, vertexColor;
@@ -32,7 +33,8 @@ function ScreenshotHelper.SetupObjectColor(object, colorize, colorValue)
 
 			sequence = string.match(text, "|T([^|]+)|t");
 			while sequence do
-				local path, height, width, offsetX, offsetY, textureWidth, textureHeight, leftTexel, rightTexel, topTexel, bottomTexel, r, g, b = string.split(":", sequence);
+				local path, height, width, offsetX, offsetY, textureWidth, textureHeight, leftTexel, rightTexel, topTexel, bottomTexel = string.split(":", sequence);
+				local r, g, b;
 				if colorize then
 					local vertexColor = math.floor(colorValue * 255);
 					r, g, b = vertexColor, vertexColor, vertexColor;
