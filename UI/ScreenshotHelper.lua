@@ -115,22 +115,32 @@ function ScreenshotHelper.SetAlphaChannelMode(alphaChannelMode)
 		ED.Settings:Init();
 	end
 
-	ED.SettingsFrame:Show();
-	ED.SettingsFrame:SetAlphaChannelMode(alphaChannelMode);
+	if ED.SettingsFrame then
+		if alphaChannelMode then
+			ED.SettingsFrame:Show();
+		end
+		ED.SettingsFrame:SetAlphaChannelMode(alphaChannelMode);
+	end
 
 	if ED.Frame:IsVisible() then
 		ED.Frame:SetAlphaChannelMode(alphaChannelMode);
+	else
+		ED.Frame:SetAlphaChannelMode(nil);
 	end
 
 	ED.DedicatedFrame:ForEachFrame(function(frame)
 		if frame:IsVisible() then
 			frame:SetAlphaChannelMode(alphaChannelMode);
+		else
+			frame:SetAlphaChannelMode(nil);
 		end
 	end);
 
 	ED.GroupFrame:ForEachFrame(function(frame)
 		if frame:IsVisible() then
 			frame:SetAlphaChannelMode(alphaChannelMode);
+		else
+			frame:SetAlphaChannelMode(nil);
 		end
 	end);
 
