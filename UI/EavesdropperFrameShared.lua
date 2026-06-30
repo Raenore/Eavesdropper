@@ -82,6 +82,10 @@ function Eavesdropper_SharedFrameMixin:OnHideInstanceFrame()
 	if frameName and _G[frameName] == self then
 		_G[frameName] = nil;
 	end
+
+	if self.alphaChannelMode and self.SetAlphaChannelMode then
+		self:SetAlphaChannelMode(nil);
+	end
 end
 
 ---Override in concrete mixins to remove self from the owning frame-manager table.
@@ -485,4 +489,30 @@ function Eavesdropper_SharedFrameMixin:TryAddMessage(entry)
 	end
 
 	self:AddMessage(entry);
+end
+
+-- ============================================================
+-- Screenshot Helper
+-- ============================================================
+
+function Eavesdropper_SharedFrameMixin:SetAlphaChannelMode(mode)
+	-- mode 1: All Widgets turn black + white fullscreen backdrop
+	-- mode 2: Widgets use original colors + black fullscreen backdrop
+	-- other : Disable
+
+	self.alphaChannelMode = mode;
+
+	local frameStrata;
+
+	ED.ScreenshotHelper.SetupObjectColorByMode(self, mode);
+
+	if mode == 1 or mode == 2 then
+		frameStrata = "MEDIUM";
+		self:Raise();
+	else
+		frameStrata = "BACKGROUND";
+		self:ApplyThemeColors();
+	end
+
+	self:SetFrameStrata(frameStrata);
 end

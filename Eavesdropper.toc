@@ -101,6 +101,7 @@ UI\ChangelogMarkdown.lua
 UI\SettingsElements.lua
 UI\SettingsFrame.lua
 UI\SettingsFrame.xml
+UI\ScreenshotHelper.lua
 
 Deprecated.lua
 Eavesdropper.lua

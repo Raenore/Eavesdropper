@@ -412,6 +412,7 @@ stds.wow = {
 
 		Menu = {
 			fields = {
+				"GetManager",
 				"ModifyMenu",
 			},
 		},

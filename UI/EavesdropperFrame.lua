@@ -77,8 +77,10 @@ function Eavesdropper_FrameMixin:OnLoad()
 	end);
 end
 
--- Unnecessary, for now.
 function Eavesdropper_FrameMixin:OnHide()
+	if self.alphaChannelMode and self.SetAlphaChannelMode then
+		self:SetAlphaChannelMode(nil);
+	end
 end
 
 -- ============================================================
