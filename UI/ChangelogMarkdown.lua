@@ -6,6 +6,20 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Advanced Formatting can now use its **own name format in the main Blizzard chat window**, separate from the one used by Eavesdropper's own windows ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).
+  - **Override Name Display:** Toggles whether Advanced Formatting in the main chat window uses its own name format instead of your "Name Display" setting.
+  - **Adv. Formatting Name Display:** Choose between **Full Name**, **First Name**, or **Original (OOC) Name** for the main chat window. This only applies while "Override Name Display" is enabled, and falls back to the original (OOC) name when no suitable RP addon (TRP, MRP, XRP) is loaded.
+  - This lets you keep, for example, full RP names in your Eavesdropper windows while the main chat window stays on first names only.
+
+### Changed
+- Reorganized the **Adv. Formatting** settings category with a new **"Main Chat"** section, which now holds the "Apply to Main Chat" option alongside the new name display override options ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).
+
+### Fixed
+- Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).
+
 ## [0.5.1] - 2026-08-04
 Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MSP initialization during login, and fixing keyword token parsing across non-TRP3 RP addons.
 
