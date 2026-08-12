@@ -9,12 +9,26 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added **Import & Export**, which lets you move your setup (profile & global settings) in and out of the game as a shareable text string ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
+  - **Export Settings:** Exports either the current profile or your global settings to a text string. Press **Ctrl+C** to copy it, then paste it wherever you want to keep or share it. Each is exported separately.
+  - **Import Settings:** Paste a string to bring settings back in. Eavesdropper recognizes on its own whether it holds a profile or your global settings, fills in the profile name from the string, and lets you import it under another name or overwrite an existing profile.
+  - Every string is checked before anything is written. Damaged, incomplete or unrecognized strings are refused with an explanation of what went wrong, and any individual settings that could not be read are skipped and reported instead of ending up in your profile.
+  - Strings created by a newer version of Eavesdropper are refused rather than imported halfway.
+  - The encoding used for these strings is adapted from [Total RP 3](https://www.curseforge.com/wow/addons/total-rp-3).
+- Added a **French (frFR) translation**, thanks to [Daen](https://bsky.app/profile/rake.dawnsong.me) ([#123](https://github.com/Raenore/Eavesdropper/pull/123)).
+  - Translations for other languages are very welcome. If you would like to help translate Eavesdropper, open an issue or pull request over on [GitHub](https://github.com/Raenore/Eavesdropper).
 - Advanced Formatting can now use its **own name format in the main Blizzard chat window**, separate from the one used by Eavesdropper's own windows ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).
   - **Override Name Display:** Toggles whether Advanced Formatting in the main chat window uses its own name format instead of your "Name Display" setting.
   - **Adv. Formatting Name Display:** Choose between **Full Name**, **First Name**, or **Original (OOC) Name** for the main chat window. This only applies while "Override Name Display" is enabled, and falls back to the original (OOC) name when no suitable RP addon (TRP, MRP, XRP) is loaded.
   - This lets you keep, for example, full RP names in your Eavesdropper windows while the main chat window stays on first names only.
 
 ### Changed
+- Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
+  - Hovering over any profile in the dropdown reveals its own options: **Profile Options**, holding "Copy Profile" and "Rename Profile", and **Delete Profile**.
+  - **New Profile** and **Reset Active Profile** are now actions within the dropdown itself, replacing the separate "New Profile", "Copy From" and "Delete Profile" options.
+  - **Copy Profile** creates a new profile holding a copy of that profile's settings and switches to it, instead of copying another profile's settings over the one you are currently using.
+  - The **Default** profile is now guaranteed to always exist and can no longer be renamed or deleted.
+  - You can now delete the profile you are currently using. Any character using it is switched back to **Default**.
 - Reorganized the **Adv. Formatting** settings category with a new **"Main Chat"** section, which now holds the "Apply to Main Chat" option alongside the new name display override options ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).
 
 ### Fixed
