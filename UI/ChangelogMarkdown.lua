@@ -24,6 +24,8 @@ All notable changes to this project will be documented in this file.
 - The **main history window** now has a **New Message Indicator**, the same 'golden flash' along the bottom edge that Dedicated and Group Windows already use ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
   - Can be toggled under **Appearance > Display**. It behaves exactly like the one for Dedicated & Group Windows and is on by default and a global setting.
   - Small recap: Clears automatically after 10 seconds or immediately if you hover over the window, and does not show for your own messages.
+- Group Windows (**Settings > Groups**) now have their own independent **History Size** setting (ranging from 10–1000, default 100) to support larger history thresholds than the previous 300-message cap ([#127](https://github.com/Raenore/Eavesdropper/pull/127)).
+  - If your general History Size was set higher than 100 prior to this update, this new setting automatically scales up to match it so your history limit is not unexpectedly lowered.
 
 ### Changed
 - Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
@@ -41,8 +43,8 @@ All notable changes to this project will be documented in this file.
 - **RP Names now update within about 5 seconds** (instead of 10 seconds) across every open window when changes are picked up by your RP addon ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
   - This was previously tied to the timestamp update every 10 seconds, but is now decoupled from that.
   - If RP data came in for several people at once, like when you enter a busy RP area, Eavesdropper now collects and draws these together in batches to prevent unnecessary flickering and frame drops.
-- **Group Windows with several different people talking will now refresh noticeably faster** ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
-  - RP name, color, etc. caching has been improved, Group Windows will see a noticeable benefit here. Measured on a 300-line window with 20 different speakers, refreshing time nearly halved.
+- **Significantly optimized Group Window rendering performance**, especially when managing groups with many active members or heavy chat histories ([#126](https://github.com/Raenore/Eavesdropper/pull/126) and [#127](https://github.com/Raenore/Eavesdropper/pull/127)).
+  - Caching for RP names, colors, and player data has been rewritten. Group windows now refresh up to twice as fast during active conversations, adding/removing members, or changing chat filters.
 
 ### Fixed
 - Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).
