@@ -21,6 +21,9 @@ All notable changes to this project will be documented in this file.
   - **Override Name Display:** Toggles whether Advanced Formatting in the main chat window uses its own name format instead of your "Name Display" setting.
   - **Adv. Formatting Name Display:** Choose between **Full Name**, **First Name**, or **Original (OOC) Name** for the main chat window. This only applies while "Override Name Display" is enabled, and falls back to the original (OOC) name when no suitable RP addon (TRP, MRP, XRP) is loaded.
   - This lets you keep, for example, full RP names in your Eavesdropper windows while the main chat window stays on first names only.
+- The **main history window** now has a **New Message Indicator**, the same 'golden flash' along the bottom edge that Dedicated and Group Windows already use ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
+  - Can be toggled under **Appearance > Display**. It behaves exactly like the one for Dedicated & Group Windows and is on by default and a global setting.
+  - Small recap: Clears automatically after 10 seconds or immediately if you hover over the window, and does not show for your own messages.
 
 ### Changed
 - Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
@@ -30,9 +33,21 @@ All notable changes to this project will be documented in this file.
   - The **Default** profile is now guaranteed to always exist and can no longer be renamed or deleted.
   - You can now delete the profile you are currently using. Any character using it is switched back to **Default**.
 - Reorganized the **Adv. Formatting** settings category with a new **"Main Chat"** section, which now holds the "Apply to Main Chat" option alongside the new name display override options ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).
+- Eavesdropper now **redraws its timestamps every minute** instead of every 10 seconds, and stops redrawing entirely after a chat is considered 'frozen' (30 minutes after the last message) ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
+  - Quick Notes: This should have minimal to no visual user changes, however you should notice **fewer brief frame drops with several windows open, especially in busy RP areas**.
+  - Timestamps were already shown in whole minutes, which means on 10 seconds they were being redrawn way too often for no visual gain.
+  - Messages older than 30 minutes no longer change at all, given they (already) became fixed HH:MM timestamps. Prior these windows kept refreshing 6 times per minute for no reason whatsoever. New messages will 'revive' these windows.
+  - A small trade-off is that the timestamp can sit up to a minute behind, which means if a line reads "5m" it may sometimes be closer to six.
+- **RP Names now update within about 5 seconds** (instead of 10 seconds) across every open window when changes are picked up by your RP addon ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
+  - This was previously tied to the timestamp update every 10 seconds, but is now decoupled from that.
+  - If RP data came in for several people at once, like when you enter a busy RP area, Eavesdropper now collects and draws these together in batches to prevent unnecessary flickering and frame drops.
+- **Group Windows with several different people talking will now refresh noticeably faster** ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
+  - RP name, color, etc. caching has been improved, Group Windows will see a noticeable benefit here. Measured on a 300-line window with 20 different speakers, refreshing time nearly halved.
 
 ### Fixed
 - Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).
+- The **New Message Indicator** setting for **Group Windows** now actually turns the indicator off when it is unchecked ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
+- Timestamps and RP names in the **main history window** now keep updating while you are scrolled up, instead of freezing until you returned to the bottom ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
 
 ## [0.5.1] - 2026-08-04
 Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MSP initialization during login, and fixing keyword token parsing across non-TRP3 RP addons.
