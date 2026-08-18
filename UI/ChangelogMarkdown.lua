@@ -29,12 +29,11 @@ All notable changes to this project will be documented in this file.
 - Added a **Mentions History** window that lists every message aimed at you, whether a keyword hit or a Blizzard emote (e.g. /poke, /wave) directed at you, no matter which channel it came in on ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
   - Open it via /ed mentions, **Shift-Right-Click** on the minimap icon or addon compartment, or the new **"Toggle Mentions"** option on your own unit popup menu.
   - Comes with its own channel filters, same as your other windows, plus a **Mention Types** filter to show or hide keyword hits and emotes independently of each other.
-  - New **Settings > Mentions** category: Enable, New Message Indicator, Unit Popups, and History Size (10–1000).
-  - Unlike Dedicated and Group Windows, the Mentions window's filters, position and size are remembered across reloads, the same as the main window.
+  - New **Settings > Mentions** category: Enable, New Message Indicator, Unit Popups, History Size (10–1000), and Font Size.
 - Added a **Jump to Context** icon to the start of each line in Mentions and Group Windows, which opens (or focuses) that sender's Dedicated Window and scrolls straight to that message, with the surrounding conversation visible above it ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
   - On by default for Mentions, off by default for Group Windows. You can toggle either from their respective Settings tab or directly from that window's own title-bar dropdown.
 - Every window's title-bar dropdown now has its own **Settings** entry, which jumps straight to that window's own category (Dedicated, Groups, or Mentions) instead of just opening the general Settings panel ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
-- Group Windows' **Name Display** option gained a **"Follow Profile Setting"** choice, letting a group explicitly go back to following your profile-wide Name Display setting after it had been given its own override ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
+- Both **Group and Dedicated Windows'** **Name Display** option now include per-window overrides (Full Name / First Name / Original Name) plus a **"Follow Profile Setting"** choice to go back to following your profile-wide Name Display setting ([#131](https://github.com/Raenore/Eavesdropper/pull/131) for Group; [#133](https://github.com/Raenore/Eavesdropper/pull/133) extends it to Dedicated).
 
 ### Changed
 - Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
@@ -57,6 +56,11 @@ All notable changes to this project will be documented in this file.
 - **Sender names in Group Windows are now clickable**, just like the new Mentions window: left-click starts a whisper, right-click opens the game's own context menu for that player (Eavesdrop On, Eavesdrop Group, whisper, invite, trade, ignore, Copy Character Name, and more) ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
   - A subtle underline appears when hovering a clickable name, so it doesn't look like the rest of the message.
 - **Shift-Right-Click** on the minimap icon or addon compartment now opens the Mentions window instead of toggling the main Eavesdropper window, while **Shift-Left-Click** still toggles it as before ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
+- **Dedicated and Group Windows now remember their channel filters, Font Size, Enable Mouse, Lock Window/Scroll/Title Bar, and Hide Close Button settings** across game restarts and UI reloads, the same as their position and size already did ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).
+  - Reopening a window mid-session, closing it then reopening via "Eavesdrop On" or the same group name, now restores everything from earlier that session, instead of resetting to defaults.
+  - Reopening a Group Window under a name that matches one closed earlier this session now asks whether to restore that group's membership and settings, rather than silently creating a blank group.
+  - Group names are now matched case-insensitively for restore and duplicate-detection purposes ("Demo", "demo", and "DEMO" are treated as the same group), while the group is still called whatever casing you actually typed.
+- **Mentions window's Enable Mouse, Lock Window/Scroll/Title Bar, Hide Close Button, and Font Size now persist to your profile**, the same as the main window's, instead of resetting every session ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).
 
 ### Fixed
 - Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).
@@ -67,6 +71,10 @@ All notable changes to this project will be documented in this file.
 - The **Unit Popups** setting under Group Windows now actually takes effect, instead of doing nothing while the "Eavesdrop Group" option kept appearing on unit popup menus regardless ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
 - Dedicated Windows no longer offer a "Rename" option in their title-bar menu, since it never worked and would have thrown an error if clicked; renaming was always meant to be Group Windows-only, as Dedicated windows are already named after the character they follow ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
 - Right-clicking the minimap icon (no shift) or the TRP3 toolbar button to jump to Profiles no longer closes an already-open Settings panel showing a different tab, and now navigates to Profiles instead ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
+
+### Removed
+- Removed the **"Save Windows"** and **"Save Groups"** settings. Dedicated and Group Windows persisting across reload/restart is no longer optional ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).
+  - This only changes behavior for players who had explicitly turned one of these off; those windows will start persisting again.
 
 ## [0.5.1] - 2026-08-04
 Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MSP initialization during login, and fixing keyword token parsing across non-TRP3 RP addons.
