@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
   - New **Settings > Mentions** category: Enable, New Message Indicator, Unit Popups, History Size (10–1000), and Font Size.
 - Added a **Jump to Context** icon to the start of each line in Mentions and Group Windows, which opens (or focuses) that sender's Dedicated Window and scrolls straight to that message, with the surrounding conversation visible above it ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
   - On by default for Mentions, off by default for Group Windows. You can toggle either from their respective Settings tab or directly from that window's own title-bar dropdown.
+  - The icon stays clickable even when that window's **Enable Mouse** is off. A **Require Enable Mouse** suboption, in the same title-bar dropdown under Jump to Context, makes it follow Enable Mouse instead, same as every other clickable link ([#138](https://github.com/Raenore/Eavesdropper/pull/138)).
 - Every window's title-bar dropdown now has its own **Settings** entry, which jumps straight to that window's own category (Dedicated, Groups, or Mentions) instead of just opening the general Settings panel ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
 - Both **Group and Dedicated Windows'** **Name Display** option now include per-window overrides (Full Name / First Name / Original Name) plus a **"Follow Profile Setting"** choice to go back to following your profile-wide Name Display setting ([#131](https://github.com/Raenore/Eavesdropper/pull/131) for Group; [#133](https://github.com/Raenore/Eavesdropper/pull/133) extends it to Dedicated).  
 
@@ -67,6 +68,7 @@ All notable changes to this project will be documented in this file.
 - The **Unit Popups** setting under Group Windows now actually takes effect, instead of doing nothing while the "Eavesdrop Group" option kept appearing on unit popup menus regardless ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
 - Dedicated Windows no longer offer a "Rename" option in their title-bar menu, since it never worked and would have thrown an error if clicked; renaming was always meant to be Group Windows-only, as Dedicated windows are already named after the character they follow ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
 - Right-clicking the minimap icon (no shift) or the TRP3 toolbar button to jump to Profiles no longer closes an already-open Settings panel showing a different tab, and now navigates to Profiles instead ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
+- **Format NPC Dialogue** is now automatically disabled when the **Total RP 3: RP Name in Quest Text** addon is set to modify NPC Speech, preventing both addons from renaming the same NPC dialogue at once ([#135](https://github.com/Raenore/Eavesdropper/pull/135)).  
 
 ### Removed
 - Removed the **"Save Windows"** and **"Save Groups"** settings. Dedicated and Group Windows persisting across reload/restart is no longer optional ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
