@@ -39,6 +39,9 @@ All notable changes to this project will be documented in this file.
   - **Add Target** quickly adds your current target to the group, when you have one and they aren't already a member.
   - Each row is a checkbox: uncheck to remove that player from the group, check again to re-add them.
   - A per-row button opens a Dedicated Window for that player directly from the list.
+- Every window's chat history now has a **slim scrollbar**, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#134](https://github.com/Raenore/Eavesdropper/pull/134)).
+  - Sits flush against the edge of the message area and only appears once there is enough history to actually scroll.
+  - Stays a thin sliver at rest and thickens on hover or while dragging, so it stays out of the way of the text without disappearing entirely.
 
 ### Changed
 - Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).
