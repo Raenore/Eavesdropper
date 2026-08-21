@@ -4,85 +4,42 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-xx  
+Major feature update introducing Import & Export, a new Mentions History window, and a French translation, alongside a Group Windows Player List, wide-ranging performance improvements, and plenty of interface polish.  
+
 ### Added
-- Added **Import & Export**, which lets you move your setup (profile & global settings) in and out of the game as a shareable text string ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).  
-  - **Export Settings:** Exports either the current profile or your global settings to a text string. Press **Ctrl+C** to copy it, then paste it wherever you want to keep or share it. Each is exported separately.  
-  - **Import Settings:** Paste a string to bring settings back in. Eavesdropper recognizes on its own whether it holds a profile or your global settings, fills in the profile name from the string, and lets you import it under another name or overwrite an existing profile.  
-  - Every string is checked before anything is written. Damaged, incomplete or unrecognized strings are refused with an explanation of what went wrong, and any individual settings that could not be read are skipped and reported instead of ending up in your profile.  
-  - Strings created by a newer version of Eavesdropper are refused rather than imported halfway.  
-  - The encoding used for these strings is adapted from [Total RP 3](https://www.curseforge.com/wow/addons/total-rp-3).  
+- Added **Import & Export**, which lets you move your setup (profile & global settings) in and out of the game as a shareable text string, encoding adapted from [Total RP 3](https://www.curseforge.com/wow/addons/total-rp-3) ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).  
+  - Export either your current profile or your global settings separately to a string; paste one back in and Eavesdropper recognizes what it holds, checks it's valid, and lets you import it under another name or overwrite an existing profile.  
 - Added a **French (frFR) translation**, thanks to [Daen](https://bsky.app/profile/rake.dawnsong.me) ([#123](https://github.com/Raenore/Eavesdropper/pull/123)).  
   - Translations for other languages are very welcome. If you would like to help translate Eavesdropper, open an issue or pull request over on [GitHub](https://github.com/Raenore/Eavesdropper).  
-- Advanced Formatting can now use its **own name format in the main Blizzard chat window**, separate from the one used by Eavesdropper's own windows ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).  
-  - **Override Name Display:** Toggles whether Advanced Formatting in the main chat window uses its own name format instead of your "Name Display" setting.  
-  - **Adv. Formatting Name Display:** Choose between **Full Name**, **First Name**, or **Original (OOC) Name** for the main chat window. This only applies while "Override Name Display" is enabled, and falls back to the original (OOC) name when no suitable RP addon (TRP, MRP, XRP) is loaded.  
-  - This lets you keep, for example, full RP names in your Eavesdropper windows while the main chat window stays on first names only.  
-- The **main history window** now has a **New Message Indicator**, the same 'golden flash' along the bottom edge that Dedicated and Group Windows already use ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).  
-  - Can be toggled under **Appearance > Display**. It behaves exactly like the one for Dedicated & Group Windows and is on by default and a global setting.
-  - Small recap: Clears automatically after 10 seconds or immediately if you hover over the window, and does not show for your own messages.
-- Group Windows (**Settings > Groups**) now have their own independent **History Size** setting (ranging from 10–1000, default 100) to support larger history thresholds than the previous 300-message cap ([#127](https://github.com/Raenore/Eavesdropper/pull/127)).  
-  - If your general History Size was set higher than 100 prior to this update, this new setting automatically scales up to match it so your history limit is not unexpectedly lowered.
-- Added a **Mentions History** window that lists every message aimed at you, whether a keyword hit or a Blizzard emote (e.g. /poke, /wave) directed at you, no matter which channel it came in on ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-  - Open it via /ed mentions, **Shift-Right-Click** on the minimap icon or addon compartment, or the new **"Toggle Mentions"** option on your own unit popup menu.
-  - Comes with its own channel filters, same as your other windows, plus a **Mention Types** filter to show or hide keyword hits and emotes independently of each other.
-  - New **Settings > Mentions** category: Enable, New Message Indicator, Unit Popups, History Size (10–1000), and Font Size.
-- Added a **Jump to Context** icon to the start of each line in Mentions and Group Windows, which opens (or focuses) that sender's Dedicated Window and scrolls straight to that message, with the surrounding conversation visible above it ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-  - On by default for Mentions, off by default for Group Windows. You can toggle either from their respective Settings tab or directly from that window's own title-bar dropdown.
-  - The icon stays clickable even when that window's **Enable Mouse** is off. A **Require Enable Mouse** suboption, in the same title-bar dropdown under Jump to Context, makes it follow Enable Mouse instead, same as every other clickable link ([#138](https://github.com/Raenore/Eavesdropper/pull/138)).
-- Every window's title-bar dropdown now has its own **Settings** entry, which jumps straight to that window's own category (Dedicated, Groups, or Mentions) instead of just opening the general Settings panel ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- Both **Group and Dedicated Windows'** **Name Display** option now include per-window overrides (Full Name / First Name / Original Name) plus a **"Follow Profile Setting"** choice to go back to following your profile-wide Name Display setting ([#131](https://github.com/Raenore/Eavesdropper/pull/131) and [#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
-- Every window's title bar now shows a small icon before its name, a different one for Main, Dedicated, Group, and Mentions windows, and the close/resize buttons were redrawn as crisper vector icons ([#139](https://github.com/Raenore/Eavesdropper/pull/139)).  
-- Added a **Player List** entry to Group Windows' title-bar dropdown, listing every player currently tracked by that group, sorted by RP first name ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).  
-  - **Add Target** quickly adds your current target to the group, when you have one, they're a player, and they aren't already a member.
-  - Each row is a checkbox: uncheck to remove that player from the group, check again to re-add them.
-  - A per-row button, marked with its own distinct icon, opens a Dedicated Window for that player directly from the list.
-- Every window's chat history now has a **slim scrollbar**, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#134](https://github.com/Raenore/Eavesdropper/pull/134)).  
-  - Sits flush against the edge of the message area and only appears once there is enough history to actually scroll.
-  - Stays a thin sliver at rest and thickens on hover or while dragging, so it stays out of the way of the text without disappearing entirely.
+- Advanced Formatting can now use its **own name format** (Full Name / First Name / Original Name) **in the main Blizzard chat window**, independent of your regular "Name Display" setting, via a new "Main Chat" section in its settings ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).  
+- The **main history window** now has a **New Message Indicator**, the same 'golden flash' that Dedicated and Group Windows already use, on by default under **Appearance > Display** ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).  
+- Group Windows now have their own independent **History Size** setting (10–1000, default 100), instead of sharing the previous 300-message cap ([#127](https://github.com/Raenore/Eavesdropper/pull/127)).  
+- Added a **Mentions History** window that lists every message aimed at you, whether a keyword hit or a Blizzard emote (e.g. /poke, /wave), across every channel, with its own filters and a new **Settings > Mentions** category ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
+  - Open it via /ed mentions, **Shift-Right-Click** on the minimap icon or addon compartment, or **"Toggle Mentions"** on your own unit popup menu.  
+- Added a **Jump to Context** icon to Mentions and Group Windows, which opens (or focuses) that sender's Dedicated Window and scrolls straight to that message ([#131](https://github.com/Raenore/Eavesdropper/pull/131) and [#138](https://github.com/Raenore/Eavesdropper/pull/138)).  
+- Both **Group and Dedicated Windows'** **Name Display** option now include per-window overrides (Full Name / First Name / Original Name) plus a **"Follow Profile Setting"** choice ([#131](https://github.com/Raenore/Eavesdropper/pull/131) and [#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
+- Every window's title bar now shows a small icon before its name, matched by an icon next to that window's own Settings category, and the close/resize buttons were redrawn as crisper vector icons ([#139](https://github.com/Raenore/Eavesdropper/pull/139) and [#143](https://github.com/Raenore/Eavesdropper/pull/143)).  
+- Added a **Player List** entry to Group Windows' title-bar dropdown, listing every tracked player with a quick **Add Target**, per-row checkboxes to add/remove members, and a per-row button to open that player's Dedicated Window ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).  
+- Every window's chat history now has a **slim scrollbar** that thickens on hover, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#134](https://github.com/Raenore/Eavesdropper/pull/134)).  
 
 ### Changed
-- Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown, which now holds all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).  
-  - Hovering over any profile in the dropdown reveals its own options: **Profile Options**, holding "Copy Profile" and "Rename Profile", and **Delete Profile**.  
-  - **New Profile** and **Reset Active Profile** are now actions within the dropdown itself, replacing the separate "New Profile", "Copy From" and "Delete Profile" options.  
-  - **Copy Profile** creates a new profile holding a copy of that profile's settings and switches to it, instead of copying another profile's settings over the one you are currently using.  
-  - The **Default** profile is now guaranteed to always exist and can no longer be renamed or deleted.  
-  - You can now delete the profile you are currently using. Any character using it is switched back to **Default**.  
-- Reorganized the **Adv. Formatting** settings category with a new **"Main Chat"** section, which now holds the "Apply to Main Chat" option alongside the new name display override options ([#115](https://github.com/Raenore/Eavesdropper/pull/115)).  
-- Eavesdropper now **redraws its timestamps every minute** instead of every 10 seconds, and stops redrawing entirely after a chat is considered 'frozen' (30 minutes after the last message) ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).  
-  - Quick Notes: This should have minimal to no visual user changes, however you should notice **fewer brief frame drops with several windows open, especially in busy RP areas**.
-  - Timestamps were already shown in whole minutes, which means on 10 seconds they were being redrawn way too often for no visual gain.
-  - Messages older than 30 minutes no longer change at all, given they (already) became fixed HH:MM timestamps. Prior these windows kept refreshing 6 times per minute for no reason whatsoever. New messages will 'revive' these windows.
-  - A small trade-off is that the timestamp can sit up to a minute behind, which means if a line reads "5m" it may sometimes be closer to six.
-- **RP Names now update within about 5 seconds** (instead of 10 seconds) across every open window when changes are picked up by your RP addon ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
-  - This was previously tied to the timestamp update every 10 seconds, but is now decoupled from that.
-  - If RP data came in for several people at once, like when you enter a busy RP area, Eavesdropper now collects and draws these together in batches to prevent unnecessary flickering and frame drops.
-- **Significantly optimized Group Window rendering performance**, especially when managing groups with many active members or heavy chat histories ([#126](https://github.com/Raenore/Eavesdropper/pull/126) and [#127](https://github.com/Raenore/Eavesdropper/pull/127)).  
-  - Caching for RP names, colors, and player data has been rewritten. Group windows now refresh up to twice as fast during active conversations, adding/removing members, or changing chat filters.  
-- **Sender names in Group Windows are now clickable**, just like the new Mentions window: left-click starts a whisper, right-click opens the game's own context menu for that player (Eavesdrop On, Eavesdrop Group, whisper, invite, trade, ignore, Copy Character Name, and more) ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-  - A subtle underline appears when hovering a clickable name, so it doesn't look like the rest of the message.
+- Reworked the **Profiles** settings category around a single **Manage Profiles** dropdown holding all profile management in one place ([#119](https://github.com/Raenore/Eavesdropper/pull/119)).  
+  - The **Default** profile can no longer be renamed or deleted, and you can now delete the profile you're currently using, any character on it switches back to Default.  
+- Improved overall responsiveness across every window, timestamps, RP name updates, and Group Window rendering are all faster and lighter, especially with several windows open in busy RP areas ([#126](https://github.com/Raenore/Eavesdropper/pull/126) and [#127](https://github.com/Raenore/Eavesdropper/pull/127)).  
+- **Sender names in Group Windows are now clickable**, just like the Mentions window: left-click starts a whisper, right-click opens the game's own context menu for that player ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
 - **Shift-Right-Click** on the minimap icon or addon compartment now opens the Mentions window instead of toggling the main Eavesdropper window, while **Shift-Left-Click** still toggles it as before ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- **Dedicated and Group Windows now remember their channel filters, Font Size, Enable Mouse, Lock Window/Scroll/Title Bar, and Hide Close Button settings** across game restarts and UI reloads, the same as their position and size already did ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
-  - Reopening a window mid-session, closing it then reopening via "Eavesdrop On" or the same group name, now restores everything from earlier that session, instead of resetting to defaults.
-  - Reopening a Group Window under a name that matches one closed earlier this session now asks whether to restore that group's membership and settings, rather than silently creating a blank group.
-  - Group names are now matched case-insensitively for restore and duplicate-detection purposes ("Demo", "demo", and "DEMO" are treated as the same group), while the group is still called whatever casing you actually typed.
-- **Mentions window's Enable Mouse, Lock Window/Scroll/Title Bar, Hide Close Button, and Font Size now persist to your profile**, the same as the main window's, instead of resetting every session ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
-- **Dedicated, Groups, and Mentions** settings categories now show a small icon next to their subtitle header, matching the icon used in that window's own title bar ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).  
+- **Dedicated, Group, and Mentions windows now remember their settings** (filters, font size, and mouse/lock options) across game restarts and UI reloads, the same as their position and size already did, the separate "Save Windows"/"Save Groups" toggles are gone, as this is no longer optional ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
 
 ### Fixed
-- Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).  
-- The **New Message Indicator** setting for **Group Windows** now actually turns the indicator off when it is unchecked ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
-- Timestamps and RP names in the **main history window** now keep updating while you are scrolled up, instead of freezing until you returned to the bottom ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).
-- Settings changes (e.g. Timestamp Brackets, Name Display, RP Name Colors) now immediately apply to every open Dedicated and Group window, instead of only the main window until you reopened them or ran /reload ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- Group Windows' Name Display no longer stays frozen to whatever your profile setting was when the window was created, and now follows profile changes live unless you've explicitly given that group its own override ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- The **Unit Popups** setting under Group Windows now actually takes effect, instead of doing nothing while the "Eavesdrop Group" option kept appearing on unit popup menus regardless ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- Dedicated Windows no longer offer a "Rename" option in their title-bar menu, since it never worked and would have thrown an error if clicked; renaming was always meant to be Group Windows-only, as Dedicated windows are already named after the character they follow ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- Right-clicking the minimap icon (no shift) or the TRP3 toolbar button to jump to Profiles no longer closes an already-open Settings panel showing a different tab, and now navigates to Profiles instead ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
-- **Format NPC Dialogue** is now automatically disabled when the **Total RP 3: RP Name in Quest Text** addon is set to modify NPC Speech, preventing both addons from renaming the same NPC dialogue at once ([#135](https://github.com/Raenore/Eavesdropper/pull/135)).  
+- Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).  
+- The **New Message Indicator** setting for **Group Windows** now actually turns the indicator off when it is unchecked ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).  
+- Timestamps and RP names in the **main history window** now keep updating while you are scrolled up, instead of freezing until you returned to the bottom ([#126](https://github.com/Raenore/Eavesdropper/pull/126)).  
+- Settings changes now immediately apply to every open Dedicated and Group window, instead of requiring a reopen or /reload ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
+- The **Unit Popups** setting under Group Windows now actually takes effect, instead of doing nothing while "Eavesdrop Group" kept appearing regardless ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
+- Dedicated Windows no longer offer a broken "Rename" option in their title-bar menu; renaming was always meant to be Group Windows-only ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).  
+- **Format NPC Dialogue** is now automatically disabled when **Total RP 3: RP Name in Quest Text** is set to modify NPC Speech, preventing both addons from renaming the same dialogue at once ([#135](https://github.com/Raenore/Eavesdropper/pull/135)).  
 - Emotes no longer lose their **"'s "/", " prefix** (e.g. "'s hand trembles" or ", still smiling,") when another addon like Total RP 3 strips it before Eavesdropper sees the message ([#142](https://github.com/Raenore/Eavesdropper/pull/142)).  
-
-### Removed
-- Removed the **"Save Windows"** and **"Save Groups"** settings. Dedicated and Group Windows persisting across reload/restart is no longer optional ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).  
-  - This only changes behavior for players who had explicitly turned one of these off; those windows will start persisting again.  
 
 ## [0.5.1] - 2026-08-04  
 Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MSP initialization during login, and fixing keyword token parsing across non-TRP3 RP addons.  
@@ -177,7 +134,8 @@ Significant feature update introducing Group Windows, session persistence for de
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.5.1...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/Raenore/Eavesdropper/compare/0.5.1...0.6.0
 [0.5.1]: https://github.com/Raenore/Eavesdropper/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Raenore/Eavesdropper/compare/0.4.0...0.4.1
