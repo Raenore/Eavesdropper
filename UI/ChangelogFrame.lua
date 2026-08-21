@@ -24,6 +24,7 @@ local styleList = {
 };
 
 local supportedURL = {
+	"github.com/Raenore/Eavesdropper",
 	"Eavesdropper/wiki",
 	"curseforge.com/wow/addons/",
 };
