@@ -35,10 +35,11 @@ All notable changes to this project will be documented in this file.
   - The icon stays clickable even when that window's **Enable Mouse** is off. A **Require Enable Mouse** suboption, in the same title-bar dropdown under Jump to Context, makes it follow Enable Mouse instead, same as every other clickable link ([#138](https://github.com/Raenore/Eavesdropper/pull/138)).
 - Every window's title-bar dropdown now has its own **Settings** entry, which jumps straight to that window's own category (Dedicated, Groups, or Mentions) instead of just opening the general Settings panel ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
 - Both **Group and Dedicated Windows'** **Name Display** option now include per-window overrides (Full Name / First Name / Original Name) plus a **"Follow Profile Setting"** choice to go back to following your profile-wide Name Display setting ([#131](https://github.com/Raenore/Eavesdropper/pull/131) and [#133](https://github.com/Raenore/Eavesdropper/pull/133)).
-- Added a **Player List** entry to Group Windows' title-bar dropdown, listing every player currently tracked by that group ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).
-  - **Add Target** quickly adds your current target to the group, when you have one and they aren't already a member.
+- Every window's title bar now shows a small icon before its name, a different one for Main, Dedicated, Group, and Mentions windows, and the close/resize buttons were redrawn as crisper vector icons ([#139](https://github.com/Raenore/Eavesdropper/pull/139)).
+- Added a **Player List** entry to Group Windows' title-bar dropdown, listing every player currently tracked by that group, sorted by RP first name ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).
+  - **Add Target** quickly adds your current target to the group, when you have one, they're a player, and they aren't already a member.
   - Each row is a checkbox: uncheck to remove that player from the group, check again to re-add them.
-  - A per-row button opens a Dedicated Window for that player directly from the list.
+  - A per-row button, marked with its own distinct icon, opens a Dedicated Window for that player directly from the list.
 - Every window's chat history now has a **slim scrollbar**, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#134](https://github.com/Raenore/Eavesdropper/pull/134)).
   - Sits flush against the edge of the message area and only appears once there is enough history to actually scroll.
   - Stays a thin sliver at rest and thickens on hover or while dragging, so it stays out of the way of the text without disappearing entirely.
@@ -69,6 +70,7 @@ All notable changes to this project will be documented in this file.
   - Reopening a Group Window under a name that matches one closed earlier this session now asks whether to restore that group's membership and settings, rather than silently creating a blank group.
   - Group names are now matched case-insensitively for restore and duplicate-detection purposes ("Demo", "demo", and "DEMO" are treated as the same group), while the group is still called whatever casing you actually typed.
 - **Mentions window's Enable Mouse, Lock Window/Scroll/Title Bar, Hide Close Button, and Font Size now persist to your profile**, the same as the main window's, instead of resetting every session ([#133](https://github.com/Raenore/Eavesdropper/pull/133)).
+- **Dedicated, Groups, and Mentions** settings categories now show a small icon next to their subtitle header, matching the icon used in that window's own title bar ([#143](https://github.com/Raenore/Eavesdropper/pull/143)).
 
 ### Fixed
 - Emote targets in **Group Windows** now respect that window's own **Name Display** setting, instead of always falling back to the profile-wide "Name Display" setting ([#116](https://github.com/Raenore/Eavesdropper/pull/116)).
