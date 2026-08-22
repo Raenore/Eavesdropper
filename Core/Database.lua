@@ -56,7 +56,7 @@ local GLOBAL_DEFAULTS = {
 	},
 	GroupHistorySize = 100,
 	GroupWindows = true,
-	GroupWindowsJumpToContext = false,
+	GroupWindowsJumpToContext = true,
 	GroupWindowsNewIndicator = true,
 	GroupWindowsNPCSpeechDetectionNameShown = false,
 	GroupWindowsUnitPopups = true,

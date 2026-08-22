@@ -758,7 +758,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			tooltip = L.USE_RP_NAME_FOR_QUEST_TEXT_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
 			disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3; end,
-			-- disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3 or (TRP3RPNameInQuests and TRP3RPNameInQuests.API:IsTextModifierEnabled("questdialog")); end, -- This is not required as DialogueUI handles priority on their end, but just for future reference.
+			-- disabled = function() return not ED.QuestText.SupportedAddonsInstalled() or ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3 or (TRP3RPNameInQuests and TRP3RPNameInQuests.API and type(TRP3RPNameInQuests.API.IsTextModifierEnabled) == "function" and TRP3RPNameInQuests.API:IsTextModifierEnabled("questdialog")); end, -- This is not required as DialogueUI handles priority on their end, but just for future reference.
 			get = function() return ED.Database:GetSetting("UseRPNameInQuestText"); end,
 			set = function(val)
 				ED.Database:SetSetting("UseRPNameInQuestText", val);
@@ -769,7 +769,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			label = L.USE_RP_NAME_FOR_NPC_DIALOGUE,
 			tooltip = L.USE_RP_NAME_FOR_NPC_DIALOGUE_HELP,
 			buildAdded = "0.3.0-0.4.0|120001",
-			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3 or (TRP3RPNameInQuests and TRP3RPNameInQuests.API:IsTextModifierEnabled("npcspeech")); end,
+			disabled = function() return ED.Database:GetSetting("NPCAndQuestNameDisplayMode") == 3 or (TRP3RPNameInQuests and TRP3RPNameInQuests.API and type(TRP3RPNameInQuests.API.IsTextModifierEnabled) == "function" and TRP3RPNameInQuests.API:IsTextModifierEnabled("npcspeech")); end,
 			get = function() return ED.Database:GetSetting("UseRPNameInNPCDialogue"); end,
 			set = function(val)
 				ED.Database:SetSetting("UseRPNameInNPCDialogue", val);

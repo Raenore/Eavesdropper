@@ -795,6 +795,7 @@ stds.wow = {
 		"GameTooltipHeaderText",
 		"GameTooltipText",
 		"GridLayoutMixin",
+		"HousingControlsFrame",
 		"MapCanvasDataProviderMixin",
 		"MenuInputContext",
 		"MenuResponse",

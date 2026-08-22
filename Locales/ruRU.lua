@@ -220,7 +220,7 @@ L = {
 	PLAYER_LIST_EMPTY = "No players tracked", -- NEW
 	PLAYER_LIST_ROW_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r", -- NEW
 	PLAYER_LIST_OPEN_DEDICATED = "Open Dedicated Window", -- NEW
-	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for the current target.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if the target already has a Dedicated Window.|r", -- NEW
+	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for this player.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if this player already has a Dedicated Window.|r", -- NEW
 
 	MINIMAP_BUTTON = "Кнопка на миникарте",
 	MINIMAP_BUTTON_HELP = "Отображать значок аддона у миникарты.|n|n* Это общая настройка для всех профилей.",

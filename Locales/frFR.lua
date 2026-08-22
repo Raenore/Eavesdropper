@@ -220,7 +220,7 @@ L = {
 	PLAYER_LIST_EMPTY = "Aucun joueur suivi",
 	PLAYER_LIST_ROW_HELP = "Décochez pour retirer ce joueur du groupe ; cochez à nouveau pour l'y réintégrer.|n|n|cnWARNING_FONT_COLOR:Note : cette liste s'actualise uniquement après avoir fermé puis rouvert le menu.|r",
 	PLAYER_LIST_OPEN_DEDICATED = "Ouvrir une fenêtre individuelle",
-	PLAYER_LIST_OPEN_DEDICATED_HELP = "Ouvre une fenêtre de suivi individuel dédiée à ce joueur.",
+	PLAYER_LIST_OPEN_DEDICATED_HELP = "Ouvre une fenêtre de suivi individuel dédiée à ce joueur.|n|n|cnWARNING_FONT_COLOR:Note : aucun effet si ce joueur en a déjà une ouverte.|r",
 
 	MINIMAP_BUTTON = "Bouton de la minicarte",
 	MINIMAP_BUTTON_HELP = "Active l'affichage du bouton de la minicarte.",

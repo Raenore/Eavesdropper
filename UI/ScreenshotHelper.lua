@@ -274,6 +274,7 @@ function ScreenshotHelper.HideDistractions(bitmask)
 		WarlockPowerFrame,
 		RogueComboPointBarFrame,
 		PTR_IssueReporter,
+		HousingControlsFrame,
 	};
 
 	for _, obj in ipairs(objects) do

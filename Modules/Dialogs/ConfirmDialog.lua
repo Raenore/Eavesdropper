@@ -39,6 +39,7 @@ function ConfirmDialog:Show(message, onAccept, onCancel)
 	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
+		-- dialog:SetPoint("TOP", UIParent, "TOP", 0, -350); (For Assets purposes)
 	end
 end
 

@@ -220,7 +220,7 @@ L = {
 	PLAYER_LIST_EMPTY = "No players tracked",
 	PLAYER_LIST_ROW_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r",
 	PLAYER_LIST_OPEN_DEDICATED = "Open Dedicated Window",
-	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for the current target.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if the target already has a Dedicated Window.|r",
+	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for this player.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if this player already has a Dedicated Window.|r",
 
 	MINIMAP_BUTTON = "Minimap Button",
 	MINIMAP_BUTTON_HELP = "Toggles the display of the minimap button.",
