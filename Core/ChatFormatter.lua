@@ -511,7 +511,7 @@ end
 ---@return string formattedMsg
 ---@return string? firstName
 ---@return string prefix Everything before the timestamp (the Jump to Context link, or ""); reused as-is by every TransformMessages-based refresh.
----@return string suffix Everything after the timestamp; reused as-is by RefreshTimestamps.
+---@return string suffix Everything after the timestamp; reused as-is by RefreshTimestamps, rebuilt by RefreshEntriesForIdentity when a player's data changes.
 ---@return boolean isFrozen
 function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJumpLink, stripMessageHyperlink)
 	if not entry or not entry.m then return ""; end

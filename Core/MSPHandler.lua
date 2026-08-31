@@ -46,7 +46,7 @@ function MSP.InvalidatePlayer(playerName)
 
 	MSP.cache[guid] = nil;
 	cacheNames[key] = nil;
-	Eavesdropper_SharedFrameMixin.ScheduleDataRefresh();
+	Eavesdropper_SharedFrameMixin.ScheduleDataRefresh(key, guid);
 end
 
 ---True once TRP3 has fired WORKFLOW_ON_LOADED. TRP3_API existing does not mean it is ready.

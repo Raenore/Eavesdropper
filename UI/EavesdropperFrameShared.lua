@@ -178,6 +178,45 @@ function Eavesdropper_SharedFrameMixin:RefreshTimestamps()
 	self.ChatBox:TransformMessages(ShouldRefreshTimestamp, RebuildTimestampMessage);
 end
 
+---Prefers GUID equality when both sides have one; entry.g can be nil (see EavesdropperChatEntry).
+---We use name as the fallback, not as a second independent check.
+---@param entryGuid string?
+---@param entryName string?
+---@param guid string?
+---@param name string
+---@return boolean
+local function IdentityMatches(entryGuid, entryName, guid, name)
+	if guid and entryGuid then
+		return entryGuid == guid;
+	end
+	return entryName == name;
+end
+
+---Rebuilds only the entries belonging to, or targeting (see FormatTextEmoteTargetWithRPName),
+---one player via TransformMessages, for when only that player's profile data changed.
+---@param name string Changed player's Name-Realm.
+---@param guid string? Their GUID, when known.
+---@param forGroup boolean? Passed straight through to FormatSuffix.
+function Eavesdropper_SharedFrameMixin:RefreshEntriesForIdentity(name, guid, forGroup)
+	if not self.ChatBox then return; end
+
+	local forceDisplayMode = self:GetNameDisplayMode();
+	local stripMessageHyperlink = self.stripMessageHyperlink;
+
+	local function MatchesIdentity(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, r, g, b, prefix, suffix, wasFrozen)
+		if not entry then return false; end
+		return IdentityMatches(entry.g, entry.s, guid, name) or IdentityMatches(entry.tg, entry.tn, guid, name);
+	end
+
+	local function RebuildSuffixMessage(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, wasFrozen)
+		local timestamp, isFrozen = ED.ChatFormatter.FormatTimestamp(entry);
+		local newSuffix = ED.ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMessageHyperlink);
+		return prefix .. timestamp .. newSuffix, r, g, b, entry, prefix, newSuffix, isFrozen;
+	end
+
+	self.ChatBox:TransformMessages(MatchesIdentity, RebuildSuffixMessage);
+end
+
 ---Wide stagger is required when a window has enough lines that colliding with another window's
 ---ticker would actually become problematic cost-wise. < TICKER_STAGGER_THRESHOLD is small stagger.
 ---@param frame table
@@ -273,8 +312,14 @@ end
 ---True while the burst window's cooldown is running.
 local dataRefreshOnCooldown = false;
 
----True if an invalidation arrived during the cooldown and still needs a redraw.
-local dataRefreshPending = false;
+---True when a blanket ("changed, unknown who") invalidation arrives during the cooldown.
+---This takes priority over dataRefreshPendingIdentities when the cooldown expires.
+local dataRefreshPendingBlanket = false;
+
+---Targeted redraws collected during the cooldown, using Name-Realm so one player showing up
+---twice in a burst only redraws once; value is their GUID (which may be nil).
+---@type table<string, string?>
+local dataRefreshPendingIdentities = {};
 
 ---Dedicated and Group windows only exist in the registry while shown, so they always redraw;
 ---Main and Mentions are checked for IsShown() first.
@@ -295,6 +340,24 @@ function Eavesdropper_SharedFrameMixin.RefreshAllWindows()
 	end);
 end
 
+---Targeted counterpart to RefreshAllWindows, for when only one player's data changed.
+---This is way better for performance and should be preferred when we have enough data.
+---@param name string Changed player's Name-Realm.
+---@param guid string? Their GUID, when known.
+function Eavesdropper_SharedFrameMixin.RefreshEntriesForPlayer(name, guid)
+	Eavesdropper_SharedFrameMixin.ForEachManagedFrame(function(frame, family)
+		if family == "main" or family == "mentions" then
+			if not frame:IsShown() then return; end
+		end
+
+		if family == "group" then
+			frame.playerListDirty = true;
+		end
+
+		frame:RefreshEntriesForIdentity(name, guid, family == "group" or family == "mentions");
+	end);
+end
+
 ---Main is skipped: its OnHide never reads isCombatHidden, unlike Dedicated/Group/Mentions.
 ---@param combatHidden boolean
 function Eavesdropper_SharedFrameMixin.ApplyCombatHidden(combatHidden)
@@ -310,30 +373,51 @@ end
 ---idle. Keeps a sustained burst on a steady interval instead of having it basically spam.
 local function ArmDataRefreshCooldown()
 	C_Timer.NewTimer(Constants.DATA_REFRESH_THROTTLE, function()
-		if not dataRefreshPending then
+		if not dataRefreshPendingBlanket and not next(dataRefreshPendingIdentities) then
 			dataRefreshOnCooldown = false;
 			ED.Debug:Print("ScheduleDataRefresh: cooldown expired, idle");
 			return;
 		end
 
-		dataRefreshPending = false;
-		ED.Debug:Print("ScheduleDataRefresh: cooldown expired, trailing redraw");
-		Eavesdropper_SharedFrameMixin.RefreshAllWindows();
+		if dataRefreshPendingBlanket then
+			dataRefreshPendingBlanket = false;
+			wipe(dataRefreshPendingIdentities);
+			ED.Debug:Print("ScheduleDataRefresh: cooldown expired, blanket redraw");
+			Eavesdropper_SharedFrameMixin.RefreshAllWindows();
+		else
+			ED.Debug:Print("ScheduleDataRefresh: cooldown expired, targeted redraw");
+			for name, guid in pairs(dataRefreshPendingIdentities) do
+				Eavesdropper_SharedFrameMixin.RefreshEntriesForPlayer(name, guid);
+			end
+			wipe(dataRefreshPendingIdentities);
+		end
+
 		ArmDataRefreshCooldown();
 	end);
 end
 
 ---Entry point for MSP invalidation to request a redraw. Invalidation sources must always
----come through here, never call RefreshChat directly.
-function Eavesdropper_SharedFrameMixin.ScheduleDataRefresh()
+---come through here, never call RefreshChat/RefreshEntriesForIdentity directly.
+---@param name string? Changed player's Name-Realm; omit for a blanket "changed, unknown who" redraw.
+---@param guid string? Their GUID, when known.
+function Eavesdropper_SharedFrameMixin.ScheduleDataRefresh(name, guid)
 	if dataRefreshOnCooldown then
-		dataRefreshPending = true;
+		if name and not dataRefreshPendingBlanket then
+			dataRefreshPendingIdentities[name] = guid;
+		else
+			dataRefreshPendingBlanket = true;
+		end
 		ED.Debug:Print("ScheduleDataRefresh: on cooldown, queued");
 		return;
 	end
 
-	ED.Debug:Print("ScheduleDataRefresh: leading edge, redrawing now");
-	Eavesdropper_SharedFrameMixin.RefreshAllWindows();
+	if name then
+		ED.Debug:Print("ScheduleDataRefresh: immediate targeted redraw");
+		Eavesdropper_SharedFrameMixin.RefreshEntriesForPlayer(name, guid);
+	else
+		ED.Debug:Print("ScheduleDataRefresh: immediate blanket redraw");
+		Eavesdropper_SharedFrameMixin.RefreshAllWindows();
+	end
 
 	dataRefreshOnCooldown = true;
 	ArmDataRefreshCooldown();
