@@ -473,6 +473,35 @@ function ChatFormatter.FormatTimestamp(entry)
 	return ED.Utils.WrapTextInColor(timestamp, CreateColor(r, g, b)) .. " ", isFrozen;
 end
 
+---Computes entry's name-dependent message body: sender name, message text, and entry colour.
+---Shared by FormatMessage and the targeted rename TransformMessages pass; must not drift apart.
+---@param entry EavesdropperChatEntry
+---@param forGroup boolean? If true, uses group-aware formatting that always embeds the sender name.
+---@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
+---@param stripMessageHyperlink boolean? If true, remove the hyperlinks in the message but keep the color and []
+---@return string suffix
+---@return string? firstName
+function ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMessageHyperlink)
+	local name, applyRPName, firstName = ChatFormatter.GetFormattedName(entry, forceDisplayMode);
+
+	-- Does nothing for formats that never embed name (e.g. plain SAY).
+	name = ED.Utils.PlayerHyperlink(entry.s, name);
+
+	local eventType = NormalizeEventType(entry.e);
+	local formatTable = forGroup and GROUP_MESSAGE_FORMATS or MESSAGE_FORMATS;
+	local msgText = formatTable[eventType](entry, name, forGroup, stripMessageHyperlink);
+
+	local entryR, entryG, entryB = GetEntryColor(entry);
+	local entryColor = CreateColor(entryR, entryG, entryB);
+	msgText = ED.Utils.WrapTextInColor(msgText, entryColor);
+
+	if entry.e == "CHAT_MSG_TEXT_EMOTE" and applyRPName then
+		msgText = FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode);
+	end
+
+	return msgText, firstName;
+end
+
 ---Formats a full chat entry for display: timestamp, sender name, message body, and entry colour.
 ---@param entry EavesdropperChatEntry
 ---@param forGroup boolean? If true, uses group-aware formatting that always embeds the sender name.
@@ -481,7 +510,7 @@ end
 ---@param stripMessageHyperlink boolean? If true, remove the hyperlinks in the message but keep the color and []
 ---@return string formattedMsg
 ---@return string? firstName
----@return string prefix Everything before the timestamp (the Jump to Context link, or ""); reused as-is by RefreshTimestamps.
+---@return string prefix Everything before the timestamp (the Jump to Context link, or ""); reused as-is by every TransformMessages-based refresh.
 ---@return string suffix Everything after the timestamp; reused as-is by RefreshTimestamps.
 ---@return boolean isFrozen
 function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJumpLink, stripMessageHyperlink)
@@ -495,25 +524,7 @@ function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJump
 		jumpLink = ED.Utils.JumpHyperlink(entry.id, entry.s, ED.Constants.JUMP_TO_CONTEXT_ICON_INLINE) .. " ";
 	end
 
-	-- Name handling
-	local name, applyRPName, firstName = ChatFormatter.GetFormattedName(entry, forceDisplayMode);
-
-	-- Does nothing for formats that never embed name (e.g. plain SAY).
-	name = ED.Utils.PlayerHyperlink(entry.s, name);
-
-	-- Format message
-	local eventType = NormalizeEventType(entry.e);
-	local formatTable = forGroup and GROUP_MESSAGE_FORMATS or MESSAGE_FORMATS;
-	local msgText = formatTable[eventType](entry, name, forGroup, stripMessageHyperlink);
-
-	-- Apply entry color
-	local entryR, entryG, entryB = GetEntryColor(entry);
-	local entryColor = CreateColor(entryR, entryG, entryB);
-	msgText = ED.Utils.WrapTextInColor(msgText, entryColor);
-
-	if entry.e == "CHAT_MSG_TEXT_EMOTE" and applyRPName then
-		msgText = FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode);
-	end
+	local msgText, firstName = ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMessageHyperlink);
 
 	return jumpLink .. timestamp .. msgText, firstName, jumpLink, msgText, isFrozen;
 end
