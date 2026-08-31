@@ -246,8 +246,7 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 		self.eavesdropped_player_guid = nil;
 	end
 
-	-- New target starts at bottom and requires a real rebuild.
-	-- Same target just needs its timestamp updated for age.
+	-- A new target needs a full rebuild; the same target just needs its timestamp aged.
 	if hardUpdate then
 		-- A new target invalidates any new-message indicator lit for the previous one.
 		if self.newIndicatorTimer then

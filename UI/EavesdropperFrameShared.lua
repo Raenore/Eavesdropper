@@ -156,9 +156,8 @@ local function ShouldRefreshTimestamp(message, r, g, b, entry, prefix, suffix, w
 	return entry.e == "CHAT_MSG_TEXT_EMOTE" and not entry.tg;
 end
 
----Ages every non-frozen (< TIMESTAMP_FREEZE_AGE) line's timestamp in place with TransformMessages.
----Also retries resolving an unresolved emote target, which otherwise only got a chance during a full rebuild.
----This is performance-wise way better than re-drawing the entire window as we did prior.
+---Updates timestamps in place via TransformMessages instead of clearing and rebuilding the window.
+---Also retries an unresolved emote target, which otherwise only got fixed during a full rebuild.
 function Eavesdropper_SharedFrameMixin:RefreshTimestamps()
 	if not self.ChatBox then return; end
 
@@ -178,8 +177,8 @@ function Eavesdropper_SharedFrameMixin:RefreshTimestamps()
 	self.ChatBox:TransformMessages(ShouldRefreshTimestamp, RebuildTimestampMessage);
 end
 
----Prefers GUID equality when both sides have one; entry.g can be nil (see EavesdropperChatEntry).
----We use name as the fallback, not as a second independent check.
+---Prefers GUID equality when both sides have one; entry.g can be nil (see EavesdropperChatEntry),
+---so name is the fallback here, not a second check run alongside it.
 ---@param entryGuid string?
 ---@param entryName string?
 ---@param guid string?
@@ -217,8 +216,8 @@ function Eavesdropper_SharedFrameMixin:RefreshEntriesForIdentity(name, guid, for
 	self.ChatBox:TransformMessages(MatchesIdentity, RebuildSuffixMessage);
 end
 
----Wide stagger is required when a window has enough lines that colliding with another window's
----ticker would actually become problematic cost-wise. < TICKER_STAGGER_THRESHOLD is small stagger.
+---True once a window is big enough that two ticks landing on the same frame would actually be
+---felt; smaller windows use the short stagger instead.
 ---@param frame table
 ---@return boolean
 local function NeedsWideStagger(frame)
@@ -312,8 +311,8 @@ end
 ---True while the burst window's cooldown is running.
 local dataRefreshOnCooldown = false;
 
----True when a blanket ("changed, unknown who") invalidation arrives during the cooldown.
----This takes priority over dataRefreshPendingIdentities when the cooldown expires.
+---True once a blanket ("changed, unknown who") invalidation arrives during the cooldown;
+---wins out over dataRefreshPendingIdentities once the cooldown expires.
 local dataRefreshPendingBlanket = false;
 
 ---Targeted redraws collected during the cooldown, using Name-Realm so one player showing up
@@ -341,7 +340,6 @@ function Eavesdropper_SharedFrameMixin.RefreshAllWindows()
 end
 
 ---Targeted counterpart to RefreshAllWindows, for when only one player's data changed.
----This is way better for performance and should be preferred when we have enough data.
 ---@param name string Changed player's Name-Realm.
 ---@param guid string? Their GUID, when known.
 function Eavesdropper_SharedFrameMixin.RefreshEntriesForPlayer(name, guid)
