@@ -264,8 +264,8 @@ function Eavesdropper_Mentions_FrameMixin:AddMessage(entry, fromHistory)
 
 	local r, g, b = ED.ChatFormatter.GetEntryColor(entry);
 	local showJumpLink = ED.Database:GetGlobalSetting("DedicatedWindows") and ED.Database:GetGlobalSetting("MentionsHistoryJumpToContext");
-	local formatted = ED.ChatFormatter.FormatMessage(entry, true, self:GetNameDisplayMode(), showJumpLink, self.stripMessageHyperlink);
-	self.ChatBox:AddMessage(formatted, r, g, b);
+	local formatted, _, prefix, suffix, isFrozen = ED.ChatFormatter.FormatMessage(entry, true, self:GetNameDisplayMode(), showJumpLink, self.stripMessageHyperlink);
+	self.ChatBox:AddMessage(formatted, r, g, b, entry, prefix, suffix, isFrozen);
 
 	if not fromHistory then
 		self:RefreshEmptyState();

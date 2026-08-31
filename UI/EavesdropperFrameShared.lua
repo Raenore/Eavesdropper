@@ -133,6 +133,58 @@ function Eavesdropper_SharedFrameMixin:IsTimestampFrozen()
 	return (time() - self.newestEntryTime) >= Constants.TIMESTAMP_FREEZE_AGE;
 end
 
+---TransformMessages predicate: entries stop being touched once wasFrozen, since a frozen
+---label can never change again (30m+). Data given by AddMessage and kept current by RebuildTimestampMessage.
+---@param message string
+---@param r number
+---@param g number
+---@param b number
+---@param entry EavesdropperChatEntry?
+---@param prefix string?
+---@param suffix string?
+---@param wasFrozen boolean?
+---@return boolean
+local function IsTimestampNotYetFrozen(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, r, g, b, prefix, suffix)
+	return entry ~= nil and not wasFrozen;
+end
+
+---TransformMessages transform: rebuilds only the timestamp portion, reusing prefix/suffix untouched.
+---@param message string
+---@param r number
+---@param g number
+---@param b number
+---@param entry EavesdropperChatEntry
+---@param prefix string
+---@param suffix string
+---@return string message
+---@return number r
+---@return number g
+---@return number b
+---@return EavesdropperChatEntry entry
+---@return string prefix
+---@return string suffix
+---@return boolean isFrozen
+local function RebuildTimestampMessage(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, wasFrozen)
+	local timestamp, isFrozen = ED.ChatFormatter.FormatTimestamp(entry);
+	return prefix .. timestamp .. suffix, r, g, b, entry, prefix, suffix, isFrozen;
+end
+
+---Ages every non-frozen (< TIMESTAMP_FREEZE_AGE) line's timestamp in place with TransformMessages.
+---This is performance-wise way better than re-drawing the entire window as we did prior.
+function Eavesdropper_SharedFrameMixin:RefreshTimestamps()
+	if not self.ChatBox then return; end
+	self.ChatBox:TransformMessages(IsTimestampNotYetFrozen, RebuildTimestampMessage);
+end
+
+---Wide stagger is required when a window has enough lines that colliding with another window's
+---ticker would actually become problematic cost-wise. < TICKER_STAGGER_THRESHOLD is small stagger.
+---@param frame table
+---@return boolean
+local function NeedsWideStagger(frame)
+	local numMessages = frame.ChatBox and frame.ChatBox:GetNumMessages() or 0;
+	return numMessages >= Constants.CHAT_BOX.TICKER_STAGGER_THRESHOLD;
+end
+
 ---Start the periodic refresh that ages the timestamps on this window.
 ---The first tick is offset randomly, so windows shown together do not refresh in the same frame.
 ---Stops itself once every line is frozen; TryAddMessage starts it again.
@@ -142,15 +194,27 @@ function Eavesdropper_SharedFrameMixin:StartChatTicker()
 	if self.chatTicker or self.chatTickerDelay then return; end
 
 	local interval = Constants.WINDOW_REFRESH_INTERVAL;
+	local needsWideStagger = NeedsWideStagger(self);
+	local offsetRange = needsWideStagger and interval or Constants.TICKER_SMALL_STAGGER;
 
-	self.chatTickerDelay = C_Timer.NewTimer(math.random() * interval, function()
+	self.chatTickerNeedsWideStagger = needsWideStagger;
+
+	self.chatTickerDelay = C_Timer.NewTimer(math.random() * offsetRange, function()
 		self.chatTickerDelay = nil;
 		self.chatTicker = C_Timer.NewTicker(interval, function()
 			-- Refresh before testing; the tick that freezes a window still has a label to draw.
-			self:RefreshChat(true);
+			self:RefreshTimestamps();
 
 			if self:IsTimestampFrozen() then
 				self:StopChatTicker();
+				return;
+			end
+
+			-- The offset picked at start never updates on its own; restart with a fresh one if
+			-- this window has grown across the stagger threshold since then.
+			if NeedsWideStagger(self) ~= self.chatTickerNeedsWideStagger then
+				self:StopChatTicker();
+				self:StartChatTicker();
 			end
 		end);
 	end);

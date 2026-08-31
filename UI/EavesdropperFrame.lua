@@ -246,7 +246,8 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 		self.eavesdropped_player_guid = nil;
 	end
 
-	-- A new target starts at the bottom; otherwise hold the scroll and skip windows that cannot change.
+	-- New target starts at bottom and requires a real rebuild.
+	-- Same target just needs its timestamp updated for age.
 	if hardUpdate then
 		-- A new target invalidates any new-message indicator lit for the previous one.
 		if self.newIndicatorTimer then
@@ -257,7 +258,7 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 
 		self:RefreshChat();
 	elseif not self:IsTimestampFrozen() then
-		self:RefreshChat(true);
+		self:RefreshTimestamps();
 	end
 
 	self.lastUpdate = now;
@@ -314,8 +315,8 @@ function Eavesdropper_FrameMixin:AddMessage(entry, fromHistory)
 	end
 
 	local r, g, b = ED.ChatFormatter.GetEntryColor(entry);
-	local formatted = ED.ChatFormatter.FormatMessage(entry, nil, nil, nil, self.stripMessageHyperlink);
-	self.ChatBox:AddMessage(formatted, r, g, b);
+	local formatted, _, prefix, suffix, isFrozen = ED.ChatFormatter.FormatMessage(entry, nil, nil, nil, self.stripMessageHyperlink);
+	self.ChatBox:AddMessage(formatted, r, g, b, entry, prefix, suffix, isFrozen);
 
 	-- Only track lines (to keep frame awake) when they are actually inserted.
 	self:TrackNewestEntry(entry);

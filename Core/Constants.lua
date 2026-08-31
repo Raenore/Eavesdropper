@@ -44,6 +44,7 @@ Constants.CHANNELS_TO_SKIP_NOTIFICATIONS = {
 ---@field MIN_MENTIONS_HISTORY number
 ---@field MAX_MENTIONS_HISTORY number
 ---@field JUMP_CONTEXT_PADDING number Older messages fetched beyond a Jump to Context target, so there's context above it.
+---@field TICKER_STAGGER_THRESHOLD number Lines when window's timestamp ticker starts using the full stagger spread vs small one.
 Constants.CHAT_BOX = {
 	MIN_FONT_SIZE = 6,
 	MAX_FONT_SIZE = 24,
@@ -55,6 +56,7 @@ Constants.CHAT_BOX = {
 	MIN_MENTIONS_HISTORY = 10,
 	MAX_MENTIONS_HISTORY = 1000,
 	JUMP_CONTEXT_PADDING = 20,
+	TICKER_STAGGER_THRESHOLD = 500,
 };
 
 ---All chat events the addon registers filters for.
@@ -172,8 +174,13 @@ Constants.CHAT_NEW_INDICATOR_FADE_OUT = 10;
 ---@type number
 Constants.WINDOW_REFRESH_INTERVAL = 60;
 
+---Max random offset for a ticker under TICKER_STAGGER_THRESHOLD lines; Windows colliding
+---ticker-wise with another below this threshold don't require WINDOW_REFRESH_INTERVAL to be applied.
+---@type number
+Constants.TICKER_SMALL_STAGGER = 2;
+
 ---Age in seconds at which a message stops changing appearance entirely.
----Shared by ChatFormatter.FormatMessage and the refresh ticker; they must not drift apart.
+---Shared by ChatFormatter.FormatTimestamp and the refresh ticker; they must not drift apart.
 ---@type number
 Constants.TIMESTAMP_FREEZE_AGE = 30 * 60;
 
