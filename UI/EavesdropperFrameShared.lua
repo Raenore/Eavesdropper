@@ -133,8 +133,14 @@ function Eavesdropper_SharedFrameMixin:IsTimestampFrozen()
 	return (time() - self.newestEntryTime) >= Constants.TIMESTAMP_FREEZE_AGE;
 end
 
----TransformMessages predicate: entries stop being touched once wasFrozen, since a frozen
----label can never change again (30m+). Data given by AddMessage and kept current by RebuildTimestampMessage.
+---Default override point; Main has no per-window display mode so this returns nil (profile default).
+---@return number?
+function Eavesdropper_SharedFrameMixin:GetNameDisplayMode()
+	return nil;
+end
+
+---TransformMessages predicate: touches an entry while its timestamp hasn't frozen, or it's a
+---text emote whose target is still unresolved (see RefreshTimestamps' transform for the retry).
 ---@param message string
 ---@param r number
 ---@param g number
@@ -144,36 +150,32 @@ end
 ---@param suffix string?
 ---@param wasFrozen boolean?
 ---@return boolean
-local function IsTimestampNotYetFrozen(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, r, g, b, prefix, suffix)
-	return entry ~= nil and not wasFrozen;
-end
-
----TransformMessages transform: rebuilds only the timestamp portion, reusing prefix/suffix untouched.
----@param message string
----@param r number
----@param g number
----@param b number
----@param entry EavesdropperChatEntry
----@param prefix string
----@param suffix string
----@return string message
----@return number r
----@return number g
----@return number b
----@return EavesdropperChatEntry entry
----@return string prefix
----@return string suffix
----@return boolean isFrozen
-local function RebuildTimestampMessage(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, wasFrozen)
-	local timestamp, isFrozen = ED.ChatFormatter.FormatTimestamp(entry);
-	return prefix .. timestamp .. suffix, r, g, b, entry, prefix, suffix, isFrozen;
+local function ShouldRefreshTimestamp(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, r, g, b, prefix, suffix)
+	if not entry then return false; end
+	if not wasFrozen then return true; end
+	return entry.e == "CHAT_MSG_TEXT_EMOTE" and not entry.tg;
 end
 
 ---Ages every non-frozen (< TIMESTAMP_FREEZE_AGE) line's timestamp in place with TransformMessages.
+---Also retries resolving an unresolved emote target, which otherwise only got a chance during a full rebuild.
 ---This is performance-wise way better than re-drawing the entire window as we did prior.
 function Eavesdropper_SharedFrameMixin:RefreshTimestamps()
 	if not self.ChatBox then return; end
-	self.ChatBox:TransformMessages(IsTimestampNotYetFrozen, RebuildTimestampMessage);
+
+	-- forceDisplayMode is per-window; closed over here since the transform can't read self.
+	local forceDisplayMode = self:GetNameDisplayMode();
+
+	local function RebuildTimestampMessage(message, r, g, b, entry, prefix, suffix, wasFrozen) -- luacheck: no unused (message, wasFrozen)
+		local timestamp, isFrozen = ED.ChatFormatter.FormatTimestamp(entry);
+
+		if entry.e == "CHAT_MSG_TEXT_EMOTE" and not entry.tg then
+			suffix = ED.ChatFormatter.FormatTextEmoteTargetWithRPName(entry, suffix, forceDisplayMode);
+		end
+
+		return prefix .. timestamp .. suffix, r, g, b, entry, prefix, suffix, isFrozen;
+	end
+
+	self.ChatBox:TransformMessages(ShouldRefreshTimestamp, RebuildTimestampMessage);
 end
 
 ---Wide stagger is required when a window has enough lines that colliding with another window's
