@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [Unreleased]
+
+### Fixed
+- Fixed keyword highlighting sometimes breaking a nearby item or spell link in the same message ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
+- Fixed a keyword token (like `<firstname>`) breaking if an RP name contained certain special characters ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
+- Fixed duplicate messages appearing in your history when another chat addon resends a message it already showed you. With [Prat](https://www.curseforge.com/wow/addons/prat-3-0), this was most noticeable as roll messages showing up twice ([#176](https://github.com/Raenore/Eavesdropper/pull/176)).
+- **Jump to Context** in Dedicated Windows no longer keeps extra chat history loaded after you've scrolled back to the bottom. It now returns to normal automatically ([#175](https://github.com/Raenore/Eavesdropper/pull/175)).
+
 ## [0.6.0] - 2026-08-30  
 Major feature update adding a Mentions History window, Import & Export, a Group Windows Player List, and a French translation, alongside wide-ranging performance and interface polish.
 
