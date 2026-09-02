@@ -37,7 +37,7 @@ local function ResolveEvent(chatType)
 	return remapped:upper();
 end
 
----Check bit based on Mentions:Evaluate building its mask with addition.
+---Bit test for a mask that Mentions:Evaluate builds via addition.
 ---@param mask number
 ---@param bit number
 ---@return boolean
@@ -63,7 +63,8 @@ local function UsesInstanceFilterState(frame)
 	return frame ~= ED.Frame and frame ~= ED.MentionsFrame;
 end
 
----Generates the chat filter menu for UI
+---Each checkbox branches on useFrameState: instance frames read/write frame.filters
+---directly, Main and Mentions go through the resolved DB setting instead.
 ---@param frame table
 ---@param menu table
 function ChatFilters:GenerateFilterListMenu(frame, menu)
