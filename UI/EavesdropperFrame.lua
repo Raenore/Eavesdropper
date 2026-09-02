@@ -248,6 +248,13 @@ function Eavesdropper_FrameMixin:UpdateTarget()
 
 	-- A new target starts at the bottom; otherwise hold the scroll and skip windows that cannot change.
 	if hardUpdate then
+		-- A new target invalidates any new-message indicator lit for the previous one.
+		if self.newIndicatorTimer then
+			self.newIndicatorTimer:Cancel();
+			self.newIndicatorTimer = nil;
+		end
+		self:FadeOutNewIndicator();
+
 		self:RefreshChat();
 	elseif not self:IsTimestampFrozen() then
 		self:RefreshChat(true);
