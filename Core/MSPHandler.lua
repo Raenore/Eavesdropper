@@ -129,16 +129,18 @@ end
 ---@return string? className
 ---@return string? raceName
 local function GetMSPData(playerName, playerGUID)
+	local nameColor = GetClassColor(playerGUID);
+
 	local fields = GetMSPFields(playerName, playerGUID);
-	if not fields then return nil, nil, nil; end
+	if not fields then return nil, nil, nameColor; end
 
 	-- msp.my is created empty by LibMSP, so NA is not guaranteed to be present.
 	local fullName = fields.NA;
-	if not fullName or fullName == "" then return nil, nil, nil; end
+	if not fullName or fullName == "" then return nil, nil, nameColor; end
 
-	local nameColor = fullName:match("^|c(%x%x%x%x%x%x%x%x)") or GetClassColor(playerGUID);
+	nameColor = fullName:match("^|c(%x%x%x%x%x%x%x%x)") or nameColor;
 	fullName = fullName:gsub("^|c%x%x%x%x%x%x%x%x", ""):gsub("|r$", "");
-	if fullName == "" then return nil, nil, nil; end
+	if fullName == "" then return nil, nil, nameColor; end
 
 	-- TRP3 has a dedicated title field, so titles are only stripped on the MSP path, and only
 	-- on enUS since COMMON_TITLES holds English honorifics.
@@ -146,7 +148,8 @@ local function GetMSPData(playerName, playerGUID)
 		fullName = StripTitle(fullName);
 	end
 
-	-- MSP carries the name as a single NA string, match the last two words rather than requiring exactly two.
+	-- MSP has no separate title/first/last fields, so any leading word (e.g. an unstripped
+	-- title) is dropped and the last two words are taken as first/last name.
 	local firstName, lastName = fullName:match("(%S+)%s+(%S+)%s*$");
 
 	-- Single word names have no last name, so the name itself is the first name.
