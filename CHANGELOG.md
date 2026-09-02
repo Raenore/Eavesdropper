@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- NPCs in your targeting priority (mouseover, target, or focus) are now skipped, letting the main window fall back to a player elsewhere in that list instead of clearing ([#182](https://github.com/Raenore/Eavesdropper/pull/182)).
+
 ### Fixed
 - Fixed keyword highlighting sometimes breaking a nearby item or spell link in the same message ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
 - Fixed a keyword token (like `<firstname>`) breaking if an RP name contained certain special characters ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
