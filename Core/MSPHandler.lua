@@ -49,22 +49,8 @@ function MSP.InvalidatePlayer(playerName)
 	Eavesdropper_SharedFrameMixin.ScheduleDataRefresh();
 end
 
----True once TRP3 has fired WORKFLOW_ON_LOADED. TRP3_API existing does not mean it is ready
+---True once TRP3 has fired WORKFLOW_ON_LOADED. TRP3_API existing does not mean it is ready.
 local trp3Ready = false;
-
----Returns true if any of the six data slots contain a non-empty value.
----@param data string?[]
----@return boolean
-local function HasValidMSPData(data)
-	if not data then return false; end
-
-	return (data[1] and data[1] ~= "")
-		or (data[2] and data[2] ~= "")
-		or data[3]
-		or (data[4] and data[4] ~= "")
-		or (data[5] and data[5] ~= "")
-		or (data[6] and data[6] ~= "");
-end
 
 ---Removes a leading honorific or military title from a name if it is in the COMMON_TITLES list.
 ---@param name string
@@ -306,7 +292,7 @@ function MSP.TryGetMSPData(playerName, playerGUID, forceInvalidate)
 
 	-- Return the cached result if this player was already resolved this generation cycle.
 	local cached = MSP.cache[playerGUID];
-	if cached and HasValidMSPData(cached) then
+	if cached then
 		return
 			NormalizeString(cached[1]),
 			NormalizeString(cached[2]),
@@ -318,7 +304,7 @@ function MSP.TryGetMSPData(playerName, playerGUID, forceInvalidate)
 
 	local fullName, firstName, nameColor, lastName, className, raceName;
 
-	-- Check TRP cache if exists
+	-- If we have (non-default profile) TRP data available we can avoid a full profile lookup.
 	if trp3Ready and AddOn_TotalRP3 and playerGUID then
 		local player = AddOn_TotalRP3.Player.static.CreateFromGUID(playerGUID);
 		if player then
@@ -344,7 +330,7 @@ function MSP.TryGetMSPData(playerName, playerGUID, forceInvalidate)
 			fullName, firstName, nameColor, lastName, className, raceName = GetMSPData(playerName, playerGUID);
 		end
 
-		-- Normalize all returned strings immediately
+		-- Normalise all returned strings immediately
 		fullName  = NormalizeString(fullName);
 		firstName = NormalizeString(firstName);
 		lastName  = NormalizeString(lastName);
