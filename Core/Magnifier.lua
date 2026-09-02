@@ -101,6 +101,15 @@ function Magnifier:OnMagnifiedChanged(reason) -- luacheck: no unused (reason)
 	end);
 end
 
+---Returns true if the unit is a player, or an owned pet/companion (with CompanionSupport on).
+---@param unit string?
+---@return boolean
+local function IsTrackableUnit(unit)
+	if not unit or not UnitExists(unit) then return false; end
+	if UnitIsPlayer(unit) then return true; end
+	return UnitOwnerGUID(unit) ~= nil and ED.Database:GetSetting("CompanionSupport");
+end
+
 ---Polls the current target/mouseover/focus unit and updates the magnified state accordingly.
 ---@param reason EavesdropperMagnifierReason?
 function Magnifier:HandleUpdate(reason)
@@ -125,16 +134,16 @@ function Magnifier:HandleUpdate(reason)
 
 	local unit;
 	if focusTarget == Enums.FOCUS_TARGET.OVERRIDE then
-		unit = (focus and UnitExists(focus) and focus)
-			or (priority and UnitExists(priority) and priority)
-			or (secondary and UnitExists(secondary) and secondary);
+		unit = (focus and IsTrackableUnit(focus) and focus)
+			or (priority and IsTrackableUnit(priority) and priority)
+			or (secondary and IsTrackableUnit(secondary) and secondary);
 	elseif focusTarget == Enums.FOCUS_TARGET.FALLBACK then
-		unit = (priority and UnitExists(priority) and priority)
-			or (secondary and UnitExists(secondary) and secondary)
-			or (focus and UnitExists(focus) and focus);
+		unit = (priority and IsTrackableUnit(priority) and priority)
+			or (secondary and IsTrackableUnit(secondary) and secondary)
+			or (focus and IsTrackableUnit(focus) and focus);
 	elseif focusTarget == Enums.FOCUS_TARGET.IGNORE then
-		unit = (priority and UnitExists(priority) and priority)
-			or (secondary and UnitExists(secondary) and secondary);
+		unit = (priority and IsTrackableUnit(priority) and priority)
+			or (secondary and IsTrackableUnit(secondary) and secondary);
 	end
 
 	-- Determine whether OnUpdate polling should be active.
@@ -157,8 +166,8 @@ function Magnifier:HandleUpdate(reason)
 		if UnitIsPlayer(unit) then
 			unitName = ED.Utils.GetUnitName(unit);
 			unitGUID = UnitGUID(unit);
-		elseif UnitOwnerGUID(unit) and ED.Database:GetSetting("CompanionSupport") then
-			-- Handle pets / companions: track the owner's GUID, not the pet's.
+		else
+			-- Pets/companions are already filtered by IsTrackableUnit; track the owner's GUID, not the pet's.
 			unitGUID = UnitOwnerGUID(unit);
 			unitName = nil;
 		end
