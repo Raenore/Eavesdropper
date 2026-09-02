@@ -58,8 +58,8 @@ L = {
 	FILTER_ROLLS = "Ролл",
 
 	WINDOW_OPTIONS = "Параметры окна",
-	ENABLE_MOUSE = "Взаимодействие мышью",
-	ENABLE_MOUSE_HELP = "Toggles whether you can interact with the Eavesdropper window using your mouse.|n|n- Enabled: Allows you to click on item links and URLs within the history.|n- Disabled: Clicks pass through the window to the game world behind it, preventing accidental clicks during gameplay.", -- NEW
+	ENABLE_MOUSE = "Включить ссылки",
+	ENABLE_MOUSE_HELP = "Включение и выключение возможности кликать по гиперссылкам (например, на предметы и достижения) в окне Eavesdropper.",
 	LOCK_SCROLL = "Блокировка прокрутки",
 	LOCK_SCROLL_HELP = "Отключает возможность прокрутки истории сообщений.|n|n- Используйте это, чтобы окно всегда оставалось в самом низу и показывало только свежие сообщения.",
 	LOCK_WINDOW = "Закрепить окно",

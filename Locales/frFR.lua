@@ -58,8 +58,8 @@ L = {
 	FILTER_ROLLS = "Rolls",
 
 	WINDOW_OPTIONS = "Options de la fenêtre",
-	ENABLE_MOUSE = "Activer la souris",
-	ENABLE_MOUSE_HELP = "Détermine si vous pouvez interagir avec la fenêtre d'Eavesdropper avec la souris.|n|n- Activée : Permet de cliquer sur les liens d'objets et les URLs dans l'historique.|n- Désactivée : Les clics traversent la fenêtre, évitant toute interaction accidentelle.",
+	ENABLE_MOUSE = "Activer les liens",
+	ENABLE_MOUSE_HELP = "Autorise l'interaction avec les liens (objets, URLs, etc.) dans la fenêtre d'Eavesdropper.",
 	LOCK_SCROLL = "Verrouiller le défilement",
 	LOCK_SCROLL_HELP = "Désactive le défilement dans l'historique des messages.|n|n- Utilisez cette option pour vous assurer qu'Eavesdropper reste toujours en bas de la liste afin d'afficher les derniers messages.",
 	LOCK_WINDOW = "Verrouiller la fenêtre",

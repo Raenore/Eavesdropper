@@ -57,8 +57,8 @@ L = {
 	FILTER_ROLLS = "Rolls",
 
 	WINDOW_OPTIONS = "Window Options",
-	ENABLE_MOUSE = "Enable Mouse",
-	ENABLE_MOUSE_HELP = "Toggles whether you can interact with the Eavesdropper window using your mouse.|n|n- Enabled: Allows you to click on item links and URLs within the history.|n- Disabled: Clicks pass through the window to the game world behind it, preventing accidental clicks during gameplay.",
+	ENABLE_MOUSE = "Enable Hyperlinks",
+	ENABLE_MOUSE_HELP = "Toggles the ability to interact with hyperlinks, such as items and URLs, in the Eavesdropper window.",
 	LOCK_SCROLL = "Lock Scrolling",
 	LOCK_SCROLL_HELP = "Disables the ability to scroll through the message history.|n|n- Use this to ensure Eavesdropper always remains at the bottom of the list to show the latest messages.",
 	LOCK_WINDOW = "Lock Moving",
