@@ -119,8 +119,8 @@ end
 ---Retrieves class and race strings from MSP data, falling back to WoW API values.
 ---@param playerName string
 ---@param playerGUID string
----@return string className
----@return string raceName
+---@return string? className
+---@return string? raceName
 local function GetMSPClassAndRace(playerName, playerGUID)
 	local className, _, raceName = GetPlayerInfoByGUID(playerGUID);
 
@@ -176,7 +176,7 @@ end
 ---Returns the readable hex colour for a TRP3 profile, using the custom colour if set.
 ---@param profile table?
 ---@param playerGUID string
----@return string
+---@return string?
 local function GetTRPColor(profile, playerGUID)
 	local color;
 
@@ -198,8 +198,8 @@ end
 ---Retrieves class and race strings from a TRP3 profile, falling back to WoW API values.
 ---@param profile table?
 ---@param playerGUID string
----@return string className
----@return string raceName
+---@return string? className
+---@return string? raceName
 local function GetTRPClassAndRace(profile, playerGUID)
 	local className, _, raceName = GetPlayerInfoByGUID(playerGUID);
 
