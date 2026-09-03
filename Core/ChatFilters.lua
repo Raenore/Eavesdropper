@@ -111,7 +111,7 @@ function ChatFilters:GenerateFilterListMenu(frame, menu)
 
 					ED.Database:SetSetting(settingKey, newFilters);
 				end
-				ChatFilters:UpdateFilters(frame);
+				self:UpdateFilters(frame);
 			end
 		);
 
