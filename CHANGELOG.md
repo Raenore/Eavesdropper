@@ -8,8 +8,8 @@ All notable changes to this project will be documented in this file.
 - Hovering over an item, spell, or other hyperlink in any Eavesdropper window now shows its tooltip when **Enable Hyperlinks** is on, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
 
 ### Changed
-- The **Enable Mouse** setting is now called **Enable Hyperlinks**. Eavesdropper windows now always let clicks and camera movement through to the game world, so the setting only decides whether hyperlinks (items, URLs, etc.) are clickable, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
-- NPCs in your targeting priority (mouseover, target, or focus) are now skipped, letting the main window fall back to a player elsewhere in that list instead of clearing ([#182](https://github.com/Raenore/Eavesdropper/pull/182)).
+- The **Enable Mouse** setting is now called **Enable Hyperlinks** and only controls whether hyperlinks (items, URLs, etc.) are clickable. Eavesdropper windows now always let clicks and camera movement pass through to the game world, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
+- Mousing over, targeting, or focusing an NPC no longer clears the main window ([#182](https://github.com/Raenore/Eavesdropper/pull/182)).
 - Further improved performance for timestamp updates and RP name changes, especially in busy Group Windows with many senders ([#178](https://github.com/Raenore/Eavesdropper/pull/178)).
 
 ### Fixed
