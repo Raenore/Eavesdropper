@@ -37,7 +37,7 @@ local function ResolveEvent(chatType)
 	return remapped:upper();
 end
 
----Check bit based on Mentions:Evaluate building its mask with addition.
+---Bit test for a mask that Mentions:Evaluate builds via addition.
 ---@param mask number
 ---@param bit number
 ---@return boolean
@@ -63,7 +63,8 @@ local function UsesInstanceFilterState(frame)
 	return frame ~= ED.Frame and frame ~= ED.MentionsFrame;
 end
 
----Generates the chat filter menu for UI
+---Each checkbox branches on useFrameState: instance frames read/write frame.filters
+---directly, Main and Mentions go through the resolved DB setting instead.
 ---@param frame table
 ---@param menu table
 function ChatFilters:GenerateFilterListMenu(frame, menu)
@@ -110,7 +111,7 @@ function ChatFilters:GenerateFilterListMenu(frame, menu)
 
 					ED.Database:SetSetting(settingKey, newFilters);
 				end
-				ChatFilters:UpdateFilters(frame);
+				self:UpdateFilters(frame);
 			end
 		);
 
@@ -220,8 +221,8 @@ function ChatFilters:HasEvent(event, frame)
 	return frame.active_events[event] == true;
 end
 
----Enables a filter group is visible to show a specific entry, if it isn't already.
----Specifically for Jump to Context. Reuses GenerateFilterListMenu where possible.
+---Enables whichever filter group covers the entry, if it isn't already visible.
+---Specifically for Jump to Context. Shares UsesInstanceFilterState/ResolveFilterKey with GenerateFilterListMenu.
 ---@param frame table
 ---@param entry EavesdropperChatEntry
 function ChatFilters:EnsureEntryVisible(frame, entry)
@@ -235,9 +236,10 @@ function ChatFilters:EnsureEntryVisible(frame, entry)
 		frame.filters[groupName] = true;
 		frame:SaveInstanceState();
 	else
-		local newFilters = ED.Utils.ShallowCopy(ED.Database:GetSetting(ResolveFilterKey(frame)) or {});
+		local settingKey = ResolveFilterKey(frame);
+		local newFilters = ED.Utils.ShallowCopy(ED.Database:GetSetting(settingKey) or {});
 		newFilters[groupName] = true;
-		ED.Database:SetSetting(ResolveFilterKey(frame), newFilters);
+		ED.Database:SetSetting(settingKey, newFilters);
 	end
 
 	self:UpdateFilters(frame);
