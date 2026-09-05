@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - The **Enable Mouse** setting is now called **Enable Hyperlinks**. Eavesdropper windows now always let clicks and camera movement through to the game world, so the setting only decides whether hyperlinks (items, URLs, etc.) are clickable, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
 - NPCs in your targeting priority (mouseover, target, or focus) are now skipped, letting the main window fall back to a player elsewhere in that list instead of clearing ([#182](https://github.com/Raenore/Eavesdropper/pull/182)).
+- Further improved performance for timestamp updates and RP name changes, especially in busy Group Windows with many senders ([#178](https://github.com/Raenore/Eavesdropper/pull/178)).
 
 ### Fixed
 - Fixed keyword highlighting sometimes breaking a nearby item or spell link in the same message ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
@@ -17,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Fixed duplicate messages appearing in your history when another chat addon resends a message it already showed you. With [Prat](https://www.curseforge.com/wow/addons/prat-3-0), this was most noticeable as roll messages showing up twice ([#176](https://github.com/Raenore/Eavesdropper/pull/176)).
 - **Jump to Context** in Dedicated Windows no longer keeps extra chat history loaded after you've scrolled back to the bottom. It now returns to normal automatically ([#175](https://github.com/Raenore/Eavesdropper/pull/175)).
 - Fixed the **New Message Indicator** sometimes staying lit in the main window after switching targets ([#181](https://github.com/Raenore/Eavesdropper/pull/181)).
+- Fixed an emote target sometimes never updating to their RP name ([#178](https://github.com/Raenore/Eavesdropper/pull/178)).
 
 ## [0.6.0] - 2026-08-30  
 Major feature update adding a Mentions History window, Import & Export, a Group Windows Player List, and a French translation, alongside wide-ranging performance and interface polish.
