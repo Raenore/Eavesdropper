@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]
+## [0.6.1] - 2026-09-05  
+Maintenance update reworking hyperlink and click-through behavior in Eavesdropper windows, improving NPC target handling, and rolling in a handful of smaller fixes and performance tweaks.
 
 ### Added
 - Hovering over an item, spell, or other hyperlink in any Eavesdropper window now shows its tooltip when **Enable Hyperlinks** is on, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
@@ -116,7 +117,8 @@ Significant update featuring a modernized Settings menu, initial keybindings sup
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.1...HEAD
+[0.6.1]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/Raenore/Eavesdropper/compare/0.5.1...0.6.0
 [0.5.1]: https://github.com/Raenore/Eavesdropper/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/Raenore/Eavesdropper/compare/0.4.1...0.5.0

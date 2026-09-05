@@ -6,6 +6,25 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 2026-09-05
+Maintenance update reworking hyperlink and click-through behavior in Eavesdropper windows, improving NPC target handling, and rolling in a handful of smaller fixes and performance tweaks.
+
+### Added
+- Hovering over an item, spell, or other hyperlink in any Eavesdropper window now shows its tooltip when **Enable Hyperlinks** is on, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
+
+### Changed
+- The **Enable Mouse** setting is now called **Enable Hyperlinks** and only controls whether hyperlinks (items, URLs, etc.) are clickable. Eavesdropper windows now always let clicks and camera movement pass through to the game world, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
+- Mousing over, targeting, or focusing an NPC no longer clears the main window ([#182](https://github.com/Raenore/Eavesdropper/pull/182)).
+- Further improved performance for timestamp updates and RP name changes, especially in busy Group Windows with many senders ([#178](https://github.com/Raenore/Eavesdropper/pull/178)).
+
+### Fixed
+- Fixed keyword highlighting sometimes breaking a nearby item or spell link in the same message ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
+- Fixed a keyword token (like `<firstname>`) breaking if an RP name contained certain special characters ([#174](https://github.com/Raenore/Eavesdropper/pull/174)).
+- Fixed duplicate messages appearing in your history when another chat addon resends a message it already showed you. With [Prat](https://www.curseforge.com/wow/addons/prat-3-0), this was most noticeable as roll messages showing up twice ([#176](https://github.com/Raenore/Eavesdropper/pull/176)).
+- **Jump to Context** in Dedicated Windows no longer keeps extra chat history loaded after you've scrolled back to the bottom. It now returns to normal automatically ([#175](https://github.com/Raenore/Eavesdropper/pull/175)).
+- Fixed the **New Message Indicator** sometimes staying lit in the main window after switching targets ([#181](https://github.com/Raenore/Eavesdropper/pull/181)).
+- Fixed an emote target sometimes never updating to their RP name ([#178](https://github.com/Raenore/Eavesdropper/pull/178)).
+
 ## [0.6.0] - 2026-08-30
 Major feature update adding a Mentions History window, Import & Export, a Group Windows Player List, and a French translation, alongside wide-ranging performance and interface polish.
 
