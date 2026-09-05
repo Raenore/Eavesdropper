@@ -437,23 +437,18 @@ function ChatFormatter.GetFormattedName(entry, forceDisplayMode)
 	return trimmedName, applyRPName, trimmedFirstName;
 end
 
----Formats a full chat entry for display: timestamp, sender name, message body, and entry colour.
+---Computes entry's aging timestamp label, colour, and whether it has reached TIMESTAMP_FREEZE_AGE.
+---Shared by FormatMessage and Eavesdropper_SharedFrameMixin:RefreshTimestamps; must not drift apart.
 ---@param entry EavesdropperChatEntry
----@param forGroup boolean? If true, uses group-aware formatting that always embeds the sender name.
----@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
----@param showJumpLink boolean? If true (and forGroup), prepends a Jump to Context link before the timestamp.
----@param stripMessageHyperlink boolean? If true, remove the hyperlinks in the message but keep the color and []
----@return string formattedMsg
----@return string? firstName
-function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJumpLink, stripMessageHyperlink)
-	if not entry or not entry.m then return ""; end
-
-	-- Timestamp
+---@return string timestamp
+---@return boolean isFrozen
+function ChatFormatter.FormatTimestamp(entry)
 	local now = time();
 	local age = now - (entry.t or now);
-	local timestamp;
+	local isFrozen = age >= ED.Constants.TIMESTAMP_FREEZE_AGE;
 
-	if age < ED.Constants.TIMESTAMP_FREEZE_AGE then
+	local timestamp;
+	if not isFrozen then
 		timestamp = age < 60 and "<1m" or string.format("%sm", math.floor(age / 60));
 	else
 		timestamp = date("%H:%M", entry.t);
@@ -474,28 +469,28 @@ function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJump
 	else
 		r, g, b = 0.02, 0.67, 0.97; -- 0x05ACF8
 	end
-	local timestampColor = CreateColor(r, g, b);
 
-	timestamp = ED.Utils.WrapTextInColor(timestamp, timestampColor) .. " ";
+	return ED.Utils.WrapTextInColor(timestamp, CreateColor(r, g, b)) .. " ", isFrozen;
+end
 
-	-- Jump to Context: prepended before the timestamp so its horizontal position never shifts.
-	local jumpLink = "";
-	if forGroup and showJumpLink then
-		jumpLink = ED.Utils.JumpHyperlink(entry.id, entry.s, ED.Constants.JUMP_TO_CONTEXT_ICON_INLINE) .. " ";
-	end
-
-	-- Name handling
+---Computes entry's name-dependent message body: sender name, message text, and entry colour.
+---Shared by FormatMessage and the targeted rename TransformMessages pass; must not drift apart.
+---@param entry EavesdropperChatEntry
+---@param forGroup boolean? If true, uses group-aware formatting that always embeds the sender name.
+---@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
+---@param stripMessageHyperlink boolean? If true, remove the hyperlinks in the message but keep the color and []
+---@return string suffix
+---@return string? firstName
+function ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMessageHyperlink)
 	local name, applyRPName, firstName = ChatFormatter.GetFormattedName(entry, forceDisplayMode);
 
 	-- Does nothing for formats that never embed name (e.g. plain SAY).
 	name = ED.Utils.PlayerHyperlink(entry.s, name);
 
-	-- Format message
 	local eventType = NormalizeEventType(entry.e);
 	local formatTable = forGroup and GROUP_MESSAGE_FORMATS or MESSAGE_FORMATS;
 	local msgText = formatTable[eventType](entry, name, forGroup, stripMessageHyperlink);
 
-	-- Apply entry color
 	local entryR, entryG, entryB = GetEntryColor(entry);
 	local entryColor = CreateColor(entryR, entryG, entryB);
 	msgText = ED.Utils.WrapTextInColor(msgText, entryColor);
@@ -504,7 +499,34 @@ function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJump
 		msgText = FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode);
 	end
 
-	return jumpLink .. timestamp .. msgText, firstName;
+	return msgText, firstName;
+end
+
+---Formats a full chat entry for display: timestamp, sender name, message body, and entry colour.
+---@param entry EavesdropperChatEntry
+---@param forGroup boolean? If true, uses group-aware formatting that always embeds the sender name.
+---@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
+---@param showJumpLink boolean? If true (and forGroup), prepends a Jump to Context link before the timestamp.
+---@param stripMessageHyperlink boolean? If true, remove the hyperlinks in the message but keep the color and []
+---@return string formattedMsg
+---@return string? firstName
+---@return string prefix Everything before the timestamp (the Jump to Context link, or ""); reused as-is by every TransformMessages-based refresh.
+---@return string suffix Everything after the timestamp; reused as-is by RefreshTimestamps, rebuilt by RefreshEntriesForIdentity when a player's data changes.
+---@return boolean isFrozen
+function ChatFormatter.FormatMessage(entry, forGroup, forceDisplayMode, showJumpLink, stripMessageHyperlink)
+	if not entry or not entry.m then return ""; end
+
+	local timestamp, isFrozen = ChatFormatter.FormatTimestamp(entry);
+
+	-- Jump to Context: prepended before the timestamp so its horizontal position never shifts.
+	local jumpLink = "";
+	if forGroup and showJumpLink then
+		jumpLink = ED.Utils.JumpHyperlink(entry.id, entry.s, ED.Constants.JUMP_TO_CONTEXT_ICON_INLINE) .. " ";
+	end
+
+	local msgText, firstName = ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMessageHyperlink);
+
+	return jumpLink .. timestamp .. msgText, firstName, jumpLink, msgText, isFrozen;
 end
 
 ED.ChatFormatter = ChatFormatter;

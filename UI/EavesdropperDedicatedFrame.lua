@@ -285,8 +285,8 @@ function Eavesdropper_Dedicated_FrameMixin:AddMessage(entry, fromHistory)
 	end
 
 	local r, g, b = ED.ChatFormatter.GetEntryColor(entry);
-	local formatted = ED.ChatFormatter.FormatMessage(entry, false, self.nameDisplayMode, nil, self.stripMessageHyperlink);
-	self.ChatBox:AddMessage(formatted, r, g, b);
+	local formatted, _, prefix, suffix, isFrozen = ED.ChatFormatter.FormatMessage(entry, false, self.nameDisplayMode, nil, self.stripMessageHyperlink);
+	self.ChatBox:AddMessage(formatted, r, g, b, entry, prefix, suffix, isFrozen);
 
 	-- Only track lines (to keep frame awake) when they are actually inserted.
 	self:TrackNewestEntry(entry);
