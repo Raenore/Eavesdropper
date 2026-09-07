@@ -82,10 +82,11 @@ function MainChat:ToggleKeywords()
 	ToggleFilters(Constants.CHAT_EVENTS_KEYWORDS, ED.Database:GetSetting("EnableKeywords"));
 end
 
----Toggles both the advanced formatting and keyword filters according to current settings.
+---Toggles advanced formatting and keywords; always enables NPC dialogue.
 function MainChat:Toggle()
 	self:ToggleAdvancedFormatting();
 	self:ToggleKeywords();
+	ToggleFilters(Constants.CHAT_EVENTS_NPC_DIALOGUE, true);
 end
 
 ED.MainChat = MainChat;
