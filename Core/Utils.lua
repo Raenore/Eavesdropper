@@ -317,6 +317,73 @@ function Utils.HideProfileNamePopups()
 	end
 end
 
+local LOGO_TEXTURE_PREFIX = "Interface/AddOns/Eavesdropper/Resources/Logo-";
+
+---@param self Button
+---@param isHighlighted boolean
+local function LogoButton_SetHighlighted(self, isHighlighted)
+	local shade = isHighlighted and 1 or 0.6;
+	self.Texture:SetVertexColor(shade, shade, shade);
+end
+
+---@param self Button
+local function LogoButton_OnEnter(self)
+	LogoButton_SetHighlighted(self, true);
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	GameTooltip:SetText(self.info.name, 1, 1, 1);
+	GameTooltip:AddLine(self.info.tooltip or ED.Localization.VISIT_ADDON_PAGE_TOOLTIP:format(self.info.name), 1, 0.82, 0, true);
+	GameTooltip:AddLine(ED.Localization.CLICK_TO_COPY, 1, 1, 1, false);
+	GameTooltip:Show();
+end
+
+---@param self Button
+local function LogoButton_OnLeave(self)
+	LogoButton_SetHighlighted(self, false);
+	GameTooltip:Hide();
+end
+
+---@param self Button
+local function LogoButton_OnClick(self)
+	GameTooltip:Hide();
+	ED.CopyTextDialog.CreateExternalLinkDialog(self.info.link);
+end
+
+---@param self Button
+local function LogoButton_OnMouseDown(self)
+	self:SetAlpha(0.8);
+end
+
+---@param self Button
+local function LogoButton_OnMouseUp(self)
+	self:SetAlpha(1);
+end
+
+---Creates a square button showing a Resources/Logo-<icon> texture. Clicking opens info.link via CopyTextDialog.
+---@param parent Frame
+---@param info table {name: string, link: string, icon: string, tooltip: string?}
+---@param size number
+---@return Button
+function Utils.CreateLogoButton(parent, info, size)
+	local button = CreateFrame("Button", nil, parent);
+	button:SetSize(size, size);
+	button.info = info;
+
+	button.Texture = button:CreateTexture(nil, "OVERLAY");
+	button.Texture:SetSize(size, size);
+	button.Texture:SetPoint("CENTER");
+	button.Texture:SetTexture(LOGO_TEXTURE_PREFIX .. info.icon);
+
+	button:SetScript("OnEnter", LogoButton_OnEnter);
+	button:SetScript("OnLeave", LogoButton_OnLeave);
+	button:SetScript("OnClick", LogoButton_OnClick);
+	button:SetScript("OnMouseDown", LogoButton_OnMouseDown);
+	button:SetScript("OnMouseUp", LogoButton_OnMouseUp);
+	button:RegisterForClicks("AnyUp");
+	LogoButton_SetHighlighted(button, false);
+
+	return button;
+end
+
 -- ============================================================================
 -- BUILD / VERSION UTILITIES
 -- ============================================================================

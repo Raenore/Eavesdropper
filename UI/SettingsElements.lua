@@ -942,64 +942,10 @@ function SettingsElements.CreateDeveloperInfoFrame(parent)
 
 	local buttonSize = 24;
 	local buttonGap = 6;
-	local buttonIconSize = 24;
-	local buttonTexturePrefix = "Interface/AddOns/Eavesdropper/Resources/Logo-";
-
-	local function LogoButton_SetHighlighted(self, isHighlighted)
-		if isHighlighted then
-			self.Texture:SetVertexColor(1, 1, 1);
-		else
-			self.Texture:SetVertexColor(0.6, 0.6, 0.6);
-		end
-	end
-
-	local function LogoButton_OnEnter(self)
-		LogoButton_SetHighlighted(self, true);
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-		GameTooltip:SetText(self.info.name, 1, 1, 1);
-		if self.info.tooltip then
-			GameTooltip:AddLine(self.info.tooltip, 1, 0.82, 0, true);
-		else
-			GameTooltip:AddLine(L.VISIT_ADDON_PAGE_TOOLTIP:format(self.info.name), 1, 0.82, 0, true);
-		end
-		GameTooltip:AddLine(L.CLICK_TO_COPY, 1, 1, 1, false);
-		GameTooltip:Show();
-	end
-
-	local function LogoButton_OnLeave(self)
-		LogoButton_SetHighlighted(self, false);
-		GameTooltip:Hide();
-	end
-
-	local function LogoButton_OnClick(self)
-		GameTooltip:Hide();
-		ED.CopyTextDialog.CreateExternalLinkDialog(self.info.link);
-	end
-
-	local function LogoButton_OnMouseDown(self)
-		self:SetAlpha(0.8);
-	end
-
-	local function LogoButton_OnMouseUp(self)
-		self:SetAlpha(1);
-	end
 
 	for i, info in ipairs(websites) do
-		local logoButton = CreateFrame("Button", nil, infoFrame);
-		logoButton:SetSize(buttonSize, buttonSize);
-		logoButton.Texture = logoButton:CreateTexture(nil, "OVERLAY");
-		logoButton.Texture:SetSize(buttonIconSize, buttonIconSize);
-		logoButton.Texture:SetPoint("CENTER", 0, 0);
-		logoButton.Texture:SetTexture(buttonTexturePrefix .. info.icon);
+		local logoButton = ED.Utils.CreateLogoButton(infoFrame, info, buttonSize);
 		logoButton:SetPoint("RIGHT", infoFrame, "RIGHT", (-#websites + i) * (buttonSize + buttonGap), 0);
-		logoButton.info = info;
-		logoButton:SetScript("OnEnter", LogoButton_OnEnter);
-		logoButton:SetScript("OnLeave", LogoButton_OnLeave);
-		logoButton:SetScript("OnClick", LogoButton_OnClick);
-		logoButton:SetScript("OnMouseDown", LogoButton_OnMouseDown);
-		logoButton:SetScript("OnMouseUp", LogoButton_OnMouseUp);
-		logoButton:RegisterForClicks("AnyUp");
-		LogoButton_SetHighlighted(logoButton, false);
 	end
 
 	return infoFrame;

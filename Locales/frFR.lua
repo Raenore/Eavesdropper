@@ -359,6 +359,7 @@ L = {
 	ADDONINFO_BUILD_OUTDATED = title .. " n'est pas optimisé pour cette version du jeu.|n|n|cnWARNING_FONT_COLOR:Des dysfonctionnements peuvent survenir.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " est optimisé pour votre version actuelle du jeu.|n|n|cnGREEN_FONT_COLOR:Toutes les fonctionnalités devraient fonctionner correctement.|r",
 	ADDONINFO_BLUESKY_SHILL_HELP = "Retrouvez-moi sur Bluesky !",
+	PREVIEW_POST_TOOLTIP = "Voir l'aperçu de la version sur %s.",
 
 	-- About Tab
 	ABOUT_TITLE = "À propos",
