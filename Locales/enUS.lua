@@ -141,7 +141,7 @@ L = {
 	MAIN_CHAT_HELP = "These options handle Advanced Formatting within the main Blizzard chat window.",
 
 	APPLY_ON_MAIN_CHAT = "Apply to Main Chat",
-	APPLY_ON_MAIN_CHAT_HELP = "Toggles whether Advanced Formatting is applied to the main Blizzard chat window in addition to the Eavesdropper history window.|n|n|cnWARNING_FONT_COLOR:Note: Formatting is not retroactive. If the required RP data is unavailable at the time a message is received, standard in-game names will be displayed.|r",
+	APPLY_ON_MAIN_CHAT_HELP = "Toggles whether Advanced Formatting is applied to the main Blizzard chat window. Also reformats emote and roll names already visible.|n|n|cnWARNING_FONT_COLOR:Note: Requires RP data and may not work with chat-modifying addons.|r",
 
 	OVERRIDE_NAME_DISPLAY = "Override Name Display",
 	OVERRIDE_NAME_DISPLAY_HELP = "Toggles whether Advanced Formatting in the main Blizzard chat window uses its own name format instead of your 'Name Display' setting.",

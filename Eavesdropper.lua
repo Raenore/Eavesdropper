@@ -103,6 +103,11 @@ function ED.Init()
 			ED.Magnifier:HandleUpdate(ED.Enums.MAGNIFIER_REASON.LOGIN);
 			ED.Minimap.SetupMinimapButtons();
 
+			-- Catches chat logs an addon like Chattynator restored from a prior session.
+			if ED.Database:GetSetting("ApplyOnMainChat") then
+				ED.AdvancedFormatter:RefreshMainChat();
+			end
+
 			if ED.Database:GetGlobalSetting("WelcomeMessage") then
 				ED.Utils.Write(ED.Localization.WELCOMEMSG_VERSION:format(ED.Database:GetProfileName(), ED.Globals.addon_version));
 				ED.Utils.Write(ED.Localization.WELCOMEMSG_SETTINGS:format(

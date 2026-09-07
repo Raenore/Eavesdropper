@@ -78,6 +78,7 @@ Core\Magnifier.lua
 
 ## Modules
 Modules\ElvUI\ElvUI.lua
+Modules\Chattynator\Chattynator.lua
 Modules\Flyway\Flyway.lua
 Modules\Flyway\FlywayPatches.lua
 Modules\Dialogs\ConfirmDialog.lua
