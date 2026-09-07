@@ -129,7 +129,7 @@ L = {
 	USE_RP_NAME_FOR_QUEST_TEXT_HELP = "Active l'utilisation du format d'affichage choisi dans 'Affichage du nom (PNJ et quêtes)' pour les textes de quête, au lieu de votre nom HRP.|n|n|cnWARNING_FONT_COLOR:Note : nécessite un addon d'interaction compatible (ex. Dialogue UI) actif.|r",
 
 	USE_RP_NAME_FOR_NPC_DIALOGUE = "Configuration du dialogue des PNJ",
-	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Active l'utilisation du format d'affichage choisi dans 'Affichage du nom (PNJ et quêtes)' pour les dialogues de PNJ (Dire, Emote, etc.), au lieu de votre nom HRP.|n|nLes bulles de discussion afficheront toujours votre nom HRP, car Eavesdropper ne les modifie pas (pour l'instant).|n|n|cnWARNING_FONT_COLOR:Note : ce paramètre est désactivé (et n'aura aucun effet) si l'extension 'Total RP 3: RP Name in Quest Text' est installé et configuré pour modifier l'option 'NPC Speech', afin d'éviter tout conflit.|r",
+	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Active le remplacement de votre nom HRP dans les dialogues et les bulles de discussion des PNJ par votre 'Affichage du nom (PNJ et quêtes)'.|n|n|cnWARNING_FONT_COLOR:Note : option désactivée si l'extension 'Total RP 3: RP Name in Quest Text' est installée et configurée pour modifier 'NPC Speech', afin d'éviter tout conflit.|r",
 
 	TIMESTAMP_BRACKETS = "Crochets des horodatages",
 	TIMESTAMP_BRACKETS_HELP = "Active l'affichage des crochets autour des horodatages de message (ex. [5m] vs 5m).",

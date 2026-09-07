@@ -178,9 +178,16 @@ stds.wow = {
 			},
 		},
 
+		C_ChatBubbles = {
+			fields = {
+				"GetAllChatBubbles",
+			},
+		},
+
 		C_ChatInfo = {
 			fields = {
 				"GetChannelShortcut",
+				"InChatMessagingLockdown",
 				"IsTimerunningPlayer",
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",

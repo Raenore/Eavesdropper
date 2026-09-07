@@ -265,6 +265,7 @@ function MSP.SetTRPReady()
 
 	ED.Keywords:ParseList();
 	ED.QuestText.RefreshPlayerPreferredName();
+	ED.NPCDialogue.RefreshPlayerPreferredName();
 end
 
 ---Attempts to retrieve the MSP/TRP3 name and colour of a player, using a short-lived cache.
@@ -384,6 +385,7 @@ function MSP.Init()
 			MSP.InvalidatePlayer(senderID);
 			ED.Keywords:ParseList();
 			ED.QuestText.RefreshPlayerPreferredName();
+			ED.NPCDialogue.RefreshPlayerPreferredName();
 		end, 1);
 	end);
 end

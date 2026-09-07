@@ -34,6 +34,15 @@ local function IsMonsterEvent(event)
 		or event == "CHAT_MSG_MONSTER_WHISPER";
 end
 
+---True if the monster event spawns a speech bubble.
+---@param event string
+---@return boolean
+local function IsMonsterBubbleEvent(event)
+	return event == "CHAT_MSG_MONSTER_SAY"
+		or event == "CHAT_MSG_MONSTER_PARTY"
+		or event == "CHAT_MSG_MONSTER_YELL";
+end
+
 ---Routes a chat message through the appropriate handler: AdvancedFormatter, NPCDialogue, or Keywords.
 ---@param chatFrame table
 ---@param event string
@@ -51,6 +60,9 @@ function MainChat:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 		if handled ~= nil then return handled, newMessage, newSender, ...; end
 	elseif IsMonsterEvent(event) then
 		message = ED.NPCDialogue.SubstitutePlayerPreferredName(message);
+		if IsMonsterBubbleEvent(event) then
+			ED.NPCDialogue.SubstituteChatBubbles();
+		end
 		return false, message, sender, ...;
 	else
 		local handled, newMessage, newSender = ED.Keywords:HandleChecks(chatFrame, event, message, sender, ...);
