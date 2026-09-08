@@ -364,7 +364,7 @@ local function SubstituteNameOccurrence(msgText, rawName, replacement)
 	return newText;
 end
 
----Replaces the emote target's OOC name with their RP name in a formatted text-emote string.
+---Updates the emote target's name in msgText to match current display settings, RP or OOC.
 ---@param entry EavesdropperChatEntry
 ---@param msgText string
 ---@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
@@ -387,11 +387,15 @@ local function FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode)
 
 	if not sender then return msgText; end
 	local bareName = sender:match("^([^%-]+)");
+	if entry.s == bareName or entry.s == sender then return msgText; end
+
+	local nameDisplayMode = forceDisplayMode or ED.Database:GetSetting("NameDisplayMode");
+	if nameDisplayMode == 3 or not ED.Database:GetSetting("UseRPNameForTargets") then
+		return SubstituteNameOccurrence(msgText, sender, bareName);
+	end
 
 	local targetFullName, targetFirstName, targetNameColor = ED.MSP.TryGetMSPData(sender, guid);
 	if not targetFullName then return msgText; end
-
-	local nameDisplayMode = forceDisplayMode or ED.Database:GetSetting("NameDisplayMode");
 
 	local targetName;
 	if targetNameColor then
@@ -402,7 +406,7 @@ local function FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode)
 		end
 	end
 
-	if targetName and entry.s ~= bareName and entry.s ~= sender then
+	if targetName then
 		targetName = ED.Utils.PlayerHyperlink(sender, targetName);
 		return SubstituteNameOccurrence(msgText, sender, targetName);
 	end

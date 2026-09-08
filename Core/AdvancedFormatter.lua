@@ -224,11 +224,12 @@ local function ReformatLine(displayMode, message, r, g, b, infoID, accessID, typ
 
 	local newMessage = message;
 
-	if entry and applyRPName then
+	if entry then
 		if entry.e == "CHAT_MSG_TEXT_EMOTE" then
 			newMessage = ED.ChatFormatter.FormatTextEmoteTargetWithRPName(entry, message, displayMode);
 		elseif entry.e == "ROLL" then
-			newMessage = ED.ChatFormatter.SubstituteNameOccurrence(message, entry.s, ED.Utils.PlayerHyperlink(entry.s, name));
+			local rollName = applyRPName and ED.Utils.PlayerHyperlink(entry.s, name) or name;
+			newMessage = ED.ChatFormatter.SubstituteNameOccurrence(message, entry.s, rollName);
 		end
 	end
 

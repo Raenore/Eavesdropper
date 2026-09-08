@@ -39,12 +39,13 @@ local function ApplyAdvancedFormatting(data)
 	local sender = typeInfo.player and typeInfo.player.name;
 	local displayMode = ED.AdvancedFormatter:ResolveMainChatDisplayMode();
 	local entry, name, applyRPName = ED.AdvancedFormatter:BuildFormattingEntry(event, data.text, sender, nil, displayMode);
-	if not entry or not applyRPName then return; end
+	if not entry then return; end
 
 	if entry.e == "CHAT_MSG_TEXT_EMOTE" then
 		data.text = ED.ChatFormatter.FormatTextEmoteTargetWithRPName(entry, data.text, displayMode);
 	elseif entry.e == "ROLL" then
-		data.text = ED.ChatFormatter.SubstituteNameOccurrence(data.text, entry.s, ED.Utils.PlayerHyperlink(entry.s, name));
+		local rollName = applyRPName and ED.Utils.PlayerHyperlink(entry.s, name) or name;
+		data.text = ED.ChatFormatter.SubstituteNameOccurrence(data.text, entry.s, rollName);
 	end
 end
 
