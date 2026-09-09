@@ -330,7 +330,41 @@ local function GetEntryColor(entry)
 	return info.r, info.g, info.b;
 end
 
----Replaces the emote target's OOC name with their RP name in a formatted text-emote string.
+---Replaces a player hyperlink with the given replacement.
+---@param msgText string
+---@param linkId string
+---@param replacement string
+---@return string? newText
+local function ReplaceNameHyperlink(msgText, linkId, replacement)
+	local newText, count = msgText:gsub("|Hplayer:" .. ED.Utils.EscapePattern(linkId) .. "|h.-|h", replacement, 1);
+	if count > 0 then
+		return newText;
+	end
+end
+
+---Replaces rawName, preferring hyperlinks so refreshes can update them.
+---@param msgText string
+---@param rawName string
+---@param replacement string
+---@return string
+local function SubstituteNameOccurrence(msgText, rawName, replacement)
+	local bareName = rawName:match("^([^%-]+)");
+
+	local newText = ReplaceNameHyperlink(msgText, rawName, replacement)
+		or (bareName and ReplaceNameHyperlink(msgText, bareName, replacement));
+	if newText then
+		return newText;
+	end
+
+	local count;
+	newText, count = msgText:gsub(ED.Utils.EscapePattern(rawName), replacement, 1);
+	if count == 0 and bareName then
+		newText = newText:gsub(ED.Utils.EscapePattern(bareName), replacement, 1);
+	end
+	return newText;
+end
+
+---Updates the emote target's name in msgText to match current display settings, RP or OOC.
 ---@param entry EavesdropperChatEntry
 ---@param msgText string
 ---@param forceDisplayMode number? Overrides the profile NameDisplayMode when set.
@@ -353,11 +387,15 @@ local function FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode)
 
 	if not sender then return msgText; end
 	local bareName = sender:match("^([^%-]+)");
+	if entry.s == bareName or entry.s == sender then return msgText; end
+
+	local nameDisplayMode = forceDisplayMode or ED.Database:GetSetting("NameDisplayMode");
+	if nameDisplayMode == 3 or not ED.Database:GetSetting("UseRPNameForTargets") then
+		return SubstituteNameOccurrence(msgText, sender, bareName);
+	end
 
 	local targetFullName, targetFirstName, targetNameColor = ED.MSP.TryGetMSPData(sender, guid);
 	if not targetFullName then return msgText; end
-
-	local nameDisplayMode = forceDisplayMode or ED.Database:GetSetting("NameDisplayMode");
 
 	local targetName;
 	if targetNameColor then
@@ -368,15 +406,9 @@ local function FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode)
 		end
 	end
 
-	if targetName and entry.s ~= bareName and entry.s ~= sender then
+	if targetName then
 		targetName = ED.Utils.PlayerHyperlink(sender, targetName);
-		local escapedSender = ED.Utils.EscapePattern(sender);
-		local newText, count = msgText:gsub(escapedSender, targetName, 1);
-		if count == 0 and bareName then
-			local escapedBare = ED.Utils.EscapePattern(bareName);
-			newText = newText:gsub(escapedBare, targetName, 1);
-		end
-		return newText;
+		return SubstituteNameOccurrence(msgText, sender, targetName);
 	end
 
 	return msgText;
@@ -386,6 +418,7 @@ end
 ChatFormatter.MsgFormatTextEmote = MsgFormatTextEmote;
 ChatFormatter.MsgFormatTextEmoteNoName = MsgFormatTextEmoteNoName;
 ChatFormatter.FormatTextEmoteTargetWithRPName = FormatTextEmoteTargetWithRPName;
+ChatFormatter.SubstituteNameOccurrence = SubstituteNameOccurrence;
 ChatFormatter.GetEntryColor = GetEntryColor;
 
 ---Returns the display name for a chat entry, applying RP name and colour based on current settings.

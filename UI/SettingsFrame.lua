@@ -789,6 +789,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			set = function(val)
 				ED.Database:SetSetting("ApplyOnMainChat", val);
 				ED.MainChat:ToggleAdvancedFormatting();
+				if val then
+					ED.AdvancedFormatter:RefreshMainChat();
+				end
 			end,
 		},
 		{
@@ -800,6 +803,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("AdvNameDisplayModeOverride"); end,
 			set = function(val)
 				ED.Database:SetSetting("AdvNameDisplayModeOverride", val);
+				ED.AdvancedFormatter:RefreshMainChat();
 			end,
 		},
 		{
@@ -827,6 +831,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("AdvNameDisplayMode"); end,
 			set = function(val)
 				ED.Database:SetSetting("AdvNameDisplayMode", val);
+				ED.AdvancedFormatter:RefreshMainChat();
 			end,
 		},
 	};

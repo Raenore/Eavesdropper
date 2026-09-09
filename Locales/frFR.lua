@@ -142,7 +142,7 @@ L = {
 	MAIN_CHAT_HELP = "Gestion de la mise en forme avancée dans la fenêtre de discussion principale de Blizzard.",
 
 	APPLY_ON_MAIN_CHAT = "Appliquer à la discussion principale",
-	APPLY_ON_MAIN_CHAT_HELP = "Active l'application de la mise en forme avancée à la fenêtre de discussion principale de Blizzard en plus de la fenêtre d'historique d'Eavesdropper.|n|n|cnWARNING_FONT_COLOR:Note : cela n'est pas rétroactif. Si les données RP requises ne sont pas disponibles lors de la réception d'un message, les noms HRP seront affichés.|r",
+	APPLY_ON_MAIN_CHAT_HELP = "Applique la mise en forme avancée à la fenêtre de discussion principale de Blizzard. Reformate également les noms des émotes et des rolls déjà visibles.|n|n|cnWARNING_FONT_COLOR:Note : requiert les données RP et peut ne pas fonctionner avec d'autres addons modifiant la fenêtre de discussion.|r",
 
 	OVERRIDE_NAME_DISPLAY = "Remplacer l'affichage des noms",
 	OVERRIDE_NAME_DISPLAY_HELP = "Active l'utilisation par la mise en forme avancée dans la fenêtre de discussion principale de Blizzard de son propre format de nom au lieu de votre paramètre 'Affichage des noms'.",
