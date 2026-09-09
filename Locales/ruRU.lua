@@ -355,6 +355,25 @@ L = {
 	IMPORTEXPORT_ERROR_PACKED_DATA_INVALID = "That string is malformed and cannot be imported.", -- NEW
 	IMPORTEXPORT_ERROR_SCHEMA_TOO_NEW = "That string was created by a newer version of " .. title .. " and cannot be read. Update the addon and try again.", -- NEW
 
+	-- Copy History Dialog
+	COPY_HISTORY = "Copy History", -- NEW
+	COPY_HISTORY_HELP = "Opens this window's chat history as selectable text you can copy out.", -- NEW
+
+	COPYHISTORY_TITLE = "Copy History", -- NEW
+	COPYHISTORY_TIMESTAMP_FIXED = "Fixed", -- NEW
+	COPYHISTORY_TIMESTAMP_RELATIVE = "Relative", -- NEW
+	COPYHISTORY_TIMESTAMP_NONE = "None", -- NEW
+	COPYHISTORY_SELECT_ALL = "Select All", -- NEW
+	COPYHISTORY_FORMATTING_TITLE = "Formatting", -- NEW
+	COPYHISTORY_TIMESTAMPS_TITLE = "Timestamps", -- NEW
+	COPYHISTORY_TIMESTAMPS_HELP = "Choose how timestamps appear when you copy the text.|n|n- Fixed: Exact time (e.g. 19:53:22).|n- Relative: How long ago (e.g. 5m).|n- None: No timestamp.", -- NEW
+	COPYHISTORY_SHOW_NAMES_TITLE = "Show Names", -- NEW
+	COPYHISTORY_SHOW_NAMES_HELP = "Choose whether to include sender names in the copied text.|n|n- Window Default: Use this window's normal behavior.|n- Always On: Always add names.|n- Always Off: Never add names.|n|n|cnWARNING_FONT_COLOR:Note: Emotes and rolls always use their own name rules.|r", -- NEW
+	COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT = "Window Default", -- NEW
+	COPYHISTORY_SHOW_NAMES_ON = "Always On", -- NEW
+	COPYHISTORY_SHOW_NAMES_OFF = "Always Off", -- NEW
+	COPYHISTORY_NAME_DISPLAY_HELP = "Choose how names are formatted in the copied text.|n|n- Follow Profile Setting: Use your current profile's Name Display.|n- Full Name / First Name / Original (OOC) Name: Always use that variant.|n|n|cnWARNING_FONT_COLOR:Note: RP names need a compatible RP addon (TRP, MRP, XRP); without it, the in-game name is used.|r", -- NEW
+
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Версия:|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " не оптимизирован для этой версии игры.|n|n|cnWARNING_FONT_COLOR:Это может привести к ошибкам в работе аддона.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " совместим с вашей версиями игры.|n|n|cnGREEN_FONT_COLOR:Все функции должны работать корректно.|r",
