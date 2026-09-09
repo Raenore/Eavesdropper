@@ -67,7 +67,7 @@ function Eavesdropper_FrameMixin:OnLoad()
 	self.isMouseOver = false;
 	self.titlebar_name = nil;
 
-	Eavesdropper_SharedFrameMixin.InitChatBox(self, Constants.CHAT_BOX.MAX_HISTORY);
+	Eavesdropper_SharedFrameMixin.InitChatBox(self, ED.Database:GetSetting("MaxHistory"));
 
 	self:ShowTitleBar();
 
@@ -281,6 +281,7 @@ function Eavesdropper_FrameMixin:RefreshChat(retainScroll)
 	self.newestEntryTime = nil;
 
 	local maxMessages = ED.Database:GetSetting("MaxHistory");
+	self.ChatBox:SetMaxLines(maxMessages);
 	local player = self.eavesdropped_player;
 
 	if player then
