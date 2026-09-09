@@ -108,7 +108,7 @@ L = {
 	NAME_DISPLAY_MODE_FULL_NAME = "Nom complet",
 	NAME_DISPLAY_MODE_FIRST_NAME = "Prénom",
 	NAME_DISPLAY_MODE_ORIGINAL_NAME = "Nom original (HRP)",
-	NAME_DISPLAY_MODE_FOLLOW_PROFILE = "Utiliser les options du profil actif",
+	NAME_DISPLAY_MODE_FOLLOW_PROFILE = "Réglages du profil",
 
 	USE_RP_NAME_COLOR = "Couleurs des noms",
 	USE_RP_NAME_COLOR_HELP = "Colore les noms en fonction de leurs paramètres RP personnalisés (ex. depuis TRP3).|n|n- Si aucune couleur RP n'est détectée, Eavesdropper utilise la couleur de classe Blizzard par défaut.",
@@ -354,6 +354,25 @@ L = {
 	IMPORTEXPORT_ERROR_DESERIALIZE_CBOR = "Lecture impossible. La chaîne est probablement corrompue.",
 	IMPORTEXPORT_ERROR_PACKED_DATA_INVALID = "Chaîne invalide ou malformée : importation impossible.",
 	IMPORTEXPORT_ERROR_SCHEMA_TOO_NEW = "Cette chaîne de texte a été créée par une version plus récente de " .. title .. " et ne peut pas être lue. Mettez à jour l'addon puis réessayez.",
+
+	-- Copy History Dialog
+	COPY_HISTORY = "Copier l'historique",
+	COPY_HISTORY_HELP = "Ouvre l'historique de discussion de cette fenêtre sous forme de texte sélectionnable à copier.",
+
+	COPYHISTORY_TITLE = "Copier l'historique",
+	COPYHISTORY_TIMESTAMP_FIXED = "Précis",
+	COPYHISTORY_TIMESTAMP_RELATIVE = "Relatif",
+	COPYHISTORY_TIMESTAMP_NONE = "Aucun",
+	COPYHISTORY_SELECT_ALL = "Tout sélectionner",
+	COPYHISTORY_FORMATTING_TITLE = "Mise en forme",
+	COPYHISTORY_TIMESTAMPS_TITLE = "Horodatages",
+	COPYHISTORY_TIMESTAMPS_HELP = "Détermine le format des horodatages dans le texte copié.|n|n- Précis : Heure exacte (ex. 19:53:22).|n- Relatif : Durée écoulée (ex. 5m).|n- Aucun : Masque l'horodatage.",
+	COPYHISTORY_SHOW_NAMES_TITLE = "Afficher les noms",
+	COPYHISTORY_SHOW_NAMES_HELP = "Détermine l'affichage du nom des émetteurs dans le texte copié.|n|n- Par défaut : Utilise le fonctionnement standard de cette fenêtre.|n- Toujours afficher : Affiche toujours les noms.|n- Toujours masquer : Masque toujours les noms.|n|n|cnWARNING_FONT_COLOR:Note : les émotes et les rolls utilisent toujours leurs propres règles d'affichage.|r",
+	COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT = "Par défaut",
+	COPYHISTORY_SHOW_NAMES_ON = "Toujours afficher",
+	COPYHISTORY_SHOW_NAMES_OFF = "Toujours masquer",
+	COPYHISTORY_NAME_DISPLAY_HELP = "Détermine le format des noms dans le texte copié.|n|n- Réglages du profil : Conserve le format d'affichage des noms du profil actif.|n- Nom complet / Prénom / Nom original (HRP) : Toujours utiliser cette variante.|n|n|cnWARNING_FONT_COLOR:Note : sans addon RP compatible (TRP, MRP, XRP) actif, seul le nom HRP est disponible.|r",
 
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Build :|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " n'est pas optimisé pour cette version du jeu.|n|n|cnWARNING_FONT_COLOR:Des dysfonctionnements peuvent survenir.|r",
