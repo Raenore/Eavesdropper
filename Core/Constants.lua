@@ -98,16 +98,21 @@ Constants.CHAT_EVENTS_KEYWORDS = {
 	-- "CHAT_MSG_CHANNEL", -- unused right now
 };
 
----Chat events processed by the advanced formatter (text emotes, system, NPC lines).
+---Chat events for advanced formatting.
 ---@type string[]
 Constants.CHAT_EVENTS_ADVANCED_FORMATTING = {
-	"CHAT_MSG_TEXT_EMOTE", -- Advanced Formatting
-	"CHAT_MSG_SYSTEM", -- Advanced Formatting
-	"CHAT_MSG_MONSTER_SAY", -- Advanced Formatting (NPCs)
-	"CHAT_MSG_MONSTER_EMOTE", -- Advanced Formatting (NPCs)
-	"CHAT_MSG_MONSTER_PARTY", -- Advanced Formatting (NPCs)
-	"CHAT_MSG_MONSTER_YELL", -- Advanced Formatting (NPCs)
-	"CHAT_MSG_MONSTER_WHISPER", -- Advanced Formatting (NPCs)
+	"CHAT_MSG_TEXT_EMOTE",
+	"CHAT_MSG_SYSTEM",
+};
+
+---Monster events for NPC dialogue; always filtered regardless of ApplyOnMainChat.
+---@type string[]
+Constants.CHAT_EVENTS_NPC_DIALOGUE = {
+	"CHAT_MSG_MONSTER_SAY",
+	"CHAT_MSG_MONSTER_EMOTE",
+	"CHAT_MSG_MONSTER_PARTY",
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_MONSTER_WHISPER",
 };
 
 ---Configuration constants for the chat history system.

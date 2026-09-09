@@ -129,7 +129,7 @@ L = {
 	USE_RP_NAME_FOR_QUEST_TEXT_HELP = "Toggles whether your name appearing in quest text uses your chosen 'NPC & Quest Name Display' or your original in-game name.|n|n|cnWARNING_FONT_COLOR:Note: This requires a supported interaction addon (e.g., Dialogue UI) to be active.|r", -- NEW
 
 	USE_RP_NAME_FOR_NPC_DIALOGUE = "Format NPC Dialogue", -- NEW
-	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Toggles whether your name appearing in NPC Dialogue (Say, Emote, etc.) uses your chosen 'NPC & Quest Name Display' or your original in-game name.|n|nChat bubbles will still show your original name, as Eavesdropper does not modify it (for now).|n|n|cnWARNING_FONT_COLOR:Note: This setting is disabled (and will silently do nothing) if 'Total RP 3: RP Name in Quest Text' is installed and set to modify 'NPC Speech', to prevent conflicts.|r", -- NEW
+	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Toggles whether your name in NPC dialogue and speech bubbles uses your 'NPC & Quest Name Display' or your original in-game name.|n|n|cnWARNING_FONT_COLOR:Note: Disabled if 'Total RP 3: RP Name in Quest Text' is installed and set to modify 'NPC Speech', to prevent conflicts.|r", -- NEW
 
 	TIMESTAMP_BRACKETS = "Скобки меток времени",
 	TIMESTAMP_BRACKETS_HELP = "Отображать ли скобки вокруг времени сообщения (например, [5м] или 5м).",

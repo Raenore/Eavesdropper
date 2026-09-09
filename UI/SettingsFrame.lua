@@ -751,6 +751,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			set = function(val)
 				ED.Database:SetSetting("NPCAndQuestNameDisplayMode", val);
 				ED.QuestText.RefreshPlayerPreferredName();
+				ED.NPCDialogue.RefreshPlayerPreferredName();
 			end,
 		},
 		{
