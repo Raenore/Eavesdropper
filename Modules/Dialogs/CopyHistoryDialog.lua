@@ -23,25 +23,26 @@ local TIMESTAMP_MODE = Enums.COPY_HISTORY.TIMESTAMP_MODE;
 local SHOW_NAMES_MODE = Enums.COPY_HISTORY.SHOW_NAMES_MODE;
 local NAME_DISPLAY_MODE = Enums.NAME_DISPLAY_MODE;
 
--- These three double as the Formatting dropdown's menu entries, one group each.
+-- These three double as the Formatting dropdown's menu entries; labelKey is resolved live
+-- in BuildFormattingGroup, since L.KEY this early would freeze on enUS until login.
 local TIMESTAMP_ROW_OPTIONS = {
-	{ mode = TIMESTAMP_MODE.FIXED, label = L.COPYHISTORY_TIMESTAMP_FIXED },
-	{ mode = TIMESTAMP_MODE.RELATIVE, label = L.COPYHISTORY_TIMESTAMP_RELATIVE },
-	{ mode = TIMESTAMP_MODE.NONE, label = L.COPYHISTORY_TIMESTAMP_NONE },
+	{ mode = TIMESTAMP_MODE.FIXED, labelKey = "COPYHISTORY_TIMESTAMP_FIXED" },
+	{ mode = TIMESTAMP_MODE.RELATIVE, labelKey = "COPYHISTORY_TIMESTAMP_RELATIVE" },
+	{ mode = TIMESTAMP_MODE.NONE, labelKey = "COPYHISTORY_TIMESTAMP_NONE" },
 };
 
 local SHOW_NAMES_ROW_OPTIONS = {
-	{ mode = SHOW_NAMES_MODE.WINDOW_DEFAULT, label = L.COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT },
-	{ mode = SHOW_NAMES_MODE.ON, label = L.COPYHISTORY_SHOW_NAMES_ON },
-	{ mode = SHOW_NAMES_MODE.OFF, label = L.COPYHISTORY_SHOW_NAMES_OFF },
+	{ mode = SHOW_NAMES_MODE.WINDOW_DEFAULT, labelKey = "COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT" },
+	{ mode = SHOW_NAMES_MODE.ON, labelKey = "COPYHISTORY_SHOW_NAMES_ON" },
+	{ mode = SHOW_NAMES_MODE.OFF, labelKey = "COPYHISTORY_SHOW_NAMES_OFF" },
 };
 
 -- When nil, follows the profile's NameDisplayMode, same as the frame-level override.
 local NAME_DISPLAY_ROW_OPTIONS = {
-	{ mode = nil, label = L.NAME_DISPLAY_MODE_FOLLOW_PROFILE },
-	{ mode = NAME_DISPLAY_MODE.FULL_NAME, label = L.NAME_DISPLAY_MODE_FULL_NAME },
-	{ mode = NAME_DISPLAY_MODE.FIRST_NAME, label = L.NAME_DISPLAY_MODE_FIRST_NAME },
-	{ mode = NAME_DISPLAY_MODE.ORIGINAL_NAME, label = L.NAME_DISPLAY_MODE_ORIGINAL_NAME },
+	{ mode = nil, labelKey = "NAME_DISPLAY_MODE_FOLLOW_PROFILE" },
+	{ mode = NAME_DISPLAY_MODE.FULL_NAME, labelKey = "NAME_DISPLAY_MODE_FULL_NAME" },
+	{ mode = NAME_DISPLAY_MODE.FIRST_NAME, labelKey = "NAME_DISPLAY_MODE_FIRST_NAME" },
+	{ mode = NAME_DISPLAY_MODE.ORIGINAL_NAME, labelKey = "NAME_DISPLAY_MODE_ORIGINAL_NAME" },
 };
 
 -- Fixed timestamps carry no color of their own, unlike Relative's age tint.
@@ -109,7 +110,7 @@ end
 ---@param title string
 ---@param helpText string
 ---@param settingKey EavesdropperGlobalSettingKey
----@param options table[] { mode, label }
+---@param options table[] { mode, labelKey }
 local function BuildFormattingGroup(dialog, rootDescription, title, helpText, settingKey, options)
 	local onEnter, onLeave, setAnchorFrame = CreateGroupTooltipHandlers(title, helpText);
 	local titleElement = rootDescription:CreateTitle(title);
@@ -118,7 +119,7 @@ local function BuildFormattingGroup(dialog, rootDescription, title, helpText, se
 	titleElement:SetOnLeave(onLeave);
 
 	for _, option in ipairs(options) do
-		local radio = rootDescription:CreateRadio(option.label,
+		local radio = rootDescription:CreateRadio(L[option.labelKey],
 			function() return ED.Database:GetGlobalSetting(settingKey) == option.mode; end,
 			function()
 				ED.Database:SetGlobalSetting(settingKey, option.mode);
