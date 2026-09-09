@@ -235,7 +235,10 @@ function Eavesdropper_Group_FrameMixin:RefreshChat(retainScroll)
 		return;
 	end
 
-	if not self.players or #self.players == 0 then
+	-- Happens during CreateNamedFrame's early Show(), before players is set; leave mergedHistory untouched.
+	if not self.players then return; end
+
+	if #self.players == 0 then
 		self.mergedHistory = {};
 		self:RedrawChat(retainScroll);
 		return;
