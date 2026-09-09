@@ -13,6 +13,8 @@ local paragraphSpacingBefore = 8;
 local paragraphSpacingAfter = 8;
 local indentSize = 14;
 local dividerOffsetV = 6;
+local previewIconSize = 20;
+local previewIconGap = 6;
 
 local styleList = {
 	{pattern = "^#%s+(.+)", tag = "h1"}, -- # TEXT
@@ -20,6 +22,7 @@ local styleList = {
 	{pattern = "^###%s+(.+)", tag = "h3"}, -- ### TEXT
 	{pattern = "^%-%s+(.+)", tag = "li"}, -- - Bullet
 	{pattern = "^[%s%c]+%-%s+(.+)", tag = "li2"}, --   - Bullet with extra indent
+	{pattern = "^Preview on:%s*(.+)", tag = "preview"}, -- "Preview on: [Bluesky](url) | [Twitter](url)"
 	{pattern = "^%s*(.+)", tag = "p"}, -- Body
 };
 
@@ -28,6 +31,22 @@ local supportedURL = {
 	"Eavesdropper/wiki",
 	"curseforge.com/wow/addons/",
 };
+
+local previewPlatforms = {
+	{key = "blueskyURL", name = "Bluesky", icon = "Bluesky.png", domain = "bsky.app"},
+	{key = "twitterURL", name = "X (Twitter)", icon = "Xitter.png", domain = "x.com"},
+};
+
+---Matches a preview URL to a known platform by domain, so the label text in the markdown doesn't matter.
+---@param url string
+---@return table?
+local function MatchPreviewPlatform(url)
+	for _, platform in ipairs(previewPlatforms) do
+		if string.find(url, platform.domain, 1, true) then
+			return platform;
+		end
+	end
+end
 
 local textColors = {
 	Emphasis = "NORMAL_FONT_COLOR", -- #, ##, ###, **
@@ -67,7 +86,16 @@ local function ConvertMarkdownToDataProvider()
 				end
 			end
 
-			if text then
+			if tag == "preview" then
+				local previewData = {index = index, tag = tag};
+				for _, linkURL in string.gmatch(text, urlMatchPattern) do
+					local platform = MatchPreviewPlatform(linkURL);
+					if platform then
+						previewData[platform.key] = linkURL;
+					end
+				end
+				dataProvider:Insert(previewData);
+			elseif text then
 				text = string.gsub(text, gitRefRemovalPattern, ""); -- Remove [#1](url)
 
 				local linkName, linkURL = string.match(text, urlMatchPattern); -- Match [text](url)
@@ -159,6 +187,41 @@ local function SetupFont(fontString, elementData)
 	end
 end
 
+---Buttons are cached on the frame since rows are pooled and reused.
+---@param frame table
+---@param elementData table
+local function SetupPreviewButtons(frame, elementData)
+	frame.PreviewButtons = frame.PreviewButtons or {};
+
+	local offsetX = 0;
+	for i, platform in ipairs(previewPlatforms) do
+		local url = elementData[platform.key];
+		local button = frame.PreviewButtons[i];
+		if not button then
+			button = ED.Utils.CreateLogoButton(frame, {name = platform.name, icon = platform.icon}, previewIconSize);
+			frame.PreviewButtons[i] = button;
+		end
+
+		button:SetShown(url ~= nil);
+		if url then
+			button.info.link = url;
+			button.info.tooltip = L.PREVIEW_POST_TOOLTIP:format(platform.name);
+			button:ClearAllPoints();
+			button:SetPoint("TOPLEFT", frame, "TOPLEFT", offsetX, 0);
+			offsetX = offsetX + previewIconSize + previewIconGap;
+		end
+	end
+end
+
+---Hides a pooled row's preview logo buttons when it's reused for a non-preview line.
+---@param frame table
+local function HidePreviewButtons(frame)
+	if not frame.PreviewButtons then return; end
+	for _, button in ipairs(frame.PreviewButtons) do
+		button:Hide();
+	end
+end
+
 -- ============================================================
 -- Text Container
 -- ============================================================
@@ -212,21 +275,36 @@ function Eavesdropper_ChangelogFrameMixin:OnLoad()
 
 	local view = CreateScrollBoxListLinearView();
 	view:SetElementExtentCalculator(function(_dataIndex, elementData)
+		local spacingBefore, spacingAfter = CalculateFramePadding(elementData);
+		if elementData.tag == "preview" then
+			return previewIconSize + spacingBefore + spacingAfter;
+		end
+
 		SetupFont(self.PlaceholderText, elementData);
 		local width = CalculateTextWidthAndIndent(contentWidth, elementData);
 		self.PlaceholderText:SetWidth(width);
 		self.PlaceholderText:SetText(elementData.text);
-		local spacingBefore, spacingAfter = CalculateFramePadding(elementData);
 		return self.PlaceholderText:GetHeight() + spacingBefore + spacingAfter;
 	end);
 
 	local function TextContainerInitializer(frame, elementData)
+		local tag = elementData.tag;
+		local spacingBefore, spacingAfter = CalculateFramePadding(elementData);
+
+		if tag == "preview" then
+			frame.Bullet:Hide();
+			frame.Divider:Hide();
+			frame.RightText:Hide();
+			frame.Text:SetText("");
+			SetupPreviewButtons(frame, elementData);
+			frame:SetSize(contentWidth, previewIconSize + spacingBefore + spacingAfter);
+			return;
+		end
+
+		HidePreviewButtons(frame);
 		SetupFont(frame.Text, elementData);
 
 		local width, indent = CalculateTextWidthAndIndent(contentWidth, elementData);
-
-		local tag = elementData.tag;
-		local spacingBefore, spacingAfter = CalculateFramePadding(elementData);
 
 		if tag == "h1" or tag == "h2" then
 			frame.Divider:SetWidth(contentWidth);

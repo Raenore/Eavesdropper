@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.6.1] - 2026-09-05
 Maintenance update reworking hyperlink and click-through behavior in Eavesdropper windows, improving NPC target handling, and rolling in a handful of smaller fixes and performance tweaks.
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3musf2etc7k2v) | [Twitter](https://x.com/Raenore/status/2096344142922096953)
 
 ### Added
 - Hovering over an item, spell, or other hyperlink in any Eavesdropper window now shows its tooltip when **Enable Hyperlinks** is on, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#179](https://github.com/Raenore/Eavesdropper/pull/179)).
@@ -27,6 +28,7 @@ Maintenance update reworking hyperlink and click-through behavior in Eavesdroppe
 
 ## [0.6.0] - 2026-08-30
 Major feature update adding a Mentions History window, Import & Export, a Group Windows Player List, and a French translation, alongside wide-ranging performance and interface polish.
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mtsebvkduk2y) | [Twitter](https://x.com/Raenore/status/2091729388387586188)
 
 ### Added
 - Added a **Mentions History** window that lists every message aimed at you, whether a keyword hit or a Blizzard emote (e.g. /poke, /wave), across every channel, with its own filters and a new **Settings > Mentions** category ([#131](https://github.com/Raenore/Eavesdropper/pull/131)).
@@ -67,6 +69,7 @@ Major feature update adding a Mentions History window, Import & Export, a Group 
 
 ## [0.5.1] - 2026-08-04
 Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MSP initialization during login, and fixing keyword token parsing across non-TRP3 RP addons.
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3msbjgjae7c2y)
 
 ### Changed
 - **Eavesdropper is now licensed under GNU GPLv3** instead of Apache 2.0 (as required by our relicensing process) ([#108](https://github.com/Raenore/Eavesdropper/pull/108)).
@@ -84,6 +87,7 @@ Maintenance update switching the license to GNU GPLv3, improving Total RP 3 & MS
 
 ## [0.5.0] - 2026-06-30
 Significant update featuring a modernized Settings menu, initial keybindings support, expanded multi-message compatibility, and various interface fixes.
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mmxgl43fes2m)
 
 ### Added
 - Expanded multi-message support to include [EmoteScribe](https://www.curseforge.com/wow/addons/emotescribe) as the latest explicitly supported provider ([#78](https://github.com/Raenore/Eavesdropper/pull/78)).

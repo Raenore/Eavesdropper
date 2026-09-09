@@ -359,6 +359,7 @@ L = {
 	ADDONINFO_BUILD_OUTDATED = title .. " не оптимизирован для этой версии игры.|n|n|cnWARNING_FONT_COLOR:Это может привести к ошибкам в работе аддона.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " совместим с вашей версиями игры.|n|n|cnGREEN_FONT_COLOR:Все функции должны работать корректно.|r",
 	ADDONINFO_BLUESKY_SHILL_HELP = "Подписывайтесь на меня в Bluesky!",
+	PREVIEW_POST_TOOLTIP = "Смотреть превью версии на %s.",
 
 	-- About Tab
 	ABOUT_TITLE = "About", -- NEW
