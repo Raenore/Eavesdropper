@@ -15,7 +15,9 @@ local CopyHistoryDialog = {};
 local FRAME_NAME = "Eavesdropper_CopyHistoryDialog";
 
 local BODY_INSET_TOP = 34; -- Matches ImportExportDialog's first-row inset below the title bar.
-local SELECT_ALL_BUTTON_WIDTH = 90;
+local SELECT_ALL_BUTTON_MIN_WIDTH = 90;
+local SELECT_ALL_BUTTON_PADDING = 24; -- Matches ResizeTitleButton's own padding.
+local SELECT_ALL_BUTTON_GAP = 10; -- Kept clear of the dropdown for a very long translation.
 local SELECT_ALL_BUTTON_HEIGHT = 20;
 local FORMATTING_DROPDOWN_WIDTH = 120;
 
@@ -175,9 +177,15 @@ function Eavesdropper_CopyHistoryDialogMixin:BuildOptionsRow()
 	self.OptionsRow = row;
 
 	local selectAllButton = CreateFrame("Button", nil, row, "UIPanelButtonTemplate");
-	selectAllButton:SetSize(SELECT_ALL_BUTTON_WIDTH, SELECT_ALL_BUTTON_HEIGHT);
+	selectAllButton:SetHeight(SELECT_ALL_BUTTON_HEIGHT);
 	selectAllButton:SetPoint("LEFT", row, "LEFT");
 	selectAllButton:SetText(L.COPYHISTORY_SELECT_ALL);
+
+	-- Sized to the label so longer translations aren't clipped.
+	local textWidth = selectAllButton:GetFontString():GetStringWidth() + SELECT_ALL_BUTTON_PADDING;
+	local maxWidth = row:GetWidth() - FORMATTING_DROPDOWN_WIDTH - SELECT_ALL_BUTTON_GAP;
+	selectAllButton:SetWidth(Clamp(textWidth, SELECT_ALL_BUTTON_MIN_WIDTH, maxWidth));
+
 	selectAllButton:SetScript("OnClick", function()
 		self.TextBox:SetFocus();
 		self.TextBox:HighlightText();
