@@ -49,6 +49,12 @@
 				</Layers>
 			</Frame>
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<Frame parentKey="LoadingSpinner" inherits="SpinnerTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="CENTER"/>
+				</Anchors>
+				<Size x="54" y="54"/>
+			</Frame>
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>

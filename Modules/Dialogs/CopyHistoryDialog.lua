@@ -69,6 +69,73 @@ local function BuildCopyLine(entry, timestampMode, forGroup, nameDisplayMode)
 	return timestamp .. ED.Utils.StripHyperlinks(suffix);
 end
 
+---Gathers a sender's full stored history, unbounded by the frame's configured display cap.
+---@param player string?
+---@param frame table Frame whose filters apply.
+---@return EavesdropperChatEntry[]
+local function GatherPlayerHistory(player, frame)
+	if not player then return {}; end
+
+	local history = ED.ChatHistory:GetPlayerHistory(player, math.huge, frame);
+	if history and #history > 0 then return history; end
+
+	return ED.ChatHistory:GetPlayerHistory(ED.Utils.StripRealmSuffix(player), math.huge, frame) or {};
+end
+
+---Mirrors RebuildMergedHistory's gather and sort, minus the maxMessages trim.
+---@param frame table Group frame with a players list.
+---@param onComplete fun(entries: EavesdropperChatEntry[])
+---@param isCurrent fun(): boolean Stops the walk early once a newer CaptureSnapshot supersedes it.
+local function GatherGroupHistory(frame, onComplete, isCurrent)
+	local players = frame.players;
+	local seen = {};
+	local entries = {};
+
+	local function GatherPlayer(player)
+		for _, entry in ipairs(GatherPlayerHistory(player, frame)) do
+			if not seen[entry.id] then
+				seen[entry.id] = true;
+				entries[#entries + 1] = entry;
+			end
+		end
+	end
+
+	local function Finish()
+		table.sort(entries, function(a, b) return a.id < b.id; end);
+		onComplete(entries);
+	end
+
+	local rawCount = 0;
+	for _, player in ipairs(players) do
+		rawCount = rawCount + #(ED.ChatHistory.history[player] or {});
+	end
+
+	if rawCount <= Constants.CHAT_BOX.GROUP_CHUNK_THRESHOLD then
+		for _, player in ipairs(players) do
+			GatherPlayer(player);
+		end
+		Finish();
+		return;
+	end
+
+	local index = 0;
+	local function Step()
+		if not isCurrent() then return; end
+
+		index = index + 1;
+		local player = players[index];
+		if not player then
+			Finish();
+			return;
+		end
+
+		GatherPlayer(player);
+		RunNextFrame(Step);
+	end
+
+	Step();
+end
+
 ---Resolves whether a line's sender name should be embedded, per the Show Names setting.
 ---@param showNamesMode EavesdropperCopyHistoryShowNamesMode
 ---@param windowDefaultForGroup boolean The invoking window's own default (on for Group/Mentions).
@@ -153,6 +220,7 @@ function Eavesdropper_CopyHistoryDialogMixin:OnLoad()
 
 	self:BuildOptionsRow();
 	self:BuildTextBox();
+	self.LoadingSpinner:Raise();
 
 	ED.ElvUI.RegisterSkinnableElement(self, Enums.ELVUI_SKIN_TYPE.FRAME);
 	ED.ElvUI.RegisterSkinnableElement(self.ScrollFrame.ScrollBar, Enums.ELVUI_SKIN_TYPE.SCROLLBAR);
@@ -220,23 +288,34 @@ function Eavesdropper_CopyHistoryDialogMixin:BuildTextBox()
 	self.TextBox = editBox;
 end
 
----Snapshots frame's ChatBox entries when Copy History opens; later option changes reformat
----this snapshot instead of live data, since Main rebuilds its ChatBox on every target change.
----@param frame table Any of the four Eavesdropper window types; must have a live ChatBox.
-function Eavesdropper_CopyHistoryDialogMixin:CaptureSnapshot(frame)
-	local chatBox = frame and frame.ChatBox;
-	local snapshot = {};
+---Snapshots frame's history once; RefreshText reformats this afterward instead of re-reading
+---live data, since Main rebuilds its ChatBox on every target change.
+---@param frame table Any of the four Eavesdropper window types.
+---@param mode ("dedicated"|"group"|"mentions")? Matches Config.ShowConfigMenu's own mode values.
+---@param onComplete fun()
+function Eavesdropper_CopyHistoryDialogMixin:CaptureSnapshot(frame, mode, onComplete)
+	self.captureGeneration = (self.captureGeneration or 0) + 1;
+	local generation = self.captureGeneration;
 
-	if chatBox then
-		-- GetMessageInfo(1) is the oldest, GetMessageInfo(GetNumMessages()) the newest, so
-		-- ascending order already matches the live frame's top-to-bottom reading.
-		for i = 1, chatBox:GetNumMessages() do
-			local _, _, _, _, entry = chatBox:GetMessageInfo(i);
-			snapshot[#snapshot + 1] = entry;
-		end
+	local function IsCurrent()
+		return generation == self.captureGeneration;
 	end
 
-	self.snapshot = snapshot;
+	local function Apply(entries)
+		if not IsCurrent() then return; end
+		self.snapshot = entries;
+		onComplete();
+	end
+
+	if not frame then
+		Apply({});
+	elseif mode == "group" then
+		GatherGroupHistory(frame, Apply, IsCurrent);
+	elseif mode == "mentions" then
+		Apply(ED.ChatHistory:GetMentions(math.huge, frame));
+	else
+		Apply(GatherPlayerHistory(frame.eavesdropped_player, frame));
+	end
 end
 
 ---Rebuilds the copy text from the snapshot without touching selection; callers that want
@@ -269,18 +348,23 @@ function CopyHistoryDialog:GetFrame()
 	return self.frame;
 end
 
----Shows the dialog with frame's current chat history, replacing whatever was shown before.
----@param frame table Any of the four Eavesdropper window types; must have a live ChatBox.
----@param forGroup boolean The invoking window's own name-display default (on for Group/Mentions).
-function CopyHistoryDialog:Show(frame, forGroup)
+---Shows the dialog with frame's full chat history. For a large Group, content may take a
+---few frames to appear; see CaptureSnapshot.
+---@param frame table Any of the four Eavesdropper window types.
+---@param mode ("dedicated"|"group"|"mentions")? Matches Config.ShowConfigMenu's own mode values.
+function CopyHistoryDialog:Show(frame, mode)
 	local dialog = self:GetFrame();
-	dialog.windowDefaultForGroup = forGroup;
-	dialog:CaptureSnapshot(frame);
+	dialog.windowDefaultForGroup = (mode == "group" or mode == "mentions");
+	dialog.TextBox:SetReadOnlyText("");
+	dialog.LoadingSpinner:Show();
 	dialog:Show();
 
-	dialog:RefreshText();
-	dialog.TextBox:SetFocus();
-	dialog.TextBox:HighlightText();
+	dialog:CaptureSnapshot(frame, mode, function()
+		dialog.LoadingSpinner:Hide();
+		dialog:RefreshText();
+		dialog.TextBox:SetFocus();
+		dialog.TextBox:HighlightText();
+	end);
 end
 
 ED.CopyHistoryDialog = CopyHistoryDialog;

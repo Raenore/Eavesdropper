@@ -148,7 +148,7 @@ function Config.ShowConfigMenu(frame, mode)
 		end
 
 		local copyHistory = rootDescription:CreateButton(L.COPY_HISTORY, function()
-			ED.CopyHistoryDialog:Show(frame, mode == "group" or mode == "mentions");
+			ED.CopyHistoryDialog:Show(frame, mode);
 		end);
 		ED.Utils.SetMenuTooltip(copyHistory, L.COPY_HISTORY_HELP);
 		if frame.ChatBox:GetNumMessages() == 0 then
