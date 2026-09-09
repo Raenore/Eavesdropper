@@ -25,6 +25,9 @@ local Database = {};
 
 ---@class EavesdropperGlobal
 ---@field ElvUITheme boolean?
+---@field CopyHistoryShowNamesMode EavesdropperCopyHistoryShowNamesMode?
+---@field CopyHistoryNameDisplayMode EavesdropperNameDisplayMode? When nil, follows the profile's NameDisplayMode.
+---@field CopyHistoryTimestampMode EavesdropperCopyHistoryTimestampMode?
 ---@field DedicatedWindows boolean?
 ---@field DedicatedWindowsNewIndicator boolean?
 ---@field DedicatedWindowsUnitPopups boolean?
@@ -47,6 +50,8 @@ local Database = {};
 ---@type EavesdropperGlobal
 local GLOBAL_DEFAULTS = {
 	ElvUITheme = true,
+	CopyHistoryShowNamesMode = Enums.COPY_HISTORY.SHOW_NAMES_MODE.WINDOW_DEFAULT,
+	CopyHistoryTimestampMode = Enums.COPY_HISTORY.TIMESTAMP_MODE.FIXED,
 	DedicatedWindows = true,
 	DedicatedWindowsNewIndicator = true,
 	DedicatedWindowsUnitPopups = true,
@@ -780,6 +785,9 @@ end
 
 ---@alias EavesdropperGlobalSettingKey
 ---| "ElvUITheme"
+---| "CopyHistoryShowNamesMode"
+---| "CopyHistoryNameDisplayMode"
+---| "CopyHistoryTimestampMode"
 ---| "DedicatedWindows"
 ---| "DedicatedWindowsNewIndicator"
 ---| "DedicatedWindowsUnitPopups"
