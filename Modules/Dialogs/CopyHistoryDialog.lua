@@ -225,7 +225,7 @@ function Eavesdropper_CopyHistoryDialogMixin:OnLoad()
 	ED.ElvUI.RegisterSkinnableElement(self, Enums.ELVUI_SKIN_TYPE.FRAME);
 	ED.ElvUI.RegisterSkinnableElement(self.ScrollFrame.ScrollBar, Enums.ELVUI_SKIN_TYPE.SCROLLBAR);
 	ED.ElvUI.RegisterSkinnableElement(self.SelectAllButton, Enums.ELVUI_SKIN_TYPE.BUTTON);
-	ED.ElvUI.RegisterSkinnableElement(self.FormattingDropdown, Enums.ELVUI_SKIN_TYPE.DROPDOWN);
+	ED.ElvUI.RegisterSkinnableElement(self.FormattingDropdown, Enums.ELVUI_SKIN_TYPE.DROPDOWN, true);
 end
 
 function Eavesdropper_CopyHistoryDialogMixin:OnDragStart()
