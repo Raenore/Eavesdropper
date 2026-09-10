@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added a **Copy History** option to every window's title-bar menu, which opens that window's chat history as selectable text you can copy out, with options for timestamp style and how names are shown ([#192](https://github.com/Raenore/Eavesdropper/pull/192)).
+- Each changelog entry with a Bluesky and/or X (Twitter) preview post now shows a clickable icon that copies the link so you can open it in your browser ([#190](https://github.com/Raenore/Eavesdropper/pull/190)).
+
+### Changed
+- **Apply to Main Chat** now retroactively reformats emotes and rolls already on screen when you turn it on or change your name display settings, instead of only affecting new messages from then on ([#188](https://github.com/Raenore/Eavesdropper/pull/188)).
+- **Format NPC Dialogue** now also shows your chosen name in NPC speech bubbles, not just the dialogue text in chat ([#189](https://github.com/Raenore/Eavesdropper/pull/189)).
 
 ### Fixed
 - Main and Dedicated windows now correctly respect your **History Size** setting, instead of always keeping up to 300 messages regardless of it ([#193](https://github.com/Raenore/Eavesdropper/pull/193)).
