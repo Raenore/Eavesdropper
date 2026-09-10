@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.  
 
 ## [Unreleased]
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mv6xeu57fc2l) | [Twitter](https://x.com/Raenore/status/2098156070103359820)
 
 ### Added
 - Added a **Copy History** option to every window's title-bar menu, which opens that window's chat history as selectable text you can copy out, with options for timestamp style and how names are shown ([#192](https://github.com/Raenore/Eavesdropper/pull/192)).

@@ -6,6 +6,21 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mv6xeu57fc2l) | [Twitter](https://x.com/Raenore/status/2098156070103359820)
+
+### Added
+- Added a **Copy History** option to every window's title-bar menu, which opens that window's chat history as selectable text you can copy out, with options for timestamp style and how names are shown ([#192](https://github.com/Raenore/Eavesdropper/pull/192)).
+- Each changelog entry with a Bluesky and/or X (Twitter) preview post now shows a clickable icon that copies the link so you can open it in your browser ([#190](https://github.com/Raenore/Eavesdropper/pull/190)).
+
+### Changed
+- **Apply to Main Chat** now retroactively reformats emotes and rolls already on screen when you turn it on or change your name display settings, instead of only affecting new messages from then on ([#188](https://github.com/Raenore/Eavesdropper/pull/188)).
+- **Format NPC Dialogue** now also shows your chosen name in NPC speech bubbles, not just the dialogue text in chat ([#189](https://github.com/Raenore/Eavesdropper/pull/189)).
+
+### Fixed
+- Main and Dedicated windows now correctly respect your **History Size** setting, instead of always keeping up to 300 messages regardless of it ([#193](https://github.com/Raenore/Eavesdropper/pull/193)).
+- Fixed Blizzard emotes and rolls sometimes showing the wrong name when running alongside **Total RP 3: RP Name in Quest Text**, such as an emote's starting "You" changing to your character name ([#194](https://github.com/Raenore/Eavesdropper/pull/194)).
+
 ## [0.6.1] - 2026-09-05
 Maintenance update reworking hyperlink and click-through behavior in Eavesdropper windows, improving NPC target handling, and rolling in a handful of smaller fixes and performance tweaks.
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3musf2etc7k2v) | [Twitter](https://x.com/Raenore/status/2096344142922096953)
