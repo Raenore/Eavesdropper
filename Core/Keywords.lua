@@ -114,7 +114,7 @@ end
 function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luacheck: no unused (chatFrame)
 	if not message or not canaccessvalue(message) then return; end
 	if not ED.Database:GetSetting("EnableKeywords") then return; end
-	if ED.Utils.IsOwnPlayer(sender, event) then return; end
+	if ED.Utils.IsOwnPlayer(sender, event, select(10, ...)) then return; end
 	if not self.SortedList or #self.SortedList == 0 then return; end
 
 	-- Handle TRP NPC talk detection pattern.

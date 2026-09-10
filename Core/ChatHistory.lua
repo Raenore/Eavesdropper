@@ -375,7 +375,7 @@ function ChatHistory:AddEntry(event, sender, message, language, guid, channel, l
 		message = TRP3_API.chat.getNPCMessageName();
 	end
 
-	local isOwn = ED.Utils.IsOwnPlayer(sender, event);
+	local isOwn = ED.Utils.IsOwnPlayer(sender, event, guid);
 	if isOwn then
 		guid = ED.Globals.player_guid;
 	end

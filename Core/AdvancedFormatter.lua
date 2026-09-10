@@ -67,7 +67,7 @@ function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, fo
 		msgSender = ED.ChatHistory:HandleTextEmote(sender, message, true);
 	end
 
-	if ED.Utils.IsOwnPlayer(msgSender, event) then
+	if ED.Utils.IsOwnPlayer(msgSender, event, guid) then
 		guid = ED.Globals.player_guid;
 	end
 
@@ -94,7 +94,7 @@ local function CreateChatName(event, ...)
 	local _, _, sender, _, _, _, _, _, _, _, _, _, guid = ...;
 
 	-- Own player remains "you" or whichever the locale sets.
-	if not ED.Database:GetSetting("ApplyOnMainChat") or ED.Utils.IsOwnPlayer(sender, event) or event == "CHAT_MSG_SYSTEM" then
+	if not ED.Database:GetSetting("ApplyOnMainChat") or ED.Utils.IsOwnPlayer(sender, event, guid) or event == "CHAT_MSG_SYSTEM" then
 		return;
 	end
 
@@ -152,7 +152,7 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 
 	local msgFinalText;
 
-	if ED.Utils.IsOwnPlayer(sender, event) then
+	if ED.Utils.IsOwnPlayer(sender, event, guid) then
 		msgFinalText = entry.m;
 	else
 		msgFinalText = ED.Utils.StripRealmSuffix(entry.s) .. " " .. ED.ChatFormatter.MsgFormatTextEmoteNoName(entry, name);
