@@ -39,10 +39,11 @@ end
 ---@param sender string
 ---@param guid string?
 ---@param forceDisplayMode number?
+---@param lineID number?
 ---@return EavesdropperChatEntry? entry Nil for a non-roll CHAT_MSG_SYSTEM message.
 ---@return string? name
 ---@return boolean? applyRPName
-function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, forceDisplayMode)
+function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, forceDisplayMode, lineID)
 	local msgSender = sender;
 
 	if event == "CHAT_MSG_SYSTEM" then
@@ -52,6 +53,8 @@ function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, fo
 		if linkedSender then
 			msgSender = linkedSender;
 		else
+			-- Prefer the original line an RP-name addon may have already rewritten.
+			message = ED.ChatHandler:GetPendingRollMessage(lineID) or message;
 			msgSender = ED.Utils.GetRollData(message);
 			if msgSender then
 				-- Rolls carry no GUID from Blizzard, but a roll from another player is only ever
@@ -145,9 +148,10 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 	if not message or not canaccessvalue(message) then return; end
 	if not ED.Database:GetSetting("ApplyOnMainChat") then return; end
 
+	local lineID = select(9, ...);
 	local guid = select(10, ...); -- SYSTEM may not have a GUID
 	local displayMode = self:ResolveMainChatDisplayMode();
-	local entry, name, applyRPName = self:BuildFormattingEntry(event, message, sender, guid, displayMode);
+	local entry, name, applyRPName = self:BuildFormattingEntry(event, message, sender, guid, displayMode, lineID);
 	if not entry then return; end
 
 	local msgFinalText;
