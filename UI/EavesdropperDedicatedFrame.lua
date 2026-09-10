@@ -96,7 +96,7 @@ function Eavesdropper_Dedicated_FrameMixin:OnLoad()
 	self:EnableMouseWheel(true);
 	self:UpdateMouseLock();
 
-	Eavesdropper_SharedFrameMixin.InitChatBox(self, Constants.CHAT_BOX.MAX_HISTORY);
+	Eavesdropper_SharedFrameMixin.InitChatBox(self, ED.Database:GetSetting("MaxHistory"));
 
 	-- Inherit font size from the main frame settings
 	self.FontSize = ED.Database:GetSetting("FontSize");
@@ -201,13 +201,13 @@ function Eavesdropper_Dedicated_FrameMixin:RefreshChat(retainScroll)
 
 	if self.jumpHistoryLimit and scrollOffset == 0 then
 		self.jumpHistoryLimit = nil;
-		self.ChatBox:SetMaxLines(Constants.CHAT_BOX.MAX_HISTORY);
 	end
 
 	self.ChatBox:Clear();
 	self.newestEntryTime = nil;
 
 	local maxMessages = self.jumpHistoryLimit or ED.Database:GetSetting("MaxHistory");
+	self.ChatBox:SetMaxLines(maxMessages);
 	local player = self.eavesdropped_player;
 
 	if player then
@@ -222,9 +222,8 @@ function Eavesdropper_Dedicated_FrameMixin:RefreshChat(retainScroll)
 	self.refreshing = false;
 end
 
----Scrolls so entryId lands as the bottom-most visible line. SetScrollOffset fixes to the
----bottom edge, not the top. Widens the history buffer via jumpHistoryLimit when entryId
----needs more than MAX_HISTORY; RefreshChat drops it back to normal once scrolled to bottom.
+---Scrolls so entryId lands as the bottom-most visible line (SetScrollOffset anchors to the bottom, not the top).
+---Widens the buffer via jumpHistoryLimit when entryId needs more context; RefreshChat resets it once scrolled to bottom.
 ---@param entryId number
 function Eavesdropper_Dedicated_FrameMixin:ScrollToEntry(entryId)
 	if not self.ChatBox then return; end
@@ -247,7 +246,7 @@ function Eavesdropper_Dedicated_FrameMixin:ScrollToEntry(entryId)
 			or ED.ChatHistory:GetPlayerHistoryAroundEntry(ED.Utils.StripRealmSuffix(player), entryId, padding, self);
 
 		if chat then
-			if #chat > (self.jumpHistoryLimit or Constants.CHAT_BOX.MAX_HISTORY) then
+			if #chat > (self.jumpHistoryLimit or ED.Database:GetSetting("MaxHistory")) then
 				self.jumpHistoryLimit = #chat;
 				self.ChatBox:SetMaxLines(self.jumpHistoryLimit);
 			end
