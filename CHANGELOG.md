@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [Unreleased]
+
+### Added
+- Added a **Copy History** option to every window's title-bar menu, which opens that window's chat history as selectable text you can copy out, with options for timestamp style and how names are shown ([#192](https://github.com/Raenore/Eavesdropper/pull/192)).
+
+### Fixed
+- Main and Dedicated windows now correctly respect your **History Size** setting, instead of always keeping up to 300 messages regardless of it ([#193](https://github.com/Raenore/Eavesdropper/pull/193)).
+- Fixed Blizzard emotes having their starting "You" changed to your character name when running alongside **Total RP 3: RP Name in Quest Text** ([#194](https://github.com/Raenore/Eavesdropper/pull/194)).
+
 ## [0.6.1] - 2026-09-05  
 Maintenance update reworking hyperlink and click-through behavior in Eavesdropper windows, improving NPC target handling, and rolling in a handful of smaller fixes and performance tweaks.  
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3musf2etc7k2v) | [Twitter](https://x.com/Raenore/status/2096344142922096953)
