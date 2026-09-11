@@ -148,8 +148,7 @@ function AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...) 
 	if not message or not canaccessvalue(message) then return; end
 	if not ED.Database:GetSetting("ApplyOnMainChat") then return; end
 
-	local lineID = select(9, ...);
-	local guid = select(10, ...); -- SYSTEM may not have a GUID
+	local _, _, _, _, _, _, _, _, lineID, guid = ...; -- SYSTEM may not have a GUID
 	local displayMode = self:ResolveMainChatDisplayMode();
 	local entry, name, applyRPName = self:BuildFormattingEntry(event, message, sender, guid, displayMode, lineID);
 	if not entry then return; end

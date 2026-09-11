@@ -24,8 +24,7 @@ end
 
 -- Named so RemoveMessageEventFilter could match it later.
 local function EmotePrefixFilter(_, _, ...)
-	local message = select(1, ...);
-	local lineID  = select(11, ...);
+	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
 	if not message or not canaccessvalue(message) or not lineID then return; end
 
@@ -56,8 +55,7 @@ end
 
 -- Named so RemoveMessageEventFilter could match it later.
 local function RollMessageFilter(_, _, ...)
-	local message = select(1, ...);
-	local lineID  = select(11, ...);
+	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
 	if not message or not canaccessvalue(message) or not lineID then return; end
 	if not ED.Utils.GetRollData(message) then return; end
