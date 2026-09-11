@@ -14,6 +14,23 @@ Enums.CHAT_BOX.FONT_OUTLINE = {
 	THICKOUTLINE = 3,
 };
 
+---@class EavesdropperCopyHistoryEnums
+Enums.COPY_HISTORY = {};
+
+---@enum EavesdropperCopyHistoryShowNamesMode
+Enums.COPY_HISTORY.SHOW_NAMES_MODE = {
+	WINDOW_DEFAULT = 1,
+	ON             = 2,
+	OFF            = 3,
+};
+
+---@enum EavesdropperCopyHistoryTimestampMode
+Enums.COPY_HISTORY.TIMESTAMP_MODE = {
+	FIXED    = 1,
+	RELATIVE = 2,
+	NONE     = 3,
+};
+
 ---@alias ElvUISkinType
 ---| "button"
 ---| "checkbox"

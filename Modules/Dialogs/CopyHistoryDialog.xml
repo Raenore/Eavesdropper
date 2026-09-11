@@ -1,0 +1,65 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+../../Eavesdropper.xsd">
+
+	<!-- The window itself: background, border, title and close button. Everything inside
+		it is built in CopyHistoryDialog.lua -->
+	<Frame name="Eavesdropper_CopyHistoryDialogTemplate" mixin="Eavesdropper_CopyHistoryDialogMixin" virtual="true" enableMouse="true" hidden="true" registerForDrag="LeftButton" movable="true" clampedToScreen="true" frameStrata="DIALOG">
+		<Size x="600" y="600"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Frames>
+			<Frame parentKey="Background" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="3" y="-18"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="3"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND" textureSubLevel="-3">
+						<Texture parentKey="BackgroundColor">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="-1" y="0"/>
+								<Anchor point="BOTTOMRIGHT" x="1" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BACKGROUND" textureSubLevel="-2">
+						<Texture parentKey="InnerShadow" setAllPoints="true"/>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Frame parentKey="NineSlice" useParentLevel="true" inherits="NineSlicePanelTemplate">
+				<KeyValues>
+					<KeyValue key="layoutType" value="ButtonFrameTemplateNoPortraitMinimizable" type="string"/>
+				</KeyValues>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormal" wordwrap="false">
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-5"/>
+								<Anchor point="LEFT" x="60"/>
+								<Anchor point="RIGHT" x="-60"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonDefaultAnchors"/>
+			<Frame parentKey="LoadingSpinner" inherits="SpinnerTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="CENTER"/>
+				</Anchors>
+				<Size x="54" y="54"/>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnDragStart method="OnDragStart"/>
+			<OnDragStop method="OnDragStop"/>
+		</Scripts>
+	</Frame>
+</Ui>

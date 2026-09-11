@@ -147,6 +147,14 @@ function Config.ShowConfigMenu(frame, mode)
 			settingsView = L.MENTIONS_WINDOW_TITLE;
 		end
 
+		local copyHistory = rootDescription:CreateButton(L.COPY_HISTORY, function()
+			ED.CopyHistoryDialog:Show(frame, mode);
+		end);
+		ED.Utils.SetMenuTooltip(copyHistory, L.COPY_HISTORY_HELP);
+		if frame.ChatBox:GetNumMessages() == 0 then
+			copyHistory:SetEnabled(false);
+		end
+
 		rootDescription:CreateButton(SETTINGS, function()
 			ED.Settings.OpenSettings(settingsView);
 		end);

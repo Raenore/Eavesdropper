@@ -599,6 +599,7 @@ stds.wow = {
 		"GameTooltip_SetTitle",
 		"GameTooltip_ShowDisabledTooltip",
 		"GenerateClosure",
+		"GetAppropriateTooltip",
 		"GetAutoCompleteRealms",
 		"GetBindingText",
 		"GetBuildInfo",

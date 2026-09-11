@@ -1,5 +1,5 @@
 -- Copyright The Eavesdropper Authors
--- Read-only editbox handling adapted from Total RP 3
+-- Pipe-escaping adapted from Total RP 3
 -- SPDX-License-Identifier: GPL-3.0-or-later
 
 local L = ED.Localization;
@@ -24,28 +24,10 @@ local ACTION_BUTTON_WIDTH = 120;
 local ACTION_BUTTON_HEIGHT = 22;
 local STATUS_TEXT_MIN_HEIGHT = 28; -- Two lines; the warning grows past this as needed
 local INSTRUCTIONS_HEIGHT = 34;
-local EDITBOX_PADDING = 5;
-local EDITBOX_INSET = 4;
-local EDITBOX_INSET_RIGHT = 24; -- Leaves room for the ScrollBar
 
----Substitutes readable wording for the unpackaged dev build.
----@param version string?
----@return string
-local function FormatVersion(version)
-	if type(version) ~= "string" or version == "" then return UNKNOWN; end
-	if version:find("project-version", 1, true) then return L.IMPORTEXPORT_VERSION_DEV; end
-	return version;
-end
-
--- ============================================================
--- Read-only guard
--- ============================================================
-
----Installs the read-only and pipe-escaping behaviour on a multi-line editbox.
----An EditBox eats "|" escape sequences, so a profile name containing a colour code would
----render as colour and be lost on copy. Based on Total RP 3's implementation.
+---Escapes "|" to prevent interpretation as color/hyperlink codes.
 ---@param editBox table
-local function InstallTextGuards(editBox)
+local function InstallPipeEscaping(editBox)
 	local baseGetText = editBox.GetText;
 	local baseSetText = editBox.SetText;
 
@@ -56,40 +38,15 @@ local function InstallTextGuards(editBox)
 	editBox.SetText = function(self, text)
 		return baseSetText(self, (string.gsub(text or "", "|", "||")));
 	end;
+end
 
-	---Pins the box to text, making it read-only. Pass nil to make it editable again.
-	---@param text string?
-	editBox.SetReadOnlyText = function(self, text)
-		self.readOnlyText = text;
-		self:RestoreReadOnlyText();
-	end;
-
-	editBox.RestoreReadOnlyText = function(self)
-		if self.restoringReadOnlyText then return; end
-		self.restoringReadOnlyText = true;
-		self:SetText(self.readOnlyText or "");
-		self.restoringReadOnlyText = false;
-	end;
-
-	editBox:SetScript("OnChar", function(self, char)
-		if self.readOnlyText == nil then return; end
-
-		-- Rewind past the rejected character so the caret does not jump to the start.
-		local cursorPosition = self:GetUTF8CursorPosition();
-		self:RestoreReadOnlyText();
-		self:SetCursorPosition(cursorPosition - strlenutf8(char));
-	end);
-
-	-- A payload is only ever valid whole, so always select all of it. On import that also
-	-- makes a paste a replacement rather than landing beside the previous string.
-	editBox:SetScript("OnEditFocusGained", function(self)
-		self:HighlightText();
-	end);
-
-	-- Clicking an already-focused box clears the selection without re-firing the above.
-	editBox:SetScript("OnMouseUp", function(self)
-		self:HighlightText();
-	end);
+---Substitutes readable wording for the unpackaged dev build.
+---@param version string?
+---@return string
+local function FormatVersion(version)
+	if type(version) ~= "string" or version == "" then return UNKNOWN; end
+	if version:find("project-version", 1, true) then return L.IMPORTEXPORT_VERSION_DEV; end
+	return version;
 end
 
 ---Creates a settings-style row, laid out bottom-up from whatever sits below it.
@@ -279,87 +236,39 @@ function Eavesdropper_ImportExportDialogMixin:BuildBody()
 	self:BuildTextBox();
 end
 
----Builds the multi-line paste box, mirroring CreateMultiLineEditBox in SettingsElements
+---Builds the multi-line paste box and wires up paste detection.
 function Eavesdropper_ImportExportDialogMixin:BuildTextBox()
-	local backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate");
-	backdrop:SetBackdrop({
-		bgFile = "Interface/ChatFrame/ChatFrameBackground",
-		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-		edgeSize = 12,
-		insets = { left = 4, right = 4, top = 4, bottom = 4 },
-	});
-	backdrop:SetBackdropColor(0, 0, 0, 0.35);
-	backdrop:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+	local backdrop, scrollFrame, editBox = ED.DialogWidgets.CreateReadOnlyTextBox(self, self.Instructions);
 	self.TextBoxBackdrop = backdrop;
-
-	local scrollFrame = CreateFrame("ScrollFrame", nil, self, "ScrollFrameTemplate");
-	scrollFrame:SetPoint("TOPLEFT", backdrop, "TOPLEFT", EDITBOX_PADDING, -EDITBOX_PADDING);
-	scrollFrame:SetPoint("BOTTOMRIGHT", backdrop, "BOTTOMRIGHT", -EDITBOX_PADDING, EDITBOX_PADDING);
-
-	-- Unlike the settings variant the scrollbar stays visible; payloads always need it.
-	scrollFrame.ScrollBar:ClearAllPoints();
-	scrollFrame.ScrollBar:SetPoint("TOPRIGHT", scrollFrame, "TOPRIGHT", -6, -3);
-	scrollFrame.ScrollBar:SetPoint("BOTTOMRIGHT", scrollFrame, "BOTTOMRIGHT", -6, 2);
 	self.ScrollFrame = scrollFrame;
 
-	local editBox = CreateFrame("EditBox", nil, scrollFrame);
-	editBox:SetMultiLine(true);
-	editBox:SetAutoFocus(false);
-	editBox:SetFontObject("ChatFontNormal");
-	editBox:SetTextInsets(EDITBOX_INSET, EDITBOX_INSET_RIGHT, EDITBOX_INSET, EDITBOX_INSET);
-	editBox:SetPoint("TOPLEFT", scrollFrame, "TOPLEFT", 0, 0);
-	scrollFrame:SetScrollChild(editBox);
+	InstallPipeEscaping(editBox);
 
-	scrollFrame:SetScript("OnSizeChanged", function(frame)
-		editBox:SetWidth(frame:GetWidth());
+	-- A payload is only ever valid whole, so always select all of it. On import that also
+	-- makes a paste a replacement rather than landing beside the previous string.
+	editBox:SetScript("OnEditFocusGained", function(box)
+		box:HighlightText();
 	end);
 
-	backdrop:SetScript("OnMouseDown", function(_, button)
-		if button == "LeftButton" then
-			editBox:SetFocus();
-		end
+	-- Clicking an already-focused box clears the selection without re-firing the above.
+	editBox:SetScript("OnMouseUp", function(box)
+		box:HighlightText();
 	end);
 
-	scrollFrame:SetScript("OnMouseDown", function(_, button)
-		if button == "LeftButton" then
-			editBox:SetFocus();
-		end
-	end);
-
-	InstallTextGuards(editBox);
-
-	editBox:HookScript("OnTextChanged", function(box)
-		if box.readOnlyText ~= nil then
-			-- Backstop for deletion, which never reaches OnChar.
-			if box:GetText() ~= box.readOnlyText then
-				box:RestoreReadOnlyText();
-
-				-- SetText parks the caret at the end; put it back where the key was pressed.
-				if box.cursorBeforeKey then
-					box:SetCursorPosition(box.cursorBeforeKey);
-				end
-			end
-			return;
-		end
-
-		self:OnPastedTextChanged();
-	end);
-
-	editBox:SetScript("OnEscapePressed", function() self:Hide(); end);
-
-	editBox:SetScript("OnKeyDown", function(box, key)
-		if box.readOnlyText == nil then return; end
-
-		box.cursorBeforeKey = box:GetCursorPosition();
-
-		if key == "C" and IsControlKeyDown() then
+	-- The payload is only ever copied whole, so close right after Ctrl-C.
+	editBox:HookScript("OnKeyDown", function(box, key)
+		if box.readOnlyText ~= nil and key == "C" and IsControlKeyDown() then
 			box:HighlightText();
-			UIErrorsFrame:AddMessage(L.COPY_SYSTEM_MESSAGE, YELLOW_FONT_COLOR:GetRGB());
-
 			RunNextFrame(function()
 				self:Hide();
 			end);
 		end
+	end);
+
+	-- Chains after DialogWidgets' read-only backstop hook.
+	editBox:HookScript("OnTextChanged", function(box)
+		if box.readOnlyText ~= nil then return; end
+		self:OnPastedTextChanged();
 	end);
 
 	self.TextBox = editBox;

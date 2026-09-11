@@ -354,6 +354,25 @@ L = {
 	IMPORTEXPORT_ERROR_PACKED_DATA_INVALID = "That string is malformed and cannot be imported.",
 	IMPORTEXPORT_ERROR_SCHEMA_TOO_NEW = "That string was created by a newer version of " .. title .. " and cannot be read. Update the addon and try again.",
 
+	-- Copy History Dialog
+	COPY_HISTORY = "Copy History",
+	COPY_HISTORY_HELP = "Opens this window's chat history as selectable text you can copy out.",
+
+	COPYHISTORY_TITLE = "Copy History",
+	COPYHISTORY_TIMESTAMP_FIXED = "Fixed",
+	COPYHISTORY_TIMESTAMP_RELATIVE = "Relative",
+	COPYHISTORY_TIMESTAMP_NONE = "None",
+	COPYHISTORY_SELECT_ALL = "Select All",
+	COPYHISTORY_FORMATTING_TITLE = "Formatting",
+	COPYHISTORY_TIMESTAMPS_TITLE = "Timestamps",
+	COPYHISTORY_TIMESTAMPS_HELP = "Choose how timestamps appear when you copy the text.|n|n- Fixed: Exact time (e.g. 19:53:22).|n- Relative: How long ago (e.g. 5m).|n- None: No timestamp.",
+	COPYHISTORY_SHOW_NAMES_TITLE = "Show Names",
+	COPYHISTORY_SHOW_NAMES_HELP = "Choose whether to include sender names in the copied text.|n|n- Window Default: Use this window's normal behavior.|n- Always On: Always add names.|n- Always Off: Never add names.|n|n|cnWARNING_FONT_COLOR:Note: Emotes and rolls always use their own name rules.|r",
+	COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT = "Window Default",
+	COPYHISTORY_SHOW_NAMES_ON = "Always On",
+	COPYHISTORY_SHOW_NAMES_OFF = "Always Off",
+	COPYHISTORY_NAME_DISPLAY_HELP = "Choose how names are formatted in the copied text.|n|n- Follow Profile Setting: Use your current profile's Name Display.|n- Full Name / First Name / Original (OOC) Name: Always use that variant.|n|n|cnWARNING_FONT_COLOR:Note: RP names need a compatible RP addon (TRP, MRP, XRP); without it, the in-game name is used.|r",
+
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Build:|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " is not optimized for this game build.|n|n|cnWARNING_FONT_COLOR:This may cause unexpected behavior.|r",
 	ADDONINFO_BUILD_CURRENT = title .. " is optimized for your current game build.|n|n|cnGREEN_FONT_COLOR:All features should work as expected.|r",

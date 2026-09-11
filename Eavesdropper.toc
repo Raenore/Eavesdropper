@@ -83,9 +83,12 @@ Modules\Flyway\Flyway.lua
 Modules\Flyway\FlywayPatches.lua
 Modules\Dialogs\ConfirmDialog.lua
 Modules\Dialogs\CopyDialog.lua
+Modules\Dialogs\DialogWidgets.lua
 Modules\Dialogs\GroupDialog.lua
 Modules\Dialogs\ImportExportDialog.lua
 Modules\Dialogs\ImportExportDialog.xml
+Modules\Dialogs\CopyHistoryDialog.lua
+Modules\Dialogs\CopyHistoryDialog.xml
 Modules\Dialogs\CopyTextDialog.lua
 Modules\Dialogs\NewProfileDialog.lua
 Modules\Dialogs\RenameDialog.lua

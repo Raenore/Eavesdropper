@@ -80,6 +80,14 @@ function Utils.StripColorCodes(text)
 	return text;
 end
 
+---StripHyperlinks Collapses WoW hyperlinks down to their visible label text
+---@param text string
+---@return string
+function Utils.StripHyperlinks(text)
+	if type(text) ~= "string" then return text; end
+	return (text:gsub("|H(.-)|h(.-)|h", "%2"));
+end
+
 ---CommandHyperlink Builds a clickable addon hyperlink that dispatches an /ed subcommand when clicked.
 ---@param command string The subcommand to execute (e.g. "show", "help", "" for settings)
 ---@param displayText string? The visible label; defaults to the matching SLASH_COMMAND_ED locale string
