@@ -6,6 +6,7 @@ Eavesdropper keeps you immersed in busy RP environments by tracking the conversa
 - **Dedicated Windows:** Independent windows per target, for tracking multiple conversations at once.  
 - **Group Windows:** Combine multiple targets into one window for party or small-group RP.  
 - **Mentions:** Every message aimed at you in one place, from keyword hits to Blizzard emotes (e.g. `/poke`, `/wave`).  
+- **Copy History:** Copy any window's chat history out as plain text, right from its title-bar menu.  
 - **Keyword Highlights:** Custom keywords highlighted in chat with optional sound alerts.  
 - **Notification Support:** Play a sound and flash the taskbar on target actions, directed Blizzard emotes, or new Dedicated/Group messages.  
 - **Multi-Message Support:** Built-in support for Chattery, EmoteScribe, EmoteSplitter, and Yapper.  
@@ -121,12 +122,12 @@ While Eavesdropper is designed to be broadly compatible, the following addons ar
 
 ## Advanced RP Name Formatting
 Eavesdropper can replace standard character names with their respective RP names across the entire UI.  
-This formatting applies to **all Eavesdropper windows** (Main, Dedicated, Group, and Mentions) and can optionally be enabled for **Blizzard's chat window** (via the **Apply to Main Chat** setting), complete with its own independent name format setting.
+This formatting applies to **all Eavesdropper windows** (Main, Dedicated, Group, and Mentions) and can optionally be enabled for **Blizzard's chat window** (via the **Apply to Main Chat** setting), complete with its own independent name format setting. Turning it on, or changing that name format, also updates messages already on screen instead of only new ones.
 
 **Supported Situations:**
 - **Blizzard Emotes:** Replaces names in emotes like `/point`, `/wave`, or `/bow`.
 - **Rolls:** Shows RP names in `/roll` results.
-- **NPC Dialogue:** Replaces your name when NPCs speak to you in chat (`/say`, `/whisper`, etc.).
+- **NPC Dialogue:** Replaces your name when NPCs speak to you in chat and in their speech bubbles (`/say`, `/whisper`, etc.).
 - **Quest Text:** Seamlessly integrates with **Dialogue UI** to display your RP name during quest interactions.
 
 > **Note:** This only works once you've already loaded the player's RP profile, for example by having seen them before.
