@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [Unreleased]
+## [0.6.2] - 2026-09-12  
+Feature update adding a Copy History option to every window, improving Main Chat formatting and NPC Dialogue speech bubbles, and fixing a History Size setting and a chat name-formatting issue.  
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mv6xeu57fc2l) | [Twitter](https://x.com/Raenore/status/2098156070103359820)
 
 ### Added
@@ -136,7 +137,8 @@ Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mmxgl43fes2m)
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.1...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.2...HEAD
+[0.6.2]: https://github.com/Raenore/Eavesdropper/compare/0.6.1...0.6.2
 [0.6.1]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/Raenore/Eavesdropper/compare/0.5.1...0.6.0
 [0.5.1]: https://github.com/Raenore/Eavesdropper/compare/0.5.0...0.5.1
