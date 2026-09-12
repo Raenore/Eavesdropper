@@ -24,8 +24,7 @@ end
 
 -- Named so RemoveMessageEventFilter could match it later.
 local function EmotePrefixFilter(_, _, ...)
-	local message = select(1, ...);
-	local lineID  = select(11, ...);
+	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
 	if not message or not canaccessvalue(message) or not lineID then return; end
 
@@ -40,6 +39,34 @@ end
 -- CHAT_MSG_EMOTE filter, which TRP3 only registers on PLAYER_LOGIN.
 if ChatFrameUtil and type(ChatFrameUtil.AddMessageEventFilter) == "function" then
 	ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_EMOTE", EmotePrefixFilter);
+end
+
+-- RP-name addons can rewrite the player's own name inside a roll's CHAT_MSG_SYSTEM text.
+-- Captured here first, keyed by lineID, so sender resolution and the message body can fall back to it.
+local pendingRollMessages = {};
+
+---GetPendingRollMessage Returns the cached original roll text for lineID, if any.
+---Not cleared on read, unlike pendingEmotePrefixes: two different callers need the same entry.
+---@param lineID number?
+---@return string?
+local function GetPendingRollMessage(lineID)
+	return lineID and pendingRollMessages[lineID];
+end
+
+-- Named so RemoveMessageEventFilter could match it later.
+local function RollMessageFilter(_, _, ...)
+	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
+
+	if not message or not canaccessvalue(message) or not lineID then return; end
+	if not ED.Utils.GetRollData(message) then return; end
+
+	pendingRollMessages[lineID] = message;
+	C_Timer.After(5, function() pendingRollMessages[lineID] = nil; end);
+end
+
+-- Registered at file load for the same reason as EmotePrefixFilter above.
+if ChatFrameUtil and type(ChatFrameUtil.AddMessageEventFilter) == "function" then
+	ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_SYSTEM", RollMessageFilter);
 end
 
 ---ChatFrameFilter Core Blizzard chat message filter
@@ -78,18 +105,26 @@ function ChatHandler:ChatFrameFilter(chatFrame, event, ...) -- luacheck: no unus
 
 	-- Store chat history
 	if event == "CHAT_MSG_SYSTEM" then
-		local rollSender = ED.Utils.GetRollData(message);
+		local rollMessage = GetPendingRollMessage(lineID) or message;
+		local rollSender = ED.Utils.GetRollData(rollMessage);
 		if rollSender then
 			-- Rolls carry no GUID from Blizzard, but a roll from another player is only ever visible
 			-- while grouped with them, so the roster can resolve their full identity.
 			local resolvedSender, rollGuid = ED.PlayerCache:ResolveLiveUnitByName(rollSender);
-			ED.ChatHistory:AddEntry("ROLL", resolvedSender or rollSender, message, nil, rollGuid, nil, lineID);
+			ED.ChatHistory:AddEntry("ROLL", resolvedSender or rollSender, rollMessage, nil, rollGuid, nil, lineID);
 		end
 	else
 		ED.ChatHistory:AddEntry(event, sender, message, language, guid, channel, lineID);
 	end
 
 	return false;
+end
+
+---GetPendingRollMessage Public accessor so AdvancedFormatter can consult the same original-text cache.
+---@param lineID number?
+---@return string?
+function ChatHandler:GetPendingRollMessage(lineID)
+	return GetPendingRollMessage(lineID);
 end
 
 ---MainChatFilter Runs checks on chat entries

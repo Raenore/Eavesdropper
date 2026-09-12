@@ -277,14 +277,21 @@ function Utils.AddRealmSuffix(name)
 	return name .. "-" .. GetRealmName():gsub("[%s%-%.]*", "");
 end
 
----IsOwnPlayer Checks if the sender is the current player
+---IsOwnPlayer Checks if the sender is the current player.
+---Prefers guid: another addon's chat filter may have already rewritten sender before this runs.
 ---@param sender string
 ---@param event string
+---@param guid string?
 ---@return boolean
-function Utils.IsOwnPlayer(sender, event)
+function Utils.IsOwnPlayer(sender, event, guid)
+	if event == "CHAT_MSG_WHISPER_INFORM" then return true; end
+
+	if guid and guid ~= "" then
+		return guid == ED.Globals.player_guid;
+	end
+
 	sender = Utils.AddRealmSuffix(sender);
 	return sender == Utils.GetUnitName()
-		or event == "CHAT_MSG_WHISPER_INFORM"
 		or (type(sender) == "string" and sender:match("^@.+%-self$"));
 end
 
