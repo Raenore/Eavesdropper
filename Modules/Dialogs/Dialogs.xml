@@ -1,0 +1,18 @@
+<!--
+	Copyright The Eavesdropper Authors
+	SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+../../Eavesdropper.xsd">
+	<Include file="ConfirmDialog.lua"/>
+	<Include file="CopyDialog.lua"/>
+	<Include file="DialogWidgets.lua"/>
+	<Include file="GroupDialog.lua"/>
+	<Include file="ImportExportDialog.lua"/>
+	<Include file="ImportExportDialog.xml"/>
+	<Include file="CopyHistoryDialog.lua"/>
+	<Include file="CopyHistoryDialog.xml"/>
+	<Include file="CopyTextDialog.lua"/>
+	<Include file="NewProfileDialog.lua"/>
+	<Include file="RenameDialog.lua"/>
+</Ui>
