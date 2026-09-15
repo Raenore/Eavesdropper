@@ -61,7 +61,7 @@ end
 ---@return string
 local function ResolveEventType(event)
 	if event == "ROLL" then return "ROLL"; end
-	if event:sub(1, 9) == "CHAT_MSG_" then return event; end
+	if string.startswith(event, "CHAT_MSG_") then return event; end
 	return "CHAT_MSG_" .. event;
 end
 
