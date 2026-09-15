@@ -8,7 +8,7 @@ local ChatFormatter = {};
 ---@param event string
 ---@return string
 local function NormalizeEventType(event)
-	if event:sub(1, 9) == "CHAT_MSG_" then
+	if string.startswith(event, "CHAT_MSG_") then
 		return event:sub(10);
 	end
 	return event;
@@ -56,13 +56,13 @@ local function IsSplitMarkerMsg(entry, msg)
 	local splitMarker = entry.sm;
 	if splitMarker == false then
 		splitMarker = RetrieveSplitMarker();
-		if msg:sub(1, #splitMarker) == splitMarker then
+		if string.startswith(msg, splitMarker) then
 			entry.sm = splitMarker;
 			return true;
 		else
 			entry.sm = nil;
 		end
-	elseif splitMarker and msg:sub(1, #splitMarker) == splitMarker then
+	elseif splitMarker and string.startswith(msg, splitMarker) then
 		return true;
 	end
 end

@@ -92,8 +92,10 @@ stds.wow = {
 		string = {
 			fields = {
 				"concat",
+				"endswith",
 				"join",
 				"split",
+				"startswith",
 				"trim",
 				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
