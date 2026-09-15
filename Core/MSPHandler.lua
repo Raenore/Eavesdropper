@@ -274,7 +274,7 @@ end
 ---@param forceInvalidate boolean?
 ---@return string? fullName
 ---@return string? firstName
----@return string? nameColor
+---@return ColorMixin? nameColor
 ---@return string? lastName
 ---@return string? className
 ---@return string? raceName
