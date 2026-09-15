@@ -45,7 +45,7 @@ end
 ---@return string
 local function FormatVersion(version)
 	if type(version) ~= "string" or version == "" then return UNKNOWN; end
-	if version:find("project-version", 1, true) then return L.IMPORTEXPORT_VERSION_DEV; end
+	if StringContains(version, "project-version") then return L.IMPORTEXPORT_VERSION_DEV; end
 	return version;
 end
 
@@ -370,7 +370,7 @@ function Eavesdropper_ImportExportDialogMixin:RefreshDecodedPayload()
 
 	local text = string.trim(self.TextBox:GetText());
 
-	if text ~= "" and text:find("-----END", 1, true) then
+	if text ~= "" and StringContains(text, "-----END") then
 		self.decodedPayload, self.decodeError = ED.ProfileTransfer.DecodeString(text);
 	end
 

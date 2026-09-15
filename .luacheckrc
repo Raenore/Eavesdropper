@@ -723,6 +723,7 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"strcmputf8i",
+		"StringContains",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"ToggleDropDownMenu",
