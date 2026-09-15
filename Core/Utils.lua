@@ -195,21 +195,6 @@ function Utils.GetRollData(msg)
 end
 
 -- ============================================================================
--- TABLE UTILITIES
--- ============================================================================
-
----Returns a new table with all top-level key-value pairs copied from tbl.
----@param tbl table
----@return table
-function Utils.ShallowCopy(tbl)
-	local copy = {};
-	for k, v in pairs(tbl) do
-		copy[k] = v;
-	end
-	return copy;
-end
-
--- ============================================================================
 -- UNIT / PLAYER UTILITIES
 -- ============================================================================
 

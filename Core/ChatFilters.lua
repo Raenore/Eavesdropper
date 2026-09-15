@@ -106,7 +106,7 @@ function ChatFilters:GenerateFilterListMenu(frame, menu)
 						value = ED.Constants.DEFAULT_FILTERS[groupName] or false;
 					end
 
-					local newFilters = ED.Utils.ShallowCopy(current);
+					local newFilters = CopyTable(current, true);
 					newFilters[groupName] = not value;
 
 					ED.Database:SetSetting(settingKey, newFilters);
@@ -143,7 +143,7 @@ function ChatFilters:GenerateMentionReasonFilterMenu(menu)
 					value = ED.Constants.DEFAULT_MENTION_REASON_FILTERS[reasonName] or false;
 				end
 
-				local newFilters = ED.Utils.ShallowCopy(current);
+				local newFilters = CopyTable(current, true);
 				newFilters[reasonName] = not value;
 
 				ED.Database:SetSetting("MentionsReasonFilters", newFilters);
@@ -237,7 +237,7 @@ function ChatFilters:EnsureEntryVisible(frame, entry)
 		frame:SaveInstanceState();
 	else
 		local settingKey = ResolveFilterKey(frame);
-		local newFilters = ED.Utils.ShallowCopy(ED.Database:GetSetting(settingKey) or {});
+		local newFilters = CopyTable(ED.Database:GetSetting(settingKey) or {}, true);
 		newFilters[groupName] = true;
 		ED.Database:SetSetting(settingKey, newFilters);
 	end
@@ -258,7 +258,7 @@ function ChatFilters:Init(frame)
 	if not filters then return; end
 
 	if UsesInstanceFilterState(frame) then
-		frame.filters = ED.Utils.ShallowCopy(filters);
+		frame.filters = CopyTable(filters, true);
 	end
 
 	for groupName, enabled in pairs(filters) do

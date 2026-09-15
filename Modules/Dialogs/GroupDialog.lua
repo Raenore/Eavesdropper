@@ -19,7 +19,7 @@ function GroupDialog.CreateOrRestore(name, sender)
 	if closed and closed.players and #closed.players > 0 then
 		local message = L.POPUP_RESTORE_GROUP:format(name, #closed.players);
 		ED.ConfirmDialog.Show(message, function()
-			local playerList = ED.Utils.ShallowCopy(closed.players);
+			local playerList = CopyTable(closed.players, true);
 			if sender and not tContains(playerList, sender) then
 				playerList[#playerList + 1] = sender;
 			end
