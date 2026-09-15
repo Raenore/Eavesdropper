@@ -158,16 +158,6 @@ function Utils.SanitizeKeywordInput(text)
 	return table.concat(words, ", ");
 end
 
----WrapTextInColor Wraps text in a WoW color code
----@param text string
----@param color ColorMixin
----@return string
-function Utils.WrapTextInColor(text, color)
-	if not text or type(text) ~= "string" or not canaccessvalue(text) then return text; end
-	if not color then return text; end
-	return color:WrapTextInColorCode(text);
-end
-
 ---GetCharacterNameFromEmote Extracts the character name from an emote message
 ---@param msg string?
 ---@return string?

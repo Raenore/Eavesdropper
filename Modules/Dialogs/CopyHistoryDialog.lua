@@ -60,7 +60,7 @@ local FIXED_TIMESTAMP_COLOR = CreateColor(0.5, 0.5, 0.5);
 local function BuildCopyLine(entry, timestampMode, forGroup, nameDisplayMode)
 	local timestamp = "";
 	if timestampMode == TIMESTAMP_MODE.FIXED then
-		timestamp = ED.Utils.WrapTextInColor(date("%H:%M:%S", entry.t), FIXED_TIMESTAMP_COLOR) .. " ";
+		timestamp = FIXED_TIMESTAMP_COLOR:WrapTextInColorCode(date("%H:%M:%S", entry.t)) .. " ";
 	elseif timestampMode == TIMESTAMP_MODE.RELATIVE then
 		timestamp = ED.ChatFormatter.FormatTimestamp(entry);
 	end

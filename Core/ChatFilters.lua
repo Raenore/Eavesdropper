@@ -76,7 +76,7 @@ function ChatFilters:GenerateFilterListMenu(frame, menu)
 
 		local labelText = ED.Constants.FILTER_LABELS[groupName] or groupName;
 		local groupColor = GetGroupColor(groupName);
-		local groupLabel = ED.Utils.WrapTextInColor(labelText, groupColor);
+		local groupLabel = groupColor:WrapTextInColorCode(labelText);
 
 		menu:CreateCheckbox(
 			groupLabel,
