@@ -149,7 +149,7 @@ function Utils.SanitizeKeywordInput(text)
 	local words = {};
 
 	for word in text:gmatch("([^,]*)") do
-		word = word:match("^%s*(.-)%s*$");
+		word = string.trim(word);
 		if word ~= "" then
 			words[#words + 1] = word;
 		end
