@@ -15,9 +15,9 @@ local pendingEmotePrefixes = {};
 ---@param message string
 ---@return string?
 local function GetEmotePrefix(message)
-	if message:sub(1, 3) == "'s " then
+	if string.startswith(message, "'s ") then
 		return message:sub(1, 3);
-	elseif message:sub(1, 2) == ", " then
+	elseif string.startswith(message, ", ") then
 		return message:sub(1, 2);
 	end
 end

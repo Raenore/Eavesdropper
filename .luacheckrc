@@ -95,6 +95,7 @@ stds.wow = {
 				"contains", -- Native on Forever and 12.1.5+.
 				"join",
 				"split",
+				"startswith",
 				"trim",
 				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
