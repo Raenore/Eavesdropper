@@ -168,15 +168,6 @@ function Utils.WrapTextInColor(text, color)
 	return color:WrapTextInColorCode(text);
 end
 
----RGBtoHex Converts 0–1 RGB values to a WoW color escape sequence
----@param r number
----@param g number
----@param b number
----@return string
-function Utils.RGBtoHex(r, g, b)
-	return string.format("|cFF%02X%02X%02X", r * 255, g * 255, b * 255);
-end
-
 ---GetCharacterNameFromEmote Extracts the character name from an emote message
 ---@param msg string?
 ---@return string?
