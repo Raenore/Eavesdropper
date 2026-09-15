@@ -92,6 +92,7 @@ stds.wow = {
 		string = {
 			fields = {
 				"concat",
+				"contains",
 				"endswith",
 				"join",
 				"split",
@@ -725,7 +726,6 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"strcmputf8i",
-		"StringContains",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"TableIsEmpty",
