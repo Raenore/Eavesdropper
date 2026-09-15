@@ -338,7 +338,7 @@ function ProfileTransfer.ExportGlobals()
 			local value = db:GetGlobalSetting(key);
 
 			-- GetGlobalSetting hands back live tables; copy before they reach the payload.
-			if type(value) == "table" then value = ED.Utils.ShallowCopy(value); end
+			if type(value) == "table" then value = CopyTable(value, true); end
 
 			data[key] = value;
 		end

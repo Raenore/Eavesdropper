@@ -149,32 +149,13 @@ function Utils.SanitizeKeywordInput(text)
 	local words = {};
 
 	for word in text:gmatch("([^,]*)") do
-		word = word:match("^%s*(.-)%s*$");
+		word = string.trim(word);
 		if word ~= "" then
 			words[#words + 1] = word;
 		end
 	end
 
 	return table.concat(words, ", ");
-end
-
----WrapTextInColor Wraps text in a WoW color code
----@param text string
----@param color ColorMixin
----@return string
-function Utils.WrapTextInColor(text, color)
-	if not text or type(text) ~= "string" or not canaccessvalue(text) then return text; end
-	if not color then return text; end
-	return color:WrapTextInColorCode(text);
-end
-
----RGBtoHex Converts 0–1 RGB values to a WoW color escape sequence
----@param r number
----@param g number
----@param b number
----@return string
-function Utils.RGBtoHex(r, g, b)
-	return string.format("|cFF%02X%02X%02X", r * 255, g * 255, b * 255);
 end
 
 ---GetCharacterNameFromEmote Extracts the character name from an emote message
@@ -201,21 +182,6 @@ function Utils.GetRollData(msg)
 	if type(msg) ~= "string" then return; end
 	local sender, roll, min, max = msg:match(SYSTEM_ROLL_PATTERN);
 	return sender, roll, min, max;
-end
-
--- ============================================================================
--- TABLE UTILITIES
--- ============================================================================
-
----Returns a new table with all top-level key-value pairs copied from tbl.
----@param tbl table
----@return table
-function Utils.ShallowCopy(tbl)
-	local copy = {};
-	for k, v in pairs(tbl) do
-		copy[k] = v;
-	end
-	return copy;
 end
 
 -- ============================================================================
@@ -479,7 +445,7 @@ end
 ---@param commands table<string, string> Table where keys are descriptions and values are commands
 ---@param noprefix boolean? Whether or not the prefix of "Eavesdropper" should be shown
 function Utils.WriteCommandTable(commands, noprefix)
-	if not commands or next(commands) == nil then return; end
+	if not commands or TableIsEmpty(commands) then return; end
 
 	Print(ED.Localization.SLASH_COMMAND_HEADER);
 	for description, command in pairs(commands) do

@@ -73,7 +73,7 @@ local GLOBAL_DEFAULTS = {
 		Hide = false,
 		ShowAddonCompartmentButton = true,
 	},
-	SettingsWindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION),
+	SettingsWindowPosition = CopyTable(Constants.DEFAULT_WINDOW_POSITION, true),
 	WindowNewIndicator = true,
 	WelcomeMessage = true,
 };
@@ -161,8 +161,8 @@ local DEFAULT_PROFILE = {
 	AdvNameDisplayMode = 1,
 	AdvNameDisplayModeOverride = false,
 	ApplyOnMainChat = true,
-	ColorBackground = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
-	ColorTitleBar = ED.Utils.ShallowCopy(Constants.DEFAULT_BACKGROUND_COLOR),
+	ColorBackground = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
+	ColorTitleBar = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	CompanionSupport = true,
 	EnableKeywords = true,
 	EnableMouse = false,
@@ -183,7 +183,7 @@ local DEFAULT_PROFILE = {
 	LockWindow = false,
 	MaxHistory = 50,
 	MentionsEnableMouse = false,
-	MentionsFilters = ED.Utils.ShallowCopy(Constants.DEFAULT_FILTERS),
+	MentionsFilters = CopyTable(Constants.DEFAULT_FILTERS, true),
 	MentionsFontSize = 12,
 	MentionsHideCloseButton = false,
 	MentionsHistorySize = 300,
@@ -192,9 +192,9 @@ local DEFAULT_PROFILE = {
 	MentionsLockWindow = false,
 	MentionsNameDisplayMode = 1,
 	MentionsNameDisplayModeOverride = false,
-	MentionsReasonFilters = ED.Utils.ShallowCopy(Constants.DEFAULT_MENTION_REASON_FILTERS),
-	MentionsWindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION),
-	MentionsWindowSize = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_SIZE),
+	MentionsReasonFilters = CopyTable(Constants.DEFAULT_MENTION_REASON_FILTERS, true),
+	MentionsWindowPosition = CopyTable(Constants.DEFAULT_WINDOW_POSITION, true),
+	MentionsWindowSize = CopyTable(Constants.DEFAULT_WINDOW_SIZE, true),
 	NameDisplayMode = 1,
 	NotificationDedicatedSound = true,
 	NotificationDedicatedSoundFile = "UI_VoiceChat_ChannelInitiated",
@@ -225,9 +225,9 @@ local DEFAULT_PROFILE = {
 	UseRPNameInNPCDialogue = true,
 	UseRPNameInQuestText = true,
 	UseRPNameInRolls = true,
-	WindowPosition = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_POSITION),
-	WindowSize = ED.Utils.ShallowCopy(Constants.DEFAULT_WINDOW_SIZE),
-	Filters = ED.Utils.ShallowCopy(Constants.DEFAULT_FILTERS),
+	WindowPosition = CopyTable(Constants.DEFAULT_WINDOW_POSITION, true),
+	WindowSize = CopyTable(Constants.DEFAULT_WINDOW_SIZE, true),
+	Filters = CopyTable(Constants.DEFAULT_FILTERS, true),
 };
 
 ---@class EavesdropperCharSettings
@@ -249,7 +249,7 @@ Database.globalDefaults = CopyTable(GLOBAL_DEFAULTS);
 ---@return table
 local function MergeTables(base, override)
 	-- start with defaults
-	local result = ED.Utils.ShallowCopy(base);
+	local result = CopyTable(base, true);
 	-- apply profile overrides (including keys not in defaults)
 	for k, v in pairs(override) do
 		result[k] = v;
@@ -708,7 +708,7 @@ function Database:GetSetting(key)
 
 	-- No profile override: return a fresh copy of the default table, or the scalar.
 	if type(def) == "table" then
-		return ED.Utils.ShallowCopy(def);
+		return CopyTable(def, true);
 	end
 
 	return def;
@@ -754,7 +754,7 @@ function Database:GetCharSetting(key)
 
 	local def = self.charDefaults[key];
 	if type(def) == "table" then
-		return ED.Utils.ShallowCopy(def);
+		return CopyTable(def, true);
 	end
 
 	return def;
@@ -823,7 +823,7 @@ function Database:GetGlobalSetting(key)
 	local def = self.globalDefaults[key];
 	if type(def) == "table" then
 		-- Initialise and store the table so LibDBIcon has a live reference to mutate.
-		local init = ED.Utils.ShallowCopy(def);
+		local init = CopyTable(def, true);
 		EavesdropperDB.global[key] = init;
 		return init;
 	end

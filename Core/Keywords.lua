@@ -193,7 +193,7 @@ function Keywords:HandleChecks(chatFrame, event, message, sender, ...) -- luache
 
 	for _, m in ipairs(allMatches) do
 		local raw = msg:sub(m[1], m[2]);
-		local wrapped = ED.Utils.WrapTextInColor(raw, color);
+		local wrapped = color:WrapTextInColorCode(raw);
 		msg = msg:sub(1, m[1] - 1) .. wrapped .. msg:sub(m[2] + 1);
 	end
 

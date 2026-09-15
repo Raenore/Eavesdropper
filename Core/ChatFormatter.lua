@@ -187,7 +187,7 @@ local function ColorByEvent(text, event)
 	local eventType = NormalizeEventType(event);
 	local info = ResolveChatInfo(eventType);
 	local color = CreateColor(info.r or 1, info.g or 1, info.b or 1);
-	return ED.Utils.WrapTextInColor(text, color);
+	return color:WrapTextInColorCode(text);
 end
 
 ---Formats a text-emote or roll message, colouring the message body and prepending the sender name in rolls and when not self.
@@ -400,9 +400,9 @@ local function FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode)
 	local targetName;
 	if targetNameColor then
 		if nameDisplayMode == 2 and targetFirstName then
-			targetName = ED.Utils.WrapTextInColor(targetFirstName, targetNameColor);
+			targetName = targetNameColor:WrapTextInColorCode(targetFirstName);
 		elseif targetFullName then
-			targetName = ED.Utils.WrapTextInColor(targetFullName, targetNameColor);
+			targetName = targetNameColor:WrapTextInColorCode(targetFullName);
 		end
 	end
 
@@ -460,7 +460,7 @@ function ChatFormatter.GetFormattedName(entry, forceDisplayMode)
 		end
 
 		if useRPNameColor and nameColor then
-			name = ED.Utils.WrapTextInColor(name, nameColor);
+			name = nameColor:WrapTextInColorCode(name);
 		end
 	end
 
@@ -503,7 +503,7 @@ function ChatFormatter.FormatTimestamp(entry)
 		r, g, b = 0.02, 0.67, 0.97; -- 0x05ACF8
 	end
 
-	return ED.Utils.WrapTextInColor(timestamp, CreateColor(r, g, b)) .. " ", isFrozen;
+	return CreateColor(r, g, b):WrapTextInColorCode(timestamp) .. " ", isFrozen;
 end
 
 ---Computes entry's name-dependent message body: sender name, message text, and entry colour.
@@ -526,7 +526,7 @@ function ChatFormatter.FormatSuffix(entry, forGroup, forceDisplayMode, stripMess
 
 	local entryR, entryG, entryB = GetEntryColor(entry);
 	local entryColor = CreateColor(entryR, entryG, entryB);
-	msgText = ED.Utils.WrapTextInColor(msgText, entryColor);
+	msgText = entryColor:WrapTextInColorCode(msgText);
 
 	if entry.e == "CHAT_MSG_TEXT_EMOTE" and applyRPName then
 		msgText = FormatTextEmoteTargetWithRPName(entry, msgText, forceDisplayMode);

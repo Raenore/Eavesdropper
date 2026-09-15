@@ -166,7 +166,7 @@ function Eavesdropper_Group_FrameMixin:OnUnregisterFrame()
 		local entry = {
 			name = self.displayName,
 			nameDisplayMode = self.nameDisplayMode,
-			players = ED.Utils.ShallowCopy(self.players),
+			players = CopyTable(self.players, true),
 		};
 		self:FillSavedStateFields(entry);
 		GroupFrame.sessionState[self.displayName:lower()] = entry;
@@ -490,7 +490,7 @@ function GroupFrame:SaveToCharDB()
 		if frame and frame.displayName and frame.players and #frame.players > 0 then
 			local entry = {
 				name = frame.displayName,
-				players = ED.Utils.ShallowCopy(frame.players),
+				players = CopyTable(frame.players, true),
 			};
 
 			---Only persist nameDisplayMode when it differs from the profile default.
