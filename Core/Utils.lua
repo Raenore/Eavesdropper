@@ -445,7 +445,7 @@ end
 ---@param commands table<string, string> Table where keys are descriptions and values are commands
 ---@param noprefix boolean? Whether or not the prefix of "Eavesdropper" should be shown
 function Utils.WriteCommandTable(commands, noprefix)
-	if not commands or next(commands) == nil then return; end
+	if not commands or TableIsEmpty(commands) then return; end
 
 	Print(ED.Localization.SLASH_COMMAND_HEADER);
 	for description, command in pairs(commands) do

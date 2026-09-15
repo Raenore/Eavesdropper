@@ -726,6 +726,7 @@ stds.wow = {
 		"StringContains",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
+		"TableIsEmpty",
 		"ToggleDropDownMenu",
 		"tostringall",
 		"UIDropDownMenu_AddButton",
