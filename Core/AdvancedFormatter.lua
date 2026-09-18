@@ -192,6 +192,9 @@ end
 ---@param eventArgs table?
 ---@return boolean
 local function IsReformattableLine(message, r, g, b, infoID, accessID, typeID, event, eventArgs) -- luacheck: no unused (r, g, b, accessID, typeID)
+	-- Buffered lines from restricted chat are secret.
+	if not canaccessvalue(message) then return false; end
+
 	if eventArgs and event == "CHAT_MSG_TEXT_EMOTE" then
 		return true;
 	end
