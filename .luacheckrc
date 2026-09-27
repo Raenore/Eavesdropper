@@ -92,8 +92,11 @@ stds.wow = {
 		string = {
 			fields = {
 				"concat",
+				"contains",
+				"endswith",
 				"join",
 				"split",
+				"startswith",
 				"trim",
 				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
@@ -723,7 +726,6 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"strcmputf8i",
-		"StringContains",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"TableIsEmpty",

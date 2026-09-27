@@ -15,7 +15,7 @@ function Mentions:IsEmoteAtPlayer(message)
 	if GetLocale() ~= "enUS" or not message:find(" you[^a-z]") then return false; end
 
 	for _, phrase in ipairs(Constants.CHAT_HISTORY.IGNORE_EMOTES) do
-		if StringContains(message, phrase) then
+		if string.contains(message, phrase) then
 			return false;
 		end
 	end

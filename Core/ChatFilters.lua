@@ -23,7 +23,7 @@ local function NormalizeEvent(event)
 		return remapped;
 	end
 
-	if event:sub(1, 9) == "CHAT_MSG_" then
+	if string.startswith(event, "CHAT_MSG_") then
 		return event:sub(10):upper();
 	end
 

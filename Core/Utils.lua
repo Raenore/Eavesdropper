@@ -224,7 +224,7 @@ function Utils.IsSameRealmName(name)
 	if type(name) ~= "string" then return false; end
 	local realm = GetNormalizedRealmName();
 	if not realm then return false; end
-	return name:find("%-" .. realm .. "$") ~= nil;
+	return string.endswith(name, "-" .. realm);
 end
 
 ---@param name string?
