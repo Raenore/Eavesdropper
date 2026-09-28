@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.7.0] - 2026-xx-xx
+
+### Added
+- Added early support for **World of Warcraft Forever**, including its first and family character names ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+- On Forever, the Settings and pop-up windows now have a Forever-styled look, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#202](https://github.com/Raenore/Eavesdropper/pull/202)).
+- Added a **Title Bar Full Name** option to show full names in the title bar instead of just first names (on by default on Forever) ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+- Added `<oocfirstname>` and `<ooclastname>` tags to the **Keywords List** on Forever, to highlight your in-game first or family name ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+
+### Changed
+- Importing a profile made on Retail into Forever (or the other way around) now offers to use this version's default settings where the two differ ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+
+### Fixed
+- Fixed a Lua error when reloading or logging back in during combat/restrictions with **Apply to Main Chat** turned on ([#200](https://github.com/Raenore/Eavesdropper/pull/200)).
+- Fixed a Lua error that could appear during combat/restrictions when other players' nameplates are shown ([#201](https://github.com/Raenore/Eavesdropper/pull/201)).
+
 ## [0.6.2] - 2026-09-12  
 Feature update adding a Copy History option to every window, improving Main Chat formatting and NPC Dialogue speech bubbles, and fixing a History Size setting and a chat name-formatting issue.  
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mv6xeu57fc2l) | [Twitter](https://x.com/Raenore/status/2098156070103359820)
@@ -137,7 +152,8 @@ Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mmxgl43fes2m)
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.6.2...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/Raenore/Eavesdropper/compare/0.6.2...0.7.0
 [0.6.2]: https://github.com/Raenore/Eavesdropper/compare/0.6.1...0.6.2
 [0.6.1]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/Raenore/Eavesdropper/compare/0.5.1...0.6.0
