@@ -248,10 +248,12 @@ local DEFAULT_PROFILE = {
 
 ---@class EavesdropperCharSettings
 ---@field WindowVisible boolean?
+---@field MentionsVisible boolean?
 
 ---@type EavesdropperCharSettings
 local CHAR_DEFAULTS = {
 	WindowVisible = true,
+	MentionsVisible = false,
 };
 
 Database.currentProfile = nil;
@@ -774,6 +776,7 @@ end
 
 ---@alias EavesdropperCharSettingKey
 ---| "WindowVisible"
+---| "MentionsVisible"
 
 ---Returns the effective value of a character setting, falling back to defaults.
 ---@param key EavesdropperCharSettingKey
