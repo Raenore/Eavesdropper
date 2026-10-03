@@ -90,8 +90,7 @@ end
 function Eavesdropper_Mentions_FrameMixin:OnLoad()
 	self:InitInstanceFrameState();
 
-	-- Never restored across logins/reloads; only Open() (a deliberate user action) sets this.
-	self.userOpened = false;
+	self.userOpened = ED.Database:GetCharSetting("MentionsVisible");
 
 	self:EnableMouseWheel(true);
 	self:UpdateMouseLock();
@@ -127,12 +126,14 @@ function Eavesdropper_Mentions_FrameMixin:OnHide()
 	-- before calling HandleVisibility so it knows to reappear once combat ends.
 	if not self.isCombatHidden then
 		self.userOpened = false;
+		ED.Database:SetCharSetting("MentionsVisible", false);
 	end
 end
 
----Marks the window as deliberately opened this session, then shows it (unless combat-hidden).
+---Marks the window as deliberately opened (persisted per character), then shows it (unless combat-hidden).
 function Eavesdropper_Mentions_FrameMixin:Open()
 	self.userOpened = true;
+	ED.Database:SetCharSetting("MentionsVisible", true);
 	self:HandleVisibility();
 end
 
@@ -189,9 +190,8 @@ function Eavesdropper_Mentions_FrameMixin:RestoreLayout()
 	end
 end
 
----Overrides SharedFrameMixin:HandleVisibility. Mentions never restores its open state across
----logins/reloads. self.userOpened starts false every session and is only set by Open(). Once
----open, it still respects HideInCombat like its siblings, via Events.lua's isCombatHidden wiring.
+---Overrides SharedFrameMixin:HandleVisibility. Open state is per character (MentionsVisible).
+---Once open, it still respects HideInCombat like its siblings, via Events.lua's isCombatHidden wiring.
 function Eavesdropper_Mentions_FrameMixin:HandleVisibility()
 	if not self.userOpened then
 		self:Hide();
