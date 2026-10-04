@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Importing a profile made on Retail into Forever (or the other way around) now offers to use this version's default settings where the two differ ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
 - The **Mentions** window now remembers whether it was open on each character, so it comes back after you log in or reload ([#208](https://github.com/Raenore/Eavesdropper/pull/208)).
+- Updated the **Russian translation** to cover the newer features, thanks to [Hubbotu](https://github.com/Hubbotu) ([#210](https://github.com/Raenore/Eavesdropper/pull/210)).
 
 ### Fixed
 - Fixed a Lua error when reloading or logging back in during combat/restrictions with **Apply to Main Chat** turned on ([#200](https://github.com/Raenore/Eavesdropper/pull/200)).
