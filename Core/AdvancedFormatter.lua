@@ -244,16 +244,14 @@ end
 
 ---Retroactively applies emote-target and roll-name formatting to existing main chat lines.
 function AdvancedFormatter:RefreshMainChat()
-	if ChatFrameUtil and type(ChatFrameUtil.ForEachChatFrame) == "function" then
-		local displayMode = self:ResolveMainChatDisplayMode();
-		local transform = function(...) return ReformatLine(displayMode, ...); end
+	local displayMode = self:ResolveMainChatDisplayMode();
+	local transform = function(...) return ReformatLine(displayMode, ...); end
 
-		ChatFrameUtil.ForEachChatFrame(function(chatFrame)
-			if IsChatFrameNative(chatFrame) then
-				chatFrame:TransformMessages(IsReformattableLine, transform);
-			end
-		end);
-	end
+	ChatFrameUtil.ForEachChatFrame(function(chatFrame)
+		if IsChatFrameNative(chatFrame) then
+			chatFrame:TransformMessages(IsReformattableLine, transform);
+		end
+	end);
 
 	ED.Chattynator.RefreshMessages();
 end
