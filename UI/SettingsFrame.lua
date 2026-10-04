@@ -1538,8 +1538,6 @@ end
 function Eavesdropper_SettingsMixin:OnDragStop()
 	self:StopMovingOrSizing();
 
-	if not ED.Database then return; end
-
 	local point, _, relativePoint, x, y = self:GetPoint(1);
 	ED.Database:SetGlobalSetting("SettingsWindowPosition", { point = point, relativePoint = relativePoint, x = x, y = y });
 end

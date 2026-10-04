@@ -818,8 +818,6 @@ end
 ---Restore resize handle and close-button visibility from local frame state.
 ---Overridden by Eavesdropper_FrameMixin to also restore position and size from the DB.
 function Eavesdropper_SharedFrameMixin:RestoreLayout()
-	if not ED.Database then return; end
-
 	if not self.lockWindow then
 		self.ResizeHandle:Show();
 	else
@@ -860,8 +858,6 @@ end
 
 ---Apply background and title bar colors from the database
 function Eavesdropper_SharedFrameMixin:ApplyThemeColors()
-	if not ED.Database then return; end
-
 	local background = self.Background;
 	if background then
 		local bg = ED.Database:GetSetting("ColorBackground");

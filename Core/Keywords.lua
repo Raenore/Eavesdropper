@@ -29,8 +29,6 @@ end
 ---Rebuilds the keyword lookup table and sorted list from the HighlightKeywords setting.
 ---Applies token substitutions (<firstname>, <lastname>, <oocname>, <oocfirstname>, <ooclastname>, <class>, <race>).
 function Keywords:ParseList()
-	if not ED or not ED.Database then return; end
-
 	local highlightKeywords = ED.Database:GetSetting("HighlightKeywords");
 	self.List = {};
 	self.SortedList = {};

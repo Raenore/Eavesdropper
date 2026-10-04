@@ -8,9 +8,9 @@ local Enums = ED.Enums;
 local Events = CreateFrame("Frame");
 
 ---Set up event handler to call methods on Events by event name.
----Guard here covers all handlers: if core modules are not ready, nothing fires.
+---Guard here covers all handlers: nothing fires until the Main and Mentions frames exist.
 Events:SetScript("OnEvent", function(self, event, ...)
-	if not ED or not ED.Database or not ED.Frame or not ED.MentionsFrame then return; end
+	if not ED.Frame or not ED.MentionsFrame then return; end
 	if self[event] then
 		self[event](self, event, ...);
 	end

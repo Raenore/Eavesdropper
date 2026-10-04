@@ -113,7 +113,6 @@ end
 ---Polls the current target/mouseover/focus unit and updates the magnified state accordingly.
 ---@param reason EavesdropperMagnifierReason?
 function Magnifier:HandleUpdate(reason)
-	if not ED or not ED.Database then return; end
 	if not canaccessvalue(magnifiedGUID) then return; end
 
 	local targetPriority = ED.Database:GetSetting("TargetPriority");

@@ -164,8 +164,6 @@ end
 ---Restore the title bar options, window position, size, etc all read from the profile.
 ---Overrides SharedFrameMixin:RestoreLayout which uses local frame state for everything.
 function Eavesdropper_Mentions_FrameMixin:RestoreLayout()
-	if not ED.Database then return; end
-
 	local pos = ED.Database:GetSetting("MentionsWindowPosition");
 	if pos then
 		self:ClearAllPoints();
