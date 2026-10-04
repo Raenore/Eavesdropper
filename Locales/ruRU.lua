@@ -15,36 +15,36 @@ L = {
 	SLASH_COMMAND_ED_SHOW = "Показать Eavesdropper",
 	SLASH_COMMAND_ED_HIDE = "Скрыть Eavesdropper",
 	SLASH_COMMAND_ED_TOGGLE = "Переключить видимость",
-	SLASH_COMMAND_ED_SETTINGS = "Toggle Settings", -- NEW
-	SLASH_COMMAND_ED_HELP = "Available Commands", -- NEW
-	SLASH_COMMAND_ED_MENTIONS = "Toggle Mentions", -- NEW
+	SLASH_COMMAND_ED_SETTINGS = "Открыть/закрыть настройки",
+	SLASH_COMMAND_ED_HELP = "Доступные команды",
+	SLASH_COMMAND_ED_MENTIONS = "Открыть/закрыть упоминания",
 
-	BINDING_NAME_ED_TOGGLE = "Toggle Eavesdropper", -- NEW
-	BINDING_NAME_ED_SETTINGS = "Toggle Settings", -- NEW
-	BINDING_NAME_ED_MENTIONS = "Toggle Mentions", -- NEW
-	BINDING_NAME_ED_EAVESDROP_ON = "Eavesdrop On (Dedicated)", -- NEW
+	BINDING_NAME_ED_TOGGLE = "Включить/выключить Eavesdropper",
+	BINDING_NAME_ED_SETTINGS = "Открыть/закрыть настройки",
+	BINDING_NAME_ED_MENTIONS = "Открыть/закрыть упоминания",
+	BINDING_NAME_ED_EAVESDROP_ON = "Открыть окно Eavesdrop (Выделенное)",
 
-	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:Left-Click: Open settings|nRight-Click: Open profiles|nShift-Left-Click: Toggle Eavesdropper|nShift-Right-Click: Toggle Mentions|r", -- NEW
+	ADDON_TOOLTIP_HELP = "|cnGREEN_FONT_COLOR:ЛКМ: открыть настройки|nПКМ: открыть профили|nShift + ЛКМ: включить/выключить Eavesdropper|nShift + ПКМ: открыть/закрыть упоминания|r",
 	POPUP_LINK = "|n|nНажмите |cnGREEN_FONT_COLOR:Ctrl+C|r, чтобы скопировать, и |cnGREEN_FONT_COLOR:Ctrl+V|r для вставки в браузере.",
-	POPUP_COPY_NAME = "|n|nPress |cnGREEN_FONT_COLOR:CTRL-C|r to copy the highlighted character name.", -- NEW
+	POPUP_COPY_NAME = "|n|nНажмите |cnGREEN_FONT_COLOR:CTRL-C|r, чтобы скопировать выделенное имя персонажа.",
 	COPY_SYSTEM_MESSAGE = "Скопировано в буфер обмена.",
-	GLOBAL_SETTING_TOOLTIP = "|cnLIGHTBLUE_FONT_COLOR:|n|n* Global setting - persists across all profiles.|r", -- NEW
+	GLOBAL_SETTING_TOOLTIP = "|cnLIGHTBLUE_FONT_COLOR:|n|n* Общий параметр - сохраняется для всех профилей.|r",
 
 	FILTER = "Фильтр",
 	FILTER_HELP = "Выберите типы сообщений для отображения.|n|n- Переключение фильтров меняет только видимость сообщений.|n- Данные не удаляются; скрытые записи появятся снова при включении фильтра.|n|n|cnWARNING_FONT_COLOR:Примечание: фильтры применяются мгновенно.|r",
 
-	MENTIONS_REASON_FILTER = "Mention Types", -- NEW
-	MENTIONS_REASON_FILTER_HELP = "Choose which kinds of mentions are visible in this window.|n|n- Toggling a type only changes what is currently shown.|n- No data is actually deleted; hidden mentions will reappear if the type is turned back on.|n|n|cnWARNING_FONT_COLOR:Note: Mention Types are applied instantly.|r", -- NEW
-	MENTIONS_REASON_KEYWORD = "Keywords", -- NEW
-	MENTIONS_REASON_EMOTE = "Blizzard Emotes", -- NEW
+	MENTIONS_REASON_FILTER = "Типы упоминаний",
+	MENTIONS_REASON_FILTER_HELP = "Выберите, какие типы упоминаний будут отображаться в этом окне.|n|n- Переключение типа меняет только то, что отображается в данный момент.|n- Данные при этом не удаляются; скрытые упоминания появятся снова, если включить этот тип обратно.|n|n|cnWARNING_FONT_COLOR:Примечание: типы упоминаний применяются мгновенно.|r",
+	MENTIONS_REASON_KEYWORD = "Ключевые слова",
+	MENTIONS_REASON_EMOTE = "Эмоции Blizzard",
 
-	EMPTYLABEL_TEXT = "Empty Group", -- NEW
-	MENTIONS_EMPTYLABEL_TEXT = "No Mentions Yet", -- NEW
-	MENTIONS_WINDOW_TITLE = "Mentions", -- NEW
-	MENTIONS_HELP = "A single window listing every message aimed at you, gathered from keyword hits and Blizzard emotes.", -- NEW
-	MENTIONS_ENABLE_HELP = "Enables the Mentions window and the detection that feeds it.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting stops new mentions from being recorded and hides the window if it is open.|r", -- NEW
-	MENTIONS_HISTORY_SIZE = "History Size", -- NEW
-	MENTIONS_HISTORY_SIZE_HELP = "Set the maximum number of mentions Eavesdropper keeps in this window.|n|n|cnWARNING_FONT_COLOR:Note: Mentions are usually sparse, so this limit rarely matters unless you're in an unusually busy or broadly-keyworded session.|r", -- NEW
+	EMPTYLABEL_TEXT = "Пустая группа",
+	MENTIONS_EMPTYLABEL_TEXT = "Упоминаний пока нет",
+	MENTIONS_WINDOW_TITLE = "Упоминания",
+	MENTIONS_HELP = "Единое окно со списком всех адресованных вам сообщений, собранных на основе ключевых слов и эмоций Blizzard.",
+	MENTIONS_ENABLE_HELP = "Включает окно упоминаний и систему их обнаружения.|n|n|cnWARNING_FONT_COLOR:Примечание: отключение этого параметра остановит запись новых упоминаний и скроет окно, если оно открыто.|r",
+	MENTIONS_HISTORY_SIZE = "Размер истории",
+	MENTIONS_HISTORY_SIZE_HELP = "Задает максимальное количество упоминаний, которые Eavesdropper хранит в этом окне.|n|n|cnWARNING_FONT_COLOR:Примечание: упоминания обычно появляются редко, поэтому этот лимит имеет значение только во время очень активного общения или при использовании слишком общих ключевых слов.|r",
 	SCROLLMARKER_TEXT = "В самый низ",
 
 	FILTER_PUBLIC = "Общие каналы",
@@ -67,11 +67,11 @@ L = {
 	LOCK_TITLEBAR = "Закрепить заголовок",
 	LOCK_TITLEBAR_HELP = "Настройка видимости верхней панели (заголовка).|n|n- Включено: заголовок виден всегда.|n- Выключено: заголовок скрыт и появляется только при наведении курсора на окно.|n|nПримечание: в настройках можно включить отображение имени вашей цели вместо названия аддона.",
 
-	DEDICATED_OPTIONS = "Dedicated Options", -- NEW
-	MENTIONS_OPTIONS = "Mentions Options", -- NEW
+	DEDICATED_OPTIONS = "Настройки выделенных окон",
+	MENTIONS_OPTIONS = "Настройки упоминаний",
 
 	-- Category Titles
-	APPEARANCE_TITLE = "Appearance", -- NEW
+	APPEARANCE_TITLE = "Внешний вид",
 
 	-- General Tab
 	GENERAL_TITLE = "Общие",
@@ -89,7 +89,7 @@ L = {
 	TARGET_PRIORITY_FOCUS_ONLY = "Только фокус",
 
 	FOCUS = "Фокус (Запоминание цели)",
-	FOCUS_HELP = "Определяет, как аддон обрабатывает вашу цель в фокусе.|n|n- Приоритет: фокус всегда важнее остальных целей.|n- Запасной вариант: фокус отображается только при отсутствии текущей цели или юнита под курсором.|n- Игнорировать: фокус не отображается в истории.|n|n|cnWARNING_FONT_COLOR:Примечание: настройка неактивна, если выше выбран режим «Только».|r",
+	FOCUS_HELP = "Определяет, как аддон обрабатывает вашу цель в фокусе.|n|n- Приоритет: фокус всегда важнее остальных целей.|n- Запасной вариант: фокус отображается только при отсутствии текущей цели или юнита под курсором.|n- Игнорировать: фокус не отображается в истории.|n|n|cnWARNING_FONT_COLOR:Примечание: настройка неактивна, если выше выбран режим 'Только'.|r",
 	FOCUS_OVERRIDE = "Приоритет",
 	FOCUS_FALLBACK = "Запасной вариант",
 	FOCUS_IGNORE = IGNORE,
@@ -104,11 +104,11 @@ L = {
 	HISTORY_SIZE_HELP = "Максимальное количество строк, сохраняемых для каждого персонажа.|n|n|cnWARNING_FONT_COLOR:Примечание: высокие значения могут вызвать кратковременное падение FPS при обновлении окна истории.|r",
 
 	NAME_DISPLAY_MODE = "Отображение имен",
-	NAME_DISPLAY_MODE_HELP = "Choose how character names are formatted within Eavesdropper.|n|n|cnWARNING_FONT_COLOR:Note: This option is disabled and defaults to 'Original (OOC) Name' when no suitable RP addon (TRP, MRP, XRP) is loaded.|r", -- NEW
+	NAME_DISPLAY_MODE_HELP = "Выберите, как будут форматироваться имена персонажей внутри Eavesdropper.|n|n|cnWARNING_FONT_COLOR:Примечание: этот параметр отключен и по умолчанию использует значение 'Исходное имя (вне ролевой игры)', если не загружен подходящий РП-аддон (TRP, MRP, XRP).|r",
 	NAME_DISPLAY_MODE_FULL_NAME = "Полное имя",
 	NAME_DISPLAY_MODE_FIRST_NAME = "Только имя",
 	NAME_DISPLAY_MODE_ORIGINAL_NAME = "Оригинальное (OOC) имя",
-	NAME_DISPLAY_MODE_FOLLOW_PROFILE = "Follow Profile Setting", -- NEW
+	NAME_DISPLAY_MODE_FOLLOW_PROFILE = "Как в настройках профиля",
 
 	USE_RP_NAME_COLOR = "Цвет имен",
 	USE_RP_NAME_COLOR_HELP = "Окрашивать имена в соответствии с РП-настройками (например, из TRP3).|n|n- Если РП-цвет не задан, используется стандартный цвет класса Blizzard.",
@@ -119,64 +119,64 @@ L = {
 	USE_RP_NAME_FOR_TARGETS = "Имена в эмоциях",
 	USE_RP_NAME_FOR_TARGETS_HELP = "Использовать ли РП-имена целей в системных эмоциях (например, /махать, /указать).|n|n|cnWARNING_FONT_COLOR:Примечание: из-за особенностей работы эмоций Blizzard замена имен может срабатывать не всегда.|r",
 
-	NPC_DIALOGUE_AND_QUEST_TEXT = "NPC Dialogue & Quest Text", -- NEW
-	NPC_DIALOGUE_AND_QUEST_TEXT_HELP = "Choose how your character's name is displayed.", -- NEW
+	NPC_DIALOGUE_AND_QUEST_TEXT = "Диалоги NPC и тексты заданий",
+	NPC_DIALOGUE_AND_QUEST_TEXT_HELP = "Выберите, как будет отображаться имя вашего персонажа.",
 
-	NPC_AND_QUEST_NAME_DISPLAY = "NPC & Quest Name Display", -- NEW
-	NPC_AND_QUEST_NAME_DISPLAY_HELP = "Choose how your character's name is formatted within NPC dialogue and quest text.|n|n|cnWARNING_FONT_COLOR:Note: This option defaults to 'Original (OOC) Name' if no supported RP addon (TRP, MRP, or XRP) is detected.|r", -- NEW
+	NPC_AND_QUEST_NAME_DISPLAY = "Отображение имени в диалогах и заданиях",
+	NPC_AND_QUEST_NAME_DISPLAY_HELP = "Выберите, как будет форматироваться имя вашего персонажа в диалогах с НПС и текстах заданий.|n|n|cnWARNING_FONT_COLOR:Примечание: этот параметр по умолчанию использует значение 'Исходное имя (вне ролевой игры)', если не обнаружен ни один из поддерживаемых РП-аддонов (TRP, MRP или XRP).|r",
 
-	USE_RP_NAME_FOR_QUEST_TEXT = "Format Quest Text", -- NEW
-	USE_RP_NAME_FOR_QUEST_TEXT_HELP = "Toggles whether your name appearing in quest text uses your chosen 'NPC & Quest Name Display' or your original in-game name.|n|n|cnWARNING_FONT_COLOR:Note: This requires a supported interaction addon (e.g., Dialogue UI) to be active.|r", -- NEW
+	USE_RP_NAME_FOR_QUEST_TEXT = "Форматировать текст заданий",
+	USE_RP_NAME_FOR_QUEST_TEXT_HELP = "Определяет, будет ли ваше имя в текстах заданий использовать выбранный вариант из 'Отображения имени в диалогах и заданиях' или ваше исходное игровое имя.|n|n|cnWARNING_FONT_COLOR:Примечание: для работы этой функции требуется активный аддон для изменения интерфейса диалогов (например, Dialogue UI).|r",
 
-	USE_RP_NAME_FOR_NPC_DIALOGUE = "Format NPC Dialogue", -- NEW
-	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Toggles whether your name in NPC dialogue and speech bubbles uses your 'NPC & Quest Name Display' or your original in-game name.|n|n|cnWARNING_FONT_COLOR:Note: Disabled if 'Total RP 3: RP Name in Quest Text' is installed and set to modify 'NPC Speech', to prevent conflicts.|r", -- NEW
+	USE_RP_NAME_FOR_NPC_DIALOGUE = "Форматировать диалоги NPC",
+	USE_RP_NAME_FOR_NPC_DIALOGUE_HELP = "Определяет, будет ли ваше имя в диалогах и облачках речи НПС использовать выбранный вариант из 'Отображения имени в диалогах и заданиях' или ваше исходное игровое имя.|n|n|cnWARNING_FONT_COLOR:Примечание: этот параметр отключен, если установлен аддон 'Total RP 3: RP Name in Quest Text' с активным изменением 'Речи НПС', чтобы избежать конфликтов.|r",
 
 	TIMESTAMP_BRACKETS = "Скобки меток времени",
 	TIMESTAMP_BRACKETS_HELP = "Отображать ли скобки вокруг времени сообщения (например, [5м] или 5м).",
 
-	ADV_FORMATTING = "Adv. Formatting", -- NEW
+	ADV_FORMATTING = "Расш. форматирование",
 	ADVANCED_FORMATTING = "Расширенное форматирование",
-	ADVANCED_FORMATTING_HELP = "These options handle RP name formatting in system messages, emotes, and NPC interactions.", -- NEW
+	ADVANCED_FORMATTING_HELP = "Эти параметры отвечают за форматирование RP-имен в системных сообщениях, эмоциях и при взаимодействии с НПС.",
 
-	MAIN_CHAT = "Main Chat", -- NEW
-	MAIN_CHAT_HELP = "These options handle Advanced Formatting within the main Blizzard chat window.", -- NEW
+	MAIN_CHAT = "Основной чат",
+	MAIN_CHAT_HELP = "Эти параметры отвечают за расширенное форматирование в основном окне чата Blizzard.",
 
 	APPLY_ON_MAIN_CHAT = "Применить к основному чату",
-	APPLY_ON_MAIN_CHAT_HELP = "Toggles whether Advanced Formatting is applied to the main Blizzard chat window. Also reformats emote and roll names already visible.|n|n|cnWARNING_FONT_COLOR:Note: Requires RP data and may not work with chat-modifying addons.|r", -- NEW
+	APPLY_ON_MAIN_CHAT_HELP = "Определяет, будет ли расширенное форматирование применяться к основному окну чата Blizzard. Также переформатирует уже видимые имена в эмоциях и бросках кубика (роллах).|n|n|cnWARNING_FONT_COLOR:Примечание: требуются RP-данные; функция может не работать совместно с другими аддонами, изменяющими чат.|r",
 
-	OVERRIDE_NAME_DISPLAY = "Override Name Display", -- NEW
-	OVERRIDE_NAME_DISPLAY_HELP = "Toggles whether Advanced Formatting in the main Blizzard chat window uses its own name format instead of your 'Name Display' setting.", -- NEW
+	OVERRIDE_NAME_DISPLAY = "Переопределить отображение имен",
+	OVERRIDE_NAME_DISPLAY_HELP = "Определяет, будет ли расширенное форматирование в основном окне чата Blizzard использовать собственный формат имен вместо вашего глобального параметра 'Отображение имен'.",
 
-	ADV_FORMATTING_NAME_DISPLAY = "Adv. Formatting Name Display", -- NEW
-	ADV_FORMATTING_NAME_DISPLAY_HELP = "Choose how character names are formatted by Advanced Formatting within the main Blizzard chat window.|n|n|cnWARNING_FONT_COLOR:Note: This option is only applied while 'Override Name Display' is enabled, and defaults to 'Original (OOC) Name' when no suitable RP addon (TRP, MRP, XRP) is loaded.|r", -- NEW
+	ADV_FORMATTING_NAME_DISPLAY = "Формат имен расширенного форматирования",
+	ADV_FORMATTING_NAME_DISPLAY_HELP = "Выберите, как будут форматироваться имена персонажей при использовании расширенного форматирования в основном окне чата Blizzard.|n|n|cnWARNING_FONT_COLOR:Примечание: этот параметр применяется только тогда, когда включено 'Переопределить отображение имен', и по умолчанию использует значение 'Исходное имя (вне ролевой игры)', если не загружен подходящий RP-аддон (TRP, MRP, XRP).|r",
 
 	DISPLAY = "Внешний вид",
-	DISPLAY_HELP = "Configure the visual style and color themes of Eavesdropper.", -- NEW
+	DISPLAY_HELP = "Настройка визуального стиля и цветовых тем Eavesdropper.",
 	THEMES_BACKGROUND_COLOR = "Цвет фона",
 	THEMES_BACKGROUND_COLOR_HELP = "Настройка цвета и прозрачности окна Eavesdropper.|n|n- Используйте ползунок в окне выбора цвета, чтобы изменить прозрачность фона.",
 	THEMES_TITLEBAR_COLOR = "Цвет заголовка",
 	THEMES_TITLEBAR_COLOR_HELP = "Настройка цвета и прозрачности строки заголовка.|n|n- Заголовок обычно становится видимым при наведении курсора на окно.",
 	THEMES_SETTINGS_ELVUI = "Стиль ElvUI",
-	THEMES_SETTINGS_ELVUI_HELP = "Принудительно использовать оформление ElvUI для окон аддона.|n|n|cnWARNING_FONT_COLOR:Примечание: переключение этой опции вызовет автоматическую перезагрузку интерфейса (Reload UI).|r",
-	THEMES_SETTINGS_ELVUI_CONFIRM = "Are you sure you want to change the ElvUI theme setting?|n|n|cnWARNING_FONT_COLOR:This will trigger a UI reload.|r", -- NEW
+	THEMES_SETTINGS_ELVUI_HELP = "Принудительно использовать оформление ElvUI для окон аддона.|n|n|cnWARNING_FONT_COLOR:Примечание: переключение этой опции вызовет автоматическую перезагрузку интерфейса.|r",
+	THEMES_SETTINGS_ELVUI_CONFIRM = "Вы уверены, что хотите изменить настройки темы ElvUI?|n|n|cnWARNING_FONT_COLOR:Это вызовет перезагрузку интерфейса.|r",
 
 	HIDE_CLOSE_BUTTON = "Скрыть кнопку закрытия",
-	HIDE_CLOSE_BUTTON_HELP = "Скрывает «крестик» закрытия на рамке окна.|n|n- Вы по-прежнему сможете управлять окном через команды |cnGREEN_FONT_COLOR:/ed show|r и |cnGREEN_FONT_COLOR:/ed hide|r.",
+	HIDE_CLOSE_BUTTON_HELP = "Скрывает 'крестик' закрытия на рамке окна.|n|n- Вы по-прежнему сможете управлять окном через команды |cnGREEN_FONT_COLOR:/ed show|r и |cnGREEN_FONT_COLOR:/ed hide|r.",
 	HIDE_IN_COMBAT = "Скрывать в бою",
 	HIDE_IN_COMBAT_HELP = "Автоматически скрывать окно аддона при вступлении в бой.|n|n|cnWARNING_FONT_COLOR:Примечание: в некоторых подземельях или сценариях запись сообщений может быть ограничена игрой независимо от этой настройки.|r",
 	HIDE_WHEN_EMPTY = "Скрывать, если пусто",
 	HIDE_WHEN_EMPTY_HELP = "Автоматически скрывать окно, если в нем нет сообщений для отображения.|n|n- Окно появится снова, как только будет записано новое сообщение.|n|n|cnWARNING_FONT_COLOR:Примечание: настройка вступит в силу сразу после закрытия этого окна настроек.|r",
 
 	TITLE_BAR_TARGET_NAME = "Имя цели в заголовке",
-	TITLE_BAR_TARGET_NAME_HELP = "Заменяет название «Eavesdropper» в заголовке на имя вашей текущей цели. Позволяет быстро понять, чью историю вы сейчас просматриваете.",
-	TITLE_BAR_FULL_NAME = "Title Bar Full Name", -- NEW
-	TITLE_BAR_FULL_NAME_HELP = "Shows the full name in the title bar instead of just the first name. Also applies to Dedicated windows, which always show a name.|n|n- With RP data, this is the full RP name, otherwise the character name.", -- NEW
+	TITLE_BAR_TARGET_NAME_HELP = "Заменяет название 'Eavesdropper' в заголовке на имя вашей текущей цели. Позволяет быстро понять, чью историю вы сейчас просматриваете.",
+	TITLE_BAR_FULL_NAME = "Полное имя в строке заголовка",
+	TITLE_BAR_FULL_NAME_HELP = "Показывает полное имя в строке заголовка вместо только лишь имени. Также применяется к отдельным окнам, в которых имя отображается всегда.|n|n- При наличии РП-данных это будет полное RP-имя, в противном случае - имя персонажа.",
 
 	WELCOME_MSG = "Сообщение при запуске",
 	WELCOME_MSG_HELP = "Показывать ли приветствие в чате при загрузке аддона.|n|n* Это общая настройка для всех профилей.",
 
 	FONT = "Шрифт",
-	FONT_HELP = "Customize the font of Eavesdropper to suit your preference.", -- NEW
+	FONT_HELP = "Настройте шрифт Eavesdropper по своему вкусу.",
 
 	FONT_FACE = "Гарнитура",
 	FONT_FACE_HELP = "Выберите шрифт для всего текста в Eavesdropper.|n|nПримечание: в этом списке также отображаются шрифты из других аддонов (через LibSharedMedia).",
@@ -195,36 +195,36 @@ L = {
 
 	MINIMAP = "Миникарта",
 
-	DEDICATED_WINDOWS = "Dedicated Windows", -- NEW
-	DEDICATED_WINDOWS_HELP = "Allows the creation of separate, independent windows to track specific units.|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent dedicated windows.|r", -- NEW
+	DEDICATED_WINDOWS = "Выделенные окна",
+	DEDICATED_WINDOWS_HELP = "Позволяет создавать отдельные независимые окна для отслеживания конкретных целей.|n|n|cnWARNING_FONT_COLOR:Примечание: отключение этого параметра закроет все независимые выделенные окна.|r",
 
-	NEW_WINDOWS_UNIT_POPUPS = "Quick-Access Menu", -- NEW
-	NEW_WINDOWS_UNIT_POPUPS_HELP = "Adds 'Eavesdropper' options to the standard right-click menus on unit frames (Player, Target, Party, etc.) and chat names.|n|n- Use this to quickly open a window for a specific character.", -- NEW
+	NEW_WINDOWS_UNIT_POPUPS = "Меню быстрого доступа",
+	NEW_WINDOWS_UNIT_POPUPS_HELP = "Добавляет параметры Eavesdropper в стандартные контекстные меню по нажатию ПКМ на фреймах персонажей (игрок, цель, группа и т. д.) и именах в чате.|n|n- Используйте эту функцию, чтобы быстро открыть окно для конкретного персонажа.",
 
-	NEW_WINDOWS_NEW_INDICATOR = "New Message Indicator", -- NEW
-	NEW_WINDOWS_NEW_INDICATOR_HELP = "Displays a visual alert on a window that receives a new message.|n|n- The indicator clears automatically after 10 seconds or immediately upon hovering over the window.", -- NEW
+	NEW_WINDOWS_NEW_INDICATOR = "Индикатор новых сообщений",
+	NEW_WINDOWS_NEW_INDICATOR_HELP = "Отображает визуальное оповещение на окне, в которое поступает новое сообщение.|n|n- Индикатор исчезает автоматически через 10 секунд или мгновенно при наведении курсора на окно.",
 
-	JUMP_TO_CONTEXT = "Jump to Context", -- NEW
-	JUMP_TO_CONTEXT_HELP = "Adds a small clickable icon |TInterface\\AddOns\\Eavesdropper\\Resources\\Jump.png:0:0:0:1:32:32:0:32:0:32:204:204:204|t at the start of each message, opening (or focusing) that sender's Dedicated Window scrolled to that exact line.|n|n|cnWARNING_FONT_COLOR:Note: Requires Dedicated Windows to be enabled.|r", -- NEW
-	JUMP_TO_CONTEXT_TOOLTIP = "|cnGREEN_FONT_COLOR:Click: Jump to this message in %s's Dedicated Window|r", -- NEW
+	JUMP_TO_CONTEXT = "Перейти к контексту",
+	JUMP_TO_CONTEXT_HELP = "Добавляет небольшую кликабельную иконку |TInterface\\AddOns\\Eavesdropper\\Resources\\Jump.png:0:0:0:1:32:32:0:32:0:32:204:204:204|t в начале каждого сообщения. Нажатие на нее открывает (или выводит на передний план) выделенное окно этого отправителя, прокрученное именно к этой строке.|n|n|cnWARNING_FONT_COLOR:Примечание: требуется, чтобы были включены выделенные окна.|r",
+	JUMP_TO_CONTEXT_TOOLTIP = "|cnGREEN_FONT_COLOR:Клик: перейти к этому сообщению в выделенном окне персонажа %s|r",
 
-	GROUP_WINDOWS = "Group Windows", -- NEW
-	GROUP_WINDOWS_HELP = "Allows the creation of separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).|n|n|cnWARNING_FONT_COLOR:Note: Disabling this setting will close all independent group windows.|r", -- NEW
+	GROUP_WINDOWS = "Групповые окна",
+	GROUP_WINDOWS_HELP = "Позволяет создавать отдельные независимые окна для одновременного отслеживания нескольких пользователей (например, личных сообщений или друзей).|n|n|cnWARNING_FONT_COLOR:Примечание: отключение этого параметра закроет все независимые групповые окна.|r",
 
-	GROUP_HISTORY_SIZE = "History Size", -- NEW
-	GROUP_HISTORY_SIZE_HELP = "Set the maximum number of history messages Eavesdropper displays for each Group Window, merged across every tracked player.|n|n|cnWARNING_FONT_COLOR:Note: High values on a Group Window tracking many players may cause temporary frame drops when refreshing the history window.|r", -- NEW
+	GROUP_HISTORY_SIZE = "Размер истории",
+	GROUP_HISTORY_SIZE_HELP = "Задает максимальное количество сообщений истории, которые Eavesdropper отображает для каждого группового окна, объединяя данные всех отслеживаемых игроков.|n|n|cnWARNING_FONT_COLOR:Примечание: большие значения для группового окна, отслеживающего много игроков, могут вызывать временные просадки кадров (фреймрейта) при обновлении окна истории.|r",
 
-	GROUP_OPTIONS = "Group Options", -- NEW
-	GROUP_RENAME = "Change Group Name", -- NEW
+	GROUP_OPTIONS = "Настройки групп",
+	GROUP_RENAME = "Изменить название группы",
 
-	PLAYER_LIST = "Player List", -- NEW
-	PLAYER_LIST_HELP = "Lists every player currently tracked by this Group Window.", -- NEW
-	PLAYER_LIST_ADD_TARGET = "Add Target", -- NEW
-	PLAYER_LIST_ADD_TARGET_HELP = "Add your current target to this group.|n|n|cnWARNING_FONT_COLOR:Note: Disabled if you have no target, your target isn't a player, or they're already in this group.|r", -- NEW
-	PLAYER_LIST_EMPTY = "No players tracked", -- NEW
-	PLAYER_LIST_ROW_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r", -- NEW
-	PLAYER_LIST_OPEN_DEDICATED = "Open Dedicated Window", -- NEW
-	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for this player.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if this player already has a Dedicated Window.|r", -- NEW
+	PLAYER_LIST = "Список игроков",
+	PLAYER_LIST_HELP = "Список всех игроков, отслеживаемых в данный момент в этом групповом окне.",
+	PLAYER_LIST_ADD_TARGET = "Добавить цель",
+	PLAYER_LIST_ADD_TARGET_HELP = "Добавить вашу текущую цель в эту группу.|n|n|cnWARNING_FONT_COLOR:Примечание: функция недоступна, если у вас нет цели, ваша цель не является игроком или она уже находится в этой группе.|r",
+	PLAYER_LIST_EMPTY = "Нет отслеживаемых игроков",
+	PLAYER_LIST_ROW_HELP = "Снимите галочку, чтобы удалить этого игрока из группы; отметьте снова, чтобы вернуть его.|n|n|cnWARNING_FONT_COLOR:Примечание: этот список обновляется только после полного закрытия и повторного открытия меню.|r",
+	PLAYER_LIST_OPEN_DEDICATED = "Открыть выделенное окно",
+	PLAYER_LIST_OPEN_DEDICATED_HELP = "Открыть выделенное окно для этого игрока.|n|n|cnWARNING_FONT_COLOR:Примечание: ничего не делает, если у этого игрока уже открыто выделенное окно.|r",
 
 	MINIMAP_BUTTON = "Кнопка на миникарте",
 	MINIMAP_BUTTON_HELP = "Отображать значок аддона у миникарты.|n|n* Это общая настройка для всех профилей.",
@@ -241,13 +241,13 @@ L = {
 	TARGET = "Текущая цель",
 	TARGET_HELP = "Сообщения, полученные от вашей текущей цели.",
 
-	DEDICATED = "Dedicated", -- NEW
-	DEDICATED_HELP = "Separate, independent windows to track specific units.", -- NEW
-	DEDICATED_NOTIFICATIONS_HELP = "Messages received in Dedicated Windows.", -- NEW
+	DEDICATED = "Выделенные",
+	DEDICATED_HELP = "Отдельные независимые окна для отслеживания конкретных целей.",
+	DEDICATED_NOTIFICATIONS_HELP = "Сообщения, полученные в выделенных окнах.",
 
-	GROUPS = "Groups", -- NEW
-	GROUP_HELP = "Separate, independent windows to track multiple users simultaneously (e.g., DMs or Friends).", -- NEW
-	GROUP_NOTIFICATIONS_HELP = "Messages received in Group Windows.", -- NEW
+	GROUPS = "Группы",
+	GROUP_HELP = "Отдельные независимые окна для одновременного отслеживания нескольких пользователей (например, личных сообщений или друзей).",
+	GROUP_NOTIFICATIONS_HELP = "Сообщения, полученные в групповых окнах.",
 
 	NOTIFICATIONS_PLAY_SOUND = "Звуковой сигнал",
 	NOTIFICATIONS_PLAY_SOUND_HELP = "Включает звуковое оповещение для этого типа уведомлений.",
@@ -267,116 +267,116 @@ L = {
 	KEYWORDS_ENABLE_HELP = "Включает систему отслеживания ключевых слов в Eavesdropper.|n|n|cnWARNING_FONT_COLOR:Примечание: списки слов сохраняются для профиля целиком, а не для каждого персонажа отдельно.|r",
 
 	KEYWORDS_LIST = "Список слов",
-	KEYWORDS_LIST_HELP = "Введите слова или фразы для выделения в истории чата.|n|nСпециальные теги:|n|cnGREEN_FONT_COLOR:<firstname>|r - ваше РП-имя|n|cnGREEN_FONT_COLOR:<lastname>|r - ваша РП-фамилия|n|cnGREEN_FONT_COLOR:<oocname>|r - ваш игровой никнейм|n%s|cnGREEN_FONT_COLOR:<class>|r - ваш РП-класс (или игровой)|n|cnGREEN_FONT_COLOR:<race>|r - ваша РП-раса (или игровая)|n|nПравила:|n- Разделяйте записи запятыми.|n- Регистр не учитывается (н-р, «Герой» совпадет с «герой»).|n- Пробелы внутри фраз учитываются.|n|n|cnWARNING_FONT_COLOR:Примечание: пробелы до и после запятой игнорируются.|r",
-	KEYWORDS_LIST_HELP_OOC_PARTS = "|cnGREEN_FONT_COLOR:<oocfirstname>|r - Your in-game first name|n|cnGREEN_FONT_COLOR:<ooclastname>|r - Your in-game last name|n", -- NEW
+	KEYWORDS_LIST_HELP = "Введите слова или фразы для выделения в истории чата.|n|nСпециальные теги:|n|cnGREEN_FONT_COLOR:<firstname>|r - ваше РП-имя|n|cnGREEN_FONT_COLOR:<lastname>|r - ваша РП-фамилия|n|cnGREEN_FONT_COLOR:<oocname>|r - ваш игровой никнейм|n%s|cnGREEN_FONT_COLOR:<class>|r - ваш РП-класс (или игровой)|n|cnGREEN_FONT_COLOR:<race>|r - ваша РП-раса (или игровая)|n|nПравила:|n- Разделяйте записи запятыми.|n- Регистр не учитывается (н-р, 'Герой' совпадет с 'герой').|n- Пробелы внутри фраз учитываются.|n|n|cnWARNING_FONT_COLOR:Примечание: пробелы до и после запятой игнорируются.|r",
+	KEYWORDS_LIST_HELP_OOC_PARTS = "|cnGREEN_FONT_COLOR:<oocfirstname>|r - Ваше игровое имя|n|cnGREEN_FONT_COLOR:<ooclastname>|r - Ваша игровая фамилия|n",
 
 	KEYWORDS_HIGHLIGHT_COLOR = "Цвет выделения",
 	KEYWORDS_HIGHLIGHT_COLOR_HELP = "Выберите цвет, которым будут окрашены ключевые слова в тексте.",
 
 	KEYWORDS_ENABLE_PARTIAL_MATCHING = "Частичное совпадение",
-	KEYWORDS_ENABLE_PARTIAL_MATCHING_HELP = "Позволяет находить ключевые слова внутри других слов.|n|nПримеры:|n- Включено: «Маг» подсветится и в слове «Магия».|n- Выключено: подсветится только отдельное слово «Маг».|n|n|cnWARNING_FONT_COLOR:Примечание: может приводить к ложным срабатываниям (например, «рог» внутри «доРОГа»).|r",
+	KEYWORDS_ENABLE_PARTIAL_MATCHING_HELP = "Позволяет находить ключевые слова внутри других слов.|n|nПримеры:|n- Включено: 'Маг' подсветится и в слове 'Магия'.|n- Выключено: подсветится только отдельное слово 'Маг'.|n|n|cnWARNING_FONT_COLOR:Примечание: может приводить к ложным срабатываниям (например, 'рог' внутри 'доРОГа').|r",
 
 	KEYWORDS_NOTIFICATIONS_HELP = "Уведомления при обнаружении ключевого слова в сообщении.",
 
 	-- Profiles Tab
 	PROFILES_TITLE = "Профили",
-	PROFILES_TITLE_HELP = "Store multiple setups and assign one to each character.", -- NEW
+	PROFILES_TITLE_HELP = "Сохраняйте несколько вариантов настроек и назначайте по одному каждому персонажу.",
 
-	PROFILES_TRANSFER = "Import & Export", -- NEW
-	PROFILES_TRANSFER_HELP = "Move settings in and out of the game as a text string.", -- NEW
+	PROFILES_TRANSFER = "Импорт и экспорт",
+	PROFILES_TRANSFER_HELP = "Переносите настройки в игру и из неё в виде текстовой строки.",
 
-	PROFILES_MANAGE = "Manage Profiles", -- NEW
-	PROFILES_MANAGE_HELP = "Manage your profiles. Hover over any profile to reveal more options.|n|n|cnWARNING_FONT_COLOR:Note: The 'Default' profile cannot be renamed or deleted.|r", -- NEW
+	PROFILES_MANAGE = "Управление профилями",
+	PROFILES_MANAGE_HELP = "Управляйте вашими профилями. Наведите курсор на любой профиль, чтобы увидеть дополнительные параметры.|n|n|cnWARNING_FONT_COLOR:Примечание: профиль 'По умолчанию' нельзя переименовать или удалить.|r",
 
-	PROFILES_NEWPROFILE = "%s |cnPURE_GREEN_COLOR:New Profile|r", -- NEW
+	PROFILES_NEWPROFILE = "%s |cnPURE_GREEN_COLOR:Новый профиль|r",
 
-	PROFILES_RESETBUTTON = "%s |cnNORMAL_FONT_COLOR:Reset Active Profile|r", -- NEW
-	PROFILES_RESETBUTTON_HELP = "Restore all settings in the active profile to their original defaults.", -- NEW
+	PROFILES_RESETBUTTON = "%s |cnNORMAL_FONT_COLOR:Сбросить активный профиль|r",
+	PROFILES_RESETBUTTON_HELP = "Восстановить исходные значения по умолчанию для всех настроек в активном профиле.",
 
 	PROFILES_DELETEPROFILE = "Удалить профиль",
-	PROFILES_DELETEPROFILE_HELP = "Permanently remove this profile from the database.|n|n- Any character using this profile is switched back to 'Default'.", -- NEW
+	PROFILES_DELETEPROFILE_HELP = "Навсегда удалить этот профиль из базы данных.|n|n- Все персонажи, использующие этот профиль, будут переключены обратно на профиль 'По умолчанию'.",
 
-	PROFILES_OPTIONS = "Profile Options", -- NEW
-	PROFILES_OPTIONS_HELP = "Copy or rename this profile.", -- NEW
+	PROFILES_OPTIONS = "Параметры профиля",
+	PROFILES_OPTIONS_HELP = "Скопировать или переименовать этот профиль.",
 
-	PROFILES_RENAMEPROFILE = "Rename Profile", -- NEW
-	PROFILES_RENAMEPROFILE_HELP = "Choose a new name for this profile.|n|n- Renaming the profile you are using keeps you on it.", -- NEW
+	PROFILES_RENAMEPROFILE = "Переименовать профиль",
+	PROFILES_RENAMEPROFILE_HELP = "Выберите новое имя для этого профиля.|n|n- Переименование используемого вами профиля оставит вас на нём.",
 
-	PROFILES_COPYPROFILE = "Copy Profile", -- NEW
-	PROFILES_COPYPROFILE_HELP = "Create a new profile holding a copy of this profile's settings, then switch to it.", -- NEW
+	PROFILES_COPYPROFILE = "Копировать профиль",
+	PROFILES_COPYPROFILE_HELP = "Создать новый профиль с копией настроек этого профиля и переключиться на него.",
 
-	PROFILES_CONFIRM_RESET = "Are you sure you want to reset the active profile to its original defaults?", -- NEW
-	PROFILES_CONFIRM_DELETE = "Are you sure you want to permanently delete the profile '%s'?", -- NEW
-	PROFILES_CONFIRM_DELETE_CURRENT = "Are you sure you want to permanently delete the profile '%s'?|n|nAll characters with this as their active profile will be reset to 'Default'.", -- NEW
+	PROFILES_CONFIRM_RESET = "Вы уверены, что хотите сбросить активный профиль до исходных настроек по умолчанию?",
+	PROFILES_CONFIRM_DELETE = "Вы уверены, что хотите навсегда удалить профиль '%s'?",
+	PROFILES_CONFIRM_DELETE_CURRENT = "Вы уверены, что хотите навсегда удалить профиль '%s'?|n|nВсе персонажи, у которых этот профиль выбран в качестве активного, будут переключены на профиль 'По умолчанию'.",
 
-	PROFILES_IMPORTBUTTON = "Import Settings", -- NEW
-	PROFILES_IMPORTBUTTON_HELP = "Import a profile or your global settings from a shareable text string.", -- NEW
+	PROFILES_IMPORTBUTTON = "Импортировать настройки",
+	PROFILES_IMPORTBUTTON_HELP = "Импортировать профиль или ваши общие настройки из текстовой строки обмена.",
 
-	PROFILES_EXPORTBUTTON = "Export Settings", -- NEW
-	PROFILES_EXPORTBUTTON_HELP = "Export the current profile or your global settings to a text string you can keep or share outside of the game.|n|nEach is exported separately.", -- NEW
+	PROFILES_EXPORTBUTTON = "Экспортировать настройки",
+	PROFILES_EXPORTBUTTON_HELP = "Экспортировать текущий профиль или ваши общие настройки в текстовую строку, которую можно сохранить или отправить вне игры.|n|nКаждая категория экспортируется отдельно.",
 
-	PROFILES_EXPORT_PROFILE = "Profile", -- NEW
-	PROFILES_EXPORT_GLOBAL = "Global", -- NEW
+	PROFILES_EXPORT_PROFILE = "Профиль",
+	PROFILES_EXPORT_GLOBAL = "Общие",
 
 	-- Import/Export Dialog
-	IMPORTEXPORT_TITLE_EXPORT_PROFILE = "Export Profile", -- NEW
-	IMPORTEXPORT_TITLE_EXPORT_GLOBAL = "Export Global Settings", -- NEW
-	IMPORTEXPORT_TITLE_IMPORT = "Import Settings", -- NEW
+	IMPORTEXPORT_TITLE_EXPORT_PROFILE = "Экспорт профиля",
+	IMPORTEXPORT_TITLE_EXPORT_GLOBAL = "Экспорт общих настроек",
+	IMPORTEXPORT_TITLE_IMPORT = "Импорт настроек",
 
-	IMPORTEXPORT_INSTRUCTIONS_EXPORT = "Press |cnGREEN_FONT_COLOR:Ctrl+C|r to copy the string below, then paste it wherever you want to keep or share it.", -- NEW
-	IMPORTEXPORT_INSTRUCTIONS_IMPORT = "Paste a profile or global settings string below.", -- NEW
+	IMPORTEXPORT_INSTRUCTIONS_EXPORT = "Нажмите |cnGREEN_FONT_COLOR:Ctrl+C|r, чтобы скопировать строку ниже, затем вставьте её туда, где хотите сохранить или поделиться ею.",
+	IMPORTEXPORT_INSTRUCTIONS_IMPORT = "Вставьте строку профиля или общих настроек ниже.",
 
-	IMPORTEXPORT_DETECTED_PROFILE = "This is a |cnGREEN_FONT_COLOR:profile|r string. Choose which profile to import it into.", -- NEW
-	IMPORTEXPORT_DETECTED_GLOBAL = "This is a |cnGREEN_FONT_COLOR:global settings|r string. Importing it changes settings for every character and profile.", -- NEW
+	IMPORTEXPORT_DETECTED_PROFILE = "Это строка |cnGREEN_FONT_COLOR:профиля|r. Выберите, в какой профиль её импортировать.",
+	IMPORTEXPORT_DETECTED_GLOBAL = "Это строка |cnGREEN_FONT_COLOR:общих настроек|r. Её импорт изменит настройки для каждого персонажа и профиля.",
 
-	IMPORTEXPORT_NAME_LABEL = "Import As", -- NEW
-	IMPORTEXPORT_NAME_LABEL_HELP = "The profile the pasted settings are imported into.|n|nThis is filled in from the string automatically, but you can change it to import under another name.", -- NEW
-	IMPORTEXPORT_OVERWRITE = "Overwrite", -- NEW
-	IMPORTEXPORT_OVERWRITE_HELP = "Allow the import to replace a profile that already uses this name.|n|n|cnWARNING_FONT_COLOR:Note: Every setting in that profile will be replaced.|r", -- NEW
-	IMPORTEXPORT_BUTTON_IMPORT = "Import", -- NEW
-	IMPORTEXPORT_VERSION_DEV = "Dev", -- NEW
+	IMPORTEXPORT_NAME_LABEL = "Импортировать как",
+	IMPORTEXPORT_NAME_LABEL_HELP = "Профиль, в который будут импортированы вставленные настройки.|n|nЭто поле заполняется из строки автоматически, но вы можете изменить имя для импорта под другим названием.",
+	IMPORTEXPORT_OVERWRITE = "Перезаписать",
+	IMPORTEXPORT_OVERWRITE_HELP = "Разрешить импорту заменить профиль, который уже использует это имя.|n|n|cnWARNING_FONT_COLOR:Примечание: все настройки в этом профиле будут заменены.|r",
+	IMPORTEXPORT_BUTTON_IMPORT = "Импорт",
+	IMPORTEXPORT_VERSION_DEV = "Разраб.",
 
-	IMPORTEXPORT_CONFIRM_PROFILE = "Are you sure you want to import the profile '%s'?|n|nExported on |cnGREEN_FONT_COLOR:%s|r from version |cnGREEN_FONT_COLOR:%s|r.", -- NEW
-	IMPORTEXPORT_CONFIRM_OVERWRITE = "Are you sure you want to overwrite the profile '%s'?|n|nExported on |cnGREEN_FONT_COLOR:%s|r from version |cnGREEN_FONT_COLOR:%s|r.|n|n|cnWARNING_FONT_COLOR:Note: Every setting in that profile will be replaced.|r", -- NEW
-	IMPORTEXPORT_CONFIRM_GLOBAL = "Are you sure you want to import these global settings?|n|nExported on |cnGREEN_FONT_COLOR:%s|r from version |cnGREEN_FONT_COLOR:%s|r.|n|n|cnWARNING_FONT_COLOR:Note: This affects every character and profile.|r", -- NEW
-	IMPORTEXPORT_CONFIRM_RELOAD = "Global settings have been imported. Some of them only take effect after a reload.|n|nReload your interface now?", -- NEW
-	IMPORTEXPORT_CONFIRM_FLAVOR_DEFAULTS = "This profile was exported from another version of the game, which uses different defaults for some settings.|n|nSwitch those settings to this version's defaults?", -- NEW
+	IMPORTEXPORT_CONFIRM_PROFILE = "Вы уверены, что хотите импортировать профиль '%s'?|n|nЭкспортирован |cnGREEN_FONT_COLOR:%s|r из версии |cnGREEN_FONT_COLOR:%s|r.",
+	IMPORTEXPORT_CONFIRM_OVERWRITE = "Вы уверены, что хотите перезаписать профиль '%s'?|n|nЭкспортирован |cnGREEN_FONT_COLOR:%s|r из версии |cnGREEN_FONT_COLOR:%s|r.|n|n|cnWARNING_FONT_COLOR:Примечание: все настройки в этом профиле будут заменены.|r",
+	IMPORTEXPORT_CONFIRM_GLOBAL = "Вы уверены, что хотите импортировать эти общие настройки?|n|nЭкспортированы |cnGREEN_FONT_COLOR:%s|r из версии |cnGREEN_FONT_COLOR:%s|r.|n|n|cnWARNING_FONT_COLOR:Примечание: это повлияет на каждого персонажа и профиль.|r",
+	IMPORTEXPORT_CONFIRM_RELOAD = "Общие настройки были импортированы. Некоторые из них вступят в силу только после перезагрузки.|n|nПерезагрузить интерфейс сейчас?",
+	IMPORTEXPORT_CONFIRM_FLAVOR_DEFAULTS = "Этот профиль был экспортирован из другой версии игры, которая использует другие значения по умолчанию для некоторых настроек.|n|nПереключить эти настройки на значения по умолчанию для текущей версии?",
 
-	IMPORTEXPORT_SUCCESS_PROFILE = "Imported the profile '%s' and switched to it.", -- NEW
-	IMPORTEXPORT_SUCCESS_PROFILE_SKIPPED = "Imported the profile '%s' and switched to it. |cnWARNING_FONT_COLOR:%d |4setting:settings; could not be read and |4was:were; skipped.|r", -- NEW
-	IMPORTEXPORT_SUCCESS_GLOBAL = "Imported your global settings.", -- NEW
-	IMPORTEXPORT_SUCCESS_GLOBAL_SKIPPED = "Imported your global settings. |cnWARNING_FONT_COLOR:%d |4setting:settings; could not be read and |4was:were; skipped.|r", -- NEW
+	IMPORTEXPORT_SUCCESS_PROFILE = "Профиль '%s' успешно импортирован, выполнен переход на него.",
+	IMPORTEXPORT_SUCCESS_PROFILE_SKIPPED = "Профиль '%s' успешно импортирован, выполнен переход на него. |cnWARNING_FONT_COLOR:%d |4настройка:настройки:настроек; не удалось прочитать, и они были пропущены.|r",
+	IMPORTEXPORT_SUCCESS_GLOBAL = "Общие настройки успешно импортированы.",
+	IMPORTEXPORT_SUCCESS_GLOBAL_SKIPPED = "Общие настройки успешно импортированы. |cnWARNING_FONT_COLOR:%d |4настройку:настройки:настроек; не удалось прочитать, и они были пропущены.|r",
 
-	IMPORTEXPORT_ERROR_NAME_EMPTY = "Enter a name for the profile to import into.", -- NEW
-	IMPORTEXPORT_ERROR_NAME_TAKEN = "A profile named '%s' already exists. Choose another name, or enable 'Overwrite'.", -- NEW
-	IMPORTEXPORT_ERROR_WRITE_FAILED = "That string could not be imported.", -- NEW
-	IMPORTEXPORT_ERROR_EXPORT_FAILED = "Your settings could not be exported.", -- NEW
+	IMPORTEXPORT_ERROR_NAME_EMPTY = "Введите имя профиля для импорта.",
+	IMPORTEXPORT_ERROR_NAME_TAKEN = "Профиль с именем '%s' уже существует. Выберите другое имя или включите 'Перезаписать'.",
+	IMPORTEXPORT_ERROR_WRITE_FAILED = "Эту строку не удалось импортировать.",
+	IMPORTEXPORT_ERROR_EXPORT_FAILED = "Ваши настройки не удалось экспортировать.",
 
-	IMPORTEXPORT_ERROR_PEM_DECODE = "That does not look like an " .. title .. " string. Make sure you copied all of it, including the |cnGREEN_FONT_COLOR:-----BEGIN-----|r and |cnGREEN_FONT_COLOR:-----END-----|r lines.", -- NEW
-	IMPORTEXPORT_ERROR_PEM_LABEL = title .. " does not recognize that kind of string. It may have come from another addon, or from a newer version.", -- NEW
-	IMPORTEXPORT_ERROR_DECOMPRESS = "That string could not be unpacked and is most likely damaged or incomplete.", -- NEW
-	IMPORTEXPORT_ERROR_DESERIALIZE_CBOR = "That string could not be read and is most likely damaged.", -- NEW
-	IMPORTEXPORT_ERROR_PACKED_DATA_INVALID = "That string is malformed and cannot be imported.", -- NEW
-	IMPORTEXPORT_ERROR_SCHEMA_TOO_NEW = "That string was created by a newer version of " .. title .. " and cannot be read. Update the addon and try again.", -- NEW
+	IMPORTEXPORT_ERROR_PEM_DECODE = "Эта строка не похожа на данные " .. title .. ". Убедитесь, что вы скопировали её полностью, включая строки |cnGREEN_FONT_COLOR:-----BEGIN-----|r и |cnGREEN_FONT_COLOR:-----END-----|r.",
+	IMPORTEXPORT_ERROR_PEM_LABEL = title .. " не распознаёт этот тип строки. Возможно, она была создана другим аддоном или более новой версией.",
+	IMPORTEXPORT_ERROR_DECOMPRESS = "Эту строку не удалось распаковать, скорее всего, она повреждена или неполная.",
+	IMPORTEXPORT_ERROR_DESERIALIZE_CBOR = "Эту строку не удалось прочитать, скорее всего, она повреждена.",
+	IMPORTEXPORT_ERROR_PACKED_DATA_INVALID = "Эта строка имеет неверный формат и не может быть импортирована.",
+	IMPORTEXPORT_ERROR_SCHEMA_TOO_NEW = "Эта строка была создана более новой версией " .. title .. " и не может быть прочитана. Обновите аддон и попробуйте снова.",
 
 	-- Copy History Dialog
-	COPY_HISTORY = "Copy History", -- NEW
-	COPY_HISTORY_HELP = "Opens this window's chat history as selectable text you can copy out.", -- NEW
+	COPY_HISTORY = "Копировать историю",
+	COPY_HISTORY_HELP = "Открывает историю чата этого окна в виде выделяемого текста, который вы можете скопировать.",
 
-	COPYHISTORY_TITLE = "Copy History", -- NEW
-	COPYHISTORY_TIMESTAMP_FIXED = "Fixed", -- NEW
-	COPYHISTORY_TIMESTAMP_RELATIVE = "Relative", -- NEW
-	COPYHISTORY_TIMESTAMP_NONE = "None", -- NEW
-	COPYHISTORY_SELECT_ALL = "Select All", -- NEW
-	COPYHISTORY_FORMATTING_TITLE = "Formatting", -- NEW
-	COPYHISTORY_TIMESTAMPS_TITLE = "Timestamps", -- NEW
-	COPYHISTORY_TIMESTAMPS_HELP = "Choose how timestamps appear when you copy the text.|n|n- Fixed: Exact time (e.g. 19:53:22).|n- Relative: How long ago (e.g. 5m).|n- None: No timestamp.", -- NEW
-	COPYHISTORY_SHOW_NAMES_TITLE = "Show Names", -- NEW
-	COPYHISTORY_SHOW_NAMES_HELP = "Choose whether to include sender names in the copied text.|n|n- Window Default: Use this window's normal behavior.|n- Always On: Always add names.|n- Always Off: Never add names.|n|n|cnWARNING_FONT_COLOR:Note: Emotes and rolls always use their own name rules.|r", -- NEW
-	COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT = "Window Default", -- NEW
-	COPYHISTORY_SHOW_NAMES_ON = "Always On", -- NEW
-	COPYHISTORY_SHOW_NAMES_OFF = "Always Off", -- NEW
-	COPYHISTORY_NAME_DISPLAY_HELP = "Choose how names are formatted in the copied text.|n|n- Follow Profile Setting: Use your current profile's Name Display.|n- Full Name / First Name / Original (OOC) Name: Always use that variant.|n|n|cnWARNING_FONT_COLOR:Note: RP names need a compatible RP addon (TRP, MRP, XRP); without it, the in-game name is used.|r", -- NEW
+	COPYHISTORY_TITLE = "Копировать историю",
+	COPYHISTORY_TIMESTAMP_FIXED = "Точное время",
+	COPYHISTORY_TIMESTAMP_RELATIVE = "Относительное",
+	COPYHISTORY_TIMESTAMP_NONE = "Нет",
+	COPYHISTORY_SELECT_ALL = "Выбрать всё",
+	COPYHISTORY_FORMATTING_TITLE = "Форматирование",
+	COPYHISTORY_TIMESTAMPS_TITLE = "Отметки времени",
+	COPYHISTORY_TIMESTAMPS_HELP = "Выберите, как отметки времени будут отображаться при копировании текста.|n|n- Точное время: точное время события (например, 19:53:22).|n- Относительное: сколько времени прошло (например, 5м).|n- Нет: без отметок времени.",
+	COPYHISTORY_SHOW_NAMES_TITLE = "Показывать имена",
+	COPYHISTORY_SHOW_NAMES_HELP = "Выберите, нужно ли включать имена отправителей в скопированный текст.|n|n- По умолчанию для окна: использовать обычное поведение этого окна.|n- Всегда включено: всегда добавлять имена.|n- Всегда выключено: никогда не добавлять имена.|n|n|cnWARNING_FONT_COLOR:Примечание: для эмоций и бросков костей всегда применяются их собственные правила отображения имён.|r",
+	COPYHISTORY_SHOW_NAMES_WINDOW_DEFAULT = "По умолчанию для окна",
+	COPYHISTORY_SHOW_NAMES_ON = "Всегда включено",
+	COPYHISTORY_SHOW_NAMES_OFF = "Всегда выключено",
+	COPYHISTORY_NAME_DISPLAY_HELP = "Выберите формат имён в скопированном тексте.|n|n- Из настроек профиля: использовать формат отображения имён из текущего профиля.|n- Полное имя / Имя / Настоящее (OOC) имя: всегда использовать этот вариант.|n- Сокращённое / Полное РП-имя: использовать этот вариант (если применимо).|n|n|cnWARNING_FONT_COLOR:Примечание: для отображения РП-имён необходим совместимый РП-аддон (TRP, MRP, XRP); без него будет использоваться обычное игровое имя персонажа.|r",
 
 	ADDONINFO_BUILD = "|cnNORMAL_FONT_COLOR:Версия:|r %s",
 	ADDONINFO_BUILD_OUTDATED = title .. " не оптимизирован для этой версии игры.|n|n|cnWARNING_FONT_COLOR:Это может привести к ошибкам в работе аддона.|r",
@@ -385,41 +385,41 @@ L = {
 	PREVIEW_POST_TOOLTIP = "Смотреть превью версии на %s.",
 
 	-- About Tab
-	ABOUT_TITLE = "About", -- NEW
-	ADDONINFO_VERSION = "|cnNORMAL_FONT_COLOR:Version:|r %s", -- NEW
-	CLICK_TO_COPY = "|cnGREEN_FONT_COLOR:Click: Open link to copy|r", -- NEW
-	AUTHOR_COLON = "Author: ", -- NEW
-	VISIT_ADDON_PAGE_TOOLTIP = "Visit the addon page on %s.", -- NEW
-	RUN_CLICKABLE_COMMAND = "|cnGREEN_FONT_COLOR:Click: Run clickable command|r", -- NEW
+	ABOUT_TITLE = "О аддоне",
+	ADDONINFO_VERSION = "|cnNORMAL_FONT_COLOR:Версия:|r %s",
+	CLICK_TO_COPY = "|cnGREEN_FONT_COLOR:Клик: Открыть ссылку для копирования|r",
+	AUTHOR_COLON = "Автор: ",
+	VISIT_ADDON_PAGE_TOOLTIP = "Посетить страницу аддона на %s.",
+	RUN_CLICKABLE_COMMAND = "|cnGREEN_FONT_COLOR:Клик: Запустить интерактивную команду|r",
 
-	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Eavesdropper Options", -- NEW
-	UNIT_POPUPS_EAVESDROP_ON = "Eavesdrop On", -- NEW
-	UNIT_POPUPS_EAVESDROP_ON_HELP = "Open a Dedicated Window for the current target.|n|n|cnWARNING_FONT_COLOR:Note: Disabled if the target already has a Dedicated Window.|r", -- NEW
-	UNIT_POPUPS_EAVESDROP_GROUP = "Eavesdrop Group", -- NEW
-	UNIT_POPUPS_EAVESDROP_GROUP_HELP = "Assign the current target to a specific Group Window or remove them from one.|n|n|cnWARNING_FONT_COLOR:Note: |cnGREEN_FONT_COLOR:Green group names|r indicate that the target is already a member of that group.|r", -- NEW
-	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Create New", -- NEW
-	UNIT_POPUPS_TOGGLE_MENTIONS_HELP = "Toggle the Mentions window, which lists every message that was aimed at you.|n|n- Catches keyword hits and emotes directed at you, even ones you missed in the moment.", -- NEW
+	UNIT_POPUPS_EAVESDROPPER_OPTIONS_HEADER = "Настройки Eavesdropper",
+	UNIT_POPUPS_EAVESDROP_ON = "Отслеживать цель",
+	UNIT_POPUPS_EAVESDROP_ON_HELP = "Открыть отдельное окно для текущей цели.|n|n|cnWARNING_FONT_COLOR:Примечание: недоступно, если для этой цели уже открыто отдельное окно.|r",
+	UNIT_POPUPS_EAVESDROP_GROUP = "Группа отслеживания",
+	UNIT_POPUPS_EAVESDROP_GROUP_HELP = "Добавить текущую цель в определённое групповое окно или удалить её из него.|n|n|cnWARNING_FONT_COLOR:Примечание: |cnGREEN_FONT_COLOR:зелёные названия групп|r указывают на то, что цель уже состоит в этой группе.|r",
+	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Создать новую",
+	UNIT_POPUPS_TOGGLE_MENTIONS_HELP = "Открыть/закрыть окно Упоминания, где собран список всех адресованных вам сообщений.|n|n- Перехватывает совпадения по ключевым словам и направленные на вас эмоции, даже если вы пропустили их в текущий момент.",
 
-	POPUP_EAVESDROP_GROUP = "Eavesdropper Group name.|nEnter to confirm.", -- NEW
-	POPUP_RESTORE_GROUP = "A group named \"%s\" with %d member(s) was closed earlier this session.|n|nRestore its members?", -- NEW
-	POPUP_RENAME_PROFILE = "Rename profile '%s'.|nEnter to confirm.", -- NEW
-	POPUP_COPY_PROFILE = "Name the new profile copied from '%s'.|nEnter to confirm.", -- NEW
-	POPUP_NEW_PROFILE = "Name the new profile.|nEnter to confirm.", -- NEW
+	POPUP_EAVESDROP_GROUP = "Название группы отслеживания.|nНажмите Enter для подтверждения.",
+	POPUP_RESTORE_GROUP = "Группа \"%s\" с %d |4участником:участниками:участниками; была закрыта ранее в этой сессии.|n|nВосстановить её участников?",
+	POPUP_RENAME_PROFILE = "Переименовать профиль '%s'.|nНажмите Enter для подтверждения.",
+	POPUP_COPY_PROFILE = "Введите имя для нового профиля, скопированного из '%s'.|nНажмите Enter для подтверждения.",
+	POPUP_NEW_PROFILE = "Введите имя для нового профиля.|nНажмите Enter для подтверждения.",
 
 	-- Message Prefixes (keep them shorthand)
-	MSG_PREFIX_PARTY = "P", -- NEW
-	MSG_PREFIX_RAID = "R", -- NEW
-	MSG_PREFIX_INSTANCE = "I", -- NEW
-	MSG_PREFIX_OFFICER = "O", -- NEW
-	MSG_PREFIX_GUILD = "G", -- NEW
-	MSG_PREFIX_CHANNEL = "C", -- NEW
-	MSG_PREFIX_RAID_WARNING = "RW", -- NEW
-	MSG_PREFIX_WHISPER_FROM = "W From", -- NEW
-	MSG_PREFIX_WHISPER_TO = "W To", -- NEW
+	MSG_PREFIX_PARTY = "Г",
+	MSG_PREFIX_RAID = "Р",
+	MSG_PREFIX_INSTANCE = "П",
+	MSG_PREFIX_OFFICER = "О",
+	MSG_PREFIX_GUILD = "Гл",
+	MSG_PREFIX_CHANNEL = "К",
+	MSG_PREFIX_RAID_WARNING = "ОР",
+	MSG_PREFIX_WHISPER_FROM = "ЛС от",
+	MSG_PREFIX_WHISPER_TO = "ЛС кому",
 
-	MSG_VERB_SAY = "says", -- NEW
-	MSG_VERB_YELL = "yells", -- NEW
-	MSG_VERB_WHISPER = "whispers", -- NEW
+	MSG_VERB_SAY = "говорит",
+	MSG_VERB_YELL = "кричит",
+	MSG_VERB_WHISPER = "шепчет",
 };
 
 ED.Localization:RegisterNewLocale("ruRU", "Russian", L);
