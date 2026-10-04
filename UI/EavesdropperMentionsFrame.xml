@@ -6,7 +6,7 @@
 ../Eavesdropper.xsd">
 
 	<Frame name="Eavesdropper_Mentions_FrameTemplate" mixin="Eavesdropper_Mentions_FrameMixin" virtual="true" parent="UIParent"
-			toplevel="true" movable="true" clampedToScreen="true" resizable="true" dontSavePosition="true" frameStrata="BACKGROUND">
+			toplevel="true" hidden="true" movable="true" clampedToScreen="true" resizable="true" dontSavePosition="true" frameStrata="BACKGROUND">
 		<Size x="280" y="380"/>
 		<ResizeBounds>
 			<minResize>
