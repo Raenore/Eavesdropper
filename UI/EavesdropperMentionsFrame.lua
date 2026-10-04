@@ -122,8 +122,7 @@ function Eavesdropper_Mentions_FrameMixin:OnHide()
 	self:StopChatTicker();
 	self:OnHideCommon();
 
-	-- A combat-driven hide must not count as closing it; Events.lua sets isCombatHidden
-	-- before calling HandleVisibility so it knows to reappear once combat ends.
+	-- A combat hide is not a close. ApplyCombatHidden sets isCombatHidden before hiding.
 	if not self.isCombatHidden then
 		self.userOpened = false;
 		ED.Database:SetCharSetting("MentionsVisible", false);
@@ -188,8 +187,8 @@ function Eavesdropper_Mentions_FrameMixin:RestoreLayout()
 	end
 end
 
----Overrides SharedFrameMixin:HandleVisibility. Open state is per character (MentionsVisible).
----Once open, it still respects HideInCombat like its siblings, via Events.lua's isCombatHidden wiring.
+---Overrides SharedFrameMixin:HandleVisibility. Hidden until Open() sets userOpened, which
+---is never restored across sessions.
 function Eavesdropper_Mentions_FrameMixin:HandleVisibility()
 	if not self.userOpened then
 		self:Hide();

@@ -22,7 +22,7 @@ local function GetEmotePrefix(message)
 	end
 end
 
--- Named so RemoveMessageEventFilter could match it later.
+---Caches the raw emote prefix before other addons' filters strip it. Never removed.
 local function EmotePrefixFilter(_, _, ...)
 	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
@@ -51,7 +51,7 @@ local function GetPendingRollMessage(lineID)
 	return lineID and pendingRollMessages[lineID];
 end
 
--- Named so RemoveMessageEventFilter could match it later.
+---Caches the original roll text before other addons' filters rewrite it. Never removed.
 local function RollMessageFilter(_, _, ...)
 	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
