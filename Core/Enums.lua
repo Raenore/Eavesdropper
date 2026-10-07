@@ -133,7 +133,7 @@ Enums.NOTIFICATIONS_TYPE_SOUND_KEYS = {
 	[Enums.NOTIFICATIONS_TYPE.TARGET]      = "NotificationTargetSoundFile",
 };
 
----Maps raid target name aliases to their icon index (1–8).
+---Maps raid target name aliases to their icon index (1 to 8).
 ---@type table<string, number>
 Enums.RAID_TARGETS = {
 	-- ID 1: Star

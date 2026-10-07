@@ -22,7 +22,7 @@ local function GetEmotePrefix(message)
 	end
 end
 
--- Named so RemoveMessageEventFilter could match it later.
+---Caches the raw emote prefix before other addons' filters strip it. Never removed.
 local function EmotePrefixFilter(_, _, ...)
 	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
@@ -37,9 +37,7 @@ end
 
 -- Registered at file load rather than in Init(), so this runs ahead of TRP3's own
 -- CHAT_MSG_EMOTE filter, which TRP3 only registers on PLAYER_LOGIN.
-if ChatFrameUtil and type(ChatFrameUtil.AddMessageEventFilter) == "function" then
-	ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_EMOTE", EmotePrefixFilter);
-end
+ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_EMOTE", EmotePrefixFilter);
 
 -- RP-name addons can rewrite the player's own name inside a roll's CHAT_MSG_SYSTEM text.
 -- Captured here first, keyed by lineID, so sender resolution and the message body can fall back to it.
@@ -53,7 +51,7 @@ local function GetPendingRollMessage(lineID)
 	return lineID and pendingRollMessages[lineID];
 end
 
--- Named so RemoveMessageEventFilter could match it later.
+---Caches the original roll text before other addons' filters rewrite it. Never removed.
 local function RollMessageFilter(_, _, ...)
 	local message, _, _, _, _, _, _, _, _, _, lineID = ...;
 
@@ -65,9 +63,7 @@ local function RollMessageFilter(_, _, ...)
 end
 
 -- Registered at file load for the same reason as EmotePrefixFilter above.
-if ChatFrameUtil and type(ChatFrameUtil.AddMessageEventFilter) == "function" then
-	ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_SYSTEM", RollMessageFilter);
-end
+ChatFrameUtil.AddMessageEventFilter("CHAT_MSG_SYSTEM", RollMessageFilter);
 
 ---ChatFrameFilter Core Blizzard chat message filter
 ---@param chatFrame table Blizzard chat frame
@@ -140,8 +136,6 @@ end
 
 ---Init Registers Blizzard chat events to be filtered
 function ChatHandler:Init()
-	if type(ChatFrameUtil.AddMessageEventFilter) ~= "function" then return; end
-
 	for _, evt in ipairs(Constants.CHAT_EVENTS_ALL) do
 		ChatFrameUtil.AddMessageEventFilter(evt, function(...)
 			return self:ChatFrameFilter(...);

@@ -20,7 +20,6 @@ Eavesdropper_FrameMixin = CreateFromMixins(Eavesdropper_SharedFrameMixin);
 
 ---@return boolean
 function Eavesdropper_FrameMixin:IsMouseEnabled()
-	if not ED.Database then return true; end
 	return ED.Database:GetSetting("EnableMouse");
 end
 
@@ -33,17 +32,17 @@ end
 
 ---@return boolean
 function Eavesdropper_FrameMixin:IsWindowLocked()
-	return not ED.Database or ED.Database:GetSetting("LockWindow") or false;
+	return ED.Database:GetSetting("LockWindow") or false;
 end
 
 ---@return boolean
 function Eavesdropper_FrameMixin:IsScrollLocked()
-	return ED.Database ~= nil and ED.Database:GetSetting("LockScroll") or false;
+	return ED.Database:GetSetting("LockScroll") or false;
 end
 
 ---@return boolean
 function Eavesdropper_FrameMixin:IsTitleBarLocked()
-	return ED.Database ~= nil and ED.Database:GetSetting("LockTitleBar") or false;
+	return ED.Database:GetSetting("LockTitleBar") or false;
 end
 
 ---@return string
@@ -94,16 +93,12 @@ end
 function Eavesdropper_FrameMixin:OnDragStop()
 	self:StopMovingOrSizing();
 
-	if not ED.Database then return; end
-
 	local point, _, relativePoint, x, y = self:GetPoint(1);
 	ED.Database:SetSetting("WindowPosition", { point = point, relativePoint = relativePoint, x = x, y = y });
 end
 
 ---Persist window size and position after a resize
 function Eavesdropper_FrameMixin:OnResizeFinished()
-	if not ED.Database then return; end
-
 	local w, h = self:GetSize();
 	local point, _, relativePoint, x, y = self:GetPoint(1);
 	ED.Database:SetSetting("WindowSize", { width = w, height = h });
@@ -147,8 +142,6 @@ end
 ---Restore window position, size, resize handle, and close button from the database.
 ---Overrides SharedFrameMixin:RestoreLayout which uses local frame state instead.
 function Eavesdropper_FrameMixin:RestoreLayout()
-	if not ED.Database then return; end
-
 	local pos = ED.Database:GetSetting("WindowPosition");
 	if pos then
 		self:ClearAllPoints();
