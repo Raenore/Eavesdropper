@@ -95,7 +95,7 @@ stds.wow = {
 				"contains", -- Native on Forever and 12.1.5+.
 				"join",
 				"split",
-				"startswith",
+				"startswith", -- Native on Forever and 12.1.5+.
 				"trim",
 				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
@@ -739,6 +739,7 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"strcmputf8i",
+		"StringContains",
 		"StringToBoolean",
 		"SwapChatChannelByLocalID",
 		"TableIsEmpty",

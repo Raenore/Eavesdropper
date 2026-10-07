@@ -23,7 +23,7 @@ local function NormalizeEvent(event)
 		return remapped;
 	end
 
-	if string.startswith(event, "CHAT_MSG_") then
+	if ED.Utils.StringStartsWith(event, "CHAT_MSG_") then
 		return event:sub(10):upper();
 	end
 
