@@ -602,7 +602,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.TITLE_BAR_FULL_NAME,
 			tooltip = L.TITLE_BAR_FULL_NAME_HELP,
-			buildAdded = "0.7.0|120100,16001",
+			buildAdded = "0.7.0|120105,120100,16001",
 			get = function() return ED.Database:GetSetting("TitleBarFullName"); end,
 			set = function(val)
 				ED.Database:SetSetting("TitleBarFullName", val);
