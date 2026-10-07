@@ -15,9 +15,9 @@ local pendingEmotePrefixes = {};
 ---@param message string
 ---@return string?
 local function GetEmotePrefix(message)
-	if message:sub(1, 3) == "'s " then
+	if ED.Utils.StringStartsWith(message, "'s ") then
 		return message:sub(1, 3);
-	elseif message:sub(1, 2) == ", " then
+	elseif ED.Utils.StringStartsWith(message, ", ") then
 		return message:sub(1, 2);
 	end
 end
