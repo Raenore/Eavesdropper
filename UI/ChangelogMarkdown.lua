@@ -6,13 +6,15 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
-## [0.7.0] - 2026-xx-xx
+## [0.7.0] - 2026-10-xx
+Feature update adding early support for World of Warcraft: Forever with a matching look for its Settings, and a Mentions window that reopens after you log in.
+Preview on: TBD
 
 ### Added
-- Added early support for **World of Warcraft Forever**, including its first and family character names ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+- Added **early support for Forever**, including its first and last character names ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
 - On Forever, the Settings and pop-up windows now have a Forever-styled look, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#202](https://github.com/Raenore/Eavesdropper/pull/202)).
 - Added a **Title Bar Full Name** option to show full names in the title bar instead of just first names (on by default on Forever) ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
-- Added `<oocfirstname>` and `<ooclastname>` tags to the **Keywords List** on Forever, to highlight your in-game first or family name ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
+- Added `<oocfirstname>` and `<ooclastname>` tags to the **Keywords List** on Forever, to highlight your in-game first or last name ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
 
 ### Changed
 - Importing a profile made on Retail into Forever (or the other way around) now offers to use this version's default settings where the two differ ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
