@@ -90,7 +90,7 @@ end
 -- ============================================================
 
 ---Attaches a standard settings tooltip to a widget
-function SettingsElements.AttachTooltip(frame, title, description, anchorFrame, anchor, isFocused)
+function SettingsElements.AttachTooltip(frame, title, description, anchorFrame, anchor, isFocused, wrap)
 	if not title or not description then return; end
 	anchor = anchor or "ANCHOR_TOP";
 	local target = anchorFrame or frame;
@@ -98,7 +98,7 @@ function SettingsElements.AttachTooltip(frame, title, description, anchorFrame, 
 	frame:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(target, anchor);
 		GameTooltip:SetText(title, WHITE_FONT_COLOR:GetRGB());
-		GameTooltip:AddLine(description, nil, nil, nil, true);
+		GameTooltip:AddLine(description, nil, nil, nil, wrap ~= false);
 		GameTooltip:Show();
 	end);
 
@@ -138,7 +138,7 @@ local function AttachMultiLineEditBoxTooltip(backdrop, scrollFrame, editBox, tit
 
 	for _, f in ipairs(frames) do
 		if f then
-			AttachTooltip(f, title, description, backdrop, anchor, IsFocused);
+			AttachTooltip(f, title, description, backdrop, anchor, IsFocused, false);
 		end
 	end
 
@@ -146,7 +146,7 @@ local function AttachMultiLineEditBoxTooltip(backdrop, scrollFrame, editBox, tit
 	editBox:HookScript("OnEditFocusGained", function()
 		GameTooltip:SetOwner(backdrop, "ANCHOR_TOP");
 		GameTooltip:SetText(title, WHITE_FONT_COLOR:GetRGB());
-		GameTooltip:AddLine(description, nil, nil, nil, true);
+		GameTooltip:AddLine(description, nil, nil, nil, false);
 		GameTooltip:Show();
 	end);
 
