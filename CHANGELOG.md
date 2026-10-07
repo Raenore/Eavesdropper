@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.7.0] - 2026-10-xx  
 Feature update adding early support for World of Warcraft: Forever with a matching look for its Settings, and a Mentions window that reopens after you log in.  
-Preview on: TBD
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mxb2cait3s2k) | [Twitter](https://x.com/Raenore/status/2107680902641836086)
 
 ### Added
 - Added **early support for Forever**, including its first and last character names ([#203](https://github.com/Raenore/Eavesdropper/pull/203)).
