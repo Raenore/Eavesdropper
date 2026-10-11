@@ -413,6 +413,8 @@ UnitPopups.MenuEntries = {
 	PLAYER = { "OpenEavesdropperOn", "EavesdropGroup" },
 	RAID = { "OpenEavesdropperOn", "EavesdropGroup" },
 	RAID_PLAYER = { "OpenEavesdropperOn", "EavesdropGroup" },
+	RECENT_ALLY = { "OpenEavesdropperOn", "EavesdropGroup" },
+	RECENT_ALLY_OFFLINE = { "OpenEavesdropperOn", "EavesdropGroup" },
 	SELF = { "OpenEavesdropperOn", "EavesdropGroup", "ToggleMentions", "CopyName" },
 };
 
