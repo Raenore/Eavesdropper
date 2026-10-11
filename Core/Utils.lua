@@ -80,6 +80,16 @@ function Utils.StringContains(text, substring)
 	return StringContains(text, substring);
 end
 
+---Utils.StringStartsWith Returns true if text begins with prefix as a literal (non-pattern) match.
+---Uses the native string.startswith where it exists (Forever, 12.1.5+).
+---@param text string
+---@param prefix string
+---@return boolean
+function Utils.StringStartsWith(text, prefix)
+	if string.startswith then return string.startswith(text, prefix); end
+	return string.sub(text, 1, #prefix) == prefix;
+end
+
 ---NormalizeColors Ensures all color codes are properly closed
 ---@param message string
 ---@return string
