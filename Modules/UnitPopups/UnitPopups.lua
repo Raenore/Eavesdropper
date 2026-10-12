@@ -402,17 +402,19 @@ UnitPopups.MenuElementFactories = {
 };
 
 UnitPopups.MenuEntries = {
-	BN_FRIEND = { "OpenBattleNetProfile", "BattleNetEavesdropGroup", "BattleNetCopyName" },
-	CHAT_ROSTER = { "OpenEavesdropperOn", "EavesdropGroup" },
-	COMMUNITIES_GUILD_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
-	COMMUNITIES_MEMBER = { "OpenBattleNetProfile", "BattleNetEavesdropGroup", "BattleNetCopyName" },
-	COMMUNITIES_WOW_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
-	FRIEND = { "OpenEavesdropperOn", "EavesdropGroup", "ToggleMentions", "CopyName" },
-	FRIEND_OFFLINE = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- BN_FRIEND = { "OpenBattleNetProfile", "BattleNetEavesdropGroup", "BattleNetCopyName" },
+	-- CHAT_ROSTER = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- COMMUNITIES_GUILD_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- COMMUNITIES_MEMBER = { "OpenBattleNetProfile", "BattleNetEavesdropGroup", "BattleNetCopyName" },
+	-- COMMUNITIES_WOW_MEMBER = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- FRIEND = { "OpenEavesdropperOn", "EavesdropGroup", "ToggleMentions", "CopyName" },
+	-- FRIEND_OFFLINE = { "OpenEavesdropperOn", "EavesdropGroup" },
 	PARTY = { "OpenEavesdropperOn", "EavesdropGroup" },
 	PLAYER = { "OpenEavesdropperOn", "EavesdropGroup" },
 	RAID = { "OpenEavesdropperOn", "EavesdropGroup" },
 	RAID_PLAYER = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- RECENT_ALLY = { "OpenEavesdropperOn", "EavesdropGroup" },
+	-- RECENT_ALLY_OFFLINE = { "OpenEavesdropperOn", "EavesdropGroup" },
 	SELF = { "OpenEavesdropperOn", "EavesdropGroup", "ToggleMentions", "CopyName" },
 };
 
