@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.  
 
-## [0.7.0] - 2026-10-xx  
+## [0.7.0] - 2026-10-13  
 Feature update adding early support for World of Warcraft: Forever with a matching look for its Settings, and a Mentions window that reopens after you log in.  
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mxb2cait3s2k) | [Twitter](https://x.com/Raenore/status/2107680902641836086)
 
