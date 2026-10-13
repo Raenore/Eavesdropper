@@ -52,6 +52,9 @@ function Localization:RegisterNewLocale(code, name, content) -- luacheck: no unu
 	if type(content) ~= "table" then content = {}; end
 
 	self.locales[code] = content;
+
+	-- Selected here too so file-scope lookups see the final locale
+	self:SetCurrentLocale(self:GetPreferredLocale(), true);
 end
 
 ---Set the active locale
@@ -71,17 +74,13 @@ function Localization:GetDefaultLocale()
 	return DEFAULT_LOCALE_CODE;
 end
 
----Get the preferred locale, optionally overridden by GAME_LOCALE
+---Get the preferred locale: GAME_LOCALE override, else the client locale, else enUS
 ---@return string
 function Localization:GetPreferredLocale()
-	-- GAME_LOCALE takes explicit priority
-	if GAME_LOCALE ~= nil and self.locales[GAME_LOCALE] then
-		return GAME_LOCALE;
-	end
-
-	-- Fall back to current, then default
-	if self.currentLocaleCode and self.locales[self.currentLocaleCode] then
-		return self.currentLocaleCode;
+	-- GAME_LOCALE is an opt-in override (e.g. AddonLocale), nil on a normal client
+	local clientLocale = GAME_LOCALE or GetLocale();
+	if self.locales[clientLocale] then
+		return clientLocale;
 	end
 	return DEFAULT_LOCALE_CODE;
 end
