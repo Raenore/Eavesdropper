@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.  
 
+## [0.7.1] - 2026-10-13  
+Maintenance update fixing the French and Russian translations not loading.  
+
+### Fixed
+- Fixed the **French** and **Russian** translations not loading, so Eavesdropper shows in your game's language again ([#217](https://github.com/Raenore/Eavesdropper/pull/217)).  
+  - More languages are welcome, see [GitHub](https://github.com/Raenore/Eavesdropper).  
+
 ## [0.7.0] - 2026-10-13  
 Feature update adding early support for World of Warcraft: Forever with a matching look for its Settings, and a Mentions window that reopens after you log in.  
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mxb2cait3s2k) | [Twitter](https://x.com/Raenore/status/2107680902641836086)
@@ -103,7 +110,8 @@ Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3mtsebvkduk2y) |
 ## Full Changelog  
 The complete changelog, including older versions, can always be found on [Eavesdropper's GitHub Wiki](https://github.com/Raenore/Eavesdropper/wiki/Full-Changelog).  
 
-[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.7.0...HEAD
+[unreleased]: https://github.com/Raenore/Eavesdropper/compare/0.7.1...HEAD
+[0.7.1]: https://github.com/Raenore/Eavesdropper/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/Raenore/Eavesdropper/compare/0.6.2...0.7.0
 [0.6.2]: https://github.com/Raenore/Eavesdropper/compare/0.6.1...0.6.2
 [0.6.1]: https://github.com/Raenore/Eavesdropper/compare/0.6.0...0.6.1
