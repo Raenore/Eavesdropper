@@ -406,13 +406,13 @@ L = {
 	POPUP_NEW_PROFILE = "Nenne das neue Profil.|nEnter zum Bestätigen.",
 
 	-- Message Prefixes (keep them shorthand)
-	MSG_PREFIX_PARTY = "G",
-	MSG_PREFIX_RAID = "S",
+	MSG_PREFIX_PARTY = "P",
+	MSG_PREFIX_RAID = "R",
 	MSG_PREFIX_INSTANCE = "I",
 	MSG_PREFIX_OFFICER = "O",
 	MSG_PREFIX_GUILD = "G",
-	MSG_PREFIX_CHANNEL = "K",
-	MSG_PREFIX_RAID_WARNING = "SW",
+	MSG_PREFIX_CHANNEL = "C",
+	MSG_PREFIX_RAID_WARNING = "RW",
 	MSG_PREFIX_WHISPER_FROM = "W Von",
 	MSG_PREFIX_WHISPER_TO = "W An",
 
