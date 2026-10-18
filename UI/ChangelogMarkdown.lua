@@ -6,6 +6,12 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Added a **Sync with Party/Raid** option to Group Windows, which keeps a window filled with everyone in your group, with an optional **Auto-Remove Members** setting ([#NNN](https://github.com/Raenore/Eavesdropper/pull/NNN)).
+- Added a **Create Sync Group** shortcut (or `/ed sync`) to start a synced window in one step ([#NNN](https://github.com/Raenore/Eavesdropper/pull/NNN)).
+
 ## [0.7.1] - 2026-10-13
 Maintenance update fixing the French and Russian translations not loading.
 
