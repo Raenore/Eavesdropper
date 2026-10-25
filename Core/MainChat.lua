@@ -53,8 +53,6 @@ end
 function MainChat:HandleChecks(chatFrame, event, message, sender, ...) -- luacheck: no unused (chatFrame)
 	if not message or not canaccessvalue(message) then return; end
 
-	ED.AdvancedFormatter:DisableNameFormatting(event);
-
 	if event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_SYSTEM" then
 		local handled, newMessage, newSender = ED.AdvancedFormatter:HandleChecks(chatFrame, event, message, sender, ...);
 		if handled ~= nil then return handled, newMessage, newSender, ...; end
