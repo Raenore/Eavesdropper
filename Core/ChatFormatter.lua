@@ -348,6 +348,34 @@ local function ReplaceNameHyperlink(msgText, linkId, replacement)
 	end
 end
 
+---True if position is inside a hyperlink (each link has one |H and two |h).
+---@param msgText string
+---@param position number
+---@return boolean
+local function IsInsideHyperlink(msgText, position)
+	local before = msgText:sub(1, position - 1);
+	local _, opened = before:gsub("|H", "");
+	local _, closed = before:gsub("|h", "");
+	return closed < opened * 2;
+end
+
+---Replaces the first occurrence of name outside any hyperlink, so another addon's link is never nested.
+---@param msgText string
+---@param name string
+---@param replacement string
+---@return string? newText
+local function ReplacePlainOccurrence(msgText, name, replacement)
+	local searchFrom = 1;
+	while true do
+		local s, e = msgText:find(name, searchFrom, true);
+		if not s then return; end
+		if not IsInsideHyperlink(msgText, s) then
+			return msgText:sub(1, s - 1) .. (msgText:sub(s):gsub(ED.Utils.EscapePattern(name), replacement, 1));
+		end
+		searchFrom = e + 1;
+	end
+end
+
 ---Replaces rawName, preferring hyperlinks so refreshes can update them.
 ---@param msgText string
 ---@param rawName string
@@ -362,12 +390,9 @@ local function SubstituteNameOccurrence(msgText, rawName, replacement)
 		return newText;
 	end
 
-	local count;
-	newText, count = msgText:gsub(ED.Utils.EscapePattern(rawName), replacement, 1);
-	if count == 0 and bareName then
-		newText = newText:gsub(ED.Utils.EscapePattern(bareName), replacement, 1);
-	end
-	return newText;
+	return ReplacePlainOccurrence(msgText, rawName, replacement)
+		or (bareName and ReplacePlainOccurrence(msgText, bareName, replacement))
+		or msgText;
 end
 
 ---Updates the emote target's name in msgText to match current display settings, RP or OOC.
