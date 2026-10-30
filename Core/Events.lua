@@ -73,13 +73,13 @@ local function QueueRosterRefresh()
 
 	C_Timer.After(0.5, function()
 		rosterRefreshPending = false;
+		ED.PlayerCache:BackfillFromGroupRoster();
 		ED.GroupFrame:SyncWithGroup();
 	end);
 end
 
 ---Fired when group composition changes.
 function Events:GROUP_ROSTER_UPDATE()
-	ED.PlayerCache:BackfillFromGroupRoster();
 	QueueRosterRefresh();
 end
 
