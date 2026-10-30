@@ -1,7 +1,7 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
-exclude: ^(Libs/TaintLess/.*|Locales/(frFR|ruRU)\.lua)$
+exclude: ^(Libs/TaintLess/.*|Locales/(deDE|frFR|ruRU)\.lua)$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -4,6 +4,7 @@
 ## Author: Raenore (Argent Dawn EU)
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\Eavesdropper\Resources\SmallLogo32
+## Notes-deDE: Zeigt ein Hauptfenster für dein Ziel, den Mauszeiger oder den Fokus, zusätzlich zu getrennten, Gruppen- und Erwähnungsfenstern, Schlüsselwort-Hervorhebungen und einer erweiterten RP-Namensformatierung.
 ## Notes-frFR: Affiche une fenêtre principale (cible, survol ou focus), ainsi que des fenêtres de suivi individuel, de groupe et de mentions, des mots-clés en surbrillance, et une mise en forme avancée des noms RP.
 ## OptionalDeps: Chattery, DialogueUI, ElvUI, EmoteScribe, EmoteSplitter, tRP3_RPNameInQuests, totalRP3, MyRolePlay, XRP, Yapper
 ## SavedVariables: EavesdropperDB
@@ -47,6 +48,7 @@ Init.lua
 ## Locales
 Locales\Localization.lua
 Locales\enUS.lua
+Locales\deDE.lua
 Locales\frFR.lua
 Locales\ruRU.lua
 
