@@ -576,7 +576,7 @@ function Eavesdropper_SharedFrameMixin:OnHyperlinkClick(link, text, button)
 		ED.UnitPopups:SetHyperlinkOrigin(true);
 	end
 
-	SetItemRef(link, text, button, DEFAULT_CHAT_FRAME);
+	SetItemRef(link, text, button, nil);
 
 	if ED.UnitPopups then
 		ED.UnitPopups:SetHyperlinkOrigin(false);
