@@ -22,6 +22,7 @@ Events:RegisterEvent("PLAYER_FOCUS_CHANGED");
 Events:RegisterEvent("PLAYER_TARGET_CHANGED");
 Events:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
 Events:RegisterEvent("GROUP_ROSTER_UPDATE");
+Events:RegisterEvent("PLAYER_ENTERING_WORLD");
 Events:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 
 ---Fired when combat begins (regen disabled). Handles frame visibility if HideInCombat is set.
@@ -63,9 +64,33 @@ function Events:UPDATE_MOUSEOVER_UNIT()
 	ED.Magnifier:StartUpdateCheck();
 end
 
+local rosterRefreshPending = false;
+
+---GROUP_ROSTER_UPDATE fires in bursts, so the work is debounced.
+local function QueueRosterRefresh()
+	if rosterRefreshPending then return; end
+	rosterRefreshPending = true;
+
+	C_Timer.After(0.5, function()
+		rosterRefreshPending = false;
+		ED.GroupFrame:SyncWithGroup();
+	end);
+end
+
 ---Fired when group composition changes.
 function Events:GROUP_ROSTER_UPDATE()
 	ED.PlayerCache:BackfillFromGroupRoster();
+	QueueRosterRefresh();
+end
+
+---First sync after a /reload (no GROUP_ROSTER_UPDATE) or when leaving an instance group.
+---Initial login waits, as the roster is still empty.
+function Events:PLAYER_ENTERING_WORLD(_, isInitialLogin)
+	if isInitialLogin then
+		C_Timer.After(3, QueueRosterRefresh);
+		return;
+	end
+	QueueRosterRefresh();
 end
 
 ---Guild/communities panel re-fires this repeatedly while open, so it's debounced and only

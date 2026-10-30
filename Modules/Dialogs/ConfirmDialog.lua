@@ -32,7 +32,8 @@ StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"] = {
 ---@param onAccept function Callback invoked when the player clicks ACCEPT or presses Enter.
 ---@param onCancel function Callback invoked when the player clicks CANCEL or presses Escape.
 function ConfirmDialog.Show(message, onAccept, onCancel)
-	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].text = message;
+	-- StaticPopup formats the text, so a literal % needs escaping.
+	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].text = (message:gsub("%%", "%%%%"));
 	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onAccept = onAccept;
 	StaticPopupDialogs["EAVESDROPPER_CONFIRM_DIALOG"].onCancel = onCancel;
 	local dialog = StaticPopup_Show("EAVESDROPPER_CONFIRM_DIALOG");

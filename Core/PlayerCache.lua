@@ -306,6 +306,41 @@ local function ResolveUnitSenderGuid(unit, ownName)
 	return sender, guid;
 end
 
+---Current group members. Raid tokens include the player, party tokens don't, so includePlayer
+---adds you once and skips the raid token that resolves to you.
+---@param partyCategory number? LE_PARTY_CATEGORY_*. Nil picks the instance group when in one.
+---@param includePlayer boolean? Also return the player.
+---@return {sender:string, guid:string?}[]
+function PlayerCache:GetGroupRosterUnits(partyCategory, includePlayer)
+	local units = {};
+	local ownName = Utils.GetUnitName();
+
+	local ownSender;
+	if includePlayer then
+		local ownGuid;
+		ownSender, ownGuid = ResolveUnitSenderGuid("player", ownName);
+		if ownSender then
+			units[1] = { sender = ownSender, guid = ownGuid };
+		end
+	end
+
+	local isRaid = IsInRaid(partyCategory);
+	local groupPrefix = isRaid and "raid" or "party";
+	local numUnits = GetNumGroupMembers(partyCategory);
+	if not isRaid then
+		numUnits = numUnits - 1;
+	end
+
+	for i = 1, numUnits do
+		local sender, guid = ResolveUnitSenderGuid(groupPrefix .. i, ownName);
+		if sender and sender ~= ownSender then
+			units[#units + 1] = { sender = sender, guid = guid };
+		end
+	end
+
+	return units;
+end
+
 ---Covers emote targets that were never cached from chat activity but are still visible in-world.
 ---@return {sender:string, guid:string?}[]
 local function GetLiveTargetUnits()
@@ -319,12 +354,8 @@ local function GetLiveTargetUnits()
 		end
 	end
 
-	local groupPrefix = IsInRaid() and "raid" or "party";
-	for i = 1, GetNumGroupMembers() do
-		local sender, guid = ResolveUnitSenderGuid(groupPrefix .. i, ownName);
-		if sender then
-			units[#units + 1] = { sender = sender, guid = guid };
-		end
+	for _, unitData in ipairs(PlayerCache:GetGroupRosterUnits()) do
+		units[#units + 1] = unitData;
 	end
 
 	return units;
