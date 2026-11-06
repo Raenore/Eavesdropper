@@ -37,10 +37,11 @@ end
 ---@param guid string?
 ---@param forceDisplayMode number?
 ---@param lineID number?
+---@param isRenderedLine boolean? Message is a finished chat line (Chattynator), so the emote sender is not parsed from it.
 ---@return EavesdropperChatEntry? entry Nil for a non-roll CHAT_MSG_SYSTEM message.
 ---@return string? name
 ---@return boolean? applyRPName
-function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, forceDisplayMode, lineID)
+function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, forceDisplayMode, lineID, isRenderedLine)
 	local msgSender = sender;
 
 	if event == "CHAT_MSG_SYSTEM" then
@@ -63,7 +64,7 @@ function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, fo
 		end
 		if not msgSender then return; end
 		event = "ROLL";
-	elseif event == "CHAT_MSG_TEXT_EMOTE" then
+	elseif event == "CHAT_MSG_TEXT_EMOTE" and not isRenderedLine then
 		msgSender = ED.ChatHistory:HandleTextEmote(sender, message, true);
 	end
 
