@@ -38,7 +38,9 @@ local function OnStart()
 			tooltip = ED.Globals.addon_title,
 			tooltipSub = L.ADDON_TOOLTIP_HELP,
 			onClick = function(_, _, button)
-				if button == "LeftButton" then
+				if IsShiftKeyDown() and button == "LeftButton" then
+					ED.Frame:SetShown(not ED.Frame:IsShown());
+				elseif button == "LeftButton" then
 					ED.Settings.ToggleSettings();
 				elseif button == "RightButton" then
 					ED.Settings.OpenSettings(L.PROFILES_TITLE);
