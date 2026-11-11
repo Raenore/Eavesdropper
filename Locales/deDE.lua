@@ -204,7 +204,7 @@ L = {
 	NEW_WINDOWS_NEW_INDICATOR_HELP = "Zeigt eine visuelle Warnung an einem Fenster an, das eine neue Nachricht erhält.|n|n- Der Indikator verschwindet automatisch nach 10 Sekunden oder sofort beim Hovern über dem Fenster.",
 
 	JUMP_TO_CONTEXT = "Zum Kontext springen",
-	JUMP_TO_CONTEXT_HELP = "Fügt am Anfang jeder Nachricht ein kleines klickbares Symbol |TInterface\AddOns\Eavesdropper\Resources\Jump.png:0:0:0:1:32:32:0:32:0:32:204:204:204|t hinzu, das das Dedicated-Fenster des Absenders öffnet oder fokussiert und genau auf diese Zeile scrollt.|n|n|cnWARNING_FONT_COLOR:Hinweis: Dafür müssen geteilte Fenster aktiviert sein.|r",
+	JUMP_TO_CONTEXT_HELP = "Fügt am Anfang jeder Nachricht ein kleines klickbares Symbol |TInterface\\AddOns\\Eavesdropper\\Resources\\Jump.png:0:0:0:1:32:32:0:32:0:32:204:204:204|t hinzu, das das Dedicated-Fenster des Absenders öffnet oder fokussiert und genau auf diese Zeile scrollt.|n|n|cnWARNING_FONT_COLOR:Hinweis: Dafür müssen geteilte Fenster aktiviert sein.|r",
 	JUMP_TO_CONTEXT_TOOLTIP = "|cnGREEN_FONT_COLOR:Klick: Zu dieser Nachricht im Dedicated-Fenster von %s springen|r",
 
 	GROUP_WINDOWS = "Gruppenfenster",
