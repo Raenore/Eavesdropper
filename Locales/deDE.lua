@@ -4,7 +4,7 @@
 local title = C_AddOns.GetAddOnMetadata("Eavesdropper", "Title");
 local L;
 
----@class ED.Locale.deDE
+---@type ED.Locale.enUS
 L = {
 	WELCOMEMSG_VERSION = "Hört mit Profil |cnGREEN_FONT_COLOR:%s|r (|cnGOLD_FONT_COLOR:%s|r) zu!",
 	WELCOMEMSG_SETTINGS = "|cnGREEN_FONT_COLOR:/ed|r %s & |cnGREEN_FONT_COLOR:/ed help|r %s",
