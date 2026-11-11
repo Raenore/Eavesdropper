@@ -110,7 +110,7 @@ L = {
 	NAME_DISPLAY_MODE_FOLLOW_PROFILE = "Profil-Einstellung folgen",
 
 	USE_RP_NAME_COLOR = "Namensfarben",
-	USE_RP_NAME_COLOR_HELP = "Färbt Namen nach ihren individuellen RP-Einstellungen (z. B. aus TRP3).|n|n- Wenn keine RP-Farbe erkannt wird, fällt Eavesdropper auf die Standard- Klassenfarbe von Blizzard zurück.",
+	USE_RP_NAME_COLOR_HELP = "Färbt Namen nach ihren individuellen RP-Einstellungen (z. B. aus TRP3).|n|n- Wenn keine RP-Farbe erkannt wird, fällt Eavesdropper auf die Standard-Klassenfarbe von Blizzard zurück.",
 
 	USE_RP_NAME_IN_ROLLS = "Würfelnamen formatieren",
 	USE_RP_NAME_IN_ROLLS_HELP = "Legt fest, ob zufällige Würfelergebnisse (/roll) den RP-Namen oder den ursprünglichen Ingame-Namen eines Charakters verwenden.",
