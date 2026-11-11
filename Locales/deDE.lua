@@ -1,5 +1,6 @@
 -- Copyright The Eavesdropper Authors
 -- SPDX-License-Identifier: GPL-3.0-or-later
+-- Translator Zwixx
 
 local title = C_AddOns.GetAddOnMetadata("Eavesdropper", "Title");
 local L;
