@@ -310,8 +310,9 @@ function MSP.TryGetMSPData(playerName, playerGUID, forceInvalidate)
 
 	-- If we have (non-default profile) TRP data available we can avoid a full profile lookup.
 	if trp3Ready and AddOn_TotalRP3 and playerGUID then
-		local player = AddOn_TotalRP3.Player.static.CreateFromGUID(playerGUID);
-		if player then
+		-- CreateFromGUID asserts on a GUID the client can't resolve to a name yet.
+		local ok, player = pcall(AddOn_TotalRP3.Player.static.CreateFromGUID, playerGUID);
+		if ok and player then
 			local profileID = player:GetProfileID();
 			local hasNonDefaultProfile = profileID and TRP3_API.profile.isDefaultProfile(profileID) == false;
 

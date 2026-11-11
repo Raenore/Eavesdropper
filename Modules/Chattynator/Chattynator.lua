@@ -38,7 +38,7 @@ local function ApplyAdvancedFormatting(data)
 	-- Chattynator only exposes a name here, never a GUID.
 	local sender = typeInfo.player and typeInfo.player.name;
 	local displayMode = ED.AdvancedFormatter:ResolveMainChatDisplayMode();
-	local entry, name, applyRPName = ED.AdvancedFormatter:BuildFormattingEntry(event, data.text, sender, nil, displayMode);
+	local entry, name, applyRPName = ED.AdvancedFormatter:BuildFormattingEntry(event, data.text, sender, nil, displayMode, nil, true);
 	if not entry then return; end
 
 	if entry.e == "CHAT_MSG_TEXT_EMOTE" then
