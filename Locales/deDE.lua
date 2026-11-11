@@ -422,6 +422,4 @@ L = {
 	MSG_VERB_WHISPER = "flüstert",
 };
 
----@class ED.L : ED.Locale.deDE, ED.Localization
-ED.Localization = ED.LocalizationClass:New(L);
 ED.Localization:RegisterNewLocale("deDE", "German", L);
