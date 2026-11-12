@@ -14,7 +14,7 @@ local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0");
 ---Handles minimap/compartment button clicks.
 ---@param self table
 ---@param button string
-local function OnClick(self, button) -- luacheck: no unused (self)
+function Minimap.OnClick(self, button) -- luacheck: no unused (self)
 	if not IsShiftKeyDown() then
 		if button == "LeftButton" then
 			ED.Settings.ToggleSettings();
@@ -46,7 +46,7 @@ function Minimap.SetupMinimapButtons()
 		type = "launcher",
 		icon = ED.Globals.addon_icon_texture,
 		tocname = ED.Globals.addon_title,
-		OnClick = OnClick,
+		OnClick = Minimap.OnClick,
 		OnTooltipShow = OnTooltipShow,
 	});
 
