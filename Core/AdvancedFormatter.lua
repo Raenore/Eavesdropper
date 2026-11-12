@@ -45,18 +45,19 @@ function AdvancedFormatter:BuildFormattingEntry(event, message, sender, guid, fo
 	local msgSender = sender;
 
 	if event == "CHAT_MSG_SYSTEM" then
-		-- A prior refresh may have hyperlinked the roller's identity; recover it from there instead
-		-- of the display text, which could now be an RP name rather than their real character name.
+		-- Only rolls are reformatted. Other system lines (e.g. "has come online") can carry player links too.
+		if not ED.Utils.GetRollData(message) then return; end
+
+		-- A refreshed roll is hyperlinked; the link holds the real name, the display text may be an RP name.
 		local linkedSender = message:match("|Hplayer:(.-)|h");
 		if linkedSender then
 			msgSender = linkedSender;
 		else
-			-- Prefer the original line an RP-name addon may have already rewritten.
+			-- Original text from before an RP-name addon's filter rewrote it.
 			message = ED.ChatHandler:GetPendingRollMessage(lineID) or message;
 			msgSender = ED.Utils.GetRollData(message);
 			if msgSender then
-				-- Rolls carry no GUID from Blizzard, but a roll from another player is only ever
-				-- visible while grouped with them, so the roster can resolve their full identity.
+				-- Rolls carry no GUID, but are only visible while grouped, so the roster can resolve it.
 				local resolvedSender, rollGuid = ED.PlayerCache:ResolveLiveUnitByName(msgSender);
 				msgSender = resolvedSender or msgSender;
 				guid = guid or rollGuid;
