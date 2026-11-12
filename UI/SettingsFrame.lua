@@ -1679,6 +1679,13 @@ end
 function Settings.Init()
 	local frame = CreateFrame("Frame", "Eavesdropper_Settings", UIParent, "Eavesdropper_SettingsMenuTemplate");
 	ED.SettingsFrame = frame;
+
+	---Adjust CloseButton size
+	if ED.Utils.GetFlavor() == "Forever" then
+		frame.CloseButton:SetSize(22, 22);
+		local offset = 3;
+		frame.CloseButton:SetHitRectInsets(-offset, -offset, -offset, -offset);
+	end
 end
 
 ED.Settings = Settings;
