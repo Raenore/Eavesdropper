@@ -37,11 +37,12 @@ function UnitPopups:Init()
 end
 
 function UnitPopups:OnMenuOpen(owner, rootDescription, contextData)
-	local dedicatedOrGroup = ED.Database:GetGlobalSetting("DedicatedWindows") or ED.Database:GetGlobalSetting("GroupWindows");
+	local dedicated = ED.Database:GetGlobalSetting("DedicatedWindows") and ED.Database:GetGlobalSetting("DedicatedWindowsUnitPopups");
+	local group = ED.Database:GetGlobalSetting("GroupWindows") and ED.Database:GetGlobalSetting("GroupWindowsUnitPopups");
 	local mentions = ED.Database:GetGlobalSetting("MentionsHistory") and ED.Database:GetGlobalSetting("MentionsHistoryUnitPopups");
 
-	if not dedicatedOrGroup and not mentions then
-		return; -- Every feature that could populate this menu is disabled.
+	if not dedicated and not group and not mentions then
+		return; -- Every menu entry is disabled, so skip the header too.
 	elseif not owner or owner:IsForbidden() then
 		return; -- Invalid or forbidden owner.
 	end
