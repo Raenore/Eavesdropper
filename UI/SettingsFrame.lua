@@ -567,6 +567,18 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "checkbox",
+			label = L.HIDE_WHEN_OOC,
+			tooltip = L.HIDE_WHEN_OOC_HELP,
+			buildAdded = "0.8.0|120105,16001",
+			disabled = function() return not ED.MSP.IsEnabled(); end,
+			get = function() return ED.Database:GetSetting("HideWhenOOC"); end,
+			set = function(val)
+				ED.Database:SetSetting("HideWhenOOC", val);
+				Eavesdropper_SharedFrameMixin.ApplyOOCHidden(val and ED.MSP.IsOOC());
+			end,
+		},
+		{
+			type = "checkbox",
 			label = L.HIDE_WHEN_EMPTY,
 			tooltip = L.HIDE_WHEN_EMPTY_HELP,
 			get = function() return ED.Database:GetSetting("HideWhenEmpty"); end,

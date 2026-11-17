@@ -99,7 +99,7 @@ end
 
 ---OnHide for Dedicated and Group instance frames.
 function Eavesdropper_SharedFrameMixin:OnHideInstanceFrame()
-	if not UIParent:IsShown() or self.isCombatHidden then return; end
+	if not UIParent:IsShown() or self.isCombatHidden or self.isOOCHidden then return; end
 
 	self:StopChatTicker();
 	self:OnHideCommon();
@@ -362,6 +362,17 @@ function Eavesdropper_SharedFrameMixin.ApplyCombatHidden(combatHidden)
 	Eavesdropper_SharedFrameMixin.ForEachManagedFrame(function(frame, family)
 		if family ~= "main" then
 			frame.isCombatHidden = combatHidden;
+		end
+		frame:HandleVisibility();
+	end);
+end
+
+---Same as ApplyCombatHidden, for HideWhenOOC.
+---@param oocHidden boolean
+function Eavesdropper_SharedFrameMixin.ApplyOOCHidden(oocHidden)
+	Eavesdropper_SharedFrameMixin.ForEachManagedFrame(function(frame, family)
+		if family ~= "main" then
+			frame.isOOCHidden = oocHidden;
 		end
 		frame:HandleVisibility();
 	end);
@@ -831,10 +842,19 @@ function Eavesdropper_SharedFrameMixin:RestoreLayout()
 	end
 end
 
----Hide in combat when the setting is on; otherwise show the frame.
+---Hide in combat or while OOC when those settings are on; otherwise show the frame.
 ---Overridden by Eavesdropper_FrameMixin for HideWhenEmpty and WindowVisible logic.
+---Sets isOOCHidden itself, since AddFrame calls this on a new frame before ApplyOOCHidden runs.
 function Eavesdropper_SharedFrameMixin:HandleVisibility()
+	local oocHide = ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC();
+	self.isOOCHidden = oocHide;
+
 	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then
+		self:Hide();
+		return;
+	end
+
+	if oocHide then
 		self:Hide();
 		return;
 	end

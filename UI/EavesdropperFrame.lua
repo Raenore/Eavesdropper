@@ -177,6 +177,11 @@ function Eavesdropper_FrameMixin:HandleVisibility()
 		return;
 	end
 
+	if ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC() then
+		self:Hide();
+		return;
+	end
+
 	local shouldShow = true;
 
 	if ED.Database:GetSetting("HideWhenEmpty") then

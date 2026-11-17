@@ -247,6 +247,16 @@ function MSP.IsEnabled()
 	return msp ~= nil;
 end
 
+---Returns true if the player's MSP status (FC) is OOC. Always false without MSP.
+---@return boolean
+function MSP.IsOOC()
+	return msp ~= nil and msp.my ~= nil and msp.my.FC == "1";
+end
+
+local function RefreshOOCHidden()
+	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(ED.Database:GetSetting("HideWhenOOC") and MSP.IsOOC());
+end
+
 ---Returns true if TRP3 has finished loading and its API is safe to call.
 ---@return boolean
 function MSP.IsTRPReady()
@@ -263,6 +273,7 @@ function MSP.SetTRPReady()
 
 	if not ED.Globals.initialized then return; end
 
+	RefreshOOCHidden();
 	ED.Keywords:ParseList();
 	ED.QuestText.RefreshPlayerPreferredName();
 	ED.NPCDialogue.RefreshPlayerPreferredName();
@@ -384,6 +395,14 @@ function MSP.Init()
 	if not MSP.IsEnabled() then return; end
 
 	table.insert(msp.callback["updated"], function(senderID, field)
+		-- FC is not a cached field, so it is handled before the relevance filter.
+		if field == "FC" then
+			if ED.Globals.player_sender_name == senderID then
+				RefreshOOCHidden();
+			end
+			return;
+		end
+
 		if not Constants.MSP_RELEVANT_FIELDS[field] then return; end
 
 		-- Other players: drop their entry only; a refresh here would fire on every event.
