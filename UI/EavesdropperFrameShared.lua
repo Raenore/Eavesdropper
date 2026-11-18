@@ -852,7 +852,7 @@ end
 ---Overridden by Eavesdropper_FrameMixin for HideWhenEmpty and WindowVisible logic.
 ---Sets isOOCHidden itself, since AddFrame calls this on a new frame before ApplyOOCHidden runs.
 function Eavesdropper_SharedFrameMixin:HandleVisibility()
-	local oocHide = ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC();
+	local oocHide = Eavesdropper_SharedFrameMixin.ShouldHideOOC();
 	self.isOOCHidden = oocHide;
 
 	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then

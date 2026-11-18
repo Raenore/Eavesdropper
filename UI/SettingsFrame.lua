@@ -574,7 +574,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			get = function() return ED.Database:GetSetting("HideWhenOOC"); end,
 			set = function(val)
 				ED.Database:SetSetting("HideWhenOOC", val);
-				Eavesdropper_SharedFrameMixin.ApplyOOCHidden(val and ED.MSP.IsOOC());
+				Eavesdropper_SharedFrameMixin.ApplyOOCHidden(Eavesdropper_SharedFrameMixin.ShouldHideOOC());
 			end,
 		},
 		{
@@ -1560,7 +1560,7 @@ end
 
 function Eavesdropper_SettingsMixin:OnShow()
 	ED.Frame.settingsOpened = true;
-	ED.Frame:HandleVisibility();
+	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(Eavesdropper_SharedFrameMixin.ShouldHideOOC());
 	ED.ElvUI.SkinRegisteredElements();
 	local tabToShow = lastSelectedTab or 1;
 	self:SetTab(tabToShow);
@@ -1569,7 +1569,7 @@ end
 
 function Eavesdropper_SettingsMixin:OnHide()
 	ED.Frame.settingsOpened = false;
-	ED.Frame:HandleVisibility();
+	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(Eavesdropper_SharedFrameMixin.ShouldHideOOC());
 
 	if self.alphaChannelMode and self.SetAlphaChannelMode then
 		ED.ScreenshotHelper.SetAlphaChannelMode(nil);

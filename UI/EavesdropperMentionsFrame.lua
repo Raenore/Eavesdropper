@@ -197,7 +197,7 @@ function Eavesdropper_Mentions_FrameMixin:HandleVisibility()
 
 	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then
 		self:Hide();
-	elseif ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC() then
+	elseif Eavesdropper_SharedFrameMixin.ShouldHideOOC() then
 		self:Hide();
 	else
 		self:Show();

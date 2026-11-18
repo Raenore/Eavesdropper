@@ -254,7 +254,7 @@ function MSP.IsOOC()
 end
 
 local function RefreshOOCHidden()
-	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(ED.Database:GetSetting("HideWhenOOC") and MSP.IsOOC());
+	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(Eavesdropper_SharedFrameMixin.ShouldHideOOC());
 end
 
 ---Returns true if TRP3 has finished loading and its API is safe to call.
