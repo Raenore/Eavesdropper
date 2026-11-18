@@ -367,6 +367,12 @@ function Eavesdropper_SharedFrameMixin.ApplyCombatHidden(combatHidden)
 	end);
 end
 
+---True when HideWhenOOC applies. Suspended while Settings is open.
+---@return boolean
+function Eavesdropper_SharedFrameMixin.ShouldHideOOC()
+	return ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC() and not (ED.Frame and ED.Frame.settingsOpened);
+end
+
 ---Same as ApplyCombatHidden, for HideWhenOOC.
 ---@param oocHidden boolean
 function Eavesdropper_SharedFrameMixin.ApplyOOCHidden(oocHidden)

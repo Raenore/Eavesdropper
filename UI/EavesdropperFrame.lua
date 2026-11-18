@@ -177,7 +177,7 @@ function Eavesdropper_FrameMixin:HandleVisibility()
 		return;
 	end
 
-	if ED.Database:GetSetting("HideWhenOOC") and ED.MSP.IsOOC() then
+	if Eavesdropper_SharedFrameMixin.ShouldHideOOC() then
 		self:Hide();
 		return;
 	end
