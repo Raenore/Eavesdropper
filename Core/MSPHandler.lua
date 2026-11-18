@@ -253,7 +253,17 @@ function MSP.IsOOC()
 	return msp ~= nil and msp.my ~= nil and msp.my.FC == "1";
 end
 
+---OOC state at the last refresh.
+local wasOOC = false;
+
+---Leaving OOC reopens a main window closed with the X.
 local function RefreshOOCHidden()
+	local isOOC = MSP.IsOOC();
+	if wasOOC and not isOOC and ED.Database:GetSetting("HideWhenOOC") then
+		ED.Database:SetCharSetting("WindowVisible", true);
+	end
+	wasOOC = isOOC;
+
 	Eavesdropper_SharedFrameMixin.ApplyOOCHidden(Eavesdropper_SharedFrameMixin.ShouldHideOOC());
 end
 
@@ -393,6 +403,8 @@ local pendingRefresh;
 ---Registers the MSP field-update callback and wires up keyword/name refresh on change.
 function MSP.Init()
 	if not MSP.IsEnabled() then return; end
+
+	wasOOC = MSP.IsOOC();
 
 	table.insert(msp.callback["updated"], function(senderID, field)
 		-- FC is not a cached field, so it is handled before the relevance filter.
