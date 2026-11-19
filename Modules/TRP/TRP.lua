@@ -38,11 +38,7 @@ local function OnStart()
 			tooltip = ED.Globals.addon_title,
 			tooltipSub = L.ADDON_TOOLTIP_HELP,
 			onClick = function(_, _, button)
-				if button == "LeftButton" then
-					ED.Settings.ToggleSettings();
-				elseif button == "RightButton" then
-					ED.Settings.OpenSettings(L.PROFILES_TITLE);
-				end
+				ED.Minimap.OnClick(nil, button);
 			end,
 		};
 	end);
