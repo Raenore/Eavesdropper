@@ -136,10 +136,19 @@ end
 
 ---Init Registers Blizzard chat events to be filtered
 function ChatHandler:Init()
-	for _, evt in ipairs(Constants.CHAT_EVENTS_ALL) do
-		ChatFrameUtil.AddMessageEventFilter(evt, function(...)
-			return self:ChatFrameFilter(...);
-		end);
+	local function RegisterFilters()
+		for _, evt in ipairs(Constants.CHAT_EVENTS_ALL) do
+			ChatFrameUtil.AddMessageEventFilter(evt, function(...)
+				return self:ChatFrameFilter(...);
+			end);
+		end
+	end
+
+	-- Must run after TRP3's colouring filter, whose login order against ours differs per flavor.
+	if C_AddOns.IsAddOnLoaded("totalRP3") and not ED.MSP.IsTRPReady() then
+		TRP3_API.RegisterCallback(TRP3_Addon, TRP3_Addon.Events.WORKFLOW_ON_LOADED, RegisterFilters);
+	else
+		RegisterFilters();
 	end
 
 	ED.MainChat:Toggle();
