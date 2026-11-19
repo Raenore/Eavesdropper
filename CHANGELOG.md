@@ -5,8 +5,21 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
-- Added a **Sync with Party/Raid** option to Group Windows, which keeps a window filled with everyone in your group, with an optional **Auto-Remove Members** setting ([#NNN](https://github.com/Raenore/Eavesdropper/pull/NNN)).
-- Added a **Create Sync Group** shortcut (or `/ed sync`) to start a synced window in one step ([#NNN](https://github.com/Raenore/Eavesdropper/pull/NNN)).
+- Added **Sync with Party/Raid** to Group Windows, which keeps a window filled with your group members as they join, with a **Create Sync Group** shortcut (or /ed sync) to start one quickly ([#238](https://github.com/Raenore/Eavesdropper/pull/238)).
+- Added an **Override Global Colors** option to Dedicated, Group and Mentions windows, so each can have its own background and title bar colors ([#237](https://github.com/Raenore/Eavesdropper/pull/237)).
+- Added a **Hide When OOC** option that hides Eavesdropper while your RP status is Out of Character ([#236](https://github.com/Raenore/Eavesdropper/pull/236)).
+- Added a **German translation**, thanks to [Zwixx](https://github.com/Zwixx) ([#219](https://github.com/Raenore/Eavesdropper/pull/219)).
+
+### Changed
+- The Settings window's close button now fits its border on Forever, thanks to [Peterodox](https://www.curseforge.com/members/peterodox/projects) ([#229](https://github.com/Raenore/Eavesdropper/pull/229)).
+
+### Fixed
+- Fixed emote and speech coloring being lost on Forever when using **Total RP 3** ([#231](https://github.com/Raenore/Eavesdropper/pull/231)).
+- The **Total RP 3** toolbar button now works the same as the minimap button ([#233](https://github.com/Raenore/Eavesdropper/pull/233)).
+- Fixed an empty Eavesdropper section appearing in the right-click menu when all its options are turned off ([#235](https://github.com/Raenore/Eavesdropper/pull/235)).
+- Fixed names in system messages, such as players coming online, being changed incorrectly ([#228](https://github.com/Raenore/Eavesdropper/pull/228)).
+- Fixed player names in emotes displaying incorrectly when using **Chattynator**, for RP names containing a hyphen ([#226](https://github.com/Raenore/Eavesdropper/pull/226)).
+- Fixed a Lua error that could appear with **Total RP 3** for some players ([#223](https://github.com/Raenore/Eavesdropper/pull/223)).
 
 ## [0.7.1] - 2026-10-13  
 Maintenance update fixing the French and Russian translations not loading.  
