@@ -102,6 +102,7 @@ local GLOBAL_IMPORT_EXCLUDED = {
 ---@field HideCloseButton boolean?
 ---@field HideInCombat boolean?
 ---@field HideWhenEmpty boolean?
+---@field HideWhenOOC boolean?
 ---@field HighlightColor EavesdropperColor?
 ---@field HighlightKeywords string?
 ---@field HighlightMessages boolean?
@@ -190,6 +191,7 @@ local DEFAULT_PROFILE = {
 	HideCloseButton = false,
 	HideInCombat = false,
 	HideWhenEmpty = false,
+	HideWhenOOC = false,
 	HighlightColor = { r = 0, g = 1, b = 0 },
 	HighlightKeywords = FLAVOR_DEFAULTS.HighlightKeywords[FLAVOR],
 	HighlightMessages = false,
@@ -669,6 +671,7 @@ end
 ---| "HideCloseButton"
 ---| "HideInCombat"
 ---| "HideWhenEmpty"
+---| "HideWhenOOC"
 ---| "HighlightColor"
 ---| "HighlightKeywords"
 ---| "HighlightMessages"

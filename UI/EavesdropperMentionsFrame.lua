@@ -122,8 +122,8 @@ function Eavesdropper_Mentions_FrameMixin:OnHide()
 	self:StopChatTicker();
 	self:OnHideCommon();
 
-	-- A combat hide is not a close. ApplyCombatHidden sets isCombatHidden before hiding.
-	if not self.isCombatHidden then
+	-- A combat or OOC hide is not a close.
+	if not self.isCombatHidden and not self.isOOCHidden then
 		self.userOpened = false;
 		ED.Database:SetCharSetting("MentionsVisible", false);
 	end
@@ -196,6 +196,8 @@ function Eavesdropper_Mentions_FrameMixin:HandleVisibility()
 	end
 
 	if ED.Database:GetSetting("HideInCombat") and ED.Utils.CombatLockdown() then
+		self:Hide();
+	elseif Eavesdropper_SharedFrameMixin.ShouldHideOOC() then
 		self:Hide();
 	else
 		self:Show();
