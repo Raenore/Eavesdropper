@@ -111,6 +111,11 @@ function Eavesdropper_Group_FrameMixin:GetProfileFontSizeKey()
 	return nil;
 end
 
+---@return string
+function Eavesdropper_Group_FrameMixin:GetAppearanceKeyPrefix()
+	return "Group";
+end
+
 -- ============================================================
 -- OnLoad / OnShow / OnHide
 -- ============================================================

@@ -76,6 +76,11 @@ function Eavesdropper_Mentions_FrameMixin:GetProfileFontSizeKey()
 	return "MentionsFontSize";
 end
 
+---@return string
+function Eavesdropper_Mentions_FrameMixin:GetAppearanceKeyPrefix()
+	return "Mentions";
+end
+
 ---Mentions additionally requires the entry's reason to match the active mention-reason filters.
 ---@param entry EavesdropperChatEntry
 ---@return boolean

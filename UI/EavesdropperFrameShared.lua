@@ -856,22 +856,27 @@ function Eavesdropper_SharedFrameMixin:ApplyWindowSettings(skipChatRefresh)
 	end
 end
 
+---Settings key prefix for this frame type's color override, or nil if it has none.
+---@return string?
+function Eavesdropper_SharedFrameMixin:GetAppearanceKeyPrefix()
+	return nil;
+end
+
 ---Apply background and title bar colors from the database
 function Eavesdropper_SharedFrameMixin:ApplyThemeColors()
+	local prefix = self:GetAppearanceKeyPrefix();
+	if not prefix or not ED.Database:GetSetting(prefix .. "AppearanceOverride") then
+		prefix = "";
+	end
+
 	local background = self.Background;
 	if background then
-		local bg = ED.Database:GetSetting("ColorBackground");
-		if type(bg) ~= "table" then
-			bg = { r = 0, g = 0, b = 0, a = 0.5 };
-		end
+		local bg = ED.Database:GetSetting(prefix .. "ColorBackground");
 		background:SetColorTexture(bg.r, bg.g, bg.b, bg.a);
 	end
 
 	if self.TitleBar and self.TitleBar.Background then
-		local tb = ED.Database:GetSetting("ColorTitleBar");
-		if type(tb) ~= "table" then
-			tb = { r = 0, g = 0, b = 0, a = 0.25 };
-		end
+		local tb = ED.Database:GetSetting(prefix .. "ColorTitleBar");
 		self.TitleBar.Background:SetColorTexture(tb.r, tb.g, tb.b, tb.a);
 	end
 end

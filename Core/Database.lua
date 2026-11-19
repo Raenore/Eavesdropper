@@ -91,6 +91,9 @@ local GLOBAL_IMPORT_EXCLUDED = {
 ---@field ColorBackground EavesdropperColor?
 ---@field ColorTitleBar EavesdropperColor?
 ---@field CompanionSupport boolean?
+---@field DedicatedAppearanceOverride boolean?
+---@field DedicatedColorBackground EavesdropperColor?
+---@field DedicatedColorTitleBar EavesdropperColor?
 ---@field EnableKeywords boolean?
 ---@field EnableMouse boolean?
 ---@field EnablePartialKeywords boolean?
@@ -99,6 +102,9 @@ local GLOBAL_IMPORT_EXCLUDED = {
 ---@field FontOutline EavesdropperFontOutline?
 ---@field FontShadow boolean?
 ---@field FontSize number?
+---@field GroupAppearanceOverride boolean?
+---@field GroupColorBackground EavesdropperColor?
+---@field GroupColorTitleBar EavesdropperColor?
 ---@field HideCloseButton boolean?
 ---@field HideInCombat boolean?
 ---@field HideWhenEmpty boolean?
@@ -109,6 +115,9 @@ local GLOBAL_IMPORT_EXCLUDED = {
 ---@field LockTitleBar boolean?
 ---@field LockWindow boolean?
 ---@field MaxHistory number?
+---@field MentionsAppearanceOverride boolean?
+---@field MentionsColorBackground EavesdropperColor?
+---@field MentionsColorTitleBar EavesdropperColor?
 ---@field MentionsEnableMouse boolean?
 ---@field MentionsFilters table<string, boolean>?
 ---@field MentionsFontSize number?
@@ -179,6 +188,9 @@ local DEFAULT_PROFILE = {
 	ColorBackground = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	ColorTitleBar = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	CompanionSupport = true,
+	DedicatedAppearanceOverride = false,
+	DedicatedColorBackground = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
+	DedicatedColorTitleBar = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	EnableKeywords = true,
 	EnableMouse = false,
 	EnablePartialKeywords = false,
@@ -187,6 +199,9 @@ local DEFAULT_PROFILE = {
 	FontOutline = Enums.CHAT_BOX.FONT_OUTLINE.NONE,
 	FontShadow = true,
 	FontSize = 12,
+	GroupAppearanceOverride = false,
+	GroupColorBackground = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
+	GroupColorTitleBar = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	HideCloseButton = false,
 	HideInCombat = false,
 	HideWhenEmpty = false,
@@ -197,6 +212,9 @@ local DEFAULT_PROFILE = {
 	LockTitleBar = false,
 	LockWindow = false,
 	MaxHistory = 50,
+	MentionsAppearanceOverride = false,
+	MentionsColorBackground = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
+	MentionsColorTitleBar = CopyTable(Constants.DEFAULT_BACKGROUND_COLOR, true),
 	MentionsEnableMouse = false,
 	MentionsFilters = CopyTable(Constants.DEFAULT_FILTERS, true),
 	MentionsFontSize = 12,
@@ -658,6 +676,9 @@ end
 ---| "ColorBackground"
 ---| "ColorTitleBar"
 ---| "CompanionSupport"
+---| "DedicatedAppearanceOverride"
+---| "DedicatedColorBackground"
+---| "DedicatedColorTitleBar"
 ---| "EnableKeywords"
 ---| "EnableMouse"
 ---| "EnablePartialKeywords"
@@ -666,6 +687,9 @@ end
 ---| "FontOutline"
 ---| "FontShadow"
 ---| "FontSize"
+---| "GroupAppearanceOverride"
+---| "GroupColorBackground"
+---| "GroupColorTitleBar"
 ---| "HideCloseButton"
 ---| "HideInCombat"
 ---| "HideWhenEmpty"
@@ -676,6 +700,9 @@ end
 ---| "LockTitleBar"
 ---| "LockWindow"
 ---| "MaxHistory"
+---| "MentionsAppearanceOverride"
+---| "MentionsColorBackground"
+---| "MentionsColorTitleBar"
 ---| "MentionsEnableMouse"
 ---| "MentionsFilters"
 ---| "MentionsFontSize"
