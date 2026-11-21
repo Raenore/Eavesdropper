@@ -3,6 +3,7 @@
 -- SPDX-License-Identifier: GPL-3.0-or-later
 
 local L = ED.Localization;
+local Constants = ED.Constants;
 
 if not Menu or not Menu.ModifyMenu then
 	return;
@@ -191,6 +192,14 @@ function UnitPopups:CreateEavesdropGroupButton(menuDescription, sender, guid)
 		return elementDescription;
 	end
 
+	if not ED.GroupFrame.syncFrame then
+		local syncButton = elementDescription:CreateButton(L.UNIT_POPUPS_CREATE_SYNC_GROUP, function()
+			ED.GroupFrame:CreateSyncFrame();
+		end);
+		ED.Utils.SetMenuTooltip(syncButton, L.UNIT_POPUPS_CREATE_SYNC_GROUP_HELP);
+		elementDescription:CreateDivider();
+	end
+
 	local function OnClick(targetFrame, hasSender)
 		ED.PlayerCache:InsertAndRetrieve(sender, guid);
 		if targetFrame and hasSender then
@@ -208,8 +217,11 @@ function UnitPopups:CreateEavesdropGroupButton(menuDescription, sender, guid)
 			local frame = _G[group.globalName];
 			if frame then
 				local buttonText = group.displayName;
+				if group.isGroupSync then
+					buttonText = Constants.GROUP_SYNC_ICON_INLINE .. buttonText;
+				end
 				if group.hasSender then
-					buttonText = "|cnGREEN_FONT_COLOR:" .. group.displayName .. "|r";
+					buttonText = "|cnGREEN_FONT_COLOR:" .. buttonText .. "|r";
 				end
 				elementDescription:CreateButton(buttonText, function() -- luacheck: no redefined
 					OnClick(frame, group.hasSender);
