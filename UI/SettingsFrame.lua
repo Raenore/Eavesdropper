@@ -462,6 +462,76 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	};
 
 	-- --------------------------------------------------------
+	-- Color option builders
+	-- --------------------------------------------------------
+
+	local COLOR_OVERRIDE_BUILD = "0.8.0|120105,16001";
+
+	local COLOR_OPTION_TEXT = {
+		ColorBackground = { label = L.THEMES_BACKGROUND_COLOR, tooltip = L.THEMES_BACKGROUND_COLOR_HELP },
+		ColorTitleBar = { label = L.THEMES_TITLEBAR_COLOR, tooltip = L.THEMES_TITLEBAR_COLOR_HELP },
+	};
+
+	local function ApplyThemeColorsToAllFrames()
+		Eavesdropper_SharedFrameMixin.ForEachManagedFrame(function(frame)
+			frame:ApplyThemeColors();
+		end);
+	end
+
+	---@param prefix string Empty for the global colors
+	---@param key "ColorBackground"|"ColorTitleBar"
+	---@param enableKey string? Global setting that enables the window type
+	local function BuildColorSwatch(prefix, key, enableKey)
+		local isGlobal = prefix == "";
+		local overrideKey = prefix .. "AppearanceOverride";
+		local text = COLOR_OPTION_TEXT[key];
+
+		return {
+			type = "colorswatch",
+			label = text.label,
+			tooltip = isGlobal and (text.tooltip .. L.THEMES_COLOR_OVERRIDE_HINT) or text.tooltip,
+			opacity = true,
+			buildAdded = not isGlobal and COLOR_OVERRIDE_BUILD or nil,
+			disabled = not isGlobal and function()
+				return not ED.Database:GetGlobalSetting(enableKey) or not ED.Database:GetSetting(overrideKey);
+			end,
+			get = function()
+				if isGlobal or ED.Database:GetSetting(overrideKey) then
+					return ED.Database:GetSetting(prefix .. key);
+				end
+				return ED.Database:GetSetting(key);
+			end,
+			set = function(val)
+				ED.Database:SetSetting(prefix .. key, val);
+				ApplyThemeColorsToAllFrames();
+			end,
+		};
+	end
+
+	---@param prefix string
+	---@param enableKey string Global setting that enables the window type
+	local function BuildColorOverrideCheckbox(prefix, enableKey)
+		local overrideKey = prefix .. "AppearanceOverride";
+
+		return {
+			type = "checkbox",
+			label = L.OVERRIDE_GLOBAL_COLORS,
+			tooltip = L.OVERRIDE_GLOBAL_COLORS_HELP,
+			buildAdded = COLOR_OVERRIDE_BUILD,
+			disabled = function() return not ED.Database:GetGlobalSetting(enableKey); end,
+			get = function() return ED.Database:GetSetting(overrideKey); end,
+			set = function(val)
+				if val then
+					ED.Database:SetSetting(prefix .. "ColorBackground", ED.Database:GetSetting("ColorBackground"));
+					ED.Database:SetSetting(prefix .. "ColorTitleBar", ED.Database:GetSetting("ColorTitleBar"));
+				end
+				ED.Database:SetSetting(overrideKey, val);
+				ApplyThemeColorsToAllFrames();
+			end,
+		};
+	end
+
+	-- --------------------------------------------------------
 	-- Appearance options
 	-- --------------------------------------------------------
 
@@ -471,74 +541,8 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			label = L.DISPLAY,
 			subLabel = L.DISPLAY_HELP,
 		},
-		{
-			type = "colorswatch",
-			label = L.THEMES_BACKGROUND_COLOR,
-			tooltip = L.THEMES_BACKGROUND_COLOR_HELP,
-			opacity = true,
-			get = function()
-				local color = ED.Database:GetSetting("ColorBackground");
-				if type(color) ~= "table" then
-					return { r = 0, g = 0, b = 0, a = 0.5 };
-				end
-				return color;
-			end,
-			set = function(val)
-				if type(val) ~= "table" then return; end
-
-				local background = ED.Frame.Background;
-				if not background then return; end
-
-				background:SetColorTexture(val.r, val.g, val.b, val.a);
-
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					local frameBg = frame.Background;
-					if not frameBg then return; end
-					frameBg:SetColorTexture(val.r, val.g, val.b, val.a);
-				end);
-
-				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.5 then
-					ED.Database:SetSetting("ColorBackground", nil);
-					return;
-				end
-
-				ED.Database:SetSetting("ColorBackground", { r = val.r, g = val.g, b = val.b, a = val.a });
-			end,
-		},
-		{
-			type = "colorswatch",
-			label = L.THEMES_TITLEBAR_COLOR,
-			tooltip = L.THEMES_TITLEBAR_COLOR_HELP,
-			opacity = true,
-			get = function()
-				local color = ED.Database:GetSetting("ColorTitleBar");
-				if type(color) ~= "table" then
-					return { r = 0, g = 0, b = 0, a = 0.25 };
-				end
-				return color;
-			end,
-			set = function(val)
-				if type(val) ~= "table" then return; end
-
-				local background = ED.Frame.TitleBar.Background;
-				if not background then return; end
-
-				background:SetColorTexture(val.r, val.g, val.b, val.a);
-
-				ED.DedicatedFrame:ForEachFrame(function(frame)
-					local frameTitleBg = frame.TitleBar.Background;
-					if not frameTitleBg then return; end
-					frameTitleBg:SetColorTexture(val.r, val.g, val.b, val.a);
-				end);
-
-				if val.r == 0 and val.g == 0 and val.b == 0 and val.a == 0.25 then
-					ED.Database:SetSetting("ColorTitleBar", nil);
-					return;
-				end
-
-				ED.Database:SetSetting("ColorTitleBar", { r = val.r, g = val.g, b = val.b, a = val.a });
-			end,
-		},
+		BuildColorSwatch("", "ColorBackground"),
+		BuildColorSwatch("", "ColorTitleBar"),
 		{
 			type = "checkbox",
 			global = true,
@@ -910,6 +914,14 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
+			label = L.DISPLAY,
+			subLabel = L.DISPLAY_HELP,
+		},
+		BuildColorOverrideCheckbox("Dedicated", "DedicatedWindows"),
+		BuildColorSwatch("Dedicated", "ColorBackground", "DedicatedWindows"),
+		BuildColorSwatch("Dedicated", "ColorTitleBar", "DedicatedWindows"),
+		{
+			type = "subtitle",
 			label = L.NOTIFICATIONS_TITLE,
 			subLabel = L.DEDICATED_NOTIFICATIONS_HELP,
 		},
@@ -1121,6 +1133,14 @@ function Eavesdropper_SettingsMixin:OnLoad()
 		},
 		{
 			type = "subtitle",
+			label = L.DISPLAY,
+			subLabel = L.DISPLAY_HELP,
+		},
+		BuildColorOverrideCheckbox("Group", "GroupWindows"),
+		BuildColorSwatch("Group", "ColorBackground", "GroupWindows"),
+		BuildColorSwatch("Group", "ColorTitleBar", "GroupWindows"),
+		{
+			type = "subtitle",
 			label = L.NOTIFICATIONS_TITLE,
 			subLabel = L.GROUP_NOTIFICATIONS_HELP,
 		},
@@ -1264,6 +1284,14 @@ function Eavesdropper_SettingsMixin:OnLoad()
 				end
 			end,
 		},
+		{
+			type = "subtitle",
+			label = L.DISPLAY,
+			subLabel = L.DISPLAY_HELP,
+		},
+		BuildColorOverrideCheckbox("Mentions", "MentionsHistory"),
+		BuildColorSwatch("Mentions", "ColorBackground", "MentionsHistory"),
+		BuildColorSwatch("Mentions", "ColorTitleBar", "MentionsHistory"),
 	};
 
 	-- --------------------------------------------------------
@@ -1445,9 +1473,9 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	self:CreateCategory(L.APPEARANCE_TITLE, true, appearanceOptions);
 	self:CreateCategory(L.ADV_FORMATTING, true, advancedFormattingOptions);
 	self:CreateCategory(L.KEYWORDS_TITLE, true, keywordsOptions);
-	self:CreateCategory(L.DEDICATED, false, dedicatedOptions);
+	self:CreateCategory(L.DEDICATED, true, dedicatedOptions);
 	self:CreateCategory(L.GROUPS, true, groupOptions);
-	self:CreateCategory(L.MENTIONS_WINDOW_TITLE, false, mentionsOptions);
+	self:CreateCategory(L.MENTIONS_WINDOW_TITLE, true, mentionsOptions);
 	self:CreateCategory(L.NOTIFICATIONS_TITLE, false, notificationsOptions);
 	self:CreateCategory(L.PROFILES_TITLE, false, profilesOptions);
 

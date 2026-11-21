@@ -77,6 +77,11 @@ function Eavesdropper_Dedicated_FrameMixin:GetProfileFontSizeKey()
 	return nil;
 end
 
+---@return string
+function Eavesdropper_Dedicated_FrameMixin:GetAppearanceKeyPrefix()
+	return "Dedicated";
+end
+
 -- ============================================================
 -- OnLoad / OnShow / OnHide
 -- ============================================================

@@ -342,6 +342,8 @@ local function CreateColorSwatch(parent, data)
 	end);
 
 	widget.Refresh = function(self)
+		self:SetEnabled(not (type(data.disabled) == "function" and data.disabled()));
+
 		local color = type(data.get) == "function" and data.get() or nil;
 		if type(color) ~= "table" then
 			color = { r = 0, g = 1, b = 0, a = 1 };

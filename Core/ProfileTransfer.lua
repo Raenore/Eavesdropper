@@ -65,9 +65,15 @@ local GLOBAL_NUMERIC_BOUNDS = {
 
 ---Profile keys holding an r/g/b(/a) colour.
 local COLOR_KEYS = {
-	ColorBackground = true,
-	ColorTitleBar   = true,
-	HighlightColor  = true,
+	ColorBackground          = true,
+	ColorTitleBar            = true,
+	DedicatedColorBackground = true,
+	DedicatedColorTitleBar   = true,
+	GroupColorBackground     = true,
+	GroupColorTitleBar       = true,
+	HighlightColor           = true,
+	MentionsColorBackground  = true,
+	MentionsColorTitleBar    = true,
 };
 
 ---Profile keys naming a LibSharedMedia entry, mapped to their media type.
