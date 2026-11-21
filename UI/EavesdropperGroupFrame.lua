@@ -46,6 +46,12 @@ GroupFrame.frames = GroupFrame.frames or {};
 ---@type EavesdropperGroupFrameInstance?
 GroupFrame.syncFrame = nil;
 
+---The open Player List menu and its title element, set by the title's initializer.
+---@type table?
+GroupFrame.playerListMenu = nil;
+---@type table?
+GroupFrame.playerListDescription = nil;
+
 ---We save a table of current session's group windows by lowercase group names.
 ---Allowing us to restore current session's overrides just in case (close & re-open, etc.)
 ---@type table<string, EavesdropperGroupSessionState>
@@ -740,6 +746,13 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 		menu:SetScrollMode(maxScrollExtent);
 	end
 
+	-- The title's initializer stores the live menu for RefreshPlayerListMenu.
+	local titleEntry = menu:CreateTitle(L.PLAYER_LIST .. " " .. MAIN_MENU);
+	titleEntry:AddInitializer(function(_, description, menuProxy)
+		GroupFrame.playerListMenu = menuProxy;
+		GroupFrame.playerListDescription = description;
+	end);
+
 	-- Leading action row, like "Profile Management" has to add current target to tracked players.
 	local canAddTarget = UnitExists("target") and UnitIsPlayer("target");
 	local targetSender, targetGUID;
@@ -868,6 +881,14 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 				end
 			end);
 		end);
+	end
+end
+
+---Refreshes the checkbox states of an open Player List menu. New rows only appear on reopen.
+function GroupFrame:RefreshPlayerListMenu()
+	local menu = self.playerListMenu;
+	if menu and menu:IsShown() then
+		menu:SendResponse(self.playerListDescription, MenuResponse.Refresh);
 	end
 end
 
@@ -1143,6 +1164,10 @@ function GroupFrame:SyncWithGroup()
 	local changed = frame:UpdatePlayers(toAdd, toRemove);
 	if not changed and (newGroup or promoted or #toRemove > 0) then
 		self:SaveToCharDB();
+	end
+
+	if changed then
+		self:RefreshPlayerListMenu();
 	end
 end
 

@@ -133,7 +133,6 @@ function Config.ShowConfigMenu(frame, mode)
 		if mode == "group" then
 			local playerList = rootDescription:CreateButton(L.PLAYER_LIST);
 			ED.Utils.SetMenuTooltip(playerList, L.PLAYER_LIST_HELP);
-			playerList:CreateTitle(L.PLAYER_LIST .. " " .. MAIN_MENU);
 			ED.GroupFrame:GeneratePlayerListMenu(frame, playerList);
 		end
 
