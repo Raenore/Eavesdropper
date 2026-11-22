@@ -17,6 +17,7 @@ L = {
 	SLASH_COMMAND_ED_SETTINGS = "Toggle Settings",
 	SLASH_COMMAND_ED_HELP = "Available Commands",
 	SLASH_COMMAND_ED_MENTIONS = "Toggle Mentions",
+	SLASH_COMMAND_ED_SYNC = "Create Sync Group",
 
 	BINDING_NAME_ED_TOGGLE = "Toggle Eavesdropper",
 	BINDING_NAME_ED_SETTINGS = "Toggle Settings",
@@ -218,6 +219,15 @@ L = {
 	GROUP_HISTORY_SIZE = "History Size",
 	GROUP_HISTORY_SIZE_HELP = "Set the maximum number of history messages Eavesdropper displays for each Group Window, merged across every tracked player.|n|n|cnWARNING_FONT_COLOR:Note: High values on a Group Window tracking many players may cause temporary frame drops when refreshing the history window.|r",
 
+	GROUP_SYNC = "Sync with Party/Raid",
+	GROUP_SYNC_HELP = "Fills this window with everyone in your |cnGREEN_FONT_COLOR:party or raid|r, including you, as they join. Only one window can be synced at a time.|n|n- Joining a new group resets the synced members.|n- Closing the window ends syncing.|n|n|cnWARNING_FONT_COLOR:Note: Dungeon Finder, Raid Finder and battleground groups are ignored.|r",
+	GROUP_SYNC_OPTIONS = "Sync Options",
+	GROUP_SYNC_AUTO_REMOVE = "Auto-Remove Members",
+	GROUP_SYNC_AUTO_REMOVE_HELP = "Removes players from this window when they leave your group.|n|n- If you have scrolled up, removals wait until you return to the bottom.|n- Players who were never in your group are never removed.|n|n|cnWARNING_FONT_COLOR:Note: Only applies while |cnGREEN_FONT_COLOR:Sync with Party/Raid|r|cnWARNING_FONT_COLOR: is enabled.|r",
+	GROUP_SYNC_DEFAULT_NAME = "Current Group",
+	GROUP_SYNC_UNAVAILABLE = "%s is already synced. Turn sync off there first.",
+	GROUP_SYNC_WINDOWS_DISABLED = "|cnGREEN_FONT_COLOR:Group Windows|r are disabled. Enable them in %s to use |cnGREEN_FONT_COLOR:/ed sync|r.",
+
 	GROUP_OPTIONS = "Group Options",
 	GROUP_RENAME = "Change Group Name",
 
@@ -227,6 +237,7 @@ L = {
 	PLAYER_LIST_ADD_TARGET_HELP = "Add your current target to this group.|n|n|cnWARNING_FONT_COLOR:Note: Disabled if you have no target, your target isn't a player, or they're already in this group.|r",
 	PLAYER_LIST_EMPTY = "No players tracked",
 	PLAYER_LIST_ROW_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r",
+	PLAYER_LIST_ROW_SYNCED_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n- Synced from your |cnGREEN_FONT_COLOR:party or raid|r.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r",
 	PLAYER_LIST_OPEN_DEDICATED = "Open Dedicated Window",
 	PLAYER_LIST_OPEN_DEDICATED_HELP = "Open a Dedicated Window for this player.|n|n|cnWARNING_FONT_COLOR:Note: Does not do anything if this player already has a Dedicated Window.|r",
 
@@ -402,6 +413,8 @@ L = {
 	UNIT_POPUPS_EAVESDROP_GROUP = "Eavesdrop Group",
 	UNIT_POPUPS_EAVESDROP_GROUP_HELP = "Assign the current target to a specific Group Window or remove them from one.|n|n|cnWARNING_FONT_COLOR:Note: |cnGREEN_FONT_COLOR:Green group names|r indicate that the target is already a member of that group.|r",
 	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Create New",
+	UNIT_POPUPS_CREATE_SYNC_GROUP = "Create Sync Group",
+	UNIT_POPUPS_CREATE_SYNC_GROUP_HELP = "Creates a Group Window synced with your current party or raid.",
 	UNIT_POPUPS_TOGGLE_MENTIONS_HELP = "Toggle the Mentions window, which lists every message that was aimed at you.|n|n- Catches keyword hits and emotes directed at you, even ones you missed in the moment.",
 
 	POPUP_EAVESDROP_GROUP = "Eavesdropper Group name.|nEnter to confirm.",

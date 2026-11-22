@@ -20,6 +20,9 @@ local GroupFrame = {};
 ---@field lockTitleBar boolean?
 ---@field hideCloseButton boolean?
 ---@field fontSize number?
+---@field groupSync boolean? Only stored on the synced window
+---@field managed table<string, boolean>? Players synced from the group (only these are reset or removed)
+---@field excluded table<string, boolean>? Players unchecked while synced, until a new group
 
 ---@class EavesdropperGroupSessionState
 ---@field name string Display name of the group window
@@ -38,6 +41,16 @@ local GroupFrame = {};
 ---Held by group name (case-sensitive), which HasFrameWithName checks lowercase (non-sensitive).
 ---@type table<string, EavesdropperGroupFrameInstance>
 GroupFrame.frames = GroupFrame.frames or {};
+
+---The live synced window, if any. Also present in frames.
+---@type EavesdropperGroupFrameInstance?
+GroupFrame.syncFrame = nil;
+
+---The open Player List menu and its title element, set by the title's initializer.
+---@type table?
+GroupFrame.playerListMenu = nil;
+---@type table?
+GroupFrame.playerListDescription = nil;
 
 ---We save a table of current session's group windows by lowercase group names.
 ---Allowing us to restore current session's overrides just in case (close & re-open, etc.)
@@ -167,11 +180,25 @@ end
 ---Remove self from the GroupFrame manager on hide and update saved data.
 ---Saves to sessionState so we can re-use it in the same session still (if using same group name).
 function Eavesdropper_Group_FrameMixin:OnUnregisterFrame()
+	if self == GroupFrame.syncFrame then
+		GroupFrame.syncFrame = nil;
+	end
+
 	if self.displayName then
+		-- Queued auto-removals are left out, so the restore prompt skips players who left.
+		local pending = ED.Database:GetGlobalSetting("GroupWindowsSyncAutoRemove") and self.pendingRemovals or {};
+		local players = {};
+		for _, player in ipairs(self.players) do
+			if not pending[player] then
+				players[#players + 1] = player;
+			end
+		end
+
+		-- No sync fields, so a restore is never synced.
 		local entry = {
 			name = self.displayName,
 			nameDisplayMode = self.nameDisplayMode,
-			players = CopyTable(self.players, true),
+			players = players,
 		};
 		self:FillSavedStateFields(entry);
 		GroupFrame.sessionState[self.displayName:lower()] = entry;
@@ -218,10 +245,16 @@ function Eavesdropper_Group_FrameMixin:UpdateTitleBar(newName)
 		self.displayName = newName;
 	end
 
-	if self.displayName == self.titlebar_name then return; end
+	-- The icon is display-only, so displayName never includes it.
+	local text = self.displayName;
+	if self.isGroupSync then
+		text = Constants.GROUP_SYNC_ICON_INLINE .. text;
+	end
 
-	self.titlebar_name = self.displayName;
-	self.TitleBar.TitleButton.Text:SetText(self.titlebar_name);
+	if text == self.titlebar_name then return; end
+
+	self.titlebar_name = text;
+	self.TitleBar.TitleButton.Text:SetText(text);
 	self:ResizeTitleButton();
 end
 
@@ -493,23 +526,36 @@ function GroupFrame:SaveToCharDB()
 
 	for _, frame in pairs(self.frames) do
 		if frame and frame.displayName and frame.players and #frame.players > 0 then
-			local entry = {
-				name = frame.displayName,
-				players = CopyTable(frame.players, true),
-			};
-
-			---Only persist nameDisplayMode when it differs from the profile default.
-			if frame.nameDisplayMode and frame.nameDisplayMode ~= profileMode then
-				entry.nameDisplayMode = frame.nameDisplayMode;
-			end
-
-			frame:FillSavedStateFields(entry);
-
-			saved[#saved + 1] = entry;
+			saved[#saved + 1] = self:BuildSavedEntry(frame, profileMode);
 		end
 	end
 
 	EavesdropperCharDB.groupFrames = saved;
+end
+
+---Builds the CharDB entry for one group frame.
+---@param frame EavesdropperGroupFrameInstance
+---@param profileMode number? Profile NameDisplayMode (a matching frame override isn't stored).
+---@return EavesdropperSavedGroupFrame
+function GroupFrame:BuildSavedEntry(frame, profileMode)
+	local entry = {
+		name = frame.displayName,
+		players = CopyTable(frame.players, true),
+	};
+
+	if frame.nameDisplayMode and frame.nameDisplayMode ~= profileMode then
+		entry.nameDisplayMode = frame.nameDisplayMode;
+	end
+
+	frame:FillSavedStateFields(entry);
+
+	if frame.isGroupSync then
+		entry.groupSync = true;
+		entry.managed = CopyTable(frame.syncManaged, true);
+		entry.excluded = CopyTable(frame.syncExcluded, true);
+	end
+
+	return entry;
 end
 
 ---Restore group frames from the character saved variables.
@@ -522,12 +568,38 @@ function GroupFrame:RestoreFromCharDB()
 	for _, entry in ipairs(saved) do
 		if entry.name and entry.players and #entry.players > 0 then
 			-- Pass entry explicitly: CreateNamedFrame's own lookup reads the live CharDB table.
-			self:CreateNamedFrame(entry.name, nil, entry.players, entry);
+			local frame = self:CreateNamedFrame(entry.name, nil, entry.players, entry);
+
+			-- Restored directly, not via SetGroupSync. The first sync comes from the roster events.
+			if frame and entry.groupSync and not self.syncFrame then
+				frame.isGroupSync = true;
+				frame.syncManaged = CopyTable(entry.managed or {}, true);
+				frame.syncExcluded = CopyTable(entry.excluded or {}, true);
+				self.syncFrame = frame;
+				frame:UpdateTitleBar();
+			end
 		end
 	end
 
 	-- Save once more now that every frame's layout is settled.
 	self:SaveToCharDB();
+end
+
+---Creates and syncs a Group Window named L.GROUP_SYNC_DEFAULT_NAME, with a "(2)" suffix when taken.
+---Callers check that no synced window exists, as SetGroupSync refuses.
+function GroupFrame:CreateSyncFrame()
+	local baseName = L.GROUP_SYNC_DEFAULT_NAME;
+	local name = baseName;
+	local suffix = 2;
+	while self:HasFrameWithName(name) do
+		name = baseName .. " (" .. suffix .. ")";
+		suffix = suffix + 1;
+	end
+
+	local frame = self:CreateNamedFrame(name);
+	if frame then
+		frame:SetGroupSync(true);
+	end
 end
 
 ---Look up group name's saved CharDB entry, case-insensitively, used to restore a window reopened mid-session
@@ -563,6 +635,7 @@ end
 ---@param playerList string[]? Full player list for restore; takes precedence over sender
 ---@param savedEntry EavesdropperSavedGroupFrame? Pass explicitly from RestoreFromCharDB's pass.
 ---@param forceFresh boolean? Skip all entry lookups, even a match. Used on a declined restore.
+---@return EavesdropperGroupFrameInstance? frame Nil when the name is empty or already taken.
 function GroupFrame:CreateNamedFrame(displayName, sender, playerList, savedEntry, forceFresh)
 	if not displayName or displayName == "" then return; end
 	if self:HasFrameWithName(displayName) then return; end
@@ -616,6 +689,7 @@ function GroupFrame:CreateNamedFrame(displayName, sender, playerList, savedEntry
 
 	self.frames[displayName] = frame;
 	self:SaveToCharDB();
+	return frame;
 end
 
 -- ============================================================
@@ -627,6 +701,7 @@ end
 ---@field globalName string Stable _G key e.g. "Eavesdropper_Group_Frame_1"
 ---@field players string[] All tracked senders in this frame
 ---@field hasSender boolean True if the queried sender is already in this frame
+---@field isGroupSync boolean True for the synced window
 
 ---Returns a sorted snapshot of all active group frames.
 ---hasSender is true for any frame that already tracks the given sender.
@@ -643,6 +718,7 @@ function GroupFrame:GetGroupWindows(sender)
 				globalName = frame:GetName(),
 				players = frame.players,
 				hasSender = sender ~= nil and frame:HasPlayer(sender) or false,
+				isGroupSync = frame.isGroupSync or false,
 			};
 		end
 	end
@@ -669,6 +745,16 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 		local maxScrollExtent = optionHeight * maxLines;
 		menu:SetScrollMode(maxScrollExtent);
 	end
+
+	-- The title's initializer stores the live menu for RefreshPlayerListMenu.
+	local titleEntry = menu:CreateTitle(L.PLAYER_LIST .. " " .. MAIN_MENU);
+	titleEntry:AddInitializer(function(_, description, menuProxy)
+		GroupFrame.playerListMenu = menuProxy;
+		GroupFrame.playerListDescription = description;
+		menuProxy:SetClosedCallback(function()
+			GroupFrame.playerListMenu = nil;
+		end);
+	end);
 
 	-- Leading action row, like "Profile Management" has to add current target to tracked players.
 	local canAddTarget = UnitExists("target") and UnitIsPlayer("target");
@@ -727,10 +813,18 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 	local dedicatedWindowsEnabled = ED.Database:GetGlobalSetting("DedicatedWindows");
 
 	for _, row in ipairs(frame.playerListCache) do
+		-- Built here, not in playerListCache, as syncManaged can change without the list.
+		local label = row.label;
+		local tooltipText = L.PLAYER_LIST_ROW_HELP;
+		if frame.syncManaged and frame.syncManaged[row.player] then
+			label = Constants.GROUP_SYNC_ICON_INLINE .. label;
+			tooltipText = L.PLAYER_LIST_ROW_SYNCED_HELP;
+		end
+
 		-- Unchecking removes the player, re-checking re-adds them; CreateCheckbox stays open on
 		-- click, so an accidental removal is undone just by checking the box again.
 		local rowCheckbox = menu:CreateCheckbox(
-			row.label,
+			label,
 			function() return frame:HasPlayer(row.player); end,
 			function()
 				if frame:HasPlayer(row.player) then
@@ -741,7 +835,7 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 				end
 			end
 		);
-		ED.Utils.SetMenuTooltip(rowCheckbox, L.PLAYER_LIST_ROW_HELP);
+		ED.Utils.SetMenuTooltip(rowCheckbox, tooltipText);
 
 		rowCheckbox:AddInitializer(function(button)
 			local dedicatedButton = MenuTemplates.AttachAutoHideCancelButton(button);
@@ -793,6 +887,14 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 	end
 end
 
+---Refreshes the checkbox states of an open Player List menu. New rows only appear on reopen.
+function GroupFrame:RefreshPlayerListMenu()
+	local menu = self.playerListMenu;
+	if menu and menu:IsShown() then
+		menu:SendResponse(self.playerListDescription, MenuResponse.Refresh);
+	end
+end
+
 -- ============================================================
 -- Mixin: player list management
 -- ============================================================
@@ -812,10 +914,18 @@ function Eavesdropper_Group_FrameMixin:AddPlayer(sender)
 		if existing == sender then return; end
 	end
 	self.players[#self.players + 1] = sender;
+	if self.isGroupSync then
+		self.syncExcluded[sender] = nil;
+	end
 	self.playerListDirty = true;
 	self:RefreshEmptyState();
 	self:RefreshChat();
 	GroupFrame:SaveToCharDB();
+
+	if self.isGroupSync then
+		-- Promotes a group member added by hand right away.
+		GroupFrame:SyncWithGroup();
+	end
 end
 
 ---Remove a sender from this frame's player list
@@ -824,12 +934,82 @@ function Eavesdropper_Group_FrameMixin:RemovePlayer(sender)
 	for i, existing in ipairs(self.players) do
 		if existing == sender then
 			table.remove(self.players, i);
+			if self.isGroupSync then
+				-- Excluded even if added by hand, or the next sync re-adds them.
+				self.syncExcluded[sender] = true;
+			end
 			self.playerListDirty = true;
 			self:RefreshEmptyState();
 			self:RefreshChat();
 			GroupFrame:SaveToCharDB();
 			return;
 		end
+	end
+end
+
+---Adds and removes several senders with one rebuild and save. Keeps the scroll when scrolled up.
+---@param toAdd string[]? Senders not yet in the list.
+---@param toRemove string[]?
+---@return boolean changed False when nothing changed (and nothing is saved).
+function Eavesdropper_Group_FrameMixin:UpdatePlayers(toAdd, toRemove)
+	local changed = false;
+
+	if toRemove and #toRemove > 0 then
+		local removeSet = {};
+		for _, sender in ipairs(toRemove) do
+			removeSet[sender] = true;
+		end
+
+		for i = #self.players, 1, -1 do
+			if removeSet[self.players[i]] then
+				table.remove(self.players, i);
+				changed = true;
+			end
+		end
+	end
+
+	if toAdd then
+		for _, sender in ipairs(toAdd) do
+			self.players[#self.players + 1] = sender;
+			changed = true;
+		end
+	end
+
+	if not changed then return false; end
+
+	self.playerListDirty = true;
+	self:RefreshEmptyState();
+	-- RefreshChat(true) redraws the stale cache, so rebuild directly.
+	self:RebuildMergedHistory(ED.Database:GetGlobalSetting("GroupHistorySize"), self.ChatBox:GetScrollOffset() ~= 0);
+	GroupFrame:SaveToCharDB();
+	return true;
+end
+
+---Applies the removals queued while scrolled up, or discards them if auto-remove was turned off
+---since (an instance group pauses the sync that would clear them).
+function Eavesdropper_Group_FrameMixin:FlushPendingRemovals()
+	local pending = self.pendingRemovals;
+	self.pendingRemovals = nil;
+	if not ED.Database:GetGlobalSetting("GroupWindowsSyncAutoRemove") then return; end
+
+	local toRemove = {};
+	for sender in pairs(pending) do
+		toRemove[#toRemove + 1] = sender;
+		self.syncManaged[sender] = nil;
+	end
+
+	if not self:UpdatePlayers(nil, toRemove) then
+		GroupFrame:SaveToCharDB(); -- Still saves, as syncManaged changed.
+	end
+end
+
+---Flushes queued removals once back at the bottom. Skipped during RedrawChat, where Clear()
+---briefly reports offset 0.
+function Eavesdropper_Group_FrameMixin:OnChatboxRefresh()
+	Eavesdropper_SharedFrameMixin.OnChatboxRefresh(self);
+
+	if self.pendingRemovals and not self.refreshing and self.ChatBox:GetScrollOffset() == 0 then
+		self:FlushPendingRemovals();
 	end
 end
 
@@ -841,6 +1021,157 @@ function Eavesdropper_Group_FrameMixin:HasPlayer(sender)
 		if player == sender then return true; end
 	end
 	return false;
+end
+
+-- ============================================================
+-- Sync with party/raid
+-- ============================================================
+
+---Whether the last sync saw a home group. nil until the first sync after login or enabling.
+---@type boolean?
+local wasInHomeGroup;
+
+---Makes this the synced window, or ends syncing on it. Members stay either way.
+---Refused while another window is synced.
+---@param enabled boolean
+function Eavesdropper_Group_FrameMixin:SetGroupSync(enabled)
+	if enabled then
+		if GroupFrame.syncFrame then return; end
+
+		self.isGroupSync = true;
+		self.syncManaged = {};
+		self.syncExcluded = {};
+		GroupFrame.syncFrame = self;
+		wasInHomeGroup = nil; -- So the first sync runs the new-group check.
+
+		-- Added even solo, so the window is never empty.
+		local ownSender = ED.Utils.GetUnitName();
+		if not self:HasPlayer(ownSender) then
+			self.syncManaged[ownSender] = true;
+			self:UpdatePlayers({ ownSender });
+		end
+
+		self:UpdateTitleBar();
+		GroupFrame:SyncWithGroup();
+	else
+		if not self.isGroupSync then return; end
+
+		self.isGroupSync = nil;
+		self.syncManaged = nil;
+		self.syncExcluded = nil;
+		self.pendingRemovals = nil;
+		GroupFrame.syncFrame = nil;
+
+		self:UpdateTitleBar();
+	end
+
+	GroupFrame:SaveToCharDB();
+end
+
+---Brings the synced window's player list in line with the home group.
+function GroupFrame:SyncWithGroup()
+	local frame = self.syncFrame;
+	if not frame then return; end
+
+	-- Paused in an instance group, as the party/raid tokens point at it.
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then return; end
+
+	-- An invite counts as a group with only you in it.
+	local inGroup = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) >= 2;
+	local previouslyInGroup = wasInHomeGroup;
+	wasInHomeGroup = inGroup;
+
+	local players, managed, excluded = frame.players, frame.syncManaged, frame.syncExcluded;
+	local ownSender = ED.Utils.GetUnitName();
+
+	-- Solo, the roster is empty, so auto-remove leaves only you.
+	local roster = inGroup and ED.PlayerCache:GetGroupRosterUnits(LE_PARTY_CATEGORY_HOME, true) or {};
+	local rosterSet = { [ownSender] = true };
+	for _, unit in ipairs(roster) do
+		rosterSet[unit.sender] = true;
+	end
+
+	-- No previous state (login, enable): a saved list sharing no one but you with the roster is an old group.
+	local newGroup = false;
+	if inGroup then
+		if previouslyInGroup == nil then
+			newGroup = true;
+			for sender in pairs(managed) do
+				if sender ~= ownSender and rosterSet[sender] then
+					newGroup = false;
+					break;
+				end
+			end
+		else
+			newGroup = not previouslyInGroup;
+		end
+	end
+
+	local toRemove = {};
+	if newGroup then
+		for sender in pairs(managed) do
+			if not rosterSet[sender] then
+				toRemove[#toRemove + 1] = sender;
+				managed[sender] = nil;
+			end
+		end
+		wipe(excluded);
+	end
+
+	local playerSet = {};
+	for _, player in ipairs(players) do
+		playerSet[player] = true;
+	end
+
+	-- You are always managed, even if added by hand first.
+	local promoted = false;
+	if playerSet[ownSender] and not managed[ownSender] then
+		managed[ownSender] = true;
+		promoted = true;
+	end
+
+	-- Group members added by hand are managed too, since being in the group is what makes them synced.
+	local toAdd = {};
+	for _, unit in ipairs(roster) do
+		local sender = unit.sender;
+		if not excluded[sender] then
+			if not playerSet[sender] then
+				ED.PlayerCache:InsertAndRetrieve(sender, unit.guid);
+				toAdd[#toAdd + 1] = sender;
+				managed[sender] = true;
+			elseif not managed[sender] then
+				managed[sender] = true;
+				promoted = true;
+			end
+		end
+	end
+
+	-- Removals are queued while scrolled up. The queue is rebuilt each sync, so rejoiners drop out of it.
+	frame.pendingRemovals = nil;
+	if ED.Database:GetGlobalSetting("GroupWindowsSyncAutoRemove") and not newGroup then
+		local atBottom = frame.ChatBox:GetScrollOffset() == 0;
+		for sender in pairs(managed) do
+			if not rosterSet[sender] then
+				if atBottom then
+					toRemove[#toRemove + 1] = sender;
+					managed[sender] = nil;
+				else
+					frame.pendingRemovals = frame.pendingRemovals or {};
+					frame.pendingRemovals[sender] = true;
+				end
+			end
+		end
+	end
+
+	-- Saves even when only managed or excluded changed.
+	local changed = frame:UpdatePlayers(toAdd, toRemove);
+	if not changed and (newGroup or promoted or #toRemove > 0) then
+		self:SaveToCharDB();
+	end
+
+	if changed then
+		self:RefreshPlayerListMenu();
+	end
 end
 
 ED.GroupFrame = GroupFrame;

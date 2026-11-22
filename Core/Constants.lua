@@ -490,6 +490,10 @@ Constants.JUMP_TO_CONTEXT_ICON_INLINE = "|TInterface\\AddOns\\Eavesdropper\\Reso
 ---@type string
 Constants.JUMP_TO_CONTEXT_ICON_TOOLTIP = "|TInterface\\AddOns\\Eavesdropper\\Resources\\Jump.png:0:0:0:1:32:32:0:32:0:32:204:204:204|t";
 
+---Inline Sync icon marking the synced Group Window and its synced members.
+---@type string
+Constants.GROUP_SYNC_ICON_INLINE = "|TInterface\\AddOns\\Eavesdropper\\Resources\\Sync.png:0|t ";
+
 ---MSP integration constants.
 ---@class EavesdropperMSPConstants
 ---@field CACHE_RESET_TIME number

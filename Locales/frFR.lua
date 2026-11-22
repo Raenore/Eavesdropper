@@ -18,6 +18,7 @@ L = {
 	SLASH_COMMAND_ED_SETTINGS = "Afficher/Masquer les options",
 	SLASH_COMMAND_ED_HELP = "Liste des commandes",
 	SLASH_COMMAND_ED_MENTIONS = "Afficher/Masquer les mentions",
+	SLASH_COMMAND_ED_SYNC = "Create Sync Group", -- (NEW)
 
 	BINDING_NAME_ED_TOGGLE = "Afficher/Masquer Eavesdropper",
 	BINDING_NAME_ED_SETTINGS = "Afficher/Masquer les options",
@@ -217,6 +218,15 @@ L = {
 	GROUP_HISTORY_SIZE = "Taille de l'historique",
 	GROUP_HISTORY_SIZE_HELP = "Définit le nombre maximum de messages affichés dans l'historique pour chaque fenêtre de groupe, tous joueurs suivis confondus.|n|n|cnWARNING_FONT_COLOR:Note : une valeur élevée sur une fenêtre regroupant de nombreux joueurs peut engendrer une baisse temporaire des images par seconde lors de l'actualisation de l'historique.|r",
 
+	GROUP_SYNC = "Sync with Party/Raid", -- (NEW)
+	GROUP_SYNC_HELP = "Fills this window with everyone in your |cnGREEN_FONT_COLOR:party or raid|r, including you, as they join. Only one window can be synced at a time.|n|n- Joining a new group resets the synced members.|n- Closing the window ends syncing.|n|n|cnWARNING_FONT_COLOR:Note: Dungeon Finder, Raid Finder and battleground groups are ignored.|r", -- (NEW)
+	GROUP_SYNC_OPTIONS = "Sync Options", -- (NEW)
+	GROUP_SYNC_AUTO_REMOVE = "Auto-Remove Members", -- (NEW)
+	GROUP_SYNC_AUTO_REMOVE_HELP = "Removes players from this window when they leave your group.|n|n- If you have scrolled up, removals wait until you return to the bottom.|n- Players who were never in your group are never removed.|n|n|cnWARNING_FONT_COLOR:Note: Only applies while |cnGREEN_FONT_COLOR:Sync with Party/Raid|r|cnWARNING_FONT_COLOR: is enabled.|r", -- (NEW)
+	GROUP_SYNC_DEFAULT_NAME = "Current Group", -- (NEW)
+	GROUP_SYNC_UNAVAILABLE = "%s is already synced. Turn sync off there first.", -- (NEW)
+	GROUP_SYNC_WINDOWS_DISABLED = "|cnGREEN_FONT_COLOR:Group Windows|r are disabled. Enable them in %s to use |cnGREEN_FONT_COLOR:/ed sync|r.", -- (NEW)
+
 	GROUP_OPTIONS = "Options du groupe",
 	GROUP_RENAME = "Changer le nom du groupe",
 
@@ -226,6 +236,7 @@ L = {
 	PLAYER_LIST_ADD_TARGET_HELP = "Ajoute votre cible actuelle à ce groupe.|n|n|cnWARNING_FONT_COLOR:Note : indisponible en l'absence de cible, si votre cible n'est pas un joueur, ou s'il est déjà dans ce groupe.|r",
 	PLAYER_LIST_EMPTY = "Aucun joueur suivi",
 	PLAYER_LIST_ROW_HELP = "Décochez pour retirer ce joueur du groupe ; cochez à nouveau pour l'y réintégrer.|n|n|cnWARNING_FONT_COLOR:Note : cette liste s'actualise uniquement après avoir fermé puis rouvert le menu.|r",
+	PLAYER_LIST_ROW_SYNCED_HELP = "Uncheck to remove this player from the group; check again to re-add them.|n|n- Synced from your |cnGREEN_FONT_COLOR:party or raid|r.|n|n|cnWARNING_FONT_COLOR:Note: This list only refreshes once the menu is fully closed and reopened.|r", -- (NEW)
 	PLAYER_LIST_OPEN_DEDICATED = "Ouvrir une fenêtre individuelle",
 	PLAYER_LIST_OPEN_DEDICATED_HELP = "Ouvre une fenêtre de suivi individuel dédiée à ce joueur.|n|n|cnWARNING_FONT_COLOR:Note : aucun effet si ce joueur en a déjà une ouverte.|r",
 
@@ -401,6 +412,8 @@ L = {
 	UNIT_POPUPS_EAVESDROP_GROUP = "Écouter un groupe",
 	UNIT_POPUPS_EAVESDROP_GROUP_HELP = "Assigne la cible actuelle à une fenêtre de groupe spécifique ou l'en retire.|n|n|cnWARNING_FONT_COLOR:Note : |cnGREEN_FONT_COLOR:les noms de groupe en vert|r indiquent que la cible est déjà membre de ce groupe.|r",
 	UNIT_POPUPS_EAVESDROP_GROUP_NEW = "Créer un nouveau groupe",
+	UNIT_POPUPS_CREATE_SYNC_GROUP = "Create Sync Group", -- (NEW)
+	UNIT_POPUPS_CREATE_SYNC_GROUP_HELP = "Creates a Group Window synced with your current party or raid.", -- (NEW)
 	UNIT_POPUPS_TOGGLE_MENTIONS_HELP = "Affiche ou masque la fenêtre des mentions, qui répertorie l'ensemble des messages vous ciblant.|n|n- Détecte les mots-clés et les émotes qui vous sont destinés, même ceux manqués sur le moment.",
 
 	POPUP_EAVESDROP_GROUP = "Nom du groupe.|nAppuyez sur Entrée pour confirmer.",

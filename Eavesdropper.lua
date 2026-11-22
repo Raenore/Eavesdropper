@@ -19,6 +19,7 @@ function ED.ProcessCommand(msg)
 			[ED.Localization.SLASH_COMMAND_ED_HIDE] = "/ed hide",
 			[ED.Localization.SLASH_COMMAND_ED_TOGGLE] = "/ed toggle",
 			[ED.Localization.SLASH_COMMAND_ED_MENTIONS] = "/ed mentions",
+			[ED.Localization.SLASH_COMMAND_ED_SYNC] = "/ed sync",
 		});
 		return;
 	elseif subcommand == "show" then
@@ -38,6 +39,18 @@ function ED.ProcessCommand(msg)
 			ED.MentionsFrame:Hide();
 		else
 			ED.MentionsFrame:Open();
+		end
+		return;
+	elseif subcommand == "sync" then
+		if not ED.Database:GetGlobalSetting("GroupWindows") then
+			ED.Utils.Write(ED.Localization.GROUP_SYNC_WINDOWS_DISABLED:format(ED.Utils.CommandHyperlink("", ED.Localization.SLASH_COMMAND_ED_SETTINGS)));
+			return;
+		end
+
+		if ED.GroupFrame.syncFrame then
+			ED.GroupFrame.syncFrame:Raise();
+		else
+			ED.GroupFrame:CreateSyncFrame();
 		end
 		return;
 	end

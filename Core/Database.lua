@@ -36,6 +36,7 @@ local Database = {};
 ---@field GroupWindows boolean?
 ---@field GroupWindowsJumpToContext boolean?
 ---@field GroupWindowsNewIndicator boolean?
+---@field GroupWindowsSyncAutoRemove boolean?
 ---@field GroupWindowsUnitPopups boolean?
 ---@field MentionsHistory boolean?
 ---@field MentionsHistoryJumpToContext boolean?
@@ -64,6 +65,7 @@ local GLOBAL_DEFAULTS = {
 	GroupWindowsJumpToContext = true,
 	GroupWindowsNewIndicator = true,
 	GroupWindowsNPCSpeechDetectionNameShown = false,
+	GroupWindowsSyncAutoRemove = false,
 	GroupWindowsUnitPopups = true,
 	MentionsHistory = true,
 	MentionsHistoryJumpToContext = true,
@@ -865,6 +867,7 @@ end
 ---| "GroupWindowsJumpToContext"
 ---| "GroupWindowsNewIndicator"
 ---| "GroupWindowsNPCSpeechDetectionNameShown"
+---| "GroupWindowsSyncAutoRemove"
 ---| "GroupWindowsUnitPopups"
 ---| "MentionsHistory"
 ---| "MentionsHistoryJumpToContext"

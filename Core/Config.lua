@@ -133,7 +133,6 @@ function Config.ShowConfigMenu(frame, mode)
 		if mode == "group" then
 			local playerList = rootDescription:CreateButton(L.PLAYER_LIST);
 			ED.Utils.SetMenuTooltip(playerList, L.PLAYER_LIST_HELP);
-			playerList:CreateTitle(L.PLAYER_LIST .. " " .. MAIN_MENU);
 			ED.GroupFrame:GeneratePlayerListMenu(frame, playerList);
 		end
 
@@ -240,6 +239,35 @@ function Config.ShowConfigMenu(frame, mode)
 				rootDescription:CreateButton(L.GROUP_RENAME, function()
 					frame:PromptRenameFrame();
 				end);
+
+				local syncFrame = ED.GroupFrame.syncFrame;
+				local syncBlocked = syncFrame ~= nil and syncFrame ~= frame;
+
+				local groupSync = rootDescription:CreateCheckbox(
+					L.GROUP_SYNC,
+					function() return frame.isGroupSync or false; end,
+					function() frame:SetGroupSync(not frame.isGroupSync); end
+				);
+				if syncBlocked then
+					groupSync:SetEnabled(false);
+					ED.Utils.SetMenuTooltip(groupSync, L.GROUP_SYNC_UNAVAILABLE:format("|cnGREEN_FONT_COLOR:" .. syncFrame.displayName .. "|r"), L.GROUP_SYNC);
+				else
+					ED.Utils.SetMenuTooltip(groupSync, L.GROUP_SYNC_HELP, L.GROUP_SYNC);
+				end
+
+				groupSync:CreateTitle(L.GROUP_SYNC_OPTIONS);
+				local autoRemove = groupSync:CreateCheckbox(
+					L.GROUP_SYNC_AUTO_REMOVE,
+					function() return ED.Database:GetGlobalSetting("GroupWindowsSyncAutoRemove"); end,
+					function()
+						ED.Database:SetGlobalSetting("GroupWindowsSyncAutoRemove", not ED.Database:GetGlobalSetting("GroupWindowsSyncAutoRemove"));
+						-- Syncs now, so members who already left are removed.
+						ED.GroupFrame:SyncWithGroup();
+					end
+				);
+				-- A function, so toggling sync re-evaluates it.
+				autoRemove:SetEnabled(function() return frame.isGroupSync == true; end);
+				ED.Utils.SetMenuTooltip(autoRemove, L.GROUP_SYNC_AUTO_REMOVE_HELP, L.GROUP_SYNC_AUTO_REMOVE);
 			end
 
 			local frameFontSize = rootDescription:CreateButton(L.FONT_SIZE);
