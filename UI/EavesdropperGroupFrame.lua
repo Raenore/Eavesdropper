@@ -751,6 +751,9 @@ function GroupFrame:GeneratePlayerListMenu(frame, menu)
 	titleEntry:AddInitializer(function(_, description, menuProxy)
 		GroupFrame.playerListMenu = menuProxy;
 		GroupFrame.playerListDescription = description;
+		menuProxy:SetClosedCallback(function()
+			GroupFrame.playerListMenu = nil;
+		end);
 	end);
 
 	-- Leading action row, like "Profile Management" has to add current target to tracked players.
