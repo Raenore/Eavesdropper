@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.  
 
 ## [0.8.0] - 2026-11-xx  
+Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3n2wu3oj2fk2a) | [Twitter](https://x.com/Raenore/status/2124658482620309768)
 
 ### Added
 - Added **Sync with Party/Raid** to Group Windows, which keeps a window filled with your group members as they join, with a **Create Sync Group** shortcut (or /ed sync) to start one quickly ([#238](https://github.com/Raenore/Eavesdropper/pull/238)).
