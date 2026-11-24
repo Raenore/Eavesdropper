@@ -269,6 +269,16 @@ local function CreateCheckbox(parent, data)
 	return widget;
 end
 
+local function MakeColorSwatchPixelPerfect(widget)
+	local px = PixelUtil.GetNearestPixelSize(1, widget:GetEffectiveScale(), 1);
+	widget.InnerBorder:ClearAllPoints();
+	widget.InnerBorder:SetPoint("TOPLEFT", widget.Color, "TOPLEFT", -px, px);
+	widget.InnerBorder:SetPoint("BOTTOMRIGHT", widget.Color, "BOTTOMRIGHT", px, -px);
+	widget.SwatchBg:ClearAllPoints();
+	widget.SwatchBg:SetPoint("TOPLEFT", widget.InnerBorder, "TOPLEFT", -px, px);
+	widget.SwatchBg:SetPoint("BOTTOMRIGHT", widget.InnerBorder, "BOTTOMRIGHT", px, -px);
+end
+
 local function CreateColorSwatch(parent, data)
 	local _, right, label = CreateLabeledFrame(parent, data);
 
@@ -352,6 +362,9 @@ local function CreateColorSwatch(parent, data)
 	end
 
 	widget:Refresh();
+
+	widget.Color:SetSize(16, 16);
+	widget:HookScript("OnShow", MakeColorSwatchPixelPerfect);
 
 	if data.tooltip then
 		AttachTooltip(widget, data.label, data.tooltip);
