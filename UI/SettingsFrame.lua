@@ -465,7 +465,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 	-- Color option builders
 	-- --------------------------------------------------------
 
-	local COLOR_OVERRIDE_BUILD = "0.8.0|120105,16001";
+	local COLOR_OVERRIDE_BUILD = "0.8.0|120107,120105,16001";
 
 	local COLOR_OPTION_TEXT = {
 		ColorBackground = { label = L.THEMES_BACKGROUND_COLOR, tooltip = L.THEMES_BACKGROUND_COLOR_HELP },
@@ -573,7 +573,7 @@ function Eavesdropper_SettingsMixin:OnLoad()
 			type = "checkbox",
 			label = L.HIDE_WHEN_OOC,
 			tooltip = L.HIDE_WHEN_OOC_HELP,
-			buildAdded = "0.8.0|120105,16001",
+			buildAdded = "0.8.0|120107,120105,16001",
 			disabled = function() return not ED.MSP.IsEnabled(); end,
 			get = function() return ED.Database:GetSetting("HideWhenOOC"); end,
 			set = function(val)
