@@ -6,7 +6,7 @@ local changelogMarkdown = [[
 
 All notable changes to this project will be documented in this file.
 
-## [0.8.0] - 2026-11-xx
+## [0.8.0] - 2026-11-24
 Preview on: [Bluesky](https://bsky.app/profile/dawnsong.me/post/3n2wu3oj2fk2a) | [Twitter](https://x.com/Raenore/status/2124658482620309768)
 
 ### Added
