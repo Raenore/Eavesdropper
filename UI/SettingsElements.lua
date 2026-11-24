@@ -300,7 +300,7 @@ local function CreateColorSwatch(parent, data)
 				color.r,
 				color.g,
 				color.b,
-				color.a or 1
+				1
 			);
 		end
 	end
