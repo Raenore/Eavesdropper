@@ -353,7 +353,11 @@ local function CreateColorSwatch(parent, data)
 
 	widget.Refresh = function(self)
 		self:SetEnabled(not (type(data.disabled) == "function" and data.disabled()));
-
+		if self:IsEnabled() then
+			self:SetBorderColor(CreateColor(1, 1, 1));
+		else
+			self:SetBorderColor(CreateColor(0.5, 0.5, 0.5));
+		end
 		local color = type(data.get) == "function" and data.get() or nil;
 		if type(color) ~= "table" then
 			color = { r = 0, g = 1, b = 0, a = 1 };
