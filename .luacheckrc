@@ -271,6 +271,7 @@ stds.wow = {
 		PixelUtil = {
 			fields = {
 				"ConvertPixelsToUIForRegion",
+				"GetNearestPixelSize",
 				"SetPoint",
 				"SetSize",
 			},
