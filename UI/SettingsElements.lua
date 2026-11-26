@@ -269,6 +269,16 @@ local function CreateCheckbox(parent, data)
 	return widget;
 end
 
+local function MakeColorSwatchPixelPerfect(widget)
+	local px = PixelUtil.GetNearestPixelSize(1, widget:GetEffectiveScale(), 1);
+	widget.InnerBorder:ClearAllPoints();
+	widget.InnerBorder:SetPoint("TOPLEFT", widget.Color, "TOPLEFT", -px, px);
+	widget.InnerBorder:SetPoint("BOTTOMRIGHT", widget.Color, "BOTTOMRIGHT", px, -px);
+	widget.SwatchBg:ClearAllPoints();
+	widget.SwatchBg:SetPoint("TOPLEFT", widget.InnerBorder, "TOPLEFT", -px, px);
+	widget.SwatchBg:SetPoint("BOTTOMRIGHT", widget.InnerBorder, "BOTTOMRIGHT", px, -px);
+end
+
 local function CreateColorSwatch(parent, data)
 	local _, right, label = CreateLabeledFrame(parent, data);
 
@@ -290,7 +300,7 @@ local function CreateColorSwatch(parent, data)
 				color.r,
 				color.g,
 				color.b,
-				color.a or 1
+				1
 			);
 		end
 	end
@@ -343,7 +353,11 @@ local function CreateColorSwatch(parent, data)
 
 	widget.Refresh = function(self)
 		self:SetEnabled(not (type(data.disabled) == "function" and data.disabled()));
-
+		if self:IsEnabled() then
+			self:SetBorderColor(CreateColor(1, 1, 1));
+		else
+			self:SetBorderColor(CreateColor(0.5, 0.5, 0.5));
+		end
 		local color = type(data.get) == "function" and data.get() or nil;
 		if type(color) ~= "table" then
 			color = { r = 0, g = 1, b = 0, a = 1 };
@@ -352,6 +366,9 @@ local function CreateColorSwatch(parent, data)
 	end
 
 	widget:Refresh();
+
+	widget.Color:SetSize(16, 16);
+	widget:HookScript("OnShow", MakeColorSwatchPixelPerfect);
 
 	if data.tooltip then
 		AttachTooltip(widget, data.label, data.tooltip);
